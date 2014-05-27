@@ -69,17 +69,19 @@ namespace Card.Client
             var HandCard = Card.Server.ClientUtlity.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, IsFirst ? 3 : 4);
             //DEBUG
             //烈日行者
-            HandCard.Add("M000099");
-            //森林狼
-            HandCard.Add("M000090");
-            //银色侍从
-            HandCard.Add("M000077");
-            //岩浆暴怒者
-            HandCard.Add("M000097");
-            //虚空行者
-            HandCard.Add("M000084");
-            MySelf.RoleInfo.crystal.CurrentFullPoint = 10;
-            MySelf.RoleInfo.crystal.CurrentRemainPoint = 10;
+            //HandCard.Add("M000099");
+            ////森林狼
+            //HandCard.Add("M000090");
+            ////银色侍从
+            //HandCard.Add("M000077");
+            ////岩浆暴怒者
+            //HandCard.Add("M000097");
+            ////虚空行者
+            //HandCard.Add("M000084");
+            //野性成长
+            HandCard.Add("A000091");
+            MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
+            MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
             //英雄技能：奥术飞弹
             MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000065");
             //DEBUG
@@ -143,13 +145,13 @@ namespace Card.Client
         public List<String> UseAbility(Card.AbilityCard card)
         {
             List<String> Result = new List<string>();
-            Boolean IsPickFirstEffect = false;
+            Card.CardUtility.PickEffect PickEffectResult = CardUtility.PickEffect.第一效果;
             if (card.CardAbility.IsNeedSelect())
             {
-                IsPickFirstEffect = PickEffect(card.CardAbility.FirstAbilityDefine.Description, card.CardAbility.SecondAbilityDefine.Description);
+                PickEffectResult = PickEffect(card.CardAbility.FirstAbilityDefine.Description, card.CardAbility.SecondAbilityDefine.Description);
+                if (PickEffectResult == CardUtility.PickEffect.取消) return new List<string>();
             }
-            var SingleEffectList = card.CardAbility.GetSingleEffectList(IsPickFirstEffect);
-
+            var SingleEffectList = card.CardAbility.GetSingleEffectList(PickEffectResult == CardUtility.PickEffect.第一效果);
             for (int i = 0; i < SingleEffectList.Count; i++)
             {
                 Card.CardUtility.TargetPosition Pos = new CardUtility.TargetPosition();

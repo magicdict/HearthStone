@@ -271,6 +271,16 @@ namespace Card
             /// </summary>
             异常
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        public enum PickEffect
+        {
+            第一效果,
+            第二效果,
+            取消
+        }
+
         #endregion
         /// <summary>
         /// 随机打算数组
@@ -356,7 +366,7 @@ namespace Card
         /// <param name="First">第一效果</param>
         /// <param name="Second">第二效果</param>
         /// <returns>是否为第一效果</returns>
-        public delegate Boolean delegatePickEffect(String First, String Second);
+        public delegate PickEffect delegatePickEffect(String First, String Second);
         /// <summary>
         /// 抽牌委托
         /// </summary>

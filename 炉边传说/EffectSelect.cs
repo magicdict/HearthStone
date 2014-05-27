@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace 炉边传说
@@ -29,21 +23,38 @@ namespace 炉边传说
                 btnEffect2.Text = value;
             }
         }
-        public Boolean IsFirstEffect = false;
-        private void EffectSelect_Load(object sender, EventArgs e)
-        {
-
-        }
-
+        /// <summary>
+        /// 是否第一效果
+        /// </summary>
+        public Card.CardUtility.PickEffect IsFirstEffect =  Card.CardUtility.PickEffect.取消;
+        /// <summary>
+        /// 第一效果
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnEffect1_Click(object sender, EventArgs e)
         {
-            IsFirstEffect = true;
+            IsFirstEffect =  Card.CardUtility.PickEffect.第一效果;
             this.Close();
         }
-
+        /// <summary>
+        /// 第二效果
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnEffect2_Click(object sender, EventArgs e)
         {
-            IsFirstEffect = false;
+            IsFirstEffect =  Card.CardUtility.PickEffect.第二效果;
+            this.Close();
+        }
+        /// <summary>
+        /// 确认
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            IsFirstEffect = Card.CardUtility.PickEffect.取消;
             this.Close();
         }
     }

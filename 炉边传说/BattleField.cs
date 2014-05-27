@@ -238,7 +238,10 @@ namespace 炉边传说
             }
             DisplayMyInfo();
         }
-
+        /// <summary>
+        /// LOG用
+        /// </summary>
+        /// <param name="title"></param>
         private void ShowMinionInfo(string title)
         {
             foreach (var item in game.MySelf.RoleInfo.BattleField.ShowMinions())
@@ -269,16 +272,13 @@ namespace 炉边传说
         /// <param name="FirstEffect"></param>
         /// <param name="SecondEffect"></param>
         /// <returns></returns>
-        private Boolean PickEffect(String FirstEffect, String SecondEffect)
+        private Card.CardUtility.PickEffect PickEffect(String FirstEffect, String SecondEffect)
         {
-            Boolean IsFirst = false;
-            EffectSelect t = new EffectSelect();
-            t.FirstEffect = FirstEffect;
-            t.SecondEffect = SecondEffect;
-            t.ShowDialog();
-            IsFirst = t.IsFirstEffect;
-            t = null;
-            return IsFirst;
+            EffectSelect frm = new EffectSelect();
+            frm.FirstEffect = FirstEffect;
+            frm.SecondEffect = SecondEffect;
+            frm.ShowDialog();
+            return frm.IsFirstEffect;
         }
 
         /// <summary>
