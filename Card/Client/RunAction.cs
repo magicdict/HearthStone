@@ -6,6 +6,7 @@ namespace Card.Client
 {
     public static class RunAction
     {
+        public static CardUtility.delegateGetPutPos GetPutPos;
         #region"开始动作"
         /// <summary>
         /// 开始一个动作
@@ -28,7 +29,7 @@ namespace Card.Client
                     ActionCodeLst.AddRange(ResultArg);
                     break;
                 case "M":
-                    int MinionPos = game.MySelf.RoleInfo.BattleField.MinionCount + 1;
+                    int MinionPos = GetPutPos(game);
                     ActionCodeLst.Add(UseMinion(CardSn, MinionPos));
                     var minion = (Card.MinionCard)card;
                     //初始化

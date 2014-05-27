@@ -10,13 +10,22 @@ namespace 炉边传说
         Card.CardUtility.TargetSelectDirectEnum direct;
         Card.CardUtility.TargetSelectRoleEnum role;
         GameManager game;
+        Boolean 嘲讽限制;
         public CardUtility.TargetPosition pos = new CardUtility.TargetPosition();
-        public TargetSelect(CardUtility.TargetSelectDirectEnum mDirect, CardUtility.TargetSelectRoleEnum mRole, GameManager mGame)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="mDirect"></param>
+        /// <param name="mRole"></param>
+        /// <param name="mGame"></param>
+        /// <param name="嘲讽限制"></param>
+        public TargetSelect(CardUtility.TargetSelectDirectEnum mDirect, CardUtility.TargetSelectRoleEnum mRole, GameManager mGame, Boolean m嘲讽限制)
         {
             InitializeComponent();
             direct = mDirect;
             role = mRole;
             game = mGame;
+            嘲讽限制 = m嘲讽限制;
         }
 
         private void TargetSelect_Load(object sender, EventArgs e)
@@ -108,10 +117,36 @@ namespace 炉边传说
                             btnYourHero.Enabled = true;
                             break;
                         case CardUtility.TargetSelectRoleEnum.所有角色:
-                            btnYourHero.Enabled = true;
+
+                            Boolean Has嘲讽 = false;
                             for (int i = 0; i < game.AgainstInfo.BattleField.MinionCount; i++)
                             {
-                                Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = true;
+                                if (game.AgainstInfo.BattleField.BattleMinions[i].Actual嘲讽)
+                                {
+                                    Has嘲讽 = true;
+                                    break;
+                                }
+                            }
+
+                            if (嘲讽限制 && Has嘲讽)
+                            {
+                                btnYourHero.Enabled = false;
+                                for (int i = 0; i < game.AgainstInfo.BattleField.MinionCount; i++)
+                                {
+                                    //只能选择嘲讽对象
+                                    if (game.AgainstInfo.BattleField.BattleMinions[i].Actual嘲讽)
+                                    {
+                                        Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = true;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                btnYourHero.Enabled = true;
+                                for (int i = 0; i < game.AgainstInfo.BattleField.MinionCount; i++)
+                                {
+                                    Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = true;
+                                }
                             }
                             break;
                         default:

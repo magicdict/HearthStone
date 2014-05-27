@@ -97,6 +97,7 @@ namespace Card
                 var c = CardCollections[SN].深拷贝();
                 c.Init();
                 if (c.CardType == CardBasicInfo.CardTypeEnum.随从) ((Card.MinionCard)c).Init();
+                if (c.CardType == CardBasicInfo.CardTypeEnum.武器) ((Card.WeaponCard)c).Init();
                 return c;
             }
             return null;
@@ -371,7 +372,13 @@ namespace Card
         /// 获得位置
         /// </summary>
         /// <returns></returns>
-        public delegate TargetPosition deleteGetTargetPosition(TargetSelectDirectEnum t1, TargetSelectRoleEnum t2);
+        public delegate TargetPosition deleteGetTargetPosition(TargetSelectDirectEnum 方向, TargetSelectRoleEnum 角色,Boolean 嘲讽限制);
+        /// <summary>
+        /// 随从进场位置
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
+        public delegate int delegateGetPutPos(Card.Client.GameManager game);
         #endregion
         #region"扩展方法"
 

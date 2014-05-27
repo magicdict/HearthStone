@@ -311,7 +311,7 @@ namespace Card
         {
             StringBuilder Status = new StringBuilder();
             Status.AppendLine(Name);
-            Status.AppendLine("圣盾" + (Is圣盾Status ? "ON" : "OFF"));
+            Status.AppendLine("圣盾" + (Is圣盾Status ? "ON" : "OFF") + " " + "嘲讽" + (Actual嘲讽 ? "ON" : "OFF"));
             Status.AppendLine("[实际]攻：" + ActualAttackPoint.ToString() + " 血：" + ActualHealthPoint.ToString());
             Status.AppendLine("[光环]攻：" + TotalAttack().ToString() + " 血：" + TotalHealth().ToString());
             return Status.ToString();

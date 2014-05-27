@@ -116,6 +116,7 @@ namespace Card.Client
                 MySelf.handCards.AddRange(Card.Server.ClientUtlity.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, 1));
                 MySelf.RoleInfo.HandCardCount++;
                 MySelf.RoleInfo.RemainCardDeckCount--;
+                MySelf.RoleInfo.RemainAttackCount = 1;
                 //重置攻击次数
                 foreach (var minion in MySelf.RoleInfo.BattleField.BattleMinions)
                 {
@@ -150,7 +151,7 @@ namespace Card.Client
                 singleEff.EffectCount = 1;
                 if (singleEff.IsNeedSelectTarget())
                 {
-                    Pos = GetSelectTarget(singleEff.EffectTargetSelectDirect, singleEff.EffectTargetSelectRole);
+                    Pos = GetSelectTarget(singleEff.EffectTargetSelectDirect, singleEff.EffectTargetSelectRole, false);
                 }
                 Result.AddRange(EffectDefine.RunSingleEffect(singleEff, this, Pos, i));
                 //每次原子操作后进行一次清算
@@ -169,13 +170,56 @@ namespace Card.Client
         {
             List<String> Result = new List<string>();
             //攻击次数
-            MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].RemainAttactTimes--;
+            if (MyPos != 0)
+            {
+                MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].RemainAttactTimes--;
+            }
+            else
+            {
+                if (MySelf.RoleInfo.Weapon != null)
+                {
+                    MySelf.RoleInfo.Weapon.实际耐久度--;
+                    MySelf.RoleInfo.RemainAttackCount = 0;
+                }
+            }
             //潜行等去除(如果不是被攻击方的处理)
-            if (!IsProcessAction) MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].AfterAttack();
+            if (!IsProcessAction && (MyPos != 0)) MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].AfterAttack();
             //伤害计算(本方)
-            MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].AfterBeAttack(AgainstInfo.BattleField.BattleMinions[YourPos - 1].TotalAttack());
+            var YourAttackPoint = 0;
+            if (YourPos != 0)
+            {
+                YourAttackPoint = AgainstInfo.BattleField.BattleMinions[YourPos - 1].TotalAttack();
+            }
+            else
+            {
+                if (AgainstInfo.Weapon != null) YourAttackPoint = AgainstInfo.Weapon.ActualAttackPoint;
+            }
+            if (MyPos != 0)
+            {
+                MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].AfterBeAttack(YourAttackPoint);
+            }
+            else
+            {
+                MySelf.RoleInfo.HealthPoint -= YourAttackPoint;
+            }
             //伤害计算(对方)
-            AgainstInfo.BattleField.BattleMinions[YourPos - 1].AfterBeAttack(MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].TotalAttack());
+            var MyAttackPoint = 0;
+            if (MyPos != 0)
+            {
+                MyAttackPoint = MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].TotalAttack();
+            }
+            else
+            {
+                if (MySelf.RoleInfo.Weapon != null) MyAttackPoint = MySelf.RoleInfo.Weapon.ActualAttackPoint;
+            }
+            if (YourPos != 0)
+            {
+                AgainstInfo.BattleField.BattleMinions[YourPos - 1].AfterBeAttack(MyAttackPoint);
+            }
+            else
+            {
+                AgainstInfo.HealthPoint -= MyAttackPoint;
+            }
             //每次操作后进行一次清算
             Settle();
             return Result;
@@ -193,6 +237,9 @@ namespace Card.Client
             //2.重新计算Buff
             MySelf.RoleInfo.BattleField.ResetBuff();
             AgainstInfo.BattleField.ResetBuff();
+            //3.武器的移除
+            if (MySelf.RoleInfo.Weapon != null && MySelf.RoleInfo.Weapon.实际耐久度 == 0) MySelf.RoleInfo.Weapon = null;
+            if (AgainstInfo.Weapon != null && AgainstInfo.Weapon.实际耐久度 == 0) AgainstInfo.Weapon = null;
             return Result;
         }
         /// <summary>

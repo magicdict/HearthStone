@@ -29,5 +29,13 @@ namespace Card
         /// 真银圣剑：每当你的英雄进攻时，为其恢复2点生命值。
         /// </summary>
         public EffectDefine AdditionEffect = new EffectDefine();
+        /// <summary>
+        /// 设置初始状态
+        /// </summary>
+        public new void Init()
+        {
+            实际耐久度 = 标准耐久度;
+            ActualAttackPoint = StandardAttackPoint;
+        }
     }
 }

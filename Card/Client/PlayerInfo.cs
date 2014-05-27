@@ -50,6 +50,10 @@ namespace Card.Client
         /// </summary>
         public int HandCardCount = 0;
         /// <summary>
+        /// 装备武器时候的剩余攻击次数
+        /// </summary>
+        public int RemainAttackCount = 0;
+        /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
@@ -60,7 +64,7 @@ namespace Card.Client
             Status.AppendLine("HealthPoint：" + HealthPoint);
             if (Weapon != null)
             {
-                Status.AppendLine("Weapon：" + Weapon.StandardAttackPoint);
+                Status.AppendLine("Weapon：" + Weapon.ActualAttackPoint + "/" + Weapon.实际耐久度);
             }
             else
             {

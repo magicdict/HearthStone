@@ -29,6 +29,7 @@ namespace 炉边传说
         {
             game.GetSelectTarget = SelectPanel;
             game.PickEffect = PickEffect;
+            RunAction.GetPutPos = GetPutPos;
             WaitTimer.Interval = 3000;
             WaitTimer.Tick += WaitFor;
             DisplayMyInfo();
@@ -49,16 +50,34 @@ namespace 炉边传说
                     Fight(AttackPostion);
                 };
             }
+            btnMyHero.Click += (x, y) =>
+            {
+                btnMyHero.Enabled = false;
+                Fight(0);
+            };
             StartNewTurn();
+        }
+        /// <summary>
+        /// 随从进场位置
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
+        private int GetPutPos(GameManager game)
+        {
+            var frm = new PutMinion(game);
+            frm.ShowDialog();
+            return frm.MinionPos;
         }
         /// <summary>
         /// 选择目标
         /// </summary>
         /// <returns></returns>
-        private CardUtility.TargetPosition SelectPanel(Card.CardUtility.TargetSelectDirectEnum direct, Card.CardUtility.TargetSelectRoleEnum role)
+        private CardUtility.TargetPosition SelectPanel(Card.CardUtility.TargetSelectDirectEnum direct,
+                                                       Card.CardUtility.TargetSelectRoleEnum role,
+                                                       Boolean 嘲讽限制)
         {
             CardUtility.TargetPosition SelectPos;
-            var frm = new TargetSelect(direct, role, game);
+            var frm = new TargetSelect(direct, role, game, 嘲讽限制);
             frm.ShowDialog();
             SelectPos = frm.pos;
             return SelectPos;
@@ -90,6 +109,14 @@ namespace 炉边传说
                     Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Text = "[无]";
                     Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = false;
                 }
+            }
+            if (game.MySelf.RoleInfo.RemainAttackCount != 0 && game.MySelf.RoleInfo.Weapon != null && game.MySelf.RoleInfo.Weapon.实际耐久度 > 0)
+            {
+                btnMyHero.Enabled = true;
+            }
+            else
+            {
+                btnMyHero.Enabled = false;
             }
             for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
             {
@@ -260,7 +287,7 @@ namespace 炉边传说
         /// <param name="MyPos"></param>
         private void Fight(int MyPos)
         {
-            var YourPos = SelectPanel(CardUtility.TargetSelectDirectEnum.对方, CardUtility.TargetSelectRoleEnum.所有角色);
+            var YourPos = SelectPanel(CardUtility.TargetSelectDirectEnum.对方, CardUtility.TargetSelectRoleEnum.所有角色, true);
             lstAction.Items.Clear();
             //暂时不考虑嘲讽
             ShowMinionInfo("Before:");
