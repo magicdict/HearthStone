@@ -1,8 +1,8 @@
-﻿using System;
-using System.Windows.Forms;
-using System.Threading;
+﻿using Card.Client;
 using Card.Server;
-using Card.Client;
+using System;
+using System.Threading;
+using System.Windows.Forms;
 namespace 炉边传说
 {
     public partial class frmStartGame : Form
@@ -22,6 +22,7 @@ namespace 炉边传说
             //新建游戏的时候，已经决定游戏的先后手
             game.IsHost = true;
             String GameId = Card.Server.ClientUtlity.CreateGame(game.PlayerNickName);
+            Card.CardUtility.Init(txtCardPath.Text);
             game.GameId = int.Parse(GameId);
             btnJoinGame.Enabled = false;
             btnRefresh.Enabled = false;
@@ -62,6 +63,7 @@ namespace 炉边传说
             game.IsHost = false;
             if (lstWaitGuest.SelectedItems.Count != 1) return;
             var strWait = lstWaitGuest.SelectedItem.ToString();
+            Card.CardUtility.Init(txtCardPath.Text);
             String GameId = Card.Server.ClientUtlity.JoinGame(int.Parse(strWait.Substring(0, strWait.IndexOf("("))), game.PlayerNickName);
             game.GameId = int.Parse(GameId);
             game.IsFirst = Card.Server.ClientUtlity.IsFirst(game.GameId.ToString(GameServer.GameIdFormat), game.IsHost);
@@ -71,10 +73,23 @@ namespace 炉边传说
             t.ShowDialog();
             this.Close();
         }
-
+        /// <summary>
+        /// Load/Init
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void frmStartGame_Load(object sender, EventArgs e)
         {
-            Card.CardUtility.Init(@"C:\MagicMongoDBTool\CardHelper\CardXML");
+            //DEBUG
+            txtCardPath.Text = @"C:\炉石Git\CardHelper\CardXML";
+        }
+        private void btnPickCard_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog cardPath = new FolderBrowserDialog();
+            if (cardPath.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                txtCardPath.Text = cardPath.SelectedPath;
+            }
         }
     }
 }

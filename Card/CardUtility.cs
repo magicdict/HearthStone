@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -93,7 +94,7 @@ namespace Card
         {
             if (CardCollections.ContainsKey(SN))
             {
-                var c = CardCollections[SN];
+                var c = CardCollections[SN].深拷贝();
                 c.Init();
                 if (c.CardType == CardBasicInfo.CardTypeEnum.随从) ((Card.MinionCard)c).Init();
                 return c;
@@ -112,7 +113,7 @@ namespace Card
                 XmlSerializer xml = new XmlSerializer(typeof(Card.AbilityCard));
                 Card.AbilityCard ability = (AbilityCard)xml.Deserialize(new StreamReader(AbilityXml));
                 ability.ActualCostPoint = ability.StandardCostPoint;
-                CardCollections.Add(ability.SN,ability);
+                CardCollections.Add(ability.SN, ability);
             }
             foreach (var MinionXml in Directory.GetFiles(CardXmlFolder + "\\Minion\\"))
             {
@@ -281,7 +282,7 @@ namespace Card
             int len = array.Length;
             System.Collections.Generic.List<int> list = new System.Collections.Generic.List<int>();
             T[] ret = new T[len];
-            Random rand = Seed == 0 ? new Random() : new Random(Seed);
+            Random rand = Seed == 0 ? new Random() : new Random(DateTime.Now.Millisecond + Seed);
             int i = 0;
             while (list.Count < len)
             {
@@ -370,7 +371,37 @@ namespace Card
         /// 获得位置
         /// </summary>
         /// <returns></returns>
-        public delegate TargetPosition deleteGetTargetPosition(TargetSelectDirectEnum t1,TargetSelectRoleEnum t2);
+        public delegate TargetPosition deleteGetTargetPosition(TargetSelectDirectEnum t1, TargetSelectRoleEnum t2);
+        #endregion
+        #region"扩展方法"
+
+        /// <summary>
+        /// 深拷贝对象副本
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static T 深拷贝<T>(this T obj)
+        {
+            System.Runtime.Serialization.Formatters.Binary.BinaryFormatter formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            T copy = default(T);
+            try
+            {
+                formatter.Serialize(ms, obj);
+                ms.Seek(0, System.IO.SeekOrigin.Begin);
+                copy = (T)formatter.Deserialize(ms);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("深拷贝对象实例出错。", ex);
+            }
+            finally
+            {
+                ms.Close();
+            }
+            return copy;
+        }
         #endregion
     }
 }

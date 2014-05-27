@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Card.Effect
 {
+    [Serializable]
     public class EffectDefine
     {
         /// <summary>

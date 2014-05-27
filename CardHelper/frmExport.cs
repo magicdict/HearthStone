@@ -275,7 +275,7 @@ namespace CardHelper
         /// <param name="e"></param>
         private void btnImportXML_Click(object sender, EventArgs e)
         {
-            Card.CardUtility.Init(@"C:\MagicMongoDBTool\CardHelper\CardXML");
+            Card.CardUtility.Init(@"C:\炉石Git\CardHelper\CardXML");
         }
         private void frmExport_Load(object sender, EventArgs e)
         {

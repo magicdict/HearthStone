@@ -22,7 +22,7 @@ namespace Card.Effect
             switch (singleEffect.EffictTargetSelectMode)
             {
                 case CardUtility.TargetSelectModeEnum.随机:
-                    Random t = new Random(Seed);
+                    Random t = new Random(DateTime.Now.Millisecond + Seed);
                     switch (singleEffect.EffectTargetSelectDirect)
                     {
                         case CardUtility.TargetSelectDirectEnum.本方:

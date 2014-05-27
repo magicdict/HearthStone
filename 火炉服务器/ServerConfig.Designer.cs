@@ -34,6 +34,9 @@
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.btnStart = new System.Windows.Forms.Button();
             this.btnStop = new System.Windows.Forms.Button();
+            this.btnPickCard = new System.Windows.Forms.Button();
+            this.txtCardPath = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
@@ -72,7 +75,7 @@
             // 
             // btnStart
             // 
-            this.btnStart.Location = new System.Drawing.Point(18, 78);
+            this.btnStart.Location = new System.Drawing.Point(18, 146);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(75, 23);
             this.btnStart.TabIndex = 4;
@@ -83,7 +86,7 @@
             // btnStop
             // 
             this.btnStop.Enabled = false;
-            this.btnStop.Location = new System.Drawing.Point(108, 78);
+            this.btnStop.Location = new System.Drawing.Point(108, 146);
             this.btnStop.Name = "btnStop";
             this.btnStop.Size = new System.Drawing.Size(75, 23);
             this.btnStop.TabIndex = 5;
@@ -91,12 +94,41 @@
             this.btnStop.UseVisualStyleBackColor = true;
             this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
             // 
+            // btnPickCard
+            // 
+            this.btnPickCard.Location = new System.Drawing.Point(129, 60);
+            this.btnPickCard.Name = "btnPickCard";
+            this.btnPickCard.Size = new System.Drawing.Size(75, 23);
+            this.btnPickCard.TabIndex = 9;
+            this.btnPickCard.Text = "选择..";
+            this.btnPickCard.UseVisualStyleBackColor = true;
+            this.btnPickCard.Click += new System.EventHandler(this.btnPickCard_Click);
+            // 
+            // txtCardPath
+            // 
+            this.txtCardPath.Location = new System.Drawing.Point(15, 91);
+            this.txtCardPath.Name = "txtCardPath";
+            this.txtCardPath.Size = new System.Drawing.Size(319, 20);
+            this.txtCardPath.TabIndex = 8;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 65);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(73, 13);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "卡牌文件夹：";
+            // 
             // ServerConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(201, 119);
+            this.ClientSize = new System.Drawing.Size(352, 181);
+            this.Controls.Add(this.btnPickCard);
+            this.Controls.Add(this.txtCardPath);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnStop);
             this.Controls.Add(this.btnStart);
             this.Controls.Add(this.numericUpDown2);
@@ -105,6 +137,7 @@
             this.Controls.Add(this.lbl套牌牌数上限);
             this.Name = "ServerConfig";
             this.Text = "服务器配置";
+            this.Load += new System.EventHandler(this.ServerConfig_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.ResumeLayout(false);
@@ -120,5 +153,8 @@
         private System.Windows.Forms.NumericUpDown numericUpDown2;
         private System.Windows.Forms.Button btnStart;
         private System.Windows.Forms.Button btnStop;
+        private System.Windows.Forms.Button btnPickCard;
+        private System.Windows.Forms.TextBox txtCardPath;
+        private System.Windows.Forms.Label label1;
     }
 }

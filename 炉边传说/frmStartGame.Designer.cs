@@ -32,11 +32,14 @@
             this.lstWaitGuest = new System.Windows.Forms.ListBox();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnJoinGame = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtCardPath = new System.Windows.Forms.TextBox();
+            this.btnPickCard = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnCreateGame
             // 
-            this.btnCreateGame.Location = new System.Drawing.Point(12, 13);
+            this.btnCreateGame.Location = new System.Drawing.Point(12, 95);
             this.btnCreateGame.Name = "btnCreateGame";
             this.btnCreateGame.Size = new System.Drawing.Size(119, 23);
             this.btnCreateGame.TabIndex = 0;
@@ -47,16 +50,16 @@
             // lstWaitGuest
             // 
             this.lstWaitGuest.FormattingEnabled = true;
-            this.lstWaitGuest.Location = new System.Drawing.Point(12, 80);
+            this.lstWaitGuest.Location = new System.Drawing.Point(12, 124);
             this.lstWaitGuest.Name = "lstWaitGuest";
             this.lstWaitGuest.Size = new System.Drawing.Size(333, 95);
             this.lstWaitGuest.TabIndex = 1;
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(296, 51);
+            this.btnRefresh.Location = new System.Drawing.Point(274, 95);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(49, 23);
+            this.btnRefresh.Size = new System.Drawing.Size(71, 23);
             this.btnRefresh.TabIndex = 2;
             this.btnRefresh.Text = "刷新";
             this.btnRefresh.UseVisualStyleBackColor = true;
@@ -64,7 +67,7 @@
             // 
             // btnJoinGame
             // 
-            this.btnJoinGame.Location = new System.Drawing.Point(12, 51);
+            this.btnJoinGame.Location = new System.Drawing.Point(137, 95);
             this.btnJoinGame.Name = "btnJoinGame";
             this.btnJoinGame.Size = new System.Drawing.Size(119, 23);
             this.btnJoinGame.TabIndex = 3;
@@ -72,12 +75,41 @@
             this.btnJoinGame.UseVisualStyleBackColor = true;
             this.btnJoinGame.Click += new System.EventHandler(this.btnJoinGame_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(23, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(73, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "卡牌文件夹：";
+            // 
+            // txtCardPath
+            // 
+            this.txtCardPath.Location = new System.Drawing.Point(26, 41);
+            this.txtCardPath.Name = "txtCardPath";
+            this.txtCardPath.Size = new System.Drawing.Size(319, 20);
+            this.txtCardPath.TabIndex = 5;
+            // 
+            // btnPickCard
+            // 
+            this.btnPickCard.Location = new System.Drawing.Point(116, 10);
+            this.btnPickCard.Name = "btnPickCard";
+            this.btnPickCard.Size = new System.Drawing.Size(75, 23);
+            this.btnPickCard.TabIndex = 6;
+            this.btnPickCard.Text = "选择..";
+            this.btnPickCard.UseVisualStyleBackColor = true;
+            this.btnPickCard.Click += new System.EventHandler(this.btnPickCard_Click);
+            // 
             // frmStartGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(356, 187);
+            this.ClientSize = new System.Drawing.Size(360, 231);
+            this.Controls.Add(this.btnPickCard);
+            this.Controls.Add(this.txtCardPath);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnJoinGame);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.lstWaitGuest);
@@ -86,6 +118,7 @@
             this.Text = "开始游戏";
             this.Load += new System.EventHandler(this.frmStartGame_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -95,5 +128,8 @@
         private System.Windows.Forms.ListBox lstWaitGuest;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Button btnJoinGame;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtCardPath;
+        private System.Windows.Forms.Button btnPickCard;
     }
 }

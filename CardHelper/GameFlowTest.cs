@@ -22,7 +22,7 @@ namespace CardHelper
         /// <param name="e"></param>
         private void btnInitGame_Click(object sender, EventArgs e)
         {
-            Card.CardUtility.Init(@"C:\MagicMongoDBTool\CardHelper\CardXML");
+            Card.CardUtility.Init(@"C:\炉石Git\CardHelper\CardXML");
             GameId = Card.Server.GameServer.CreateNewGame("NickName");
             Card.Server.GameServer.SetCardStack(GameId, true, CardDeck.GetRandomCardStack(0));
             Card.Server.GameServer.SetCardStack(GameId, false, CardDeck.GetRandomCardStack(1));

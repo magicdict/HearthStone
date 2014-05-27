@@ -78,7 +78,7 @@ namespace 炉边传说
                     Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Text = myMinion.GetInfo();
                     if (myMinion.RemainAttactTimes > 0)
                     {
-                        Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = true;
+                        if (game.IsMyTurn) Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = true;
                     }
                     else
                     {
@@ -161,10 +161,13 @@ namespace 炉边传说
             var ActionList = Actions.Split("|".ToCharArray());
             foreach (var item in ActionList)
             {
-                lstAction.Items.Add("[" + item + "]");
+                lstAction.Items.Add("Received:[" + item + "]");
                 if (ActionCode.GetActionType(item) != ActionCode.ActionType.EndTurn)
                 {
+                    lstAction.Items.Clear();
+                    ShowMinionInfo("Before:");
                     ProcessAction.Process(item, game);
+                    ShowMinionInfo("After ：");
                 }
                 else
                 {
@@ -176,6 +179,18 @@ namespace 炉边传说
                 }
             }
             DisplayMyInfo();
+        }
+
+        private void ShowMinionInfo(string title)
+        {
+            foreach (var item in game.MySelf.RoleInfo.BattleField.ShowMinions())
+            {
+                lstAction.Items.Add(title + "My:" + item);
+            }
+            foreach (var item in game.AgainstInfo.BattleField.ShowMinions())
+            {
+                lstAction.Items.Add(title + "You:" + item);
+            }
         }
 
         /// <summary>
@@ -246,12 +261,16 @@ namespace 炉边传说
         private void Fight(int MyPos)
         {
             var YourPos = SelectPanel(CardUtility.TargetSelectDirectEnum.对方, CardUtility.TargetSelectRoleEnum.所有角色);
+            lstAction.Items.Clear();
             //暂时不考虑嘲讽
+            ShowMinionInfo("Before:");
             List<String> actionlst = RunAction.Fight(game, MyPos, YourPos.Postion);
             foreach (var action in actionlst)
             {
+                lstAction.Items.Add("Send:[" + action + "]");
                 Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), action);
             }
+            ShowMinionInfo("After:");
             DisplayMyInfo();
         }
     }

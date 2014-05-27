@@ -76,6 +76,7 @@ namespace Card.Client
                 case ActionCode.ActionType.UnKnown:
                     break;
             }
+            game.Settle();
         }
         #endregion
 

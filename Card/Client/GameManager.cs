@@ -44,7 +44,8 @@ namespace Card.Client
         /// 
         /// </summary>
         /// <returns></returns>
-        public string GetGameInfo() {
+        public string GetGameInfo()
+        {
             StringBuilder Status = new StringBuilder();
             Status.AppendLine("==============");
             Status.AppendLine("System：");
@@ -67,8 +68,16 @@ namespace Card.Client
             //属性
             var HandCard = Card.Server.ClientUtlity.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, IsFirst ? 3 : 4);
             //DEBUG
-            HandCard.Add("A000075");
-            HandCard.Add("M000004");
+            //烈日行者
+            HandCard.Add("M000099");
+            //森林狼
+            HandCard.Add("M000090");
+            //银色侍从
+            HandCard.Add("M000077");
+            //岩浆暴怒者
+            HandCard.Add("M000097");
+            //虚空行者
+            HandCard.Add("M000084");
             MySelf.RoleInfo.crystal.CurrentFullPoint = 10;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 10;
             //DEBUG
@@ -130,7 +139,7 @@ namespace Card.Client
             Boolean IsPickFirstEffect = false;
             if (card.CardAbility.IsNeedSelect())
             {
-                IsPickFirstEffect = PickEffect(card.CardAbility.FirstAbilityDefine.Description,card.CardAbility.SecondAbilityDefine.Description);
+                IsPickFirstEffect = PickEffect(card.CardAbility.FirstAbilityDefine.Description, card.CardAbility.SecondAbilityDefine.Description);
             }
             var SingleEffectList = card.CardAbility.GetSingleEffectList(IsPickFirstEffect);
 
@@ -141,9 +150,9 @@ namespace Card.Client
                 singleEff.EffectCount = 1;
                 if (singleEff.IsNeedSelectTarget())
                 {
-                    Pos = GetSelectTarget(singleEff.EffectTargetSelectDirect,singleEff.EffectTargetSelectRole);
+                    Pos = GetSelectTarget(singleEff.EffectTargetSelectDirect, singleEff.EffectTargetSelectRole);
                 }
-                Result.AddRange(EffectDefine.RunSingleEffect(singleEff, this, Pos,i));
+                Result.AddRange(EffectDefine.RunSingleEffect(singleEff, this, Pos, i));
                 //每次原子操作后进行一次清算
                 Settle();
             }
@@ -156,7 +165,7 @@ namespace Card.Client
         /// <param name="YourPos">对方</param>
         /// <param name="IsProcessAction">是否是被攻击方的复盘</param>
         /// <returns></returns>
-        public List<String> Fight(int MyPos, int YourPos,Boolean IsProcessAction = false)
+        public List<String> Fight(int MyPos, int YourPos, Boolean IsProcessAction = false)
         {
             List<String> Result = new List<string>();
             //攻击次数
@@ -175,7 +184,8 @@ namespace Card.Client
         /// 清算(核心方法)
         /// </summary>
         /// <returns></returns>
-        private List<String> Settle() {
+        public List<String> Settle()
+        {
             List<String> Result = new List<string>();
             //1.检查需要移除的对象
             MySelf.RoleInfo.BattleField.ClearDead();
@@ -185,8 +195,6 @@ namespace Card.Client
             AgainstInfo.BattleField.ResetBuff();
             return Result;
         }
-
-
         /// <summary>
         /// 抽牌（服务器方法）
         /// </summary>
