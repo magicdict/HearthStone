@@ -61,6 +61,12 @@
     <Compile Include="CardUnit.Designer.cs">
       <DependentUpon>CardUnit.cs</DependentUpon>
     </Compile>
+    <Compile Include="ctlFilePicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctlFilePicker.Designer.cs">
+      <DependentUpon>ctlFilePicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmExport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -93,6 +99,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CardUnit.resx">
       <DependentUpon>CardUnit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ctlFilePicker.resx">
+      <DependentUpon>ctlFilePicker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmExport.resx">
       <DependentUpon>frmExport.cs</DependentUpon>

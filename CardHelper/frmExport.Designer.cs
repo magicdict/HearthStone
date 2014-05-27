@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ExcelPicker = new GUI.ctlFilePicker();
+            this.ExcelPicker = new ctlFilePicker();
             this.btnExportMongoDB = new System.Windows.Forms.Button();
             this.btnExportXml = new System.Windows.Forms.Button();
-            this.XmlFolderPicker = new GUI.ctlFilePicker();
+            this.XmlFolderPicker = new ctlFilePicker();
             this.btnImportXML = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -42,7 +42,7 @@
             this.ExcelPicker.FileName = "";
             this.ExcelPicker.Location = new System.Drawing.Point(28, 12);
             this.ExcelPicker.Name = "ExcelPicker";
-            this.ExcelPicker.PickerType = GUI.ctlFilePicker.DialogType.OpenFile;
+            this.ExcelPicker.PickerType = ctlFilePicker.DialogType.OpenFile;
             this.ExcelPicker.SelectedPathOrFileName = "";
             this.ExcelPicker.Size = new System.Drawing.Size(629, 31);
             this.ExcelPicker.TabIndex = 0;
@@ -75,7 +75,7 @@
             this.XmlFolderPicker.FileName = "";
             this.XmlFolderPicker.Location = new System.Drawing.Point(28, 78);
             this.XmlFolderPicker.Name = "XmlFolderPicker";
-            this.XmlFolderPicker.PickerType = GUI.ctlFilePicker.DialogType.Directory;
+            this.XmlFolderPicker.PickerType = ctlFilePicker.DialogType.Directory;
             this.XmlFolderPicker.SelectedPathOrFileName = "";
             this.XmlFolderPicker.Size = new System.Drawing.Size(629, 31);
             this.XmlFolderPicker.TabIndex = 3;
@@ -112,10 +112,10 @@
 
         #endregion
 
-        private GUI.ctlFilePicker ExcelPicker;
+        private ctlFilePicker ExcelPicker;
         private System.Windows.Forms.Button btnExportMongoDB;
         private System.Windows.Forms.Button btnExportXml;
-        private GUI.ctlFilePicker XmlFolderPicker;
+        private ctlFilePicker XmlFolderPicker;
         private System.Windows.Forms.Button btnImportXML;
     }
 }

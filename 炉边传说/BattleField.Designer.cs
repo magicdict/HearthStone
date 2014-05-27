@@ -58,6 +58,8 @@
             this.btnYou1 = new System.Windows.Forms.Button();
             this.btnMyHero = new System.Windows.Forms.Button();
             this.btnYourHero = new System.Windows.Forms.Button();
+            this.btnHeroAblity = new System.Windows.Forms.Button();
+            this.btnWeapon = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -100,6 +102,8 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.btnWeapon);
+            this.splitContainer1.Panel1.Controls.Add(this.btnHeroAblity);
             this.splitContainer1.Panel1.Controls.Add(this.btnHandCard10);
             this.splitContainer1.Panel1.Controls.Add(this.btnHandCard9);
             this.splitContainer1.Panel1.Controls.Add(this.btnHandCard8);
@@ -369,6 +373,24 @@
             this.btnYourHero.Text = "对方英雄";
             this.btnYourHero.UseVisualStyleBackColor = true;
             // 
+            // btnHeroAblity
+            // 
+            this.btnHeroAblity.Location = new System.Drawing.Point(688, 336);
+            this.btnHeroAblity.Name = "btnHeroAblity";
+            this.btnHeroAblity.Size = new System.Drawing.Size(87, 35);
+            this.btnHeroAblity.TabIndex = 10;
+            this.btnHeroAblity.Text = "英雄技能";
+            this.btnHeroAblity.UseVisualStyleBackColor = true;
+            // 
+            // btnWeapon
+            // 
+            this.btnWeapon.Location = new System.Drawing.Point(309, 336);
+            this.btnWeapon.Name = "btnWeapon";
+            this.btnWeapon.Size = new System.Drawing.Size(96, 35);
+            this.btnWeapon.TabIndex = 42;
+            this.btnWeapon.Text = "武器[无]";
+            this.btnWeapon.UseVisualStyleBackColor = true;
+            // 
             // BattleField
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -421,6 +443,8 @@
         private System.Windows.Forms.Button btnHandCard3;
         private System.Windows.Forms.Button btnHandCard2;
         private System.Windows.Forms.Button btnHandCard1;
+        private System.Windows.Forms.Button btnHeroAblity;
+        private System.Windows.Forms.Button btnWeapon;
 
     }
 }

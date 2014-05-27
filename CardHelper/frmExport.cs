@@ -279,9 +279,9 @@ namespace CardHelper
         }
         private void frmExport_Load(object sender, EventArgs e)
         {
-            Card.CardUtility.CardXmlFolder = @"C:\MagicMongoDBTool\CardHelper\CardXML";
+            Card.CardUtility.CardXmlFolder = @"C:\炉石Git\CardHelper\CardXML";
             XmlFolderPicker.SelectedPathOrFileName = Card.CardUtility.CardXmlFolder;
-            ExcelPicker.SelectedPathOrFileName = @"C:\MagicMongoDBTool\DesignDocument\炉石设计\卡牌整理版本.xls";
+            ExcelPicker.SelectedPathOrFileName = @"C:\炉石Git\炉石设计\卡牌整理版本.xls";
         }
     }
 }

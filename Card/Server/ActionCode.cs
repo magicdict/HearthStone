@@ -29,7 +29,7 @@ namespace Card.Server
             /// </summary>
             Attack,
             /// <summary>
-            /// 
+            /// 直接攻击
             /// </summary>
             Fight,
             /// <summary>
@@ -41,6 +41,10 @@ namespace Card.Server
             /// </summary>
             Transform,
             /// <summary>
+            /// 水晶
+            /// </summary>
+            Crystal,
+            /// <summary>
             /// 未知
             /// </summary>
             UnKnown
@@ -49,6 +53,10 @@ namespace Card.Server
         /// 变形（效果）
         /// </summary>
         public const string strTransform = "TRANSFORM";
+        /// <summary>
+        /// 水晶
+        /// </summary>
+        public const string strCrystal = "CRYSTAL";
         /// <summary>
         /// 攻击
         /// </summary>
@@ -90,6 +98,7 @@ namespace Card.Server
             //效果
             if (ActionWord.StartsWith(strTransform + CardUtility.strSplitMark)) t = ActionType.Transform;
             if (ActionWord.StartsWith(strAttack + CardUtility.strSplitMark)) t = ActionType.Attack;
+            if (ActionWord.StartsWith(strCrystal + CardUtility.strSplitMark)) t = ActionType.Crystal;
             return t;
         }
 

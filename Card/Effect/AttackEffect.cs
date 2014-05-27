@@ -45,11 +45,11 @@ namespace Card.Effect
                             switch (singleEffect.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
-                                    Pos.Postion = t.Next(1, game.MySelf.RoleInfo.BattleField.MinionCount + 1);
+                                    Pos.Postion = t.Next(1, game.AgainstInfo.BattleField.MinionCount + 1);
                                     Pos.MeOrYou = false;
                                     break;
                                 case CardUtility.TargetSelectRoleEnum.所有角色:
-                                    Pos.Postion = t.Next(0, game.MySelf.RoleInfo.BattleField.MinionCount + 1);
+                                    Pos.Postion = t.Next(0, game.AgainstInfo.BattleField.MinionCount + 1);
                                     Pos.MeOrYou = false;
                                     break;
                             }

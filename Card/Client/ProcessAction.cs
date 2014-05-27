@@ -28,6 +28,19 @@ namespace Card.Client
                     break;
                 case ActionCode.ActionType.UseAbility:
                     break;
+                case ActionCode.ActionType.Crystal:
+                    //Crystal#ME#4#4
+                    if (actField[1] == CardUtility.strMe)
+                    {
+                        game.AgainstInfo.crystal.CurrentRemainPoint = int.Parse(actField[2]);
+                        game.AgainstInfo.crystal.CurrentFullPoint = int.Parse(actField[3]);
+                    }
+                    else
+                    {
+                        game.MySelf.RoleInfo.crystal.CurrentRemainPoint = int.Parse(actField[2]);
+                        game.MySelf.RoleInfo.crystal.CurrentFullPoint = int.Parse(actField[3]);
+                    }
+                    break;
                 case ActionCode.ActionType.Transform:
                     //TRANSFORM#ME#1#M9000001
                     //Me代表对方 YOU代表自己，必须反过来

@@ -311,9 +311,9 @@ namespace Card
         {
             StringBuilder Status = new StringBuilder();
             Status.AppendLine(Name);
-            Status.AppendLine("圣盾" + (Is圣盾Status ? "ON" : "OFF") + " " + "嘲讽" + (Actual嘲讽 ? "ON" : "OFF"));
-            Status.AppendLine("[实际]攻：" + ActualAttackPoint.ToString() + " 血：" + ActualHealthPoint.ToString());
-            Status.AppendLine("[光环]攻：" + TotalAttack().ToString() + " 血：" + TotalHealth().ToString());
+            Status.AppendLine("圣：" + (Is圣盾Status ? "开" : "关") + " " + "嘲：" + (Actual嘲讽 ? "开" : "关"));
+            Status.AppendLine("[实]" + ActualAttackPoint.ToString() + "/" + ActualHealthPoint.ToString() + 
+                              "[总]" + TotalAttack().ToString() + "/" + TotalHealth().ToString());
             return Status.ToString();
         }
         #endregion

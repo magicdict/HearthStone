@@ -26,7 +26,7 @@ namespace Card.Client
                     Card.AbilityCard ablity = (Card.AbilityCard)CardUtility.GetCardInfoBySN(CardSn);
                     ablity.CardAbility.Init();
                     var ResultArg = game.UseAbility(ablity);
-                    ActionCodeLst.AddRange(ResultArg);
+                    if (ResultArg.Count != 0) ActionCodeLst.AddRange(ResultArg);
                     break;
                 case "M":
                     int MinionPos = GetPutPos(game);
@@ -87,14 +87,14 @@ namespace Card.Client
         /// <param name="MyPos"></param>
         /// <param name="YourPos"></param>
         /// <returns></returns>
-        public static List<String> Fight(GameManager game, int MyPos,int YourPos)
+        public static List<String> Fight(GameManager game, int MyPos, int YourPos)
         {
             String actionCode = String.Empty;
             //FIGHT#1#2
             actionCode = ActionCode.strFight + CardUtility.strSplitMark + MyPos + CardUtility.strSplitMark + YourPos;
             List<String> ActionCodeLst = new List<string>();
             ActionCodeLst.Add(actionCode);
-            ActionCodeLst.AddRange(game.Fight(MyPos,YourPos,false));
+            ActionCodeLst.AddRange(game.Fight(MyPos, YourPos, false));
             return ActionCodeLst;
         }
         #endregion

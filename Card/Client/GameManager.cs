@@ -80,6 +80,8 @@ namespace Card.Client
             HandCard.Add("M000084");
             MySelf.RoleInfo.crystal.CurrentFullPoint = 10;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 10;
+            //英雄技能：奥术飞弹
+            MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000065");
             //DEBUG
             if (!IsFirst) HandCard.Add(Card.CardUtility.SN幸运币);
             MySelf.handCards = HandCard;
@@ -117,6 +119,7 @@ namespace Card.Client
                 MySelf.RoleInfo.HandCardCount++;
                 MySelf.RoleInfo.RemainCardDeckCount--;
                 MySelf.RoleInfo.RemainAttackCount = 1;
+                MySelf.RoleInfo.IsUsedHeroAbility = false;
                 //重置攻击次数
                 foreach (var minion in MySelf.RoleInfo.BattleField.BattleMinions)
                 {
@@ -128,8 +131,11 @@ namespace Card.Client
                 AgainstInfo.crystal.NewTurn();
                 AgainstInfo.HandCardCount++;
                 AgainstInfo.RemainCardDeckCount--;
+                AgainstInfo.RemainAttackCount = 1;
+                AgainstInfo.IsUsedHeroAbility = false;
             }
         }
+        public static int Seed = 1;
         /// <summary>
         /// 使用法术
         /// </summary>
@@ -147,13 +153,16 @@ namespace Card.Client
             for (int i = 0; i < SingleEffectList.Count; i++)
             {
                 Card.CardUtility.TargetPosition Pos = new CardUtility.TargetPosition();
+                //取消处理
+                if (Pos.Postion == -1) return new List<string>();
                 var singleEff = SingleEffectList[i];
                 singleEff.EffectCount = 1;
                 if (singleEff.IsNeedSelectTarget())
                 {
                     Pos = GetSelectTarget(singleEff.EffectTargetSelectDirect, singleEff.EffectTargetSelectRole, false);
                 }
-                Result.AddRange(EffectDefine.RunSingleEffect(singleEff, this, Pos, i));
+                Result.AddRange(EffectDefine.RunSingleEffect(singleEff, this, Pos, Seed));
+                Seed++;
                 //每次原子操作后进行一次清算
                 Settle();
             }

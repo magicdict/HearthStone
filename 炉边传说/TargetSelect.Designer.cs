@@ -44,6 +44,7 @@
             this.btnYou1 = new System.Windows.Forms.Button();
             this.btnMyHero = new System.Windows.Forms.Button();
             this.btnYourHero = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnMe7
@@ -190,11 +191,24 @@
             this.btnYourHero.Text = "对方英雄";
             this.btnYourHero.UseVisualStyleBackColor = true;
             // 
+            // btnCancel
+            // 
+            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btnCancel.Location = new System.Drawing.Point(662, 344);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 48;
+            this.btnCancel.Text = "取消";
+            this.btnCancel.UseVisualStyleBackColor = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
             // TargetSelect
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(777, 379);
+            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnMe7);
             this.Controls.Add(this.btnMe6);
             this.Controls.Add(this.btnMe5);
@@ -236,5 +250,6 @@
         private System.Windows.Forms.Button btnYou1;
         private System.Windows.Forms.Button btnMyHero;
         private System.Windows.Forms.Button btnYourHero;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

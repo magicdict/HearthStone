@@ -32,7 +32,6 @@ namespace 炉边传说
             RunAction.GetPutPos = GetPutPos;
             WaitTimer.Interval = 3000;
             WaitTimer.Tick += WaitFor;
-            DisplayMyInfo();
             game.IsMyTurn = game.IsFirst;
             for (int i = 0; i < 10; i++)
             {
@@ -50,12 +49,20 @@ namespace 炉边传说
                     Fight(AttackPostion);
                 };
             }
-            btnMyHero.Click += (x, y) =>
+            btnYourHero.Enabled = false;
+            btnMyHero.Enabled = false;
+
+            btnWeapon.Click += (x, y) =>
             {
-                btnMyHero.Enabled = false;
+                btnWeapon.Enabled = false;
                 Fight(0);
             };
+            btnHeroAblity.Enabled = false;
+            btnHeroAblity.Text = game.MySelf.RoleInfo.HeroAbility.Name;
+            btnHeroAblity.Tag = game.MySelf.RoleInfo.HeroAbility.SN;
+            btnHeroAblity.Click += btnUseHandCard_Click;
             StartNewTurn();
+            DisplayMyInfo();
         }
         /// <summary>
         /// 随从进场位置
@@ -110,13 +117,37 @@ namespace 炉边传说
                     Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = false;
                 }
             }
-            if (game.MySelf.RoleInfo.RemainAttackCount != 0 && game.MySelf.RoleInfo.Weapon != null && game.MySelf.RoleInfo.Weapon.实际耐久度 > 0)
+            //武器
+            if (game.MySelf.RoleInfo.Weapon == null)
             {
-                btnMyHero.Enabled = true;
+                btnWeapon.Text = "武器[无]";
             }
             else
             {
-                btnMyHero.Enabled = false;
+                btnWeapon.Text = game.MySelf.RoleInfo.Weapon.GetInfo();
+            }
+            //没有使用过，有武器，武器耐久度不为零
+            if (game.MySelf.RoleInfo.RemainAttackCount != 0 &&
+                game.MySelf.RoleInfo.Weapon != null &&
+                game.MySelf.RoleInfo.Weapon.实际耐久度 > 0 &&
+                game.IsMyTurn)
+            {
+                btnWeapon.Enabled = true;
+            }
+            else
+            {
+                btnWeapon.Enabled = false;
+            }
+            //没有使用过，能够使用
+            if (!game.MySelf.RoleInfo.IsUsedHeroAbility &&
+                 game.IsMyTurn &&
+                 game.MySelf.RoleInfo.crystal.CurrentRemainPoint >= game.MySelf.RoleInfo.HeroAbility.ActualCostPoint)
+            {
+                btnHeroAblity.Enabled = true;
+            }
+            else
+            {
+                btnHeroAblity.Enabled = false;
             }
             for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
             {
@@ -262,23 +293,26 @@ namespace 炉边传说
             if (Card.CardUtility.GetCardInfoBySN(CardSn) != null)
             {
                 Card.CardBasicInfo card = Card.CardUtility.GetCardInfoBySN(CardSn);
-                if (game.MySelf.RoleInfo.crystal.CurrentRemainPoint >= card.ActualCostPoint)
-                {
-                    game.MySelf.RoleInfo.crystal.CurrentRemainPoint -= card.ActualCostPoint;
-                    game.MySelf.handCards.Remove(CardSn);
-                    game.MySelf.RoleInfo.HandCardCount = game.MySelf.handCards.Count;
-                }
-                else
+                if (game.MySelf.RoleInfo.crystal.CurrentRemainPoint < card.ActualCostPoint)
                 {
                     MessageBox.Show("水晶不够");
                     return;
                 }
                 var actionlst = RunAction.StartAction(game, CardSn);
+                if (actionlst.Count != 0)
+                {
+                    game.MySelf.RoleInfo.crystal.CurrentRemainPoint -= card.ActualCostPoint;
+                    game.MySelf.handCards.Remove(CardSn);
+                    game.MySelf.RoleInfo.HandCardCount = game.MySelf.handCards.Count;
+                    var action = ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentFullPoint;
+                    Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), action);
+                }
                 foreach (var action in actionlst)
                 {
                     Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), action);
                 }
             }
+            if (((Button)sender).Name == "btnHeroAblity") game.MySelf.RoleInfo.IsUsedHeroAbility = true;
             DisplayMyInfo();
         }
         /// <summary>

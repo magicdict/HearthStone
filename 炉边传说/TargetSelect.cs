@@ -27,7 +27,21 @@ namespace 炉边传说
             game = mGame;
             嘲讽限制 = m嘲讽限制;
         }
-
+        /// <summary>
+        /// 取消选择
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            pos.Postion = -1;
+            this.Close();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TargetSelect_Load(object sender, EventArgs e)
         {
             btnMyHero.Text = game.MySelf.RoleInfo.GetInfo();
@@ -190,5 +204,7 @@ namespace 炉边传说
                     break;
             }
         }
+
+
     }
 }

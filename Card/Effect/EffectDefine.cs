@@ -43,7 +43,7 @@ namespace Card.Effect
             /// <summary>
             /// 获得水晶
             /// </summary>
-            法力水晶,
+            水晶,
             /// <summary>
             /// 奥秘
             /// </summary>
@@ -124,7 +124,7 @@ namespace Card.Effect
                 case AbilityEffectEnum.变形:
                     Result.AddRange(TransformEffect.RunEffect(singleEffect, game, Pos));
                     break;
-                case AbilityEffectEnum.法力水晶:
+                case AbilityEffectEnum.水晶:
                     Result.AddRange(CrystalEffect.RunEffect(singleEffect, game));
                     break;
                 case AbilityEffectEnum.奥秘:

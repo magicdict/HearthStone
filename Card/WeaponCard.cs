@@ -37,5 +37,13 @@ namespace Card
             实际耐久度 = 标准耐久度;
             ActualAttackPoint = StandardAttackPoint;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public string GetInfo()
+        {
+            return Name + "：" + ActualAttackPoint + "/" + 实际耐久度;
+        }
     }
 }

@@ -2,7 +2,6 @@
 *.userprefs
 *.resources
 *.pdf
-*.xls
 *.pidb
 *.rar
 *.zip
@@ -14,6 +13,11 @@
 *.pdb
 *.doc
 *.xml
+*.doc
+*.png
+*.xls
+*.xlsx
+*.jpg
 /炉边传说/bin
 /炉边传说/obj
 /炉边传说/packages

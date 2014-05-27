@@ -1,4 +1,5 @@
 ﻿using Card.Client;
+using Card.Server;
 using System.Collections.Generic;
 namespace Card.Effect
 {
@@ -23,14 +24,28 @@ namespace Card.Effect
                 {
                     for (int i = 0; i < point; i++)
                     {
-                        game.MySelf.RoleInfo.crystal.AddCurrentPoint();
+                        if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
+                        {
+                            game.MySelf.RoleInfo.crystal.AddCurrentPoint();
+                        }
+                        else
+                        {
+                            game.AgainstInfo.crystal.AddCurrentPoint();
+                        }
                     }
                 }
                 else
                 {
                     for (int i = 0; i < point; i++)
                     {
-                        game.MySelf.RoleInfo.crystal.ReduceCurrentPoint();
+                        if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
+                        {
+                            game.MySelf.RoleInfo.crystal.ReduceCurrentPoint();
+                        }
+                        else
+                        {
+                            game.AgainstInfo.crystal.ReduceCurrentPoint();
+                        }
                     }
                 }
             }
@@ -42,19 +57,40 @@ namespace Card.Effect
                 {
                     for (int i = 0; i < point; i++)
                     {
-                        game.MySelf.RoleInfo.crystal.AddFullPoint();
+                        if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
+                        {
+                            game.MySelf.RoleInfo.crystal.AddFullPoint();
+                        }
+                        else
+                        {
+                            game.AgainstInfo.crystal.AddFullPoint();
+                        }
                     }
                 }
                 else
                 {
                     for (int i = 0; i < point; i++)
                     {
-                        game.MySelf.RoleInfo.crystal.ReduceFullPoint();
+                        if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
+                        {
+                            game.MySelf.RoleInfo.crystal.ReduceFullPoint();
+                        }
+                        else
+                        {
+                            game.AgainstInfo.crystal.ReduceFullPoint();
+                        }
                     }
                 }
             }
-            Result.Add("CRYSTAL" + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentFullPoint);
-            Result.Add("CRYSTAL" + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentFullPoint);
+            //Crystal#ME#4#4
+            if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
+            {
+                Result.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentFullPoint);
+            }
+            else
+            {
+                Result.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark + game.AgainstInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.AgainstInfo.crystal.CurrentFullPoint);
+            }
             return Result;
         }
     }

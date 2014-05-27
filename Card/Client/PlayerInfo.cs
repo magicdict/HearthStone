@@ -54,6 +54,14 @@ namespace Card.Client
         /// </summary>
         public int RemainAttackCount = 0;
         /// <summary>
+        /// 英雄技能
+        /// </summary>
+        public AbilityCard HeroAbility = new AbilityCard();
+        /// <summary>
+        /// 
+        /// </summary>
+        public Boolean IsUsedHeroAbility = true;
+        /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
@@ -62,14 +70,6 @@ namespace Card.Client
             Status.AppendLine("Hero Info:");
             Status.AppendLine("Crystal：" + crystal.CurrentRemainPoint + "/" + crystal.CurrentFullPoint);
             Status.AppendLine("HealthPoint：" + HealthPoint);
-            if (Weapon != null)
-            {
-                Status.AppendLine("Weapon：" + Weapon.ActualAttackPoint + "/" + Weapon.实际耐久度);
-            }
-            else
-            {
-                Status.AppendLine("Weapon：Null");
-            }
             Status.AppendLine("RemainCardDeckCount：" + RemainCardDeckCount);
             return Status.ToString();
         }
