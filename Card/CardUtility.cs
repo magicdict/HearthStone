@@ -263,22 +263,49 @@ namespace Card
         public enum CommandResult
         {
             /// <summary>
-            /// 
+            /// 正常
             /// </summary>
             正常,
             /// <summary>
-            /// 
+            /// 异常
             /// </summary>
             异常
         }
         /// <summary>
-        /// 
+        /// 抉择枚举
         /// </summary>
         public enum PickEffect
         {
+            /// <summary>
+            /// 第一效果
+            /// </summary>
             第一效果,
+            /// <summary>
+            /// 第二效果
+            /// </summary>
             第二效果,
+            /// <summary>
+            /// 取消
+            /// </summary>
             取消
+        }
+        /// <summary>
+        /// 效果回合
+        /// </summary>
+        public enum EffectTurn
+        {
+            /// <summary>
+            /// 无效果
+            /// </summary>
+            无效果,
+            /// <summary>
+            /// 效果命中
+            /// </summary>
+            效果命中,
+            /// <summary>
+            /// 效果作用
+            /// </summary>
+            效果作用
         }
 
         #endregion

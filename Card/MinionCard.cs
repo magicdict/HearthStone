@@ -184,7 +184,7 @@ namespace Card
         /// 是否为冰冻状态
         /// </summary>
         [XmlIgnore]
-        public Boolean Is冰冻Status = false;
+        public Card.CardUtility.EffectTurn 冰冻状态 = CardUtility.EffectTurn.无效果;
         /// <summary>
         /// 剩余攻击次数
         /// </summary>
@@ -218,7 +218,7 @@ namespace Card
             this.Is英雄技能免疫Status = this.英雄技能免疫特性;
             this.Is法术免疫Status = this.法术免疫特性;
             //初始状态
-            this.Is冰冻Status = false;
+            this.冰冻状态 = CardUtility.EffectTurn.无效果;
             this.Is沉默Status = false;
             this.Is激怒Status = false;
             //攻击次数
@@ -251,6 +251,7 @@ namespace Card
             {
                 RemainAttactTimes = 1;
             }
+            if (冰冻状态 != CardUtility.EffectTurn.无效果) RemainAttactTimes = 0;
         }
         /// <summary>
         /// 实际输出效果
@@ -311,8 +312,12 @@ namespace Card
         {
             StringBuilder Status = new StringBuilder();
             Status.AppendLine(Name);
-            Status.AppendLine("圣：" + (Is圣盾Status ? "开" : "关") + " " + "嘲：" + (Actual嘲讽 ? "开" : "关"));
-            Status.AppendLine("[实]" + ActualAttackPoint.ToString() + "/" + ActualHealthPoint.ToString() + 
+            Status.AppendLine("[状]" + (Is圣盾Status ? "圣" : String.Empty) + 
+                                       (Actual嘲讽 ? "|嘲" : String.Empty) + 
+                                       (Actual风怒 ? "|风" : String.Empty) +
+                                       (Actual冲锋 ? "|冲" : String.Empty) + 
+                                       (冰冻状态!= CardUtility.EffectTurn.无效果?"冻":String.Empty));
+            Status.AppendLine("[实]" + ActualAttackPoint.ToString() + "/" + ActualHealthPoint.ToString() +
                               "[总]" + TotalAttack().ToString() + "/" + TotalHealth().ToString());
             return Status.ToString();
         }

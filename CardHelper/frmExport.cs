@@ -181,6 +181,7 @@ namespace CardHelper
                 effect.EffectTargetSelectRole = CardUtility.GetEnum<Card.CardUtility.TargetSelectRoleEnum>(worksheet.Cells(rowCount, 18).Text, CardUtility.TargetSelectRoleEnum.随从);
                 effect.StandardEffectPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 19).Text);
                 effect.EffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 20).Text);
+                if (effect.EffectCount == 0) effect.EffectCount = 1;
                 effect.AddtionInfo = worksheet.Cells(rowCount, 21).Text;
                 Ability.CardAbility.FirstAbilityDefine = effect;
                 Ability.CardAbility.JoinType = CardUtility.GetEnum<Card.CardUtility.EffectJoinType>(worksheet.Cells(rowCount, 22).Text, Card.CardUtility.EffectJoinType.None);

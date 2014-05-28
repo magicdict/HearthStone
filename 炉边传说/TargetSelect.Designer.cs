@@ -226,6 +226,7 @@
             this.Controls.Add(this.btnMyHero);
             this.Controls.Add(this.btnYourHero);
             this.Name = "TargetSelect";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "TargetSelect";
             this.Load += new System.EventHandler(this.TargetSelect_Load);
             this.ResumeLayout(false);

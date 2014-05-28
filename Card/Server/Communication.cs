@@ -108,10 +108,11 @@ namespace Card.Server
         /// </summary>
         /// <param name="requestType"></param>
         /// <returns></returns>
-        public static String Request(String requestInfo)
+        public static String Request(String requestInfo,String strIP)
         {
             TcpClient client = new TcpClient();
-            client.Connect("localhost", 13000);
+            IPAddress localAddr = IPAddress.Parse(strIP);
+            client.Connect(localAddr, 13000);
             var stream = client.GetStream();
             var bytes = new Byte[512];
             bytes = Encoding.ASCII.GetBytes(requestInfo);

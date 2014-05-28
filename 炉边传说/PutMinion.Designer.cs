@@ -180,6 +180,7 @@
             this.Controls.Add(this.btnMe2);
             this.Controls.Add(this.btnMe1);
             this.Name = "PutMinion";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "PutMinion";
             this.Load += new System.EventHandler(this.PutMinion_Load);
             this.ResumeLayout(false);

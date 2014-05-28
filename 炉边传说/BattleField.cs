@@ -52,15 +52,20 @@ namespace 炉边传说
             btnYourHero.Enabled = false;
             btnMyHero.Enabled = false;
 
-            btnWeapon.Click += (x, y) =>
+            btnYourWeapon.Enabled = false;
+            btnMyWeapon.Click += (x, y) =>
             {
-                btnWeapon.Enabled = false;
+                btnMyWeapon.Enabled = false;
                 Fight(0);
             };
-            btnHeroAblity.Enabled = false;
-            btnHeroAblity.Text = game.MySelf.RoleInfo.HeroAbility.Name;
-            btnHeroAblity.Tag = game.MySelf.RoleInfo.HeroAbility.SN;
-            btnHeroAblity.Click += btnUseHandCard_Click;
+
+            btnYourHeroAblity.Enabled = false;
+            btnYourHeroAblity.Text = game.AgainstInfo.HeroAbility.Name;
+
+            btnMyHeroAblity.Enabled = false;
+            btnMyHeroAblity.Text = game.MySelf.RoleInfo.HeroAbility.Name;
+            btnMyHeroAblity.Tag = game.MySelf.RoleInfo.HeroAbility.SN;
+            btnMyHeroAblity.Click += btnUseHandCard_Click;
             StartNewTurn();
             DisplayMyInfo();
         }
@@ -120,34 +125,40 @@ namespace 炉边传说
             //武器
             if (game.MySelf.RoleInfo.Weapon == null)
             {
-                btnWeapon.Text = "武器[无]";
+                btnMyWeapon.Text = "武器[无]";
             }
             else
             {
-                btnWeapon.Text = game.MySelf.RoleInfo.Weapon.GetInfo();
+                btnMyWeapon.Text = game.MySelf.RoleInfo.Weapon.GetInfo();
             }
+
+            if (game.AgainstInfo.Weapon == null)
+            {
+                btnYourWeapon.Text = "武器[无]";
+            }
+            else
+            {
+                btnYourWeapon.Text = game.AgainstInfo.Weapon.GetInfo();
+            }
+
+
             //没有使用过，有武器，武器耐久度不为零
-            if (game.MySelf.RoleInfo.RemainAttackCount != 0 &&
-                game.MySelf.RoleInfo.Weapon != null &&
-                game.MySelf.RoleInfo.Weapon.实际耐久度 > 0 &&
-                game.IsMyTurn)
+            if (game.IsWeaponEnable())
             {
-                btnWeapon.Enabled = true;
+                btnMyWeapon.Enabled = true;
             }
             else
             {
-                btnWeapon.Enabled = false;
+                btnMyWeapon.Enabled = false;
             }
             //没有使用过，能够使用
-            if (!game.MySelf.RoleInfo.IsUsedHeroAbility &&
-                 game.IsMyTurn &&
-                 game.MySelf.RoleInfo.crystal.CurrentRemainPoint >= game.MySelf.RoleInfo.HeroAbility.ActualCostPoint)
+            if (game.IsHeroAblityEnable())
             {
-                btnHeroAblity.Enabled = true;
+                btnMyHeroAblity.Enabled = true;
             }
             else
             {
-                btnHeroAblity.Enabled = false;
+                btnMyHeroAblity.Enabled = false;
             }
             for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
             {
@@ -165,8 +176,9 @@ namespace 炉边传说
             {
                 if (i < game.MySelf.handCards.Count)
                 {
-                    Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Text = Card.CardUtility.GetCardNameBySN(game.MySelf.handCards[i]);
-                    Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Tag = game.MySelf.handCards[i];
+                    Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Text = game.MySelf.handCards[i].Name + "[" + game.MySelf.handCards[i].ActualCostPoint + "]";
+                    Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Tag = game.MySelf.handCards[i].SN;
+                    if (game.IsMyTurn) Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Enabled = true;
                 }
                 else
                 {
@@ -177,14 +189,26 @@ namespace 炉边传说
             }
         }
         /// <summary>
+        /// 结束回合
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnEndTurn_Click(object sender, System.EventArgs e)
+        {
+            game.TurnEnd();
+            Card.Server.ClientUtlity.TurnEnd(game.GameId.ToString(GameServer.GameIdFormat));
+            game.IsMyTurn = false;
+            StartNewTurn();
+            WaitTimer.Start();
+        }
+        /// <summary>
         /// 新的回合
         /// </summary>
         private void StartNewTurn()
         {
-            game.NewTurn();
+            game.TurnStart();
             if (game.IsMyTurn)
             {
-                DisplayMyInfo();
                 btnEndTurn.Enabled = true;
                 for (int i = 0; i < 10; i++)
                 {
@@ -207,6 +231,8 @@ namespace 炉边传说
                 }
                 WaitTimer.Start();
             }
+            //刷新双方状态
+            DisplayMyInfo();
         }
 
         /// <summary>
@@ -253,19 +279,6 @@ namespace 炉边传说
                 lstAction.Items.Add(title + "You:" + item);
             }
         }
-
-        /// <summary>
-        /// 结束回合
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnEndTurn_Click(object sender, System.EventArgs e)
-        {
-            Card.Server.ClientUtlity.TurnEnd(game.GameId.ToString(GameServer.GameIdFormat));
-            game.IsMyTurn = false;
-            StartNewTurn();
-            WaitTimer.Start();
-        }
         /// <summary>
         /// 
         /// </summary>
@@ -302,9 +315,20 @@ namespace 炉边传说
                 if (actionlst.Count != 0)
                 {
                     game.MySelf.RoleInfo.crystal.CurrentRemainPoint -= card.ActualCostPoint;
-                    game.MySelf.handCards.Remove(CardSn);
+
+                    Card.CardBasicInfo removeCard = new CardBasicInfo();
+                    foreach (var Seekcard in game.MySelf.handCards)
+	                {
+                        if (Seekcard.SN == CardSn)
+                        {
+                            removeCard = Seekcard;
+                        }		 
+	                }
+                    game.MySelf.handCards.Remove(removeCard);
+                    
                     game.MySelf.RoleInfo.HandCardCount = game.MySelf.handCards.Count;
-                    var action = ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentFullPoint;
+                    var action = ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +
+                                 game.MySelf.RoleInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentFullPoint;
                     Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), action);
                 }
                 foreach (var action in actionlst)
@@ -312,7 +336,7 @@ namespace 炉边传说
                     Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), action);
                 }
             }
-            if (((Button)sender).Name == "btnHeroAblity") game.MySelf.RoleInfo.IsUsedHeroAbility = true;
+            if (((Button)sender).Name == "btnMyHeroAblity") game.MySelf.RoleInfo.IsUsedHeroAbility = true;
             DisplayMyInfo();
         }
         /// <summary>

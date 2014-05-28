@@ -29,6 +29,14 @@ namespace Card.Server
             /// </summary>
             Attack,
             /// <summary>
+            /// 状态变化
+            /// </summary>
+            Status,
+            /// <summary>
+            /// 治疗
+            /// </summary>
+            Health,
+            /// <summary>
             /// 直接攻击
             /// </summary>
             Fight,
@@ -61,6 +69,14 @@ namespace Card.Server
         /// 攻击
         /// </summary>
         public const string strAttack = "ATTACK";
+        /// <summary>
+        /// 治疗
+        /// </summary>
+        public const string strHealth = "HEALTH";
+        /// <summary>
+        /// 改变状态
+        /// </summary>
+        public const string strStatus = "STATUS";
         /// <summary>
         /// 武器
         /// </summary>
@@ -98,6 +114,8 @@ namespace Card.Server
             //效果
             if (ActionWord.StartsWith(strTransform + CardUtility.strSplitMark)) t = ActionType.Transform;
             if (ActionWord.StartsWith(strAttack + CardUtility.strSplitMark)) t = ActionType.Attack;
+            if (ActionWord.StartsWith(strStatus + CardUtility.strSplitMark)) t = ActionType.Status;
+            if (ActionWord.StartsWith(strHealth + CardUtility.strSplitMark)) t = ActionType.Health;
             if (ActionWord.StartsWith(strCrystal + CardUtility.strSplitMark)) t = ActionType.Crystal;
             return t;
         }

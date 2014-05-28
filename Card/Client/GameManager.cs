@@ -79,14 +79,21 @@ namespace Card.Client
             ////虚空行者
             //HandCard.Add("M000084");
             //野性成长
-            HandCard.Add("A000091");
+            //HandCard.Add("A000091");
+            //冰霜新星
+            HandCard.Add("A000038");
+
             MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
             //英雄技能：奥术飞弹
             MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000065");
+            AgainstInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000065");
             //DEBUG
             if (!IsFirst) HandCard.Add(Card.CardUtility.SN幸运币);
-            MySelf.handCards = HandCard;
+            foreach (var card in HandCard)
+            {
+                MySelf.handCards.Add(CardUtility.GetCardInfoBySN(card));
+            }
             MySelf.RoleInfo.HandCardCount = HandCard.Count;
             if (IsFirst)
             {
@@ -110,19 +117,41 @@ namespace Card.Client
         /// <summary>
         /// 新的回合
         /// </summary>
-        public void NewTurn()
+        public void TurnStart()
         {
             if (IsMyTurn)
             {
                 //魔法水晶的增加
                 MySelf.RoleInfo.crystal.NewTurn();
                 //手牌
-                MySelf.handCards.AddRange(Card.Server.ClientUtlity.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, 1));
+                var NewCardList = Card.Server.ClientUtlity.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, 1);
+                foreach (var card in NewCardList)
+                {
+                    MySelf.handCards.Add(CardUtility.GetCardInfoBySN(card));
+                }
                 MySelf.RoleInfo.HandCardCount++;
                 MySelf.RoleInfo.RemainCardDeckCount--;
                 MySelf.RoleInfo.RemainAttackCount = 1;
                 MySelf.RoleInfo.IsUsedHeroAbility = false;
-                //重置攻击次数
+                foreach (var minion in MySelf.RoleInfo.BattleField.BattleMinions)
+                {
+                    if (minion != null)
+                    {
+                        switch (minion.冰冻状态)
+                        {
+                            case CardUtility.EffectTurn.效果命中:
+                                //如果上回合被命中的，这回合就是作用中
+                                minion.冰冻状态 = CardUtility.EffectTurn.效果作用;
+                                break;
+                            case CardUtility.EffectTurn.效果作用:
+                                //如果上回合作用中的，这回合就是解除
+                                minion.冰冻状态 = CardUtility.EffectTurn.无效果;
+                                break;
+                        }
+                    }
+                }
+                //重置攻击次数,必须放在状态变化之后！
+                //原因是剩余攻击回数和状态有关！
                 foreach (var minion in MySelf.RoleInfo.BattleField.BattleMinions)
                 {
                     if (minion != null) minion.ResetAttackTimes();
@@ -135,8 +164,43 @@ namespace Card.Client
                 AgainstInfo.RemainCardDeckCount--;
                 AgainstInfo.RemainAttackCount = 1;
                 AgainstInfo.IsUsedHeroAbility = false;
+                //重置攻击次数
+                foreach (var minion in AgainstInfo.BattleField.BattleMinions)
+                {
+                    if (minion != null) minion.ResetAttackTimes();
+                }
+                //如果对手有可以解除冰冻的，解除冰冻
+                foreach (var minion in AgainstInfo.BattleField.BattleMinions)
+                {
+                    if (minion != null)
+                    {
+                        switch (minion.冰冻状态)
+                        {
+                            case CardUtility.EffectTurn.效果命中:
+                                //如果上回合被命中的，这回合就是作用中
+                                minion.冰冻状态 = CardUtility.EffectTurn.效果作用;
+                                break;
+                            case CardUtility.EffectTurn.效果作用:
+                                //如果上回合作用中的，这回合就是解除
+                                minion.冰冻状态 = CardUtility.EffectTurn.无效果;
+                                break;
+                        }
+                    }
+                }
             }
         }
+        /// <summary>
+        /// 结束回合
+        /// </summary>
+        public void TurnEnd()
+        {
+            //调用这个方法的时候，IsMyTurn肯定是True
+            //本方的回合结束效果
+        }
+
+        /// <summary>
+        /// 全局随机种子
+        /// </summary>
         public static int Seed = 1;
         /// <summary>
         /// 使用法术
@@ -175,9 +239,9 @@ namespace Card.Client
         /// </summary>
         /// <param name="MyPos">本方</param>
         /// <param name="YourPos">对方</param>
-        /// <param name="IsProcessAction">是否是被攻击方的复盘</param>
+        /// <param name="被动攻击">被动攻击</param>
         /// <returns></returns>
-        public List<String> Fight(int MyPos, int YourPos, Boolean IsProcessAction = false)
+        public List<String> Fight(int MyPos, int YourPos, Boolean 被动攻击 = false)
         {
             List<String> Result = new List<string>();
             //攻击次数
@@ -194,7 +258,7 @@ namespace Card.Client
                 }
             }
             //潜行等去除(如果不是被攻击方的处理)
-            if (!IsProcessAction && (MyPos != 0)) MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].AfterAttack();
+            if (!被动攻击 && (MyPos != 0)) MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].AfterAttack();
             //伤害计算(本方)
             var YourAttackPoint = 0;
             if (YourPos != 0)
@@ -252,6 +316,27 @@ namespace Card.Client
             if (MySelf.RoleInfo.Weapon != null && MySelf.RoleInfo.Weapon.实际耐久度 == 0) MySelf.RoleInfo.Weapon = null;
             if (AgainstInfo.Weapon != null && AgainstInfo.Weapon.实际耐久度 == 0) AgainstInfo.Weapon = null;
             return Result;
+        }
+
+        /// <summary>
+        /// 武器是否可用
+        /// </summary>
+        /// <returns></returns>
+        public Boolean IsWeaponEnable()
+        {
+            return MySelf.RoleInfo.RemainAttackCount != 0 &&
+                   MySelf.RoleInfo.Weapon != null &&
+                   MySelf.RoleInfo.Weapon.实际耐久度 > 0 &&
+                   IsMyTurn;
+        }
+        /// <summary>
+        /// 英雄技能是否可用
+        /// </summary>
+        /// <returns></returns>
+        public Boolean IsHeroAblityEnable()
+        {
+            return (!MySelf.RoleInfo.IsUsedHeroAbility) && IsMyTurn &&
+                    MySelf.RoleInfo.crystal.CurrentRemainPoint >= MySelf.RoleInfo.HeroAbility.ActualCostPoint;
         }
         /// <summary>
         /// 抽牌（服务器方法）

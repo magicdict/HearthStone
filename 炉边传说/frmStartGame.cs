@@ -20,6 +20,9 @@ namespace 炉边传说
         private void btnCreateGame_Click(object sender, EventArgs e)
         {
             //新建游戏的时候，已经决定游戏的先后手
+            if (!String.IsNullOrEmpty(txtServerIP.Text)) ClientUtlity.strIP = txtServerIP.Text;
+            if (!String.IsNullOrEmpty(txtNickName.Text)) game.PlayerNickName = txtNickName.Text;
+
             game.IsHost = true;
             String GameId = Card.Server.ClientUtlity.CreateGame(game.PlayerNickName);
             Card.CardUtility.Init(txtCardPath.Text);
@@ -60,6 +63,9 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnJoinGame_Click(object sender, EventArgs e)
         {
+            if (!String.IsNullOrEmpty(txtServerIP.Text)) ClientUtlity.strIP = txtServerIP.Text;
+            if (!String.IsNullOrEmpty(txtNickName.Text)) game.PlayerNickName = txtNickName.Text;
+
             game.IsHost = false;
             if (lstWaitGuest.SelectedItems.Count != 1) return;
             var strWait = lstWaitGuest.SelectedItem.ToString();
@@ -82,6 +88,7 @@ namespace 炉边传说
         {
             //DEBUG
             txtCardPath.Text = @"C:\炉石Git\CardHelper\CardXML";
+            txtNickName.Text = game.PlayerNickName;
         }
         private void btnPickCard_Click(object sender, EventArgs e)
         {

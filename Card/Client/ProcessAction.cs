@@ -28,8 +28,93 @@ namespace Card.Client
                     break;
                 case ActionCode.ActionType.UseAbility:
                     break;
+                case ActionCode.ActionType.Health:
+                    //HEALTH#ME#1#2
+                    //Me代表对方 YOU代表自己，必须反过来
+                    if (actField[1] == CardUtility.strYou)
+                    {
+                        if (actField[2] == "0")
+                        {
+                            game.MySelf.RoleInfo.HealthPoint = int.Parse(actField[3]);
+                        }
+                        else
+                        {
+                            //位置从1开始，数组从0开始
+                            game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].ActualHealthPoint = int.Parse(actField[3]);
+                        }
+                    }
+                    else
+                    {
+                        if (actField[2] == "0")
+                        {
+                            game.AgainstInfo.HealthPoint = int.Parse(actField[3]);
+                        }
+                        else
+                        {
+                            //位置从1开始，数组从0开始
+                            game.AgainstInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].ActualHealthPoint = int.Parse(actField[3]);
+                        }
+                    }
+                    break;
+                case ActionCode.ActionType.Status:
+                    //STATUS#ME#1#FREEZE
+                    //Me代表对方 YOU代表自己，必须反过来
+                    if (actField[1] == CardUtility.strYou)
+                    {
+                        if (actField[2] == "0")
+                        {
+                            switch (actField[3])
+                            {
+                                case Card.Effect.StatusEffect.strFreeze:
+                                    game.MySelf.RoleInfo.冰冻状态 = CardUtility.EffectTurn.效果命中;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            //位置从1开始，数组从0开始
+                            switch (actField[3])
+                            {
+                                case Card.Effect.StatusEffect.strFreeze:
+                                    game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].冰冻状态 = CardUtility.EffectTurn.效果命中;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (actField[2] == "0")
+                        {
+                            switch (actField[3])
+                            {
+                                case Card.Effect.StatusEffect.strFreeze:
+                                    game.AgainstInfo.冰冻状态 = CardUtility.EffectTurn.效果命中;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            //位置从1开始，数组从0开始
+                            switch (actField[3])
+                            {
+                                case Card.Effect.StatusEffect.strFreeze:
+                                    game.AgainstInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].冰冻状态 = CardUtility.EffectTurn.效果命中;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    }
+                    break;
                 case ActionCode.ActionType.Crystal:
                     //Crystal#ME#4#4
+                    //Me代表对方 YOU代表自己，必须反过来
                     if (actField[1] == CardUtility.strMe)
                     {
                         game.AgainstInfo.crystal.CurrentRemainPoint = int.Parse(actField[2]);

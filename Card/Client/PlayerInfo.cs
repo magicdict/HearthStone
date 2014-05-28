@@ -20,7 +20,7 @@ namespace Card.Client
         /// <summary>
         /// 是否为冰冻状态
         /// </summary>
-        public Boolean Is冰冻Status = false;
+        public Card.CardUtility.EffectTurn 冰冻状态 = CardUtility.EffectTurn.无效果;
         /// <summary>
         /// 护盾点数
         /// </summary>
@@ -65,7 +65,8 @@ namespace Card.Client
         /// 
         /// </summary>
         /// <returns></returns>
-        public string GetInfo() {
+        public string GetInfo()
+        {
             StringBuilder Status = new StringBuilder();
             Status.AppendLine("Hero Info:");
             Status.AppendLine("Crystal：" + crystal.CurrentRemainPoint + "/" + crystal.CurrentFullPoint);
@@ -86,7 +87,7 @@ namespace Card.Client
         /// <summary>
         /// 手牌
         /// </summary>
-        public List<String> handCards = new List<string>();
+        public List<Card.CardBasicInfo> handCards = new List<Card.CardBasicInfo>();
         /// <summary>
         /// 奥秘
         /// </summary>
