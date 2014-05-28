@@ -147,19 +147,28 @@ namespace Card.Client
         /// <summary>
         /// 去除死去随从
         /// </summary>
-        public void ClearDead()
+        public List<String> ClearDead()
         {
+            List<String> DeadList = new List<String>();
             var CloneMinions = new MinionCard[BattleFieldInfo.MaxMinionCount];
             int ALive = 0;
             for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
             {
-                if (BattleMinions[i] != null && BattleMinions[i].IsLive())
+                if (BattleMinions[i] != null)
                 {
-                    CloneMinions[ALive] = BattleMinions[i];
-                    ALive++;
+                    if (BattleMinions[i].IsLive())
+                    {
+                        CloneMinions[ALive] = BattleMinions[i];
+                        ALive++;
+                    }
+                    else
+                    {
+                        DeadList.Add(BattleMinions[i].SN);
+                    }
                 }
             }
             BattleMinions = CloneMinions;
+            return DeadList;
         }
         /// <summary>
         /// 

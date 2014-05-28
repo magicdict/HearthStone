@@ -16,6 +16,10 @@ namespace Card.Effect
         public enum AbilityEffectEnum
         {
             /// <summary>
+            /// 未定义
+            /// </summary>
+            未定义,
+            /// <summary>
             /// 攻击类
             /// </summary>
             攻击,
@@ -52,10 +56,6 @@ namespace Card.Effect
             /// 奥秘
             /// </summary>
             奥秘,
-            /// <summary>
-            /// 
-            /// </summary>
-            未知
         }
         /// <summary>
         /// 法术类型
@@ -301,6 +301,26 @@ namespace Card.Effect
                     break;
                 case CardUtility.TargetSelectModeEnum.指定:
                     Result.Add((Pos.MeOrYou ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + Pos.Postion.ToString("D1"));
+                    break;
+                case CardUtility.TargetSelectModeEnum.不用选择:
+                    if (singleEffect.EffectTargetSelectRole == CardUtility.TargetSelectRoleEnum.英雄){
+                        switch (singleEffect.EffectTargetSelectDirect)
+                        {
+                            case CardUtility.TargetSelectDirectEnum.本方:
+                                Result.Add(CardUtility.strMe + CardUtility.strSplitMark + 0.ToString("D1"));
+                                break;
+                            case CardUtility.TargetSelectDirectEnum.对方:
+                                Result.Add(CardUtility.strYou + CardUtility.strSplitMark + 0.ToString("D1"));
+                                break;
+                            case CardUtility.TargetSelectDirectEnum.双方:
+                                Result.Add(CardUtility.strMe + CardUtility.strSplitMark + 0.ToString("D1"));
+                                Result.Add(CardUtility.strYou + CardUtility.strSplitMark + 0.ToString("D1"));
+                                break;
+                            default:
+                                break;
+                        }
+
+                    }
                     break;
             }
             return Result;

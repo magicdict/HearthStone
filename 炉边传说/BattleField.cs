@@ -337,7 +337,6 @@ namespace 炉边传说
                 if (actionlst.Count != 0)
                 {
                     game.MySelf.RoleInfo.crystal.CurrentRemainPoint -= card.ActualCostPoint;
-
                     if (((Button)sender).Name != "btnMyHeroAblity")
                     {
                         Card.CardBasicInfo removeCard = new CardBasicInfo();
@@ -355,6 +354,19 @@ namespace 炉边传说
                                  game.MySelf.RoleInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentFullPoint;
                     Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), action);
                 }
+                if (card.CardType == CardBasicInfo.CardTypeEnum.随从)
+                {
+                    //战吼效果
+                    if (((Card.MinionCard)card).战吼效果 != String.Empty)
+                    {
+                        var 战吼Result = RunAction.StartAction(game, ((Card.MinionCard)card).战吼效果);
+                        //第一条是使用了战吼卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
+                        战吼Result.RemoveAt(0);
+                        actionlst.AddRange(战吼Result);
+                    }
+                }
+                //亡语效果
+                actionlst.AddRange(亡语计算(actionlst));
                 foreach (var action in actionlst)
                 {
                     Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), action);
@@ -374,13 +386,32 @@ namespace 炉边传说
             //暂时不考虑嘲讽
             ShowMinionInfo("Before:");
             List<String> actionlst = RunAction.Fight(game, MyPos, YourPos.Postion);
+            //亡语效果
+            actionlst.AddRange(亡语计算(actionlst));
             foreach (var action in actionlst)
             {
-                lstAction.Items.Add("Send:[" + action + "]");
                 Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), action);
             }
             ShowMinionInfo("After:");
             DisplayMyInfo();
+        }
+        /// <summary>
+        /// 亡语计算
+        /// </summary>
+        /// <param name="actionlst"></param>
+        /// <returns></returns>
+        private List<String> 亡语计算(List<string> actionlst)
+        {
+            //注意本方亡语和对方亡语的作用方向不同！
+            List<String> Resultlst = new List<string>();
+            foreach (var action in actionlst)
+            {
+                if (action.StartsWith(Card.Server.ActionCode.strDead + Card.CardUtility.strSplitMark))
+                {
+
+                }
+            }
+            return Resultlst;
         }
     }
 }

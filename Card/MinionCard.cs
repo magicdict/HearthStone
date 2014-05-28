@@ -102,17 +102,17 @@ namespace Card
         /// </summary>
         public Boolean 英雄技能免疫特性 = false;
         /// <summary>
-        /// 亡语
+        /// 战吼(效果号码)
         /// </summary>
-        public Ability 亡语效果;
+        public String 战吼效果 = String.Empty;
         /// <summary>
-        /// 战吼
+        /// 亡语(效果号码)
         /// </summary>
-        public Ability 战吼效果;
+        public String 亡语效果 = String.Empty;
         /// <summary>
-        /// 激怒
+        /// 激怒(效果号码)
         /// </summary>
-        public Ability 激怒效果;
+        public String 激怒效果 = String.Empty;
         /// <summary>
         /// 该单位在战地时的效果
         /// </summary>

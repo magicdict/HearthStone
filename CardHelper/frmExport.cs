@@ -129,6 +129,11 @@ namespace CardHelper
                     Minion.光环效果.EffectType = CardUtility.GetEnum<Card.MinionCard.光环类型>(worksheet.Cells(rowCount, 23).Text, Card.MinionCard.光环类型.增加攻防);
                     Minion.光环效果.BuffInfo = worksheet.Cells(rowCount, 24).Text;
                 }
+
+                Minion.战吼效果 = worksheet.Cells(rowCount, 25).Text;
+                Minion.亡语效果 = worksheet.Cells(rowCount, 26).Text;
+                Minion.激怒效果 = worksheet.Cells(rowCount, 27).Text;
+
                 switch (target)
                 {
                     case TargetType.MongoDB:
@@ -175,7 +180,7 @@ namespace CardHelper
 
                 Card.Effect.EffectDefine effect = new Card.Effect.EffectDefine();
                 effect.Description = String.IsNullOrEmpty(worksheet.Cells(rowCount, 14).Text) ? String.Empty : worksheet.Cells(rowCount, 14).Text;
-                effect.AbilityEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(worksheet.Cells(rowCount, 15).Text, Card.Effect.CardEffect.AbilityEffectEnum.未知);
+                effect.AbilityEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(worksheet.Cells(rowCount, 15).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
                 effect.EffictTargetSelectMode = CardUtility.GetEnum<Card.CardUtility.TargetSelectModeEnum>(worksheet.Cells(rowCount, 16).Text, CardUtility.TargetSelectModeEnum.不用选择);
                 effect.EffectTargetSelectDirect = CardUtility.GetEnum<Card.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 17).Text, CardUtility.TargetSelectDirectEnum.双方);
                 effect.EffectTargetSelectRole = CardUtility.GetEnum<Card.CardUtility.TargetSelectRoleEnum>(worksheet.Cells(rowCount, 18).Text, CardUtility.TargetSelectRoleEnum.随从);
@@ -198,7 +203,7 @@ namespace CardHelper
                 {
                     Card.Effect.EffectDefine effect2 = new Card.Effect.EffectDefine();
                     effect2.Description = String.IsNullOrEmpty(worksheet.Cells(rowCount, 23).Text) ? String.Empty : worksheet.Cells(rowCount, 23).Text;
-                    effect2.AbilityEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(worksheet.Cells(rowCount, 24).Text, Card.Effect.CardEffect.AbilityEffectEnum.未知);
+                    effect2.AbilityEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(worksheet.Cells(rowCount, 24).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
                     effect2.EffictTargetSelectMode = CardUtility.GetEnum<Card.CardUtility.TargetSelectModeEnum>(worksheet.Cells(rowCount, 25).Text, CardUtility.TargetSelectModeEnum.不用选择);
                     effect2.EffectTargetSelectDirect = CardUtility.GetEnum<Card.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 26).Text, CardUtility.TargetSelectDirectEnum.双方);
                     effect2.EffectTargetSelectRole = CardUtility.GetEnum<Card.CardUtility.TargetSelectRoleEnum>(worksheet.Cells(rowCount, 27).Text, CardUtility.TargetSelectRoleEnum.随从);

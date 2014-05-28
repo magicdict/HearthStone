@@ -201,6 +201,8 @@ namespace Card.Client
                 case ActionCode.ActionType.UnKnown:
                     break;
             }
+            //这里不需要发送亡语效果，
+            //由法术或者攻击发动放将结果发送给接受方
             game.Settle();
         }
         #endregion

@@ -62,7 +62,7 @@ namespace Card.Effect
                 {
                     EffectLst.Add(FirstAbilityDefine);
                 }
-                if (SecondAbilityDefine.AbilityEffectType !=  EffectDefine.AbilityEffectEnum.未知)
+                if (SecondAbilityDefine.AbilityEffectType !=  EffectDefine.AbilityEffectEnum.未定义)
                 {
                     for (int i = 0; i < SecondAbilityDefine.EffectCount; i++)
                     {

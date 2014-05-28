@@ -113,6 +113,10 @@ namespace Card.Server
         /// ENDTURN
         /// </summary>
         public const String strEndTurn = "ENDTURN";
+        /// <summary>
+        /// 
+        /// </summary>
+        public const String strDead = "DEAD";
 
         /// <summary>
         /// 获得类型

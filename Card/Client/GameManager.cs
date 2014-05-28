@@ -84,6 +84,9 @@ namespace Card.Client
             //HandCard.Add("A000028");
             //奥术智慧
             //HandCard.Add("A000088");
+            //艾露恩的女祭司(战吼)
+            HandCard.Add("M000014");
+
             MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
             //DEBUG
@@ -231,7 +234,8 @@ namespace Card.Client
                 Result.AddRange(EffectDefine.RunSingleEffect(singleEff, this, Pos, Seed));
                 Seed++;
                 //每次原子操作后进行一次清算
-                Settle();
+                //将亡语效果也发送给对方
+                Result.AddRange(Settle());
             }
             return Result;
         }
@@ -318,7 +322,16 @@ namespace Card.Client
                 YourInfo.HealthPoint -= MyAttackPoint;
             }
             //每次操作后进行一次清算
-            Settle();
+            if (!被动攻击)
+            {
+                //将亡语效果放入结果
+                Result.AddRange(Settle());
+            }
+            else
+            {
+                //对方已经发送亡语效果，本方不用重复模拟了
+                Settle();
+            }
             return Result;
         }
         /// <summary>
@@ -327,17 +340,25 @@ namespace Card.Client
         /// <returns></returns>
         public List<String> Settle()
         {
-            List<String> Result = new List<string>();
+            List<String> actionlst = new List<string>();
             //1.检查需要移除的对象
-            MySelf.RoleInfo.BattleField.ClearDead();
-            YourInfo.BattleField.ClearDead();
+            var MyDeadMinion = MySelf.RoleInfo.BattleField.ClearDead();
+            foreach (var cardSn in MyDeadMinion)
+            {
+                actionlst.Add(Card.Server.ActionCode.strDead + Card.CardUtility.strSplitMark + CardUtility.strMe + cardSn);
+            }
+            var YourDeadMinion = YourInfo.BattleField.ClearDead();
+            foreach (var cardSn in YourDeadMinion)
+            {
+                actionlst.Add(Card.Server.ActionCode.strDead + Card.CardUtility.strSplitMark + CardUtility.strYou + cardSn);
+            }
             //2.重新计算Buff
             MySelf.RoleInfo.BattleField.ResetBuff();
             YourInfo.BattleField.ResetBuff();
             //3.武器的移除
             if (MySelf.RoleInfo.Weapon != null && MySelf.RoleInfo.Weapon.实际耐久度 == 0) MySelf.RoleInfo.Weapon = null;
             if (YourInfo.Weapon != null && YourInfo.Weapon.实际耐久度 == 0) YourInfo.Weapon = null;
-            return Result;
+            return actionlst;
         }
 
         /// <summary>
