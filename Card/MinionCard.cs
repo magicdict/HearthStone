@@ -308,7 +308,7 @@ namespace Card
         /// 获得信息
         /// </summary>
         /// <returns></returns>
-        public String GetInfo()
+        public new String GetInfo()
         {
             StringBuilder Status = new StringBuilder();
             Status.AppendLine(Name);

@@ -15,7 +15,18 @@ namespace Card.Client
         /// <summary>
         /// 当前随从数量
         /// </summary>
-        public int MinionCount = 0;
+        public int MinionCount
+        {
+            get
+            {
+                int t = 0;
+                for (int i = 0; i < MaxMinionCount; i++)
+                {
+                    if (BattleMinions[i] != null) t++;
+                }
+                return t;
+            }
+        }
         /// <summary>
         /// 随从位置
         /// </summary>
@@ -71,7 +82,6 @@ namespace Card.Client
                 }
                 BattleMinions[Position - 1] = Minion;
             }
-            MinionCount++;
         }
         /// <summary>
         /// 从战场移除单位
@@ -150,7 +160,6 @@ namespace Card.Client
                 }
             }
             BattleMinions = CloneMinions;
-            MinionCount = ALive;
         }
         /// <summary>
         /// 

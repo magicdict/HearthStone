@@ -57,6 +57,10 @@ namespace Card.Server
             /// </summary>
             Crystal,
             /// <summary>
+            /// 卡牌
+            /// </summary>
+            Card,
+            /// <summary>
             /// 未知
             /// </summary>
             UnKnown
@@ -73,6 +77,10 @@ namespace Card.Server
         /// 水晶
         /// </summary>
         public const string strCrystal = "CRYSTAL";
+        /// <summary>
+        /// 卡牌
+        /// </summary>
+        public const string strCard = "CARD";
         /// <summary>
         /// 攻击
         /// </summary>
@@ -126,6 +134,7 @@ namespace Card.Server
             if (ActionWord.StartsWith(strHealth + CardUtility.strSplitMark)) t = ActionType.Health;
             if (ActionWord.StartsWith(strCrystal + CardUtility.strSplitMark)) t = ActionType.Crystal;
             if (ActionWord.StartsWith(strSummon + CardUtility.strSplitMark)) t = ActionType.Summon;
+            if (ActionWord.StartsWith(strCard + CardUtility.strSplitMark)) t = ActionType.Card;
 
             return t;
         }

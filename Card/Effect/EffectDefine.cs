@@ -129,6 +129,7 @@ namespace Card.Effect
                 case AbilityEffectEnum.增益:
                     break;
                 case AbilityEffectEnum.卡牌:
+                    Result.AddRange(CardEffect.RunEffect(singleEffect, game));
                     break;
                 case AbilityEffectEnum.变形:
                     Result.AddRange(TransformEffect.RunEffect(singleEffect, game, Pos));

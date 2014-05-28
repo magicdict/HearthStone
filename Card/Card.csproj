@@ -49,7 +49,7 @@
     <Compile Include="Client\BattleFieldInfo.cs" />
     <Compile Include="Client\Crystal.cs" />
     <Compile Include="MinionCard.cs" />
-    <Compile Include="Effect\CardDeckEffect.cs" />
+    <Compile Include="Effect\CardEffect.cs" />
     <Compile Include="Effect\CrystalEffect.cs" />
     <Compile Include="Effect\EffectDefine.cs" />
     <Compile Include="Effect\TransformEffect.cs" />

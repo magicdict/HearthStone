@@ -378,14 +378,6 @@ namespace Card
             /// </summary>
             public int Postion;
         }
-        /// <summary>
-        /// 获得卡牌的图案（需要外部程序具体实现）
-        /// </summary>
-        public static delegateGetImage GetCardImage;
-        /// <summary>
-        /// 抽牌魔法(服务器方法)
-        /// </summary>
-        public static delegateDrawCard DrawCard;
         #region"委托"
         /// <summary>
         /// 抉择

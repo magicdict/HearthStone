@@ -21,7 +21,7 @@ namespace Card.Server
         /// <summary>
         /// 进行中游戏
         /// </summary>
-        public static Dictionary<int, GameStatusAtServer> GameRunding = new Dictionary<int, GameStatusAtServer>();
+        public static Dictionary<int, GameStatusAtServer> GameRunning = new Dictionary<int, GameStatusAtServer>();
         /// <summary>
         /// 新建游戏
         /// </summary>
@@ -44,11 +44,14 @@ namespace Card.Server
             if (GameWaitGuest.ContainsKey(GameId))
             {
                 GameWaitGuest[GameId].GuestNickName = GuestNickName;
-                GameRunding.Add(GameId, GameWaitGuest[GameId]);
+                GameRunning.Add(GameId, GameWaitGuest[GameId]);
+                System.Diagnostics.Debug.WriteLine("RunningA:" + GameRunning.Count.ToString());
                 GameWaitGuest.Remove(GameId);
                 //套牌
-                GameRunding[GameId].SetCardStack(true, CardDeck.GetRandomCardStack(0));
-                GameRunding[GameId].SetCardStack(false, CardDeck.GetRandomCardStack(1));
+                GameRunning[GameId].SetCardStack(true, CardDeck.GetRandomCardStack(0));
+                System.Diagnostics.Debug.WriteLine("RunningB:" + GameRunning.Count.ToString());
+                GameRunning[GameId].SetCardStack(false, CardDeck.GetRandomCardStack(1));
+                System.Diagnostics.Debug.WriteLine("RunningC:" + GameRunning.Count.ToString());
                 return GameId;
             }
             else
@@ -76,8 +79,8 @@ namespace Card.Server
         /// <returns></returns>
         public static String IsGameStart(int GameId)
         {
-            System.Diagnostics.Debug.WriteLine("IsGameStart:" + GameRunding.Count);
-            return GameRunding.ContainsKey(GameId) ? CardUtility.strTrue : CardUtility.strFalse;
+            System.Diagnostics.Debug.WriteLine("IsGameStart:" + GameRunning.Count);
+            return GameRunning.ContainsKey(GameId) ? CardUtility.strTrue : CardUtility.strFalse;
         }
         /// <summary>
         /// 是否为先手
@@ -87,8 +90,8 @@ namespace Card.Server
         /// <returns></returns>
         public static Boolean IsFirst(int GameId, bool IsHost)
         {
-            System.Diagnostics.Debug.WriteLine("IsFirst:" + GameRunding.Count);
-            return ((IsHost && GameRunding[GameId].HostAsFirst) || (!IsHost && !GameRunding[GameId].HostAsFirst));
+            System.Diagnostics.Debug.WriteLine("IsFirst:" + GameRunning.Count);
+            return ((IsHost && GameRunning[GameId].HostAsFirst) || (!IsHost && !GameRunning[GameId].HostAsFirst));
         }
         /// <summary>
         /// 
@@ -99,8 +102,8 @@ namespace Card.Server
         {
             //IsHost == false 的时候，初始化已经完成，
             //网络版的时候，要向两个客户端发送开始游戏的下一步指令            
-            System.Diagnostics.Debug.WriteLine("SetCardStack:" + GameRunding.Count);
-            var result = GameRunding[GameId].SetCardStack(IsHost, card);
+            System.Diagnostics.Debug.WriteLine("SetCardStack:" + GameRunning.Count);
+            var result = GameRunning[GameId].SetCardStack(IsHost, card);
         }
         /// <summary>
         /// 抽牌
@@ -111,8 +114,8 @@ namespace Card.Server
         /// <returns></returns>
         public static List<string> DrawCard(int GameId, bool IsFirst, int Count)
         {
-            System.Diagnostics.Debug.WriteLine("SetCardStack:" + GameRunding.Count);
-            return GameRunding[GameId].DrawCard(IsFirst, Count);
+            System.Diagnostics.Debug.WriteLine("SetCardStack:" + GameRunning.Count);
+            return GameRunning[GameId].DrawCard(IsFirst, Count);
         }
         /// <summary>
         /// 写入动作
@@ -120,7 +123,7 @@ namespace Card.Server
         /// <param name="GameId"></param>
         /// <param name="Action"></param>
         public static void WriteAction(int GameId, String Action) {
-            GameRunding[GameId].WriteAction(Action);
+            GameRunning[GameId].WriteAction(Action);
         }
         /// <summary>
         /// 读取动作
@@ -129,7 +132,7 @@ namespace Card.Server
         /// <param name="Action"></param>
         public static String ReadAction(int GameId)
         {
-            return GameRunding[GameId].ReadAction();
+            return GameRunning[GameId].ReadAction();
         }
     }
 }

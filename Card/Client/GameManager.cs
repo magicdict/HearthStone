@@ -61,12 +61,10 @@ namespace Card.Client
         /// </summary>
         public void Init()
         {
-            //抽牌的具体方法
-            CardUtility.DrawCard += DrawCardAtServer;
-            //图片请求
-            CardUtility.GetCardImage += GetCardImageAtServer;
-            //属性
+            //手牌设定
             var HandCard = Card.Server.ClientUtlity.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, IsFirst ? 3 : 4);
+            MySelf.RoleInfo.crystal.CurrentFullPoint = 0;
+            MySelf.RoleInfo.crystal.CurrentRemainPoint = 0;
             //DEBUG
             //烈日行者
             //HandCard.Add("M000099");
@@ -81,16 +79,17 @@ namespace Card.Client
             //野性成长
             //HandCard.Add("A000091");
             //冰霜新星
-            HandCard.Add("A000038");
+            //HandCard.Add("A000038");
             //镜像
-            HandCard.Add("A000028");
-
+            //HandCard.Add("A000028");
+            //奥术智慧
+            //HandCard.Add("A000088");
             MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
+            //DEBUG
             //英雄技能：奥术飞弹
             MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000065");
             YourInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000065");
-            //DEBUG
             if (!IsFirst) HandCard.Add(Card.CardUtility.SN幸运币);
             foreach (var card in HandCard)
             {
@@ -360,24 +359,6 @@ namespace Card.Client
         {
             return (!MySelf.RoleInfo.IsUsedHeroAbility) && IsMyTurn &&
                     MySelf.RoleInfo.crystal.CurrentRemainPoint >= MySelf.RoleInfo.HeroAbility.ActualCostPoint;
-        }
-        /// <summary>
-        /// 抽牌（服务器方法）
-        /// </summary>
-        /// <returns></returns>
-        public List<String> DrawCardAtServer(Boolean IsFirst, int Count)
-        {
-            //向服务器提出请求，获得牌
-            return GameServer.DrawCard(GameId, IsFirst, Count);
-        }
-        /// <summary>
-        /// 获得图片（服务器方法）
-        /// </summary>
-        /// <param name="ImageKey"></param>
-        /// <returns></returns>
-        private static System.Drawing.Image GetCardImageAtServer(string ImageKey)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Card.Client
 {
@@ -57,15 +58,22 @@ namespace Card.Client
         public static Stack<String> GetRandomCardStack(int Seed)
         {
             Stack<String> Ramdom = new Stack<string>();
-            var cards = new List<String>();
-            foreach (var CardSN in CardUtility.ReadyCardDic.Keys)
+            try
             {
-                if (CardSN.Substring(1, 1) != "9") cards.Add(CardSN);
+                var cards = new List<String>();
+                foreach (var CardSN in CardUtility.ReadyCardDic.Keys)
+                {
+                    if (CardSN.Substring(1, 1) != "9") cards.Add(CardSN);
+                }
+                var newList = CardUtility.RandomSort<String>(cards.ToArray(), Seed);
+                for (int i = 0; i < Math.Min(MaxCards, newList.Length); i++)
+                {
+                    Ramdom.Push(newList[i]);
+                }
             }
-            var newList = CardUtility.RandomSort<String>(cards.ToArray(), Seed);
-            for (int i = 0; i < Math.Min(MaxCards, newList.Length); i++)
+            catch (Exception ex)
             {
-                Ramdom.Push(newList[i]);
+                Debug.WriteLine(ex.ToString());                
             }
             return Ramdom;
         }

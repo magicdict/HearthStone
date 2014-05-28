@@ -70,7 +70,7 @@ namespace CardHelper
             奥术智慧.CardAbility.JoinType = Card.CardUtility.EffectJoinType.None;
 
             //随机抽两张牌
-            Card.Effect.CardDeckEffect CardDeckEffect = new Card.Effect.CardDeckEffect();
+            Card.Effect.CardEffect CardDeckEffect = new Card.Effect.CardEffect();
             CardDeckEffect.StandardEffectPoint = 2;
             CardDeckEffect.EffectCount = 1;
             CardDeckEffect.EffectTargetSelectDirect = Card.CardUtility.TargetSelectDirectEnum.本方;

@@ -41,7 +41,7 @@ namespace Card
         /// 
         /// </summary>
         /// <returns></returns>
-        public string GetInfo()
+        public new string GetInfo()
         {
             return Name + "：" + ActualAttackPoint + "/" + 实际耐久度;
         }

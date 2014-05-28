@@ -26,6 +26,20 @@ namespace Card.Client
                     game.YourInfo.BattleField.PutToBattle(Pos, minion);
                     game.YourInfo.BattleField.ResetBuff();
                     break;
+                case ActionCode.ActionType.Card:
+                    if (actField[1] == CardUtility.strYou)
+                    {
+                        var drawCards = Card.Server.ClientUtlity.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
+                        game.MySelf.handCards.Add(Card.CardUtility.GetCardInfoBySN(drawCards[0]));
+                        game.MySelf.RoleInfo.HandCardCount++;
+                        game.MySelf.RoleInfo.RemainCardDeckCount--;
+                    }
+                    else
+                    {
+                        game.YourInfo.HandCardCount++;
+                        game.YourInfo.RemainCardDeckCount--;
+                    }
+                    break;
                 case ActionCode.ActionType.Summon:
                     //不会出现溢出的问题，溢出在Effect里面处理过了
                     //SUMMON#YOU#M000001
