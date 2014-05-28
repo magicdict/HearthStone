@@ -187,6 +187,28 @@ namespace 炉边传说
                     Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Enabled = false;
                 }
             }
+            //胜负判定
+            if (game.MySelf.RoleInfo.HealthPoint <= 0 && game.AgainstInfo.HealthPoint <= 0)
+            {
+                MessageBox.Show("Draw Game");
+                WaitTimer.Stop();
+                this.Close();
+            }
+            else
+            {
+                if (game.MySelf.RoleInfo.HealthPoint <= 0)
+                {
+                    MessageBox.Show("You Lose");
+                    WaitTimer.Stop();
+                    this.Close();
+                }
+                if (game.AgainstInfo.HealthPoint <= 0)
+                {
+                    MessageBox.Show("You Win");
+                    WaitTimer.Stop();
+                    this.Close();
+                }
+            }
         }
         /// <summary>
         /// 结束回合
@@ -316,17 +338,19 @@ namespace 炉边传说
                 {
                     game.MySelf.RoleInfo.crystal.CurrentRemainPoint -= card.ActualCostPoint;
 
-                    Card.CardBasicInfo removeCard = new CardBasicInfo();
-                    foreach (var Seekcard in game.MySelf.handCards)
-	                {
-                        if (Seekcard.SN == CardSn)
+                    if (((Button)sender).Name != "btnMyHeroAblity")
+                    {
+                        Card.CardBasicInfo removeCard = new CardBasicInfo();
+                        foreach (var Seekcard in game.MySelf.handCards)
                         {
-                            removeCard = Seekcard;
-                        }		 
-	                }
-                    game.MySelf.handCards.Remove(removeCard);
-                    
-                    game.MySelf.RoleInfo.HandCardCount = game.MySelf.handCards.Count;
+                            if (Seekcard.SN == CardSn)
+                            {
+                                removeCard = Seekcard;
+                            }
+                        }
+                        game.MySelf.handCards.Remove(removeCard);
+                        game.MySelf.RoleInfo.HandCardCount = game.MySelf.handCards.Count;
+                    }
                     var action = ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +
                                  game.MySelf.RoleInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentFullPoint;
                     Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), action);

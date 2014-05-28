@@ -244,17 +244,35 @@ namespace Card.Client
         public List<String> Fight(int MyPos, int YourPos, Boolean 被动攻击 = false)
         {
             List<String> Result = new List<string>();
-            //攻击次数
-            if (MyPos != 0)
+            if (被动攻击)
             {
-                MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].RemainAttactTimes--;
+                if (YourPos != 0)
+                {
+                    AgainstInfo.BattleField.BattleMinions[YourPos - 1].RemainAttactTimes--;
+                }
+                else
+                {
+                    if (AgainstInfo.Weapon != null)
+                    {
+                        AgainstInfo.Weapon.实际耐久度--;
+                        AgainstInfo.RemainAttackCount = 0;
+                    }
+                }
             }
             else
             {
-                if (MySelf.RoleInfo.Weapon != null)
+                //攻击次数
+                if (MyPos != 0)
                 {
-                    MySelf.RoleInfo.Weapon.实际耐久度--;
-                    MySelf.RoleInfo.RemainAttackCount = 0;
+                    MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].RemainAttactTimes--;
+                }
+                else
+                {
+                    if (MySelf.RoleInfo.Weapon != null)
+                    {
+                        MySelf.RoleInfo.Weapon.实际耐久度--;
+                        MySelf.RoleInfo.RemainAttackCount = 0;
+                    }
                 }
             }
             //潜行等去除(如果不是被攻击方的处理)
@@ -267,7 +285,10 @@ namespace Card.Client
             }
             else
             {
-                if (AgainstInfo.Weapon != null) YourAttackPoint = AgainstInfo.Weapon.ActualAttackPoint;
+                if (AgainstInfo.Weapon != null)
+                {
+                    YourAttackPoint = AgainstInfo.Weapon.ActualAttackPoint;
+                }
             }
             if (MyPos != 0)
             {
