@@ -17,14 +17,27 @@ namespace Card.Client
             switch (Card.Server.ActionCode.GetActionType(item))
             {
                 case ActionCode.ActionType.UseWeapon:
-                    game.AgainstInfo.Weapon = (Card.WeaponCard)Card.CardUtility.GetCardInfoBySN(actField[1]);
+                    game.YourInfo.Weapon = (Card.WeaponCard)Card.CardUtility.GetCardInfoBySN(actField[1]);
                     break;
                 case ActionCode.ActionType.UseMinion:
                     int Pos = int.Parse(actField[2]);
                     var minion = (Card.MinionCard)Card.CardUtility.GetCardInfoBySN(actField[1]);
                     minion.Init();
-                    game.AgainstInfo.BattleField.PutToBattle(Pos, minion);
-                    game.AgainstInfo.BattleField.ResetBuff();
+                    game.YourInfo.BattleField.PutToBattle(Pos, minion);
+                    game.YourInfo.BattleField.ResetBuff();
+                    break;
+                case ActionCode.ActionType.Summon:
+                    //不会出现溢出的问题，溢出在Effect里面处理过了
+                    //SUMMON#YOU#M000001
+                    //Me代表对方 YOU代表自己，必须反过来
+                    if (actField[1] == CardUtility.strYou)
+                    {
+                        game.MySelf.RoleInfo.BattleField.AppendToBattle(actField[2]);
+                    }
+                    else
+                    {
+                        game.YourInfo.BattleField.AppendToBattle(actField[2]);
+                    }
                     break;
                 case ActionCode.ActionType.UseAbility:
                     break;
@@ -47,12 +60,12 @@ namespace Card.Client
                     {
                         if (actField[2] == "0")
                         {
-                            game.AgainstInfo.HealthPoint = int.Parse(actField[3]);
+                            game.YourInfo.HealthPoint = int.Parse(actField[3]);
                         }
                         else
                         {
                             //位置从1开始，数组从0开始
-                            game.AgainstInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].ActualHealthPoint = int.Parse(actField[3]);
+                            game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].ActualHealthPoint = int.Parse(actField[3]);
                         }
                     }
                     break;
@@ -92,7 +105,7 @@ namespace Card.Client
                             switch (actField[3])
                             {
                                 case Card.Effect.StatusEffect.strFreeze:
-                                    game.AgainstInfo.冰冻状态 = CardUtility.EffectTurn.效果命中;
+                                    game.YourInfo.冰冻状态 = CardUtility.EffectTurn.效果命中;
                                     break;
                                 default:
                                     break;
@@ -104,7 +117,7 @@ namespace Card.Client
                             switch (actField[3])
                             {
                                 case Card.Effect.StatusEffect.strFreeze:
-                                    game.AgainstInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].冰冻状态 = CardUtility.EffectTurn.效果命中;
+                                    game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].冰冻状态 = CardUtility.EffectTurn.效果命中;
                                     break;
                                 default:
                                     break;
@@ -117,8 +130,8 @@ namespace Card.Client
                     //Me代表对方 YOU代表自己，必须反过来
                     if (actField[1] == CardUtility.strMe)
                     {
-                        game.AgainstInfo.crystal.CurrentRemainPoint = int.Parse(actField[2]);
-                        game.AgainstInfo.crystal.CurrentFullPoint = int.Parse(actField[3]);
+                        game.YourInfo.crystal.CurrentRemainPoint = int.Parse(actField[2]);
+                        game.YourInfo.crystal.CurrentFullPoint = int.Parse(actField[3]);
                     }
                     else
                     {
@@ -158,18 +171,18 @@ namespace Card.Client
                     {
                         if (actField[2] == "0")
                         {
-                            game.AgainstInfo.HealthPoint -= AttackPoint;
+                            game.YourInfo.HealthPoint -= AttackPoint;
                         }
                         else
                         {
                             //位置从1开始，数组从0开始
-                            game.AgainstInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeAttack(AttackPoint);
+                            game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeAttack(AttackPoint);
                         }
                     }
                     break;
                 case ActionCode.ActionType.Fight:
                     //FIGHT#1#2
-                    game.Fight(int.Parse(actField[2]), int.Parse(actField[1]),true);
+                    game.Fight(int.Parse(actField[2]), int.Parse(actField[1]), true);
                     break;
                 case ActionCode.ActionType.UnKnown:
                     break;

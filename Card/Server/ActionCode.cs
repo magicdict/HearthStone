@@ -49,6 +49,10 @@ namespace Card.Server
             /// </summary>
             Transform,
             /// <summary>
+            /// 召唤
+            /// </summary>
+            Summon,
+            /// <summary>
             /// 水晶
             /// </summary>
             Crystal,
@@ -61,6 +65,10 @@ namespace Card.Server
         /// 变形（效果）
         /// </summary>
         public const string strTransform = "TRANSFORM";
+        /// <summary>
+        /// 召唤
+        /// </summary>
+        public const string strSummon = "SUMMON";
         /// <summary>
         /// 水晶
         /// </summary>
@@ -117,6 +125,8 @@ namespace Card.Server
             if (ActionWord.StartsWith(strStatus + CardUtility.strSplitMark)) t = ActionType.Status;
             if (ActionWord.StartsWith(strHealth + CardUtility.strSplitMark)) t = ActionType.Health;
             if (ActionWord.StartsWith(strCrystal + CardUtility.strSplitMark)) t = ActionType.Crystal;
+            if (ActionWord.StartsWith(strSummon + CardUtility.strSplitMark)) t = ActionType.Summon;
+
             return t;
         }
 

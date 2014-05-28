@@ -64,7 +64,7 @@ namespace Card.Effect
                         switch (singleEffect.AddtionInfo)
                         {
                             case strFreeze:
-                                game.AgainstInfo.冰冻状态 = CardUtility.EffectTurn.效果命中;
+                                game.YourInfo.冰冻状态 = CardUtility.EffectTurn.效果命中;
                                 break;
                             default:
                                 break;
@@ -76,7 +76,7 @@ namespace Card.Effect
                         switch (singleEffect.AddtionInfo)
                         {
                             case strFreeze:
-                                game.AgainstInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].冰冻状态 = CardUtility.EffectTurn.效果命中;
+                                game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].冰冻状态 = CardUtility.EffectTurn.效果命中;
                                 break;
                             default:
                                 break;

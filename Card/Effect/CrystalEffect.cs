@@ -30,7 +30,7 @@ namespace Card.Effect
                         }
                         else
                         {
-                            game.AgainstInfo.crystal.AddCurrentPoint();
+                            game.YourInfo.crystal.AddCurrentPoint();
                         }
                     }
                 }
@@ -44,7 +44,7 @@ namespace Card.Effect
                         }
                         else
                         {
-                            game.AgainstInfo.crystal.ReduceCurrentPoint();
+                            game.YourInfo.crystal.ReduceCurrentPoint();
                         }
                     }
                 }
@@ -63,7 +63,7 @@ namespace Card.Effect
                         }
                         else
                         {
-                            game.AgainstInfo.crystal.AddFullPoint();
+                            game.YourInfo.crystal.AddFullPoint();
                         }
                     }
                 }
@@ -77,7 +77,7 @@ namespace Card.Effect
                         }
                         else
                         {
-                            game.AgainstInfo.crystal.ReduceFullPoint();
+                            game.YourInfo.crystal.ReduceFullPoint();
                         }
                     }
                 }
@@ -89,7 +89,7 @@ namespace Card.Effect
             }
             else
             {
-                Result.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark + game.AgainstInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.AgainstInfo.crystal.CurrentFullPoint);
+                Result.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark + game.YourInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.YourInfo.crystal.CurrentFullPoint);
             }
             return Result;
         }

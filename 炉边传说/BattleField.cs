@@ -60,7 +60,7 @@ namespace 炉边传说
             };
 
             btnYourHeroAblity.Enabled = false;
-            btnYourHeroAblity.Text = game.AgainstInfo.HeroAbility.Name;
+            btnYourHeroAblity.Text = game.YourInfo.HeroAbility.Name;
 
             btnMyHeroAblity.Enabled = false;
             btnMyHeroAblity.Text = game.MySelf.RoleInfo.HeroAbility.Name;
@@ -100,7 +100,7 @@ namespace 炉边传说
         private void DisplayMyInfo()
         {
             btnMyHero.Text = game.MySelf.RoleInfo.GetInfo();
-            btnYourHero.Text = game.AgainstInfo.GetInfo();
+            btnYourHero.Text = game.YourInfo.GetInfo();
             for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
             {
                 var myMinion = game.MySelf.RoleInfo.BattleField.BattleMinions[i];
@@ -132,13 +132,13 @@ namespace 炉边传说
                 btnMyWeapon.Text = game.MySelf.RoleInfo.Weapon.GetInfo();
             }
 
-            if (game.AgainstInfo.Weapon == null)
+            if (game.YourInfo.Weapon == null)
             {
                 btnYourWeapon.Text = "武器[无]";
             }
             else
             {
-                btnYourWeapon.Text = game.AgainstInfo.Weapon.GetInfo();
+                btnYourWeapon.Text = game.YourInfo.Weapon.GetInfo();
             }
 
 
@@ -162,9 +162,9 @@ namespace 炉边传说
             }
             for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
             {
-                if (game.AgainstInfo.BattleField.BattleMinions[i] != null)
+                if (game.YourInfo.BattleField.BattleMinions[i] != null)
                 {
-                    Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Text = game.AgainstInfo.BattleField.BattleMinions[i].GetInfo();
+                    Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Text = game.YourInfo.BattleField.BattleMinions[i].GetInfo();
                 }
                 else
                 {
@@ -176,7 +176,7 @@ namespace 炉边传说
             {
                 if (i < game.MySelf.handCards.Count)
                 {
-                    Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Text = game.MySelf.handCards[i].Name + "[" + game.MySelf.handCards[i].ActualCostPoint + "]";
+                    Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Text = game.MySelf.handCards[i].GetInfo();
                     Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Tag = game.MySelf.handCards[i].SN;
                     if (game.IsMyTurn) Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Enabled = true;
                 }
@@ -188,7 +188,7 @@ namespace 炉边传说
                 }
             }
             //胜负判定
-            if (game.MySelf.RoleInfo.HealthPoint <= 0 && game.AgainstInfo.HealthPoint <= 0)
+            if (game.MySelf.RoleInfo.HealthPoint <= 0 && game.YourInfo.HealthPoint <= 0)
             {
                 MessageBox.Show("Draw Game");
                 WaitTimer.Stop();
@@ -202,7 +202,7 @@ namespace 炉边传说
                     WaitTimer.Stop();
                     this.Close();
                 }
-                if (game.AgainstInfo.HealthPoint <= 0)
+                if (game.YourInfo.HealthPoint <= 0)
                 {
                     MessageBox.Show("You Win");
                     WaitTimer.Stop();
@@ -296,7 +296,7 @@ namespace 炉边传说
             {
                 lstAction.Items.Add(title + "My:" + item);
             }
-            foreach (var item in game.AgainstInfo.BattleField.ShowMinions())
+            foreach (var item in game.YourInfo.BattleField.ShowMinions())
             {
                 lstAction.Items.Add(title + "You:" + item);
             }

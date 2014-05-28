@@ -45,7 +45,7 @@ namespace 炉边传说
         private void TargetSelect_Load(object sender, EventArgs e)
         {
             btnMyHero.Text = game.MySelf.RoleInfo.GetInfo();
-            btnYourHero.Text = game.AgainstInfo.GetInfo();
+            btnYourHero.Text = game.YourInfo.GetInfo();
             for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
             {
                 Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Text = game.MySelf.RoleInfo.BattleField.BattleMinions[i].GetInfo();
@@ -58,9 +58,9 @@ namespace 炉边传说
                     this.Close();
                 };
             }
-            for (int i = 0; i < game.AgainstInfo.BattleField.MinionCount; i++)
+            for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
             {
-                Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Text = game.AgainstInfo.BattleField.BattleMinions[i].GetInfo();
+                Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Text = game.YourInfo.BattleField.BattleMinions[i].GetInfo();
                 Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Click += (x, y) =>
                 {
                     pos.MeOrYou = false;
@@ -122,7 +122,7 @@ namespace 炉边传说
                     switch (role)
                     {
                         case CardUtility.TargetSelectRoleEnum.随从:
-                            for (int i = 0; i < game.AgainstInfo.BattleField.MinionCount; i++)
+                            for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                             {
                                 Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = true;
                             }
@@ -133,9 +133,9 @@ namespace 炉边传说
                         case CardUtility.TargetSelectRoleEnum.所有角色:
 
                             Boolean Has嘲讽 = false;
-                            for (int i = 0; i < game.AgainstInfo.BattleField.MinionCount; i++)
+                            for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                             {
-                                if (game.AgainstInfo.BattleField.BattleMinions[i].Actual嘲讽)
+                                if (game.YourInfo.BattleField.BattleMinions[i].Actual嘲讽)
                                 {
                                     Has嘲讽 = true;
                                     break;
@@ -145,10 +145,10 @@ namespace 炉边传说
                             if (嘲讽限制 && Has嘲讽)
                             {
                                 btnYourHero.Enabled = false;
-                                for (int i = 0; i < game.AgainstInfo.BattleField.MinionCount; i++)
+                                for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                                 {
                                     //只能选择嘲讽对象
-                                    if (game.AgainstInfo.BattleField.BattleMinions[i].Actual嘲讽)
+                                    if (game.YourInfo.BattleField.BattleMinions[i].Actual嘲讽)
                                     {
                                         Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = true;
                                     }
@@ -157,7 +157,7 @@ namespace 炉边传说
                             else
                             {
                                 btnYourHero.Enabled = true;
-                                for (int i = 0; i < game.AgainstInfo.BattleField.MinionCount; i++)
+                                for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                                 {
                                     Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = true;
                                 }
@@ -175,7 +175,7 @@ namespace 炉边传说
                             {
                                 Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = true;
                             }
-                            for (int i = 0; i < game.AgainstInfo.BattleField.MinionCount; i++)
+                            for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                             {
                                 Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = true;
                             }
@@ -191,7 +191,7 @@ namespace 炉边传说
                             {
                                 Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = true;
                             }
-                            for (int i = 0; i < game.AgainstInfo.BattleField.MinionCount; i++)
+                            for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                             {
                                 Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = true;
                             }

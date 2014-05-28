@@ -46,17 +46,17 @@ namespace Card.Effect
                 {
                     if (PosField[1] == "0")
                     {
-                        game.AgainstInfo.HealthPoint += HealthPoint;
-                        if (game.AgainstInfo.HealthPoint > 30) game.AgainstInfo.HealthPoint = 30;
-                        Result.Add(Card.Server.ActionCode.strHealth + Card.CardUtility.strSplitMark + PosInfo + Card.CardUtility.strSplitMark + game.AgainstInfo.HealthPoint.ToString());
+                        game.YourInfo.HealthPoint += HealthPoint;
+                        if (game.YourInfo.HealthPoint > 30) game.YourInfo.HealthPoint = 30;
+                        Result.Add(Card.Server.ActionCode.strHealth + Card.CardUtility.strSplitMark + PosInfo + Card.CardUtility.strSplitMark + game.YourInfo.HealthPoint.ToString());
                     }
                     else
                     {
                         //位置从1开始，数组从0开始
-                        game.AgainstInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].ActualHealthPoint += HealthPoint;
-                        if (game.AgainstInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].ActualHealthPoint > game.AgainstInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].StandardHealthPoint)
-                            game.AgainstInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].ActualHealthPoint = game.AgainstInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].StandardHealthPoint;
-                        Result.Add(Card.Server.ActionCode.strHealth + Card.CardUtility.strSplitMark + PosInfo + Card.CardUtility.strSplitMark + game.AgainstInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].ActualHealthPoint.ToString());
+                        game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].ActualHealthPoint += HealthPoint;
+                        if (game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].ActualHealthPoint > game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].StandardHealthPoint)
+                            game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].ActualHealthPoint = game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].StandardHealthPoint;
+                        Result.Add(Card.Server.ActionCode.strHealth + Card.CardUtility.strSplitMark + PosInfo + Card.CardUtility.strSplitMark + game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].ActualHealthPoint.ToString());
                     }
                 }
             }

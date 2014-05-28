@@ -36,6 +36,15 @@ namespace Card.Client
             PutToBattle(Position, (MinionCard)card);
         }
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="CardSn"></param>
+        public void AppendToBattle(String CardSn)
+        {
+            int Position = MinionCount + 1;
+            PutToBattle(Position, CardSn);
+        }
+        /// <summary>
         /// 卡牌入战场
         /// </summary>
         /// <param name="Position">从1开始的位置</param>
@@ -147,11 +156,12 @@ namespace Card.Client
         /// 
         /// </summary>
         /// <returns></returns>
-        public List<String> ShowMinions() {
+        public List<String> ShowMinions()
+        {
             List<String> InfoList = new List<string>();
             for (int i = 0; i < MinionCount; i++)
             {
-                InfoList.Add("[" + BattleMinions[i].Name + "]" +  BattleMinions[i].ActualHealthPoint + "/" + BattleMinions[i].TotalAttack());
+                InfoList.Add("[" + BattleMinions[i].Name + "]" + BattleMinions[i].ActualHealthPoint + "/" + BattleMinions[i].TotalAttack());
             }
             return InfoList;
         }

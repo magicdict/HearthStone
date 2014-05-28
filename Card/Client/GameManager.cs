@@ -82,12 +82,14 @@ namespace Card.Client
             //HandCard.Add("A000091");
             //冰霜新星
             HandCard.Add("A000038");
+            //镜像
+            HandCard.Add("A000028");
 
             MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
             //英雄技能：奥术飞弹
             MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000065");
-            AgainstInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000065");
+            YourInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000065");
             //DEBUG
             if (!IsFirst) HandCard.Add(Card.CardUtility.SN幸运币);
             foreach (var card in HandCard)
@@ -98,12 +100,12 @@ namespace Card.Client
             if (IsFirst)
             {
                 MySelf.RoleInfo.RemainCardDeckCount = Card.Client.CardDeck.MaxCards - 3;
-                AgainstInfo.RemainCardDeckCount = Card.Client.CardDeck.MaxCards - 4;
+                YourInfo.RemainCardDeckCount = Card.Client.CardDeck.MaxCards - 4;
             }
             else
             {
                 MySelf.RoleInfo.RemainCardDeckCount = Card.Client.CardDeck.MaxCards - 4;
-                AgainstInfo.RemainCardDeckCount = Card.Client.CardDeck.MaxCards - 3;
+                YourInfo.RemainCardDeckCount = Card.Client.CardDeck.MaxCards - 3;
             }
         }
         /// <summary>
@@ -113,7 +115,7 @@ namespace Card.Client
         /// <summary>
         /// 对方情报
         /// </summary>
-        public PlayerBasicInfo AgainstInfo = new PlayerBasicInfo();
+        public PlayerBasicInfo YourInfo = new PlayerBasicInfo();
         /// <summary>
         /// 新的回合
         /// </summary>
@@ -159,18 +161,18 @@ namespace Card.Client
             }
             else
             {
-                AgainstInfo.crystal.NewTurn();
-                AgainstInfo.HandCardCount++;
-                AgainstInfo.RemainCardDeckCount--;
-                AgainstInfo.RemainAttackCount = 1;
-                AgainstInfo.IsUsedHeroAbility = false;
+                YourInfo.crystal.NewTurn();
+                YourInfo.HandCardCount++;
+                YourInfo.RemainCardDeckCount--;
+                YourInfo.RemainAttackCount = 1;
+                YourInfo.IsUsedHeroAbility = false;
                 //重置攻击次数
-                foreach (var minion in AgainstInfo.BattleField.BattleMinions)
+                foreach (var minion in YourInfo.BattleField.BattleMinions)
                 {
                     if (minion != null) minion.ResetAttackTimes();
                 }
                 //如果对手有可以解除冰冻的，解除冰冻
-                foreach (var minion in AgainstInfo.BattleField.BattleMinions)
+                foreach (var minion in YourInfo.BattleField.BattleMinions)
                 {
                     if (minion != null)
                     {
@@ -248,14 +250,14 @@ namespace Card.Client
             {
                 if (YourPos != 0)
                 {
-                    AgainstInfo.BattleField.BattleMinions[YourPos - 1].RemainAttactTimes--;
+                    YourInfo.BattleField.BattleMinions[YourPos - 1].RemainAttactTimes--;
                 }
                 else
                 {
-                    if (AgainstInfo.Weapon != null)
+                    if (YourInfo.Weapon != null)
                     {
-                        AgainstInfo.Weapon.实际耐久度--;
-                        AgainstInfo.RemainAttackCount = 0;
+                        YourInfo.Weapon.实际耐久度--;
+                        YourInfo.RemainAttackCount = 0;
                     }
                 }
             }
@@ -281,13 +283,13 @@ namespace Card.Client
             var YourAttackPoint = 0;
             if (YourPos != 0)
             {
-                YourAttackPoint = AgainstInfo.BattleField.BattleMinions[YourPos - 1].TotalAttack();
+                YourAttackPoint = YourInfo.BattleField.BattleMinions[YourPos - 1].TotalAttack();
             }
             else
             {
-                if (AgainstInfo.Weapon != null)
+                if (YourInfo.Weapon != null)
                 {
-                    YourAttackPoint = AgainstInfo.Weapon.ActualAttackPoint;
+                    YourAttackPoint = YourInfo.Weapon.ActualAttackPoint;
                 }
             }
             if (MyPos != 0)
@@ -310,11 +312,11 @@ namespace Card.Client
             }
             if (YourPos != 0)
             {
-                AgainstInfo.BattleField.BattleMinions[YourPos - 1].AfterBeAttack(MyAttackPoint);
+                YourInfo.BattleField.BattleMinions[YourPos - 1].AfterBeAttack(MyAttackPoint);
             }
             else
             {
-                AgainstInfo.HealthPoint -= MyAttackPoint;
+                YourInfo.HealthPoint -= MyAttackPoint;
             }
             //每次操作后进行一次清算
             Settle();
@@ -329,13 +331,13 @@ namespace Card.Client
             List<String> Result = new List<string>();
             //1.检查需要移除的对象
             MySelf.RoleInfo.BattleField.ClearDead();
-            AgainstInfo.BattleField.ClearDead();
+            YourInfo.BattleField.ClearDead();
             //2.重新计算Buff
             MySelf.RoleInfo.BattleField.ResetBuff();
-            AgainstInfo.BattleField.ResetBuff();
+            YourInfo.BattleField.ResetBuff();
             //3.武器的移除
             if (MySelf.RoleInfo.Weapon != null && MySelf.RoleInfo.Weapon.实际耐久度 == 0) MySelf.RoleInfo.Weapon = null;
-            if (AgainstInfo.Weapon != null && AgainstInfo.Weapon.实际耐久度 == 0) AgainstInfo.Weapon = null;
+            if (YourInfo.Weapon != null && YourInfo.Weapon.实际耐久度 == 0) YourInfo.Weapon = null;
             return Result;
         }
 

@@ -124,6 +124,7 @@ namespace Card.Effect
                     Result.AddRange(StatusEffect.RunEffect(singleEffect, game, Pos, Seed));
                     break;
                 case AbilityEffectEnum.召唤:
+                    Result.AddRange(SummonEffect.RunEffect(singleEffect, game, Seed));
                     break;
                 case AbilityEffectEnum.增益:
                     break;
@@ -179,11 +180,11 @@ namespace Card.Effect
                             switch (singleEffect.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
-                                    Pos.Postion = t.Next(1, game.AgainstInfo.BattleField.MinionCount + 1);
+                                    Pos.Postion = t.Next(1, game.YourInfo.BattleField.MinionCount + 1);
                                     Pos.MeOrYou = false;
                                     break;
                                 case CardUtility.TargetSelectRoleEnum.所有角色:
-                                    Pos.Postion = t.Next(0, game.AgainstInfo.BattleField.MinionCount + 1);
+                                    Pos.Postion = t.Next(0, game.YourInfo.BattleField.MinionCount + 1);
                                     Pos.MeOrYou = false;
                                     break;
                             }
@@ -201,7 +202,7 @@ namespace Card.Effect
                             else
                             {
                                 Pos.MeOrYou = false;
-                                MinionCount = game.AgainstInfo.BattleField.MinionCount;
+                                MinionCount = game.YourInfo.BattleField.MinionCount;
                             }
                             switch (singleEffect.EffectTargetSelectRole)
                             {
@@ -247,7 +248,7 @@ namespace Card.Effect
                             switch (singleEffect.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
-                                    for (int i = 0; i < game.AgainstInfo.BattleField.MinionCount; i++)
+                                    for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                                     {
                                         Result.Add(CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1"));
                                     }
@@ -257,7 +258,7 @@ namespace Card.Effect
                                     break;
                                 case CardUtility.TargetSelectRoleEnum.所有角色:
                                     Result.Add(CardUtility.strYou + CardUtility.strSplitMark + 0.ToString("D1"));
-                                    for (int i = 0; i < game.AgainstInfo.BattleField.MinionCount; i++)
+                                    for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                                     {
                                         Result.Add(CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1"));
                                     }
@@ -272,7 +273,7 @@ namespace Card.Effect
                                     {
                                         Result.Add(CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString("D1"));
                                     }
-                                    for (int i = 0; i < game.AgainstInfo.BattleField.MinionCount; i++)
+                                    for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                                     {
                                         Result.Add(CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1"));
                                     }
@@ -288,7 +289,7 @@ namespace Card.Effect
                                     {
                                         Result.Add(CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString("D1"));
                                     }
-                                    for (int i = 0; i < game.AgainstInfo.BattleField.MinionCount; i++)
+                                    for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                                     {
                                         Result.Add(CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1"));
                                     }

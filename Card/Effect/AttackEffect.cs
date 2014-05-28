@@ -40,12 +40,12 @@ namespace Card.Effect
                 {
                     if (PosField[1] == "0")
                     {
-                        game.AgainstInfo.HealthPoint -= AttackPoint;
+                        game.YourInfo.HealthPoint -= AttackPoint;
                     }
                     else
                     {
                         //位置从1开始，数组从0开始
-                        game.AgainstInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].AfterBeAttack(AttackPoint);
+                        game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].AfterBeAttack(AttackPoint);
                     }
                 }
                 Result.Add(Card.Server.ActionCode.strAttack + Card.CardUtility.strSplitMark + PosInfo + Card.CardUtility.strSplitMark + AttackPoint.ToString());

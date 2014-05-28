@@ -29,7 +29,7 @@ namespace Card.Effect
             }
             else
             {
-                game.AgainstInfo.BattleField.BattleMinions[Pos.Postion - 1] = Summon;
+                game.YourInfo.BattleField.BattleMinions[Pos.Postion - 1] = Summon;
                 Result.Add(ActionCode.strTransform + Card.CardUtility.strSplitMark + CardUtility.strYou +
                     Card.CardUtility.strSplitMark + Pos.Postion + Card.CardUtility.strSplitMark + singleEffect.AddtionInfo);
             }
