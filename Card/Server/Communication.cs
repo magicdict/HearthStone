@@ -52,7 +52,7 @@ namespace Card.Server
         {
             var client = clientObj as TcpClient;
             // Buffer for reading data
-            var bytes = new Byte[512];
+            var bytes = new Byte[1024];
             NetworkStream stream = client.GetStream();
             ///实际长度
             int ActualSize;
@@ -114,7 +114,7 @@ namespace Card.Server
             IPAddress localAddr = IPAddress.Parse(strIP);
             client.Connect(localAddr, 13000);
             var stream = client.GetStream();
-            var bytes = new Byte[512];
+            var bytes = new Byte[1024];
             bytes = Encoding.ASCII.GetBytes(requestInfo);
             stream.Write(bytes, 0, bytes.Length);
             String Response = String.Empty;

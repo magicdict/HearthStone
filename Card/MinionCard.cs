@@ -79,10 +79,6 @@ namespace Card
         /// </summary>
         public Boolean Standard冲锋 = false;
         /// <summary>
-        /// 连击(标准)
-        /// </summary>
-        public Boolean Standard连击 = false;
-        /// <summary>
         /// 风怒(标准)
         /// </summary>
         public Boolean Standard风怒 = false;
@@ -103,6 +99,10 @@ namespace Card
         /// </summary>
         public Boolean 英雄技能免疫特性 = false;
         /// <summary>
+        /// 不能攻击
+        /// </summary>
+        public Boolean Standard不能攻击 = false;
+        /// <summary>
         /// 战吼(效果号码)
         /// </summary>
         public String 战吼效果 = String.Empty;
@@ -114,6 +114,20 @@ namespace Card
         /// 激怒(效果号码)
         /// </summary>
         public String 激怒效果 = String.Empty;
+        /// <summary>
+        /// 连击(效果号码)
+        /// </summary>
+        public String 连击效果 = String.Empty;
+        /// <summary>
+        /// 回合开始(效果号码)
+        /// </summary>
+        public String 回合开始效果 = String.Empty;
+        /// <summary>
+        /// 回合结束(效果号码)
+        /// </summary>
+        public String 回合结束效果 = String.Empty;
+
+
         /// <summary>
         /// 该单位在战地时的效果
         /// </summary>
@@ -142,15 +156,14 @@ namespace Card
         [XmlIgnore]
         public Boolean Actual冲锋 = false;
         /// <summary>
-        /// 连击(实际)
-        /// </summary>
-        [XmlIgnore]
-        public Boolean Actual连击 = false;
-        /// <summary>
         /// 风怒(实际)
         /// </summary>
         [XmlIgnore]
         public Boolean Actual风怒 = false;
+        /// <summary>
+        /// 
+        /// </summary>
+        public Boolean Actual不能攻击 = false;
         /// <summary>
         /// 是否为潜行状态
         /// </summary>
@@ -212,8 +225,8 @@ namespace Card
             this.ActualHealthPoint = this.StandardHealthPoint;
             this.Actual冲锋 = this.Standard冲锋;
             this.Actual嘲讽 = this.Standard嘲讽;
-            this.Actual连击 = this.Standard连击;
             this.Actual风怒 = this.Standard风怒;
+            this.Actual不能攻击 = this.Standard不能攻击;
             this.Is潜行Status = this.潜行特性;
             this.Is圣盾Status = this.圣盾特性;
             this.Is英雄技能免疫Status = this.英雄技能免疫特性;
@@ -253,6 +266,7 @@ namespace Card
                 RemainAttactTimes = 1;
             }
             if (冰冻状态 != CardUtility.EffectTurn.无效果) RemainAttactTimes = 0;
+            if (Actual不能攻击) RemainAttactTimes = 0;
         }
         /// <summary>
         /// 实际输出效果
@@ -264,6 +278,11 @@ namespace Card
             foreach (var buff in 受战地效果)
             {
                 BuffAct += int.Parse(buff.BuffInfo.Split("/".ToCharArray())[0]);
+            }
+            //激怒效果
+            if (!Is沉默Status)
+            {
+
             }
             return ActualAttackPoint + BuffAct;
         }
@@ -314,7 +333,7 @@ namespace Card
         {
             List<String> ActionCodeLst = new List<string>();
             //亡语效果
-            if (亡语效果 != String.Empty)
+            if (亡语效果 != String.Empty && !Is沉默Status)
             {
                 var 战吼Result = RunAction.StartAction(game, 亡语效果, IsNeedConvertPosDirect);
                 //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
@@ -322,6 +341,53 @@ namespace Card
                 ActionCodeLst.AddRange(战吼Result);
             }
             return ActionCodeLst;
+        }
+        /// <summary>
+        /// 回合开始效果
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
+        public List<String> 回合开始(GameManager game)
+        {
+            List<String> ActionCodeLst = new List<string>();
+            //回合开始效果
+            if (回合开始效果 != String.Empty && !Is沉默Status)
+            {
+                var 战吼Result = RunAction.StartAction(game, 回合开始效果);
+                //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
+                战吼Result.RemoveAt(0);
+                ActionCodeLst.AddRange(战吼Result);
+            }
+            return ActionCodeLst;
+        }
+        /// <summary>
+        /// 回合结束效果
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
+        public List<String> 回合结束(GameManager game)
+        {
+            List<String> ActionCodeLst = new List<string>();
+            //回合结束效果
+            if (回合结束效果 != String.Empty && !Is沉默Status)
+            {
+                var 战吼Result = RunAction.StartAction(game, 回合结束效果);
+                //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
+                战吼Result.RemoveAt(0);
+                ActionCodeLst.AddRange(战吼Result);
+            }
+            return ActionCodeLst;
+        }
+        /// <summary>
+        /// 沉默
+        /// </summary>
+        public void 被沉默()
+        {
+            Is沉默Status = true;
+            Actual嘲讽 = false;
+            Actual冲锋 = false;
+            Actual风怒 = false;
+            Actual不能攻击 = false;
         }
         /// <summary>
         /// 攻击后

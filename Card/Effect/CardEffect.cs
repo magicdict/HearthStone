@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Card.Effect
 {
     /// <summary>
-    /// 
+    /// 运行效果
     /// </summary>
     public class CardEffect : EffectDefine
     {

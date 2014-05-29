@@ -217,6 +217,17 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnEndTurn_Click(object sender, System.EventArgs e)
         {
+            //回合结束效果
+            List<String> ActionLst = new List<string>();
+            for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
+            {
+                if (game.MySelf.RoleInfo.BattleField.BattleMinions[i] != null)
+                {
+                    ActionLst.AddRange(game.MySelf.RoleInfo.BattleField.BattleMinions[i].回合结束(game)); 
+                }
+            }
+            if (ActionLst.Count != 0) Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat),ActionLst);
+            //结束回合
             game.TurnEnd();
             Card.Server.ClientUtlity.TurnEnd(game.GameId.ToString(GameServer.GameIdFormat));
             game.IsMyTurn = false;
@@ -231,6 +242,17 @@ namespace 炉边传说
             game.TurnStart();
             if (game.IsMyTurn)
             {
+                //回合开始效果
+                List<String> ActionLst = new List<string>();
+                for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
+                {
+                    if (game.MySelf.RoleInfo.BattleField.BattleMinions[i] != null)
+                    {
+                        ActionLst.AddRange(game.MySelf.RoleInfo.BattleField.BattleMinions[i].回合开始(game));
+                    }
+                }
+                if (ActionLst.Count != 0) Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), ActionLst);
+                //按钮可用性设定
                 btnEndTurn.Enabled = true;
                 for (int i = 0; i < 10; i++)
                 {
@@ -256,7 +278,6 @@ namespace 炉边传说
             //刷新双方状态
             DisplayMyInfo();
         }
-
         /// <summary>
         /// 读取
         /// </summary>
@@ -352,12 +373,9 @@ namespace 炉边传说
                     }
                     var action = ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +
                                  game.MySelf.RoleInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentFullPoint;
-                    Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), action);
+                    actionlst.Add(action);
                 }
-                foreach (var action in actionlst)
-                {
-                    Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), action);
-                }
+                Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
             }
             if (((Button)sender).Name == "btnMyHeroAblity") game.MySelf.RoleInfo.IsUsedHeroAbility = true;
             DisplayMyInfo();
@@ -372,10 +390,7 @@ namespace 炉边传说
             //lstAction.Items.Clear();
             //ShowMinionInfo("Before:");
             List<String> actionlst = RunAction.Fight(game, MyPos, YourPos.Postion);
-            foreach (var action in actionlst)
-            {
-                Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), action);
-            }
+            Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
             //ShowMinionInfo("After:");
             DisplayMyInfo();
         }

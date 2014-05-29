@@ -85,10 +85,13 @@ namespace Card.Client
             //奥术智慧
             //HandCard.Add("A000088");
             //艾露恩的女祭司(战吼)
-            HandCard.Add("M000014");
+            //HandCard.Add("M000014");
             //战利品贮藏者
-            HandCard.Add("M000037");
-
+            //HandCard.Add("M000037");
+            //炎魔之王拉格纳罗斯
+            //HandCard.Add("M000184");
+            //攻城车
+            HandCard.Add("M000101");
             MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
             //DEBUG

@@ -63,7 +63,7 @@ namespace Card.Client
                 var cards = new List<String>();
                 foreach (var CardSN in CardUtility.ReadyCardDic.Keys)
                 {
-                    if (CardSN.Substring(1, 1) != "9") cards.Add(CardSN);
+                    if (CardSN.Substring(1, 1) == "0") cards.Add(CardSN);
                 }
                 var newList = CardUtility.RandomSort<String>(cards.ToArray(), Seed);
                 for (int i = 0; i < Math.Min(MaxCards, newList.Length); i++)

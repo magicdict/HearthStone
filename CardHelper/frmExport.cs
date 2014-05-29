@@ -107,7 +107,7 @@ namespace CardHelper
 
                 Minion.Standard嘲讽 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 14).Text);
                 Minion.Standard冲锋 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 15).Text);
-                Minion.Standard连击 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 16).Text);
+                Minion.Standard不能攻击 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 16).Text);
                 Minion.Standard风怒 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 17).Text);
                 Minion.潜行特性 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 18).Text);
                 Minion.圣盾特性 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 19).Text);
@@ -133,6 +133,9 @@ namespace CardHelper
                 Minion.战吼效果 = worksheet.Cells(rowCount, 25).Text;
                 Minion.亡语效果 = worksheet.Cells(rowCount, 26).Text;
                 Minion.激怒效果 = worksheet.Cells(rowCount, 27).Text;
+                Minion.连击效果 = worksheet.Cells(rowCount, 28).Text;
+                Minion.回合开始效果 = worksheet.Cells(rowCount, 29).Text;
+                Minion.回合结束效果 = worksheet.Cells(rowCount, 30).Text;
 
                 switch (target)
                 {

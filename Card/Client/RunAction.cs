@@ -6,6 +6,9 @@ namespace Card.Client
 {
     public static class RunAction
     {
+        /// <summary>
+        /// 获目标位置
+        /// </summary>
         public static CardUtility.delegateGetPutPos GetPutPos;
         #region"开始动作"
         /// <summary>

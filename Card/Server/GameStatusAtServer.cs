@@ -120,7 +120,10 @@ namespace Card.Server
         /// <param name="Action"></param>
         public void WriteAction(String Action)
         {
-            ActionInfo.Add(Action);
+            foreach (var actionDetail in Action.Split("|".ToCharArray()))
+            {
+                ActionInfo.Add(actionDetail);
+            }
             //如果是回合结束的指令的时候，翻转是否是先手回合的标志
             if (Action == ActionCode.strEndTurn) IsFirstNowTurn = !IsFirstNowTurn;
         }

@@ -81,15 +81,23 @@ namespace Card.Server
         /// <param name="GameId"></param>
         public static void TurnEnd(String GameId)
         {
-            WriteAction(GameId, ActionCode.strEndTurn);
+            var t =  new List<String>();
+            t.Add(ActionCode.strEndTurn);
+            WriteAction(GameId,t);
         }
         /// <summary>
         /// 添加指令
         /// </summary>
         /// <param name="GameId"></param>
-        public static void WriteAction(String GameId, String Action)
+        public static void WriteAction(String GameId, List<String> Action)
         {
-            String requestInfo = Card.Server.Communication.RequestType.写入行动.GetHashCode().ToString("D3") + GameId + Action;
+            String Transform = String.Empty;
+            foreach (var item in Action)
+            {
+                Transform += item + "|";
+            }
+            Transform.TrimEnd("|".ToCharArray());
+            String requestInfo = Card.Server.Communication.RequestType.写入行动.GetHashCode().ToString("D3") + GameId + Transform;
             Card.Server.Communication.Request(requestInfo, strIP);
         }
         /// <summary>
