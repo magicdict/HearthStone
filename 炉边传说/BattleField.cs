@@ -101,6 +101,31 @@ namespace 炉边传说
         {
             btnMyHero.Text = game.MySelf.RoleInfo.GetInfo();
             btnYourHero.Text = game.YourInfo.GetInfo();
+
+            for (int i = 0; i < 3; i++)
+            {
+                Controls.Find("btnMySecret" + (i + 1).ToString(), true)[0].Text = "[无奥秘]";
+                Controls.Find("btnMySecret" + (i + 1).ToString(), true)[0].Enabled = false;
+                Controls.Find("btnYourSecret" + (i + 1).ToString(), true)[0].Text = "[无奥秘]";
+                Controls.Find("btnYourSecret" + (i + 1).ToString(), true)[0].Enabled = false;
+            }
+
+            if (game.MySelf.奥秘.Count > 0)
+            {
+                for (int i = 0; i < game.MySelf.奥秘.Count; i++)
+                {
+                    Controls.Find("btnMySecret" + (i + 1).ToString(), true)[0].Text = game.MySelf.奥秘[i].Name;
+                }
+            }
+
+            if (game.YourInfo.SecretCount > 0)
+            {
+                for (int i = 0; i < game.YourInfo.SecretCount; i++)
+                {
+                    Controls.Find("btnYourSecret" + (i + 1).ToString(), true)[0].Text = "[奥秘待机]";
+                }
+            }
+
             for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
             {
                 var myMinion = game.MySelf.RoleInfo.BattleField.BattleMinions[i];
@@ -223,10 +248,10 @@ namespace 炉边传说
             {
                 if (game.MySelf.RoleInfo.BattleField.BattleMinions[i] != null)
                 {
-                    ActionLst.AddRange(game.MySelf.RoleInfo.BattleField.BattleMinions[i].回合结束(game)); 
+                    ActionLst.AddRange(game.MySelf.RoleInfo.BattleField.BattleMinions[i].回合结束(game));
                 }
             }
-            if (ActionLst.Count != 0) Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat),ActionLst);
+            if (ActionLst.Count != 0) Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), ActionLst);
             //结束回合
             game.TurnEnd();
             Card.Server.ClientUtlity.TurnEnd(game.GameId.ToString(GameServer.GameIdFormat));
@@ -378,6 +403,11 @@ namespace 炉边传说
                 Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
             }
             if (((Button)sender).Name == "btnMyHeroAblity") game.MySelf.RoleInfo.IsUsedHeroAbility = true;
+            //奥秘计算
+            if (game.YourInfo.SecretCount != 0)
+            {
+                Card.Server.ClientUtlity.IsSecretHit(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst);
+            }
             DisplayMyInfo();
         }
         /// <summary>
@@ -387,11 +417,13 @@ namespace 炉边传说
         private void Fight(int MyPos)
         {
             var YourPos = SelectPanel(CardUtility.TargetSelectDirectEnum.对方, CardUtility.TargetSelectRoleEnum.所有角色, true);
-            //lstAction.Items.Clear();
-            //ShowMinionInfo("Before:");
             List<String> actionlst = RunAction.Fight(game, MyPos, YourPos.Postion);
             Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
-            //ShowMinionInfo("After:");
+            //奥秘计算
+            if (game.YourInfo.SecretCount != 0)
+            {
+                Card.Server.ClientUtlity.IsSecretHit(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst);
+            }
             DisplayMyInfo();
         }
     }

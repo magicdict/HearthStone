@@ -96,18 +96,27 @@ namespace Card.Server
             {
                 Transform += item + "|";
             }
-            Transform.TrimEnd("|".ToCharArray());
+            Transform = Transform.TrimEnd("|".ToCharArray());
             String requestInfo = Card.Server.Communication.RequestType.写入行动.GetHashCode().ToString("D3") + GameId + Transform;
             Card.Server.Communication.Request(requestInfo, strIP);
         }
         /// <summary>
-        /// 
+        /// 读取行动
         /// </summary>
         /// <param name="GameId"></param>
         /// <returns></returns>
         public static String ReadAction(String GameId)
         {
             String requestInfo = Card.Server.Communication.RequestType.读取行动.GetHashCode().ToString("D3") + GameId;
+            return Card.Server.Communication.Request(requestInfo, strIP);
+        }
+        /// <summary>
+        /// 是否触发了奥秘
+        /// </summary>
+        /// <returns></returns>
+        public static String IsSecretHit(String GameId, bool IsFirst)
+        {
+            String requestInfo = Card.Server.Communication.RequestType.奥秘判定.GetHashCode().ToString("D3") + GameId + (IsFirst ? CardUtility.strTrue : CardUtility.strFalse);
             return Card.Server.Communication.Request(requestInfo, strIP);
         }
     }

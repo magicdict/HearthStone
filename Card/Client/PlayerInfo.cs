@@ -62,6 +62,10 @@ namespace Card.Client
         /// </summary>
         public Boolean IsUsedHeroAbility = true;
         /// <summary>
+        /// 奥秘数
+        /// </summary>
+        public int SecretCount = 0;
+        /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
@@ -91,6 +95,6 @@ namespace Card.Client
         /// <summary>
         /// 奥秘
         /// </summary>
-        public List<Card.Effect.EffectDefine> 奥秘 = new List<Effect.EffectDefine>();
+        public List<SecretCard> 奥秘 = new List<SecretCard>();
     }
 }

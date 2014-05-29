@@ -70,10 +70,55 @@ namespace CardHelper
             Minion(target, workbook);
             Ability(target, workbook);
             Weapon(target, workbook);
+            Secret(target, workbook);
             workbook.Close();
             excelObj.Quit();
             excelObj = null;
             MessageBox.Show("导出结束");
+        }
+        /// <summary>
+        /// 奥秘
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="workbook"></param>
+        private void Secret(TargetType target, dynamic workbook)
+        {
+            if (Directory.Exists(XmlFolderPicker.SelectedPathOrFileName + "\\Secret\\"))
+            {
+                Directory.Delete(XmlFolderPicker.SelectedPathOrFileName + "\\Secret\\", true);
+            }
+            Directory.CreateDirectory(XmlFolderPicker.SelectedPathOrFileName + "\\Secret\\");
+            //奥秘的导入
+            dynamic worksheet = workbook.Sheets(4);
+            int rowCount = 4;
+            while (!String.IsNullOrEmpty(worksheet.Cells(rowCount, 2).Text))
+            {
+                Card.SecretCard Secret = new Card.SecretCard();
+                Secret.SN = worksheet.Cells(rowCount, 2).Text;
+                Secret.Name = worksheet.Cells(rowCount, 3).Text;
+                Secret.Description = worksheet.Cells(rowCount, 4).Text;
+                Secret.Class = CardUtility.GetEnum<Card.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 5).Text, Card.CardUtility.ClassEnum.中立);
+                Secret.StandardCostPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
+                Secret.ActualCostPoint = Secret.StandardCostPoint;
+                Secret.Rare = CardUtility.GetEnum<Card.CardBasicInfo.稀有程度>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度.白色);
+                Secret.IsCardReady = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
+                Secret.Condition = CardUtility.GetEnum<Card.SecretCard.SecretCondition>(worksheet.Cells(rowCount, 14).Text,SecretCard.SecretCondition.对方召唤随从);
+                Secret.AdditionInfo = worksheet.Cells(rowCount, 15).Text;
+                switch (target)
+                {
+                    case TargetType.MongoDB:
+                        //innerCollection.Insert<Card.SecretCard>(Secret);
+                        break;
+                    case TargetType.Xml:
+                        XmlSerializer xml = new XmlSerializer(typeof(Card.SecretCard));
+                        String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Secret\\" + Secret.SN + ".xml";
+                        xml.Serialize(new StreamWriter(XmlFilename), Secret);
+                        break;
+                    default:
+                        break;
+                }
+                rowCount++;
+            }
         }
         /// <summary>
         /// 随从的导入

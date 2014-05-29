@@ -18,13 +18,13 @@ namespace Card.Client
         /// <param name="CardSn"></param>
         /// <param name="ConvertPosDirect">亡语的时候，需要倒置方向</param>
         /// <returns></returns>
-        public static List<String> StartAction(GameManager game, String CardSn,Boolean ConvertPosDirect = false)
+        public static List<String> StartAction(GameManager game, String CardSn, Boolean ConvertPosDirect = false)
         {
             Card.CardBasicInfo card = Card.CardUtility.GetCardInfoBySN(CardSn);
             List<String> ActionCodeLst = new List<string>();
-            switch (CardSn.Substring(0, 1))
+            switch (card.CardType)
             {
-                case "A":
+                case CardBasicInfo.CardTypeEnum.法术:
                     ActionCodeLst.Add(UseAbility(CardSn));
                     //初始化 Buff效果等等
                     Card.AbilityCard ablity = (Card.AbilityCard)CardUtility.GetCardInfoBySN(CardSn);
@@ -32,7 +32,7 @@ namespace Card.Client
                     var ResultArg = game.UseAbility(ablity, ConvertPosDirect);
                     if (ResultArg.Count != 0) ActionCodeLst.AddRange(ResultArg);
                     break;
-                case "M":
+                case CardBasicInfo.CardTypeEnum.随从:
                     int MinionPos = GetPutPos(game);
                     ActionCodeLst.Add(UseMinion(CardSn, MinionPos));
                     var minion = (Card.MinionCard)card;
@@ -42,9 +42,13 @@ namespace Card.Client
                     ActionCodeLst.AddRange(minion.发动战吼(game));
                     game.MySelf.RoleInfo.BattleField.ResetBuff();
                     break;
-                case "W":
+                case CardBasicInfo.CardTypeEnum.武器:
                     ActionCodeLst.Add(UseWeapon(CardSn));
                     game.MySelf.RoleInfo.Weapon = (Card.WeaponCard)card;
+                    break;
+                case CardBasicInfo.CardTypeEnum.奥秘:
+                    ActionCodeLst.Add(UseSecret(CardSn));
+                    game.MySelf.奥秘.Add((Card.SecretCard)card);
                     break;
                 default:
                     break;
@@ -60,6 +64,17 @@ namespace Card.Client
         {
             String actionCode = String.Empty;
             actionCode = ActionCode.strWeapon + CardUtility.strSplitMark + CardSn;
+            return actionCode;
+        }
+        /// <summary>
+        /// 使用奥秘
+        /// </summary>
+        /// <param name="CardSn"></param>
+        /// <returns></returns>
+        public static String UseSecret(String CardSn)
+        {
+            String actionCode = String.Empty;
+            actionCode = ActionCode.strSecret + CardUtility.strSplitMark + CardSn;
             return actionCode;
         }
         /// <summary>

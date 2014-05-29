@@ -109,6 +109,7 @@ namespace Card
         {
             //调用侧的NET版本3.5会引发错误。。。
             CardCollections.Clear();
+            //法术
             foreach (var AbilityXml in Directory.GetFiles(CardXmlFolder + "\\Ability\\"))
             {
                 XmlSerializer xml = new XmlSerializer(typeof(Card.AbilityCard));
@@ -116,6 +117,7 @@ namespace Card
                 ability.ActualCostPoint = ability.StandardCostPoint;
                 CardCollections.Add(ability.SN, ability);
             }
+            //随从
             foreach (var MinionXml in Directory.GetFiles(CardXmlFolder + "\\Minion\\"))
             {
                 XmlSerializer xml = new XmlSerializer(typeof(Card.MinionCard));
@@ -123,12 +125,21 @@ namespace Card
                 Minio.ActualCostPoint = Minio.StandardCostPoint;
                 CardCollections.Add(Minio.SN, Minio);
             }
+            //武器
             foreach (var WeaponXml in Directory.GetFiles(CardXmlFolder + "\\Weapon\\"))
             {
                 XmlSerializer xml = new XmlSerializer(typeof(Card.WeaponCard));
                 Card.WeaponCard Weapon = (WeaponCard)xml.Deserialize(new StreamReader(WeaponXml));
                 Weapon.ActualCostPoint = Weapon.StandardCostPoint;
                 CardCollections.Add(Weapon.SN, Weapon);
+            }
+            //奥秘
+            foreach (var SecretXml in Directory.GetFiles(CardXmlFolder + "\\Secret\\"))
+            {
+                XmlSerializer xml = new XmlSerializer(typeof(Card.SecretCard));
+                Card.SecretCard Secret = (SecretCard)xml.Deserialize(new StreamReader(SecretXml));
+                Secret.ActualCostPoint = Secret.StandardCostPoint;
+                CardCollections.Add(Secret.SN, Secret);
             }
         }
 

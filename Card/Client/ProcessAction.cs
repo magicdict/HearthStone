@@ -19,6 +19,9 @@ namespace Card.Client
                 case ActionCode.ActionType.UseWeapon:
                     game.YourInfo.Weapon = (Card.WeaponCard)Card.CardUtility.GetCardInfoBySN(actField[1]);
                     break;
+                case ActionCode.ActionType.UseSecret:
+                    game.YourInfo.SecretCount++;;
+                    break;
                 case ActionCode.ActionType.UseMinion:
                     int Pos = int.Parse(actField[2]);
                     var minion = (Card.MinionCard)Card.CardUtility.GetCardInfoBySN(actField[1]);

@@ -21,9 +21,13 @@ namespace Card.Server
             /// </summary>
             UseMinion,
             /// <summary>
-            /// 使用魔法
+            /// 使用法术
             /// </summary>
             UseAbility,
+            /// <summary>
+            /// 使用奥秘
+            /// </summary>
+            UseSecret,
             /// <summary>
             /// 攻击处理
             /// </summary>
@@ -106,6 +110,10 @@ namespace Card.Server
         /// </summary>
         public const string strAbility = "ABILITY";
         /// <summary>
+        /// 奥秘
+        /// </summary>
+        public const string strSecret = "SECRET";
+        /// <summary>
         /// 
         /// </summary>
         public const string strFight = "FIGHT";
@@ -128,6 +136,8 @@ namespace Card.Server
             if (ActionWord.StartsWith(strWeapon + CardUtility.strSplitMark)) t = ActionType.UseWeapon;
             if (ActionWord.StartsWith(strMinion + CardUtility.strSplitMark)) t = ActionType.UseMinion;
             if (ActionWord.StartsWith(strAbility + CardUtility.strSplitMark)) t = ActionType.UseAbility;
+            //服务器不发送具体奥秘内容
+            if (ActionWord.Equals(strSecret)) t = ActionType.UseSecret;
 
             if (ActionWord.StartsWith(strFight + CardUtility.strSplitMark)) t = ActionType.Fight;
             if (ActionWord.Equals(strEndTurn)) t = ActionType.EndTurn;

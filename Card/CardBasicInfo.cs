@@ -64,6 +64,8 @@ namespace Card
                         return CardTypeEnum.武器;
                     case "M":
                         return CardTypeEnum.随从;
+                    case "S":
+                        return CardTypeEnum.奥秘;
                     default:
                         return CardTypeEnum.其他;
                 }
@@ -90,6 +92,10 @@ namespace Card
             /// 武器
             /// </summary>
             武器,
+            /// <summary>
+            /// 奥秘
+            /// </summary>
+            奥秘,
             /// <summary>
             /// 其他
             /// </summary>

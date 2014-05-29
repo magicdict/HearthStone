@@ -79,7 +79,6 @@ namespace Card.Server
         /// <returns></returns>
         public static String IsGameStart(int GameId)
         {
-            System.Diagnostics.Debug.WriteLine("IsGameStart:" + GameRunning.Count);
             return GameRunning.ContainsKey(GameId) ? CardUtility.strTrue : CardUtility.strFalse;
         }
         /// <summary>
@@ -90,7 +89,6 @@ namespace Card.Server
         /// <returns></returns>
         public static Boolean IsFirst(int GameId, bool IsHost)
         {
-            System.Diagnostics.Debug.WriteLine("IsFirst:" + GameRunning.Count);
             return ((IsHost && GameRunning[GameId].HostAsFirst) || (!IsHost && !GameRunning[GameId].HostAsFirst));
         }
         /// <summary>
@@ -102,7 +100,6 @@ namespace Card.Server
         {
             //IsHost == false 的时候，初始化已经完成，
             //网络版的时候，要向两个客户端发送开始游戏的下一步指令            
-            System.Diagnostics.Debug.WriteLine("SetCardStack:" + GameRunning.Count);
             var result = GameRunning[GameId].SetCardStack(IsHost, card);
         }
         /// <summary>
@@ -114,7 +111,6 @@ namespace Card.Server
         /// <returns></returns>
         public static List<string> DrawCard(int GameId, bool IsFirst, int Count)
         {
-            System.Diagnostics.Debug.WriteLine("SetCardStack:" + GameRunning.Count);
             return GameRunning[GameId].DrawCard(IsFirst, Count);
         }
         /// <summary>
@@ -133,6 +129,15 @@ namespace Card.Server
         public static String ReadAction(int GameId)
         {
             return GameRunning[GameId].ReadAction();
+        }
+        /// <summary>
+        /// 奥秘判定
+        /// </summary>
+        /// <param name="GameId"></param>
+        /// <returns></returns>
+        public static String SecretHit(int GameId, bool IsFirst)
+        {
+            return GameRunning[GameId].SecretHit(IsFirst);
         }
     }
 }

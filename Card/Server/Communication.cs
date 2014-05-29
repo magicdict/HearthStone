@@ -94,6 +94,9 @@ namespace Card.Server
                 case RequestType.读取行动:
                     Response = GameServer.ReadAction(int.Parse(Request.Substring(3, 5)));
                     break;
+                case RequestType.奥秘判定:
+                    Response = GameServer.SecretHit(int.Parse(Request.Substring(3, 5)), Request.Substring(8, 1) == CardUtility.strTrue);
+                    break;                
                 default:
                     break;
             }
@@ -172,7 +175,11 @@ namespace Card.Server
             /// <summary>
             /// 读取行动
             /// </summary>
-            读取行动
+            读取行动,
+            /// <summary>
+            /// 奥秘判定
+            /// </summary>
+            奥秘判定
         }
     }
 }

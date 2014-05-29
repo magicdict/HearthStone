@@ -65,39 +65,14 @@ namespace Card.Client
             var HandCard = Card.Server.ClientUtlity.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, IsFirst ? 3 : 4);
             MySelf.RoleInfo.crystal.CurrentFullPoint = 0;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 0;
-            //DEBUG
-            //烈日行者
-            //HandCard.Add("M000099");
-            ////森林狼
-            //HandCard.Add("M000090");
-            ////银色侍从
-            //HandCard.Add("M000077");
-            ////岩浆暴怒者
-            //HandCard.Add("M000097");
-            ////虚空行者
-            //HandCard.Add("M000084");
-            //野性成长
-            //HandCard.Add("A000091");
-            //冰霜新星
-            //HandCard.Add("A000038");
-            //镜像
-            //HandCard.Add("A000028");
-            //奥术智慧
-            //HandCard.Add("A000088");
-            //艾露恩的女祭司(战吼)
-            //HandCard.Add("M000014");
-            //战利品贮藏者
-            //HandCard.Add("M000037");
-            //炎魔之王拉格纳罗斯
-            //HandCard.Add("M000184");
-            //攻城车
-            HandCard.Add("M000101");
+            //DEBUG START
+            HandCard.Add("S000001");
             MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
-            //DEBUG
+            //DEBUG END
             //英雄技能：奥术飞弹
-            MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000065");
-            YourInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000065");
+            MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000056");
+            YourInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000056");
             if (!IsFirst) HandCard.Add(Card.CardUtility.SN幸运币);
             foreach (var card in HandCard)
             {

@@ -46,6 +46,11 @@ namespace Card.Server
         /// </summary>
         private Stack<String> FirstCardStack;
         /// <summary>
+        /// 先手奥秘
+        /// </summary>
+        private List<String> FirstSecret = new List<string>();
+
+        /// <summary>
         /// 后手牌堆
         /// </summary>
         private CardDeck SecondCardDeck = new CardDeck();
@@ -53,6 +58,11 @@ namespace Card.Server
         /// 后手套牌
         /// </summary>
         private Stack<String> SecondCardStack;
+        /// <summary>
+        /// 后手奥秘
+        /// </summary>
+        private List<String> SecondSecret = new List<string>();
+
         /// <summary>
         /// 行动集
         /// </summary>
@@ -122,7 +132,26 @@ namespace Card.Server
         {
             foreach (var actionDetail in Action.Split("|".ToCharArray()))
             {
-                ActionInfo.Add(actionDetail);
+                if (Action.StartsWith(ActionCode.strSecret + CardUtility.strSplitMark))
+                {
+                    //使用奥秘
+                    String SecretCardSN = actionDetail.Substring(ActionCode.strSecret.Length + Card.CardUtility.strSplitMark.Length);
+                    if (IsFirstNowTurn)
+                    {
+                        FirstSecret.Add(SecretCardSN);
+                    }
+                    else
+                    {
+                        SecondSecret.Add(SecretCardSN);
+                    }
+                    //奥秘的时候，不放松奥秘内容
+                    //注意和ActionCode.GetActionType()保持一致
+                    ActionInfo.Add(ActionCode.strSecret);
+                }
+                else
+                {
+                    ActionInfo.Add(actionDetail);
+                }
             }
             //如果是回合结束的指令的时候，翻转是否是先手回合的标志
             if (Action == ActionCode.strEndTurn) IsFirstNowTurn = !IsFirstNowTurn;
@@ -140,6 +169,15 @@ namespace Card.Server
             if (!String.IsNullOrEmpty(lstAction)) lstAction = lstAction.TrimEnd("|".ToCharArray());
             ActionInfo.Clear();
             return lstAction;
+        }
+        /// <summary>
+        /// 是否HIT奥秘
+        /// </summary>
+        /// <param name="IsFirst">是否为先手</param>
+        /// <returns></returns>
+        public string SecretHit(bool IsFirst)
+        {
+            return String.Empty;
         }
     }
 }
