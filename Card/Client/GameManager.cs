@@ -86,6 +86,8 @@ namespace Card.Client
             //HandCard.Add("A000088");
             //艾露恩的女祭司(战吼)
             HandCard.Add("M000014");
+            //战利品贮藏者
+            HandCard.Add("M000037");
 
             MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
@@ -209,8 +211,9 @@ namespace Card.Client
         /// <summary>
         /// 使用法术
         /// </summary>
-        /// <param name="CardSn"></param>
-        public List<String> UseAbility(Card.AbilityCard card)
+        /// <param name="card"></param>
+        /// <param name="ConvertPosDirect">对象方向转换</param>
+        public List<String> UseAbility(Card.AbilityCard card, Boolean ConvertPosDirect)
         {
             List<String> Result = new List<string>();
             Card.CardUtility.PickEffect PickEffectResult = CardUtility.PickEffect.第一效果;
@@ -230,6 +233,25 @@ namespace Card.Client
                 if (singleEff.IsNeedSelectTarget())
                 {
                     Pos = GetSelectTarget(singleEff.EffectTargetSelectDirect, singleEff.EffectTargetSelectRole, false);
+                }
+                else
+                {
+                    if (ConvertPosDirect)
+                    {
+                        switch (singleEff.EffectTargetSelectDirect)
+                        {
+                            case CardUtility.TargetSelectDirectEnum.本方:
+                                singleEff.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
+                                break;
+                            case CardUtility.TargetSelectDirectEnum.对方:
+                                singleEff.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.本方;
+                                break;
+                            case CardUtility.TargetSelectDirectEnum.双方:
+                                break;
+                            default:
+                                break;
+                        }
+                    }
                 }
                 Result.AddRange(EffectDefine.RunSingleEffect(singleEff, this, Pos, Seed));
                 Seed++;
@@ -343,14 +365,18 @@ namespace Card.Client
             List<String> actionlst = new List<string>();
             //1.检查需要移除的对象
             var MyDeadMinion = MySelf.RoleInfo.BattleField.ClearDead();
-            foreach (var cardSn in MyDeadMinion)
+            foreach (var minion in MyDeadMinion)
             {
-                actionlst.Add(Card.Server.ActionCode.strDead + Card.CardUtility.strSplitMark + CardUtility.strMe + cardSn);
+                actionlst.Add(Card.Server.ActionCode.strDead + Card.CardUtility.strSplitMark + CardUtility.strMe + Card.CardUtility.strSplitMark + minion.SN);
+                //亡语的时候，需要倒置方向
+                actionlst.AddRange(minion.发动亡语(this, false));
             }
             var YourDeadMinion = YourInfo.BattleField.ClearDead();
-            foreach (var cardSn in YourDeadMinion)
+            foreach (var minion in YourDeadMinion)
             {
-                actionlst.Add(Card.Server.ActionCode.strDead + Card.CardUtility.strSplitMark + CardUtility.strYou + cardSn);
+                actionlst.Add(Card.Server.ActionCode.strDead + Card.CardUtility.strSplitMark + CardUtility.strYou + Card.CardUtility.strSplitMark + minion.SN);
+                //亡语的时候，需要倒置方向
+                actionlst.AddRange(minion.发动亡语(this, true));
             }
             //2.重新计算Buff
             MySelf.RoleInfo.BattleField.ResetBuff();

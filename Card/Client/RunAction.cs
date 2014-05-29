@@ -13,8 +13,9 @@ namespace Card.Client
         /// </summary>
         /// <param name="game"></param>
         /// <param name="CardSn"></param>
+        /// <param name="ConvertPosDirect">亡语的时候，需要倒置方向</param>
         /// <returns></returns>
-        public static List<String> StartAction(GameManager game, String CardSn)
+        public static List<String> StartAction(GameManager game, String CardSn,Boolean ConvertPosDirect = false)
         {
             Card.CardBasicInfo card = Card.CardUtility.GetCardInfoBySN(CardSn);
             List<String> ActionCodeLst = new List<string>();
@@ -25,7 +26,7 @@ namespace Card.Client
                     //初始化 Buff效果等等
                     Card.AbilityCard ablity = (Card.AbilityCard)CardUtility.GetCardInfoBySN(CardSn);
                     ablity.CardAbility.Init();
-                    var ResultArg = game.UseAbility(ablity);
+                    var ResultArg = game.UseAbility(ablity, ConvertPosDirect);
                     if (ResultArg.Count != 0) ActionCodeLst.AddRange(ResultArg);
                     break;
                 case "M":
@@ -35,6 +36,7 @@ namespace Card.Client
                     //初始化
                     minion.Init();
                     game.MySelf.RoleInfo.BattleField.PutToBattle(MinionPos, minion);
+                    ActionCodeLst.AddRange(minion.发动战吼(game));
                     game.MySelf.RoleInfo.BattleField.ResetBuff();
                     break;
                 case "W":

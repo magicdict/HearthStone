@@ -1,4 +1,5 @@
-﻿using Card.Effect;
+﻿using Card.Client;
+using Card.Effect;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -286,6 +287,41 @@ namespace Card
         public bool IsLive()
         {
             return ActualHealthPoint > 0;
+        }
+        /// <summary>
+        /// 发动战吼
+        /// </summary>
+        /// <returns></returns>
+        public List<String> 发动战吼(GameManager game)
+        {
+            List<String> ActionCodeLst = new List<string>();
+            //战吼效果
+            if (战吼效果 != String.Empty)
+            {
+                var 战吼Result = RunAction.StartAction(game, 战吼效果);
+                //第一条是使用了战吼卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
+                战吼Result.RemoveAt(0);
+                ActionCodeLst.AddRange(战吼Result);
+            }
+            return ActionCodeLst;
+        }
+        /// <summary>
+        /// 发动亡语
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
+        public List<String> 发动亡语(GameManager game, Boolean IsNeedConvertPosDirect)
+        {
+            List<String> ActionCodeLst = new List<string>();
+            //亡语效果
+            if (亡语效果 != String.Empty)
+            {
+                var 战吼Result = RunAction.StartAction(game, 亡语效果, IsNeedConvertPosDirect);
+                //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
+                战吼Result.RemoveAt(0);
+                ActionCodeLst.AddRange(战吼Result);
+            }
+            return ActionCodeLst;
         }
         /// <summary>
         /// 攻击后

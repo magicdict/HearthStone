@@ -55,6 +55,7 @@ namespace Card.Client
             int Position = MinionCount + 1;
             PutToBattle(Position, CardSn);
         }
+
         /// <summary>
         /// 卡牌入战场
         /// </summary>
@@ -147,9 +148,11 @@ namespace Card.Client
         /// <summary>
         /// 去除死去随从
         /// </summary>
-        public List<String> ClearDead()
+        public List<MinionCard> ClearDead()
         {
-            List<String> DeadList = new List<String>();
+            //必须是当前的随从，不能使编号
+            //如果是沉默状态的随从，无亡语效果！
+            List<MinionCard> DeadList = new List<MinionCard>();
             var CloneMinions = new MinionCard[BattleFieldInfo.MaxMinionCount];
             int ALive = 0;
             for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
@@ -163,7 +166,7 @@ namespace Card.Client
                     }
                     else
                     {
-                        DeadList.Add(BattleMinions[i].SN);
+                        DeadList.Add(BattleMinions[i]);
                     }
                 }
             }
