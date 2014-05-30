@@ -29,6 +29,10 @@ namespace Card.Server
             /// </summary>
             UseSecret,
             /// <summary>
+            /// 命中奥秘
+            /// </summary>
+            HitSecret,
+            /// <summary>
             /// 攻击处理
             /// </summary>
             Attack,
@@ -150,6 +154,7 @@ namespace Card.Server
             if (ActionWord.StartsWith(strAbility + CardUtility.strSplitMark)) t = ActionType.UseAbility;
             //服务器不发送具体奥秘内容
             if (ActionWord.Equals(strSecret)) t = ActionType.UseSecret;
+            if (ActionWord.StartsWith(strHitSecret + CardUtility.strSplitMark)) t = ActionType.HitSecret;
 
             if (ActionWord.StartsWith(strFight + CardUtility.strSplitMark)) t = ActionType.Fight;
             if (ActionWord.Equals(strEndTurn)) t = ActionType.EndTurn;

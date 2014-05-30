@@ -20,7 +20,39 @@ namespace Card.Client
                     game.YourInfo.Weapon = (Card.WeaponCard)Card.CardUtility.GetCardInfoBySN(actField[1]);
                     break;
                 case ActionCode.ActionType.UseSecret:
-                    game.YourInfo.SecretCount++;;
+                    game.YourInfo.SecretCount++; ;
+                    break;
+                case ActionCode.ActionType.HitSecret:
+                    if (actField[1] == CardUtility.strYou)
+                    {
+                        //
+                        Card.SecretCard Hit = new SecretCard();
+                        foreach (var secret in game.MySelf.奥秘列表)
+                        {
+                            if (secret.SN == actField[2])
+                            {
+                                Hit = secret;
+                                break;
+                            }
+                        }
+                        game.MySelf.奥秘列表.Remove(Hit);
+                    }
+                    else
+                    {
+                        game.YourInfo.SecretCount--;
+                    }
+                    break;
+                case ActionCode.ActionType.Point:
+                    if (actField[1] == CardUtility.strYou)
+                    {
+                        game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].实际生命值 = int.Parse(actField[3].Substring(0, 1));
+                        game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].实际攻击力 = int.Parse(actField[3].Substring(2, 1));
+                    }
+                    else
+                    {
+                        game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].实际生命值 = int.Parse(actField[3].Substring(0, 1));
+                        game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].实际攻击力 = int.Parse(actField[3].Substring(2, 1));
+                    }
                     break;
                 case ActionCode.ActionType.UseMinion:
                     int Pos = int.Parse(actField[2]);

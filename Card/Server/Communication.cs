@@ -85,7 +85,7 @@ namespace Card.Server
                     break;
                 case RequestType.抽牌:
                     var Cardlist = GameServer.DrawCard(int.Parse(Request.Substring(3, 5)), Request.Substring(8, 1) == CardUtility.strTrue,int.Parse(Request.Substring(9, 1) ));
-                    Response = String.Join("|",Cardlist.ToArray());
+                    Response = String.Join(Card.CardUtility.strSplitArrayMark,Cardlist.ToArray());
                     break;
                 case RequestType.回合结束:
                 case RequestType.写入行动:

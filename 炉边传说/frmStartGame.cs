@@ -50,7 +50,7 @@ namespace 炉边传说
         {
             lstWaitGuest.Items.Clear();
             String WaitGame = Card.Server.ClientUtlity.GetWatiGameList();
-            String[] WaitGameArray = WaitGame.Split("|".ToCharArray());
+            String[] WaitGameArray = WaitGame.Split(Card.CardUtility.strSplitArrayMark.ToCharArray());
             for (int i = 0; i < WaitGameArray.Length; i++)
             {
                 lstWaitGuest.Items.Add(WaitGameArray[i]);

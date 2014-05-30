@@ -273,11 +273,12 @@ namespace Card.Client
                 var HitCard = Card.Server.ClientUtlity.IsSecretHit(GameId.ToString(GameServer.GameIdFormat), IsFirst, actionlst);
                 if (!String.IsNullOrEmpty(HitCard))
                 {
-                    var HitCardList = HitCard.Split("|".ToCharArray());
+                    var HitCardList = HitCard.Split(Card.CardUtility.strSplitArrayMark.ToCharArray());
                     foreach (var hitCard in HitCardList)
                     {
-                        Result.AddRange(Card.SecretCard.RunSecretHit(hitCard.Split(Card.CardUtility.strSplitMark.ToCharArray())[0],
-                                                                     hitCard.Split(Card.CardUtility.strSplitMark.ToCharArray())[1], false, this));
+                        Result.AddRange(Card.SecretCard.RunSecretHit(hitCard.Split(Card.CardUtility.strSplitDiffMark.ToCharArray())[0],
+                                                                     hitCard.Split(Card.CardUtility.strSplitDiffMark.ToCharArray())[1], false, this));
+                        YourInfo.SecretCount--;
                     }
                 }
             }

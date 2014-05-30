@@ -70,7 +70,7 @@ namespace Card.Server
             {
                 WaitGame += item.Key + "(" + item.Value.HostNickName + ")|";
             }
-            WaitGame = WaitGame.TrimEnd("|".ToCharArray());
+            WaitGame = WaitGame.TrimEnd(Card.CardUtility.strSplitArrayMark.ToCharArray());
             return WaitGame;
         }
         /// <summary>

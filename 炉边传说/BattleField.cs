@@ -310,7 +310,7 @@ namespace 炉边传说
         {
             var Actions = Card.Server.ClientUtlity.ReadAction(game.GameId.ToString(GameServer.GameIdFormat));
             if (String.IsNullOrEmpty(Actions)) return;
-            var ActionList = Actions.Split("|".ToCharArray());
+            var ActionList = Actions.Split(Card.CardUtility.strSplitArrayMark.ToCharArray());
             foreach (var item in ActionList)
             {
                 lstAction.Items.Add("Received:[" + item + "]");

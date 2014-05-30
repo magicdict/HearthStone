@@ -69,7 +69,7 @@ namespace Card.Server
         {
             String requestInfo = Card.Server.Communication.RequestType.抽牌.GetHashCode().ToString("D3") + GameId + (IsFirst ? CardUtility.strTrue : CardUtility.strFalse) + CardCount.ToString("D1");
             List<String> CardList = new List<string>();
-            foreach (var card in Card.Server.Communication.Request(requestInfo, strIP).Split("|".ToArray()))
+            foreach (var card in Card.Server.Communication.Request(requestInfo, strIP).Split(Card.CardUtility.strSplitArrayMark.ToArray()))
             {
                 CardList.Add(card);
             }
@@ -94,9 +94,9 @@ namespace Card.Server
             String Transform = String.Empty;
             foreach (var item in Action)
             {
-                Transform += item + "|";
+                Transform += item + Card.CardUtility.strSplitArrayMark;
             }
-            Transform = Transform.TrimEnd("|".ToCharArray());
+            Transform = Transform.TrimEnd(Card.CardUtility.strSplitArrayMark.ToCharArray());
             String requestInfo = Card.Server.Communication.RequestType.写入行动.GetHashCode().ToString("D3") + GameId + Transform;
             Card.Server.Communication.Request(requestInfo, strIP);
         }
@@ -119,9 +119,9 @@ namespace Card.Server
             String Transform = String.Empty;
             foreach (var item in Actionlst)
             {
-                Transform += item + "|";
+                Transform += item + Card.CardUtility.strSplitArrayMark;
             }
-            Transform = Transform.TrimEnd("|".ToCharArray());
+            Transform = Transform.TrimEnd(Card.CardUtility.strSplitArrayMark.ToCharArray());
             String requestInfo = Card.Server.Communication.RequestType.奥秘判定.GetHashCode().ToString("D3") + GameId +
                 (IsFirst ? CardUtility.strTrue : CardUtility.strFalse) + Transform;
             return Card.Server.Communication.Request(requestInfo, strIP);

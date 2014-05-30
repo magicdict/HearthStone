@@ -128,7 +128,7 @@ namespace Card.Server
         /// <param name="Action"></param>
         public void WriteAction(String Action)
         {
-            foreach (var actionDetail in Action.Split("|".ToCharArray()))
+            foreach (var actionDetail in Action.Split(Card.CardUtility.strSplitArrayMark.ToCharArray()))
             {
                 if (actionDetail.StartsWith(ActionCode.strSecret + CardUtility.strSplitMark))
                 {
@@ -149,9 +149,33 @@ namespace Card.Server
                 else
                 {
                     //奥秘判断 注意：这个动作需要改变FirstSecret和SecondSecret
-                    if (actionDetail.StartsWith(ActionCode.strHitSecret + CardUtility.strSplitMark))
+                    if (actionDetail.StartsWith(ActionCode.strHitSecret))
                     {
-
+                        var secretInfo = actionDetail.Split(CardUtility.strSplitMark.ToCharArray());
+                        if (IsFirstNowTurn)
+                        {
+                            //先手
+                            if (secretInfo[1] == CardUtility.strMe)
+                            {
+                                FirstSecret.Remove(secretInfo[2]);
+                            }
+                            else
+                            {
+                                SecondSecret.Remove(secretInfo[2]);
+                            }
+                        }
+                        else
+                        {
+                            //后手
+                            if (secretInfo[1] == CardUtility.strMe)
+                            {
+                                SecondSecret.Remove(secretInfo[2]);
+                            }
+                            else
+                            {
+                                FirstSecret.Remove(secretInfo[2]);
+                            }
+                        }
                     }
                     //动作写入
                     ActionInfo.Add(actionDetail);
@@ -168,9 +192,9 @@ namespace Card.Server
             String lstAction = String.Empty;
             foreach (var item in ActionInfo)
             {
-                lstAction += item + "|";
+                lstAction += item + Card.CardUtility.strSplitArrayMark;
             }
-            if (!String.IsNullOrEmpty(lstAction)) lstAction = lstAction.TrimEnd("|".ToCharArray());
+            if (!String.IsNullOrEmpty(lstAction)) lstAction = lstAction.TrimEnd(Card.CardUtility.strSplitArrayMark.ToCharArray());
             ActionInfo.Clear();
             return lstAction;
         }
@@ -187,7 +211,7 @@ namespace Card.Server
             //<本方奥秘在客户端判断>注意方向
             //2.服务器端只做判断，并且返回命中奥秘的列表，不做任何其他操作！
             List<String> HITCardList = new List<string>();
-            foreach (var actionDetail in Action.Split("|".ToCharArray()))
+            foreach (var actionDetail in Action.Split(Card.CardUtility.strSplitArrayMark.ToCharArray()))
             {
                 //检查Second
                 if (IsFirst && SecondSecret.Count != 0)
@@ -196,7 +220,7 @@ namespace Card.Server
                     {
                         if (SecretCard.IsSecretHit(SecondSecret[i], actionDetail, false))
                         {
-                            HITCardList.Add(SecondSecret[i] + Card.CardUtility.strSplitMark + actionDetail);
+                            HITCardList.Add(SecondSecret[i] + Card.CardUtility.strSplitDiffMark + actionDetail);
                         }
                     }
                 }
@@ -219,7 +243,7 @@ namespace Card.Server
                 {
                     strRtn += card + Card.CardUtility.strSplitArrayMark;
                 }
-                strRtn = strRtn.TrimEnd("|".ToCharArray());
+                strRtn = strRtn.TrimEnd(Card.CardUtility.strSplitArrayMark.ToCharArray());
             }
             return strRtn;
         }
