@@ -22,30 +22,24 @@ namespace Card.Effect
                 point = int.Parse(Op[0].Substring(1, 1));
                 if (Op[0].Substring(0, 1) == "+")
                 {
-                    for (int i = 0; i < point; i++)
+                    if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
                     {
-                        if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
-                        {
-                            game.MySelf.RoleInfo.crystal.AddCurrentPoint();
-                        }
-                        else
-                        {
-                            game.YourInfo.crystal.AddCurrentPoint();
-                        }
+                        game.MySelf.RoleInfo.crystal.AddCurrentPoint(point);
+                    }
+                    else
+                    {
+                        game.YourInfo.crystal.AddCurrentPoint(point);
                     }
                 }
                 else
                 {
-                    for (int i = 0; i < point; i++)
+                    if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
                     {
-                        if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
-                        {
-                            game.MySelf.RoleInfo.crystal.ReduceCurrentPoint();
-                        }
-                        else
-                        {
-                            game.YourInfo.crystal.ReduceCurrentPoint();
-                        }
+                        game.MySelf.RoleInfo.crystal.ReduceCurrentPoint(point);
+                    }
+                    else
+                    {
+                        game.YourInfo.crystal.ReduceCurrentPoint(point);
                     }
                 }
             }
@@ -55,30 +49,24 @@ namespace Card.Effect
                 point = int.Parse(Op[1].Substring(1, 1));
                 if (Op[1].Substring(0, 1) == "+")
                 {
-                    for (int i = 0; i < point; i++)
+                    if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
                     {
-                        if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
-                        {
-                            game.MySelf.RoleInfo.crystal.AddFullPoint();
-                        }
-                        else
-                        {
-                            game.YourInfo.crystal.AddFullPoint();
-                        }
+                        game.MySelf.RoleInfo.crystal.AddFullPoint(point);
+                    }
+                    else
+                    {
+                        game.YourInfo.crystal.AddFullPoint(point);
                     }
                 }
                 else
                 {
-                    for (int i = 0; i < point; i++)
+                    if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
                     {
-                        if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
-                        {
-                            game.MySelf.RoleInfo.crystal.ReduceFullPoint();
-                        }
-                        else
-                        {
-                            game.YourInfo.crystal.ReduceFullPoint();
-                        }
+                        game.MySelf.RoleInfo.crystal.ReduceFullPoint(point);
+                    }
+                    else
+                    {
+                        game.YourInfo.crystal.ReduceFullPoint(point);
                     }
                 }
             }

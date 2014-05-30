@@ -41,6 +41,7 @@
             this.btnPos3 = new System.Windows.Forms.Button();
             this.btnPos2 = new System.Windows.Forms.Button();
             this.btnPos1 = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnMe6
@@ -99,66 +100,77 @@
             // 
             // btnPos7
             // 
-            this.btnPos7.Location = new System.Drawing.Point(666, 99);
+            this.btnPos7.Location = new System.Drawing.Point(667, 99);
             this.btnPos7.Name = "btnPos7";
-            this.btnPos7.Size = new System.Drawing.Size(100, 67);
+            this.btnPos7.Size = new System.Drawing.Size(99, 32);
             this.btnPos7.TabIndex = 59;
             this.btnPos7.Text = "位置7";
             this.btnPos7.UseVisualStyleBackColor = true;
             // 
             // btnPos6
             // 
-            this.btnPos6.Location = new System.Drawing.Point(560, 99);
+            this.btnPos6.Location = new System.Drawing.Point(561, 99);
             this.btnPos6.Name = "btnPos6";
-            this.btnPos6.Size = new System.Drawing.Size(100, 67);
+            this.btnPos6.Size = new System.Drawing.Size(99, 32);
             this.btnPos6.TabIndex = 58;
             this.btnPos6.Text = "位置6";
             this.btnPos6.UseVisualStyleBackColor = true;
             // 
             // btnPos5
             // 
-            this.btnPos5.Location = new System.Drawing.Point(454, 99);
+            this.btnPos5.Location = new System.Drawing.Point(455, 99);
             this.btnPos5.Name = "btnPos5";
-            this.btnPos5.Size = new System.Drawing.Size(100, 67);
+            this.btnPos5.Size = new System.Drawing.Size(99, 32);
             this.btnPos5.TabIndex = 57;
             this.btnPos5.Text = "位置5";
             this.btnPos5.UseVisualStyleBackColor = true;
             // 
             // btnPos4
             // 
-            this.btnPos4.Location = new System.Drawing.Point(348, 99);
+            this.btnPos4.Location = new System.Drawing.Point(349, 99);
             this.btnPos4.Name = "btnPos4";
-            this.btnPos4.Size = new System.Drawing.Size(100, 67);
+            this.btnPos4.Size = new System.Drawing.Size(99, 32);
             this.btnPos4.TabIndex = 56;
             this.btnPos4.Text = "位置4";
             this.btnPos4.UseVisualStyleBackColor = true;
             // 
             // btnPos3
             // 
-            this.btnPos3.Location = new System.Drawing.Point(242, 99);
+            this.btnPos3.Location = new System.Drawing.Point(243, 99);
             this.btnPos3.Name = "btnPos3";
-            this.btnPos3.Size = new System.Drawing.Size(100, 67);
+            this.btnPos3.Size = new System.Drawing.Size(99, 32);
             this.btnPos3.TabIndex = 55;
             this.btnPos3.Text = "位置3";
             this.btnPos3.UseVisualStyleBackColor = true;
             // 
             // btnPos2
             // 
-            this.btnPos2.Location = new System.Drawing.Point(136, 99);
+            this.btnPos2.Location = new System.Drawing.Point(137, 99);
             this.btnPos2.Name = "btnPos2";
-            this.btnPos2.Size = new System.Drawing.Size(100, 67);
+            this.btnPos2.Size = new System.Drawing.Size(99, 32);
             this.btnPos2.TabIndex = 54;
             this.btnPos2.Text = "位置2";
             this.btnPos2.UseVisualStyleBackColor = true;
             // 
             // btnPos1
             // 
-            this.btnPos1.Location = new System.Drawing.Point(30, 99);
+            this.btnPos1.Location = new System.Drawing.Point(31, 99);
             this.btnPos1.Name = "btnPos1";
-            this.btnPos1.Size = new System.Drawing.Size(100, 67);
+            this.btnPos1.Size = new System.Drawing.Size(99, 32);
             this.btnPos1.TabIndex = 60;
             this.btnPos1.Text = "位置1";
             this.btnPos1.UseVisualStyleBackColor = true;
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
+            this.btnCancel.Location = new System.Drawing.Point(667, 152);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(99, 23);
+            this.btnCancel.TabIndex = 61;
+            this.btnCancel.Text = "取消";
+            this.btnCancel.UseVisualStyleBackColor = false;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // PutMinion
             // 
@@ -166,6 +178,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(793, 196);
+            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnPos1);
             this.Controls.Add(this.btnPos7);
             this.Controls.Add(this.btnPos6);
@@ -202,5 +215,6 @@
         private System.Windows.Forms.Button btnPos3;
         private System.Windows.Forms.Button btnPos2;
         private System.Windows.Forms.Button btnPos1;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

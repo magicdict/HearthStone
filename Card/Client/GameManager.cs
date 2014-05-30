@@ -41,6 +41,10 @@ namespace Card.Client
         /// </summary>
         public Card.CardUtility.delegatePickEffect PickEffect;
         /// <summary>
+        /// 过载
+        /// </summary>
+        public int OverloadPoint = 0;
+        /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
@@ -66,10 +70,9 @@ namespace Card.Client
             MySelf.RoleInfo.crystal.CurrentFullPoint = 0;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 0;
             //DEBUG START
-            HandCard.Add("A000014");
-            HandCard.Add("M000118");
             MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
+            HandCard.Add("A000014");
             //DEBUG END
             //英雄技能：奥术飞弹
             MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000056");
@@ -100,6 +103,16 @@ namespace Card.Client
         /// </summary>
         public PlayerBasicInfo YourInfo = new PlayerBasicInfo();
         /// <summary>
+        /// 检查是否可以使用
+        /// </summary>
+        /// <returns></returns>
+        public Boolean CheckCondition(Card.CardBasicInfo card)
+        {
+            //剩余的法力是否足够实际召唤的法力
+            if (card.Overload > 0 && OverloadPoint > 0) return false;
+            return MySelf.RoleInfo.crystal.CurrentRemainPoint >= card.ActualCostPoint;
+        }
+        /// <summary>
         /// 新的回合
         /// </summary>
         public void TurnStart()
@@ -108,6 +121,12 @@ namespace Card.Client
             {
                 //魔法水晶的增加
                 MySelf.RoleInfo.crystal.NewTurn();
+                //过载的清算
+                if (OverloadPoint != 0)
+                {
+                    MySelf.RoleInfo.crystal.ReduceCurrentPoint(OverloadPoint);
+                    OverloadPoint = 0;
+                }
                 //手牌
                 var NewCardList = Card.Server.ClientUtlity.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, 1);
                 foreach (var card in NewCardList)
@@ -205,13 +224,13 @@ namespace Card.Client
             for (int i = 0; i < SingleEffectList.Count; i++)
             {
                 Card.CardUtility.TargetPosition Pos = new CardUtility.TargetPosition();
-                //取消处理
-                if (Pos.Postion == -1) return new List<string>();
                 var singleEff = SingleEffectList[i];
                 singleEff.EffectCount = 1;
                 if (singleEff.IsNeedSelectTarget())
                 {
                     Pos = GetSelectTarget(singleEff.EffectTargetSelectDirect, singleEff.EffectTargetSelectRole, false);
+                    //取消处理
+                    if (Pos.Postion == -1) return new List<string>();
                 }
                 else
                 {

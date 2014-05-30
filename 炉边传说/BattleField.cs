@@ -374,7 +374,7 @@ namespace 炉边传说
             if (Card.CardUtility.GetCardInfoBySN(CardSn) != null)
             {
                 Card.CardBasicInfo card = Card.CardUtility.GetCardInfoBySN(CardSn);
-                if (game.MySelf.RoleInfo.crystal.CurrentRemainPoint < card.ActualCostPoint)
+                if (game.CheckCondition(card))
                 {
                     MessageBox.Show("水晶不够");
                     return;
@@ -390,9 +390,9 @@ namespace 炉边传说
                     var action = ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +
                                  game.MySelf.RoleInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentFullPoint;
                     actionlst.Add(action);
+                    actionlst.AddRange(game.奥秘计算(actionlst));
+                    Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
                 }
-                actionlst.AddRange(game.奥秘计算(actionlst));
-                Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
             }
             //界面更新
             if (((Button)sender).Name == "btnMyHeroAblity") game.MySelf.RoleInfo.IsUsedHeroAbility = true;

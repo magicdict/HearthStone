@@ -175,14 +175,14 @@ namespace CardHelper
                     Minion.光环效果.EffectType = CardUtility.GetEnum<Card.MinionCard.光环类型>(worksheet.Cells(rowCount, 23).Text, Card.MinionCard.光环类型.增加攻防);
                     Minion.光环效果.BuffInfo = worksheet.Cells(rowCount, 24).Text;
                 }
-
                 Minion.战吼效果 = worksheet.Cells(rowCount, 25).Text;
                 Minion.亡语效果 = worksheet.Cells(rowCount, 26).Text;
                 Minion.激怒效果 = worksheet.Cells(rowCount, 27).Text;
                 Minion.连击效果 = worksheet.Cells(rowCount, 28).Text;
                 Minion.回合开始效果 = worksheet.Cells(rowCount, 29).Text;
                 Minion.回合结束效果 = worksheet.Cells(rowCount, 30).Text;
-
+                Minion.伤害效果 = worksheet.Cells(rowCount, 31).Text;
+                Minion.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 32).Text);
                 switch (target)
                 {
                     case TargetType.MongoDB:
@@ -261,6 +261,7 @@ namespace CardHelper
                     effect2.AddtionInfo = worksheet.Cells(rowCount, 30).Text;
                     Ability.CardAbility.SecondAbilityDefine = effect2;
                 }
+                Ability.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 31).Text);
                 switch (target)
                 {
                     case TargetType.MongoDB:

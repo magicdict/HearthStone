@@ -51,5 +51,15 @@ namespace 炉边传说
                 };
             }
         }
+        /// <summary>
+        /// 取消
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            MinionPos = -1;
+            this.Close();
+        }
     }
 }

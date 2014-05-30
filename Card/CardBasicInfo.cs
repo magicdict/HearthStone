@@ -121,14 +121,9 @@ namespace Card
         /// </remarks>
         public int ActualCostPoint;
         /// <summary>
-        /// 检查是否可以使用
+        /// 
         /// </summary>
         /// <returns></returns>
-        public Boolean CheckCondition(PlayerBasicInfo info)
-        {
-            //剩余的法力是否足够实际召唤的法力
-            return info.crystal.CurrentRemainPoint >= ActualCostPoint;
-        }
         public String GetInfo()
         {
             return "[" + CardType.ToString() + "]" + Name + "[" + ActualCostPoint + "]";

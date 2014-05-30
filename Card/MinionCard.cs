@@ -140,6 +140,10 @@ namespace Card
         /// </summary>
         public String 回合结束效果 = String.Empty;
         /// <summary>
+        /// 伤害效果(POINT效果信息)
+        /// </summary>
+        public String 伤害效果 = String.Empty;
+        /// <summary>
         /// 该单位在战地时的效果
         /// </summary>
         public Buff 光环效果;
@@ -343,7 +347,7 @@ namespace Card
         {
             List<String> ActionCodeLst = new List<string>();
             //战吼效果
-            if (战吼效果 != String.Empty)
+            if (战吼效果 != String.Empty && !Is沉默Status)
             {
                 var 战吼Result = RunAction.StartAction(game, 战吼效果);
                 //第一条是使用了战吼卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
@@ -433,6 +437,11 @@ namespace Card
             if (!Is圣盾Status) 实际生命值 -= AttackPoint;
             //失去圣盾
             Is圣盾Status = false;
+            if (AttackPoint > 0)
+            { 
+                受过伤害 = true;
+                if (!Is沉默Status && !String.IsNullOrEmpty(伤害效果)) Card.Effect.PointEffect.RunPointEffect(this, 伤害效果);
+            }
         }
         /// <summary>
         /// 获得信息

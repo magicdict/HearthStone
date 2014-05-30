@@ -30,17 +30,31 @@ namespace Card.Client
                     Card.AbilityCard ablity = (Card.AbilityCard)CardUtility.GetCardInfoBySN(CardSn);
                     ablity.CardAbility.Init();
                     var ResultArg = game.UseAbility(ablity, ConvertPosDirect);
-                    if (ResultArg.Count != 0) ActionCodeLst.AddRange(ResultArg);
+                    if (ResultArg.Count != 0)
+                    {
+                        ActionCodeLst.AddRange(ResultArg);
+                    }
+                    else
+                    {
+                        ActionCodeLst.Clear();
+                    }
                     break;
                 case CardBasicInfo.CardTypeEnum.随从:
                     int MinionPos = GetPutPos(game);
-                    ActionCodeLst.Add(UseMinion(CardSn, MinionPos));
-                    var minion = (Card.MinionCard)card;
-                    //初始化
-                    minion.Init();
-                    game.MySelf.RoleInfo.BattleField.PutToBattle(MinionPos, minion);
-                    ActionCodeLst.AddRange(minion.发动战吼(game));
-                    game.MySelf.RoleInfo.BattleField.ResetBuff();
+                    if (MinionPos != -1)
+                    {
+                        ActionCodeLst.Add(UseMinion(CardSn, MinionPos));
+                        var minion = (Card.MinionCard)card;
+                        //初始化
+                        minion.Init();
+                        game.MySelf.RoleInfo.BattleField.PutToBattle(MinionPos, minion);
+                        ActionCodeLst.AddRange(minion.发动战吼(game));
+                        game.MySelf.RoleInfo.BattleField.ResetBuff();
+                    }
+                    else
+                    {
+                        ActionCodeLst.Clear();
+                    }
                     break;
                 case CardBasicInfo.CardTypeEnum.武器:
                     ActionCodeLst.Add(UseWeapon(CardSn));
