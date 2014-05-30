@@ -6,14 +6,14 @@ using Card.Client;
 namespace Card.Server
 {
 
-    ///原本应该是服务器方法，但是为了开始测试，暂时作为客户端方法
-    ///这样的话，就可以暂时不用考虑网络通讯了
+    /// 原本应该是服务器方法，但是为了开始测试，暂时作为客户端方法
+    /// 这样的话，就可以暂时不用考虑网络通讯了
     /// <summary>
     /// 游戏状态(如果考虑到同时有多个游戏，必须为非静态)
     /// </summary>
     ///<remarks>
     /// 最低要求：双方牌堆情况
-    /// （棋牌类游戏难以作弊，无需大量验证）
+    /// 棋牌类游戏难以作弊，无需大量验证
     /// </remarks>
     public class GameStatusAtServer
     {
@@ -36,7 +36,7 @@ namespace Card.Server
         /// <summary>
         /// 当前是否为先手正在的回合
         /// </summary>
-        public Boolean IsFirstNowTurn = false;
+        public Boolean IsFirstNowTurn = true;
         /// <summary>
         /// 先手牌堆
         /// </summary>
@@ -49,7 +49,6 @@ namespace Card.Server
         /// 先手奥秘
         /// </summary>
         private List<String> FirstSecret = new List<string>();
-
         /// <summary>
         /// 后手牌堆
         /// </summary>
@@ -62,7 +61,6 @@ namespace Card.Server
         /// 后手奥秘
         /// </summary>
         private List<String> SecondSecret = new List<string>();
-
         /// <summary>
         /// 行动集
         /// </summary>
@@ -132,7 +130,7 @@ namespace Card.Server
         {
             foreach (var actionDetail in Action.Split("|".ToCharArray()))
             {
-                if (Action.StartsWith(ActionCode.strSecret + CardUtility.strSplitMark))
+                if (actionDetail.StartsWith(ActionCode.strSecret + CardUtility.strSplitMark))
                 {
                     //使用奥秘
                     String SecretCardSN = actionDetail.Substring(ActionCode.strSecret.Length + Card.CardUtility.strSplitMark.Length);
@@ -150,6 +148,12 @@ namespace Card.Server
                 }
                 else
                 {
+                    //奥秘判断 注意：这个动作需要改变FirstSecret和SecondSecret
+                    if (actionDetail.StartsWith(ActionCode.strHitSecret + CardUtility.strSplitMark))
+                    {
+
+                    }
+                    //动作写入
                     ActionInfo.Add(actionDetail);
                 }
             }
@@ -171,13 +175,53 @@ namespace Card.Server
             return lstAction;
         }
         /// <summary>
-        /// 是否HIT奥秘
+        /// 是否HIT对方奥秘
         /// </summary>
         /// <param name="IsFirst">是否为先手</param>
         /// <returns></returns>
-        public string SecretHit(bool IsFirst)
+        public string SecretHitCheck(String Action, bool IsFirst)
         {
-            return String.Empty;
+            //奥秘判断 注意：这个动作并不改变FirstSecret和SecondSecret
+            //1.例如，发生战斗的时候，如果两个随从都死了，
+            //同时两边都有随从死亡的奥秘，则整个动作序列可能触发两边的奥秘
+            //<本方奥秘在客户端判断>注意方向
+            //2.服务器端只做判断，并且返回命中奥秘的列表，不做任何其他操作！
+            List<String> HITCardList = new List<string>();
+            foreach (var actionDetail in Action.Split("|".ToCharArray()))
+            {
+                //检查Second
+                if (IsFirst && SecondSecret.Count != 0)
+                {
+                    for (int i = 0; i < SecondSecret.Count; i++)
+                    {
+                        if (SecretCard.IsSecretHit(SecondSecret[i], actionDetail, false))
+                        {
+                            HITCardList.Add(SecondSecret[i] + Card.CardUtility.strSplitMark + actionDetail);
+                        }
+                    }
+                }
+                //检查First
+                if ((!IsFirst) && FirstSecret.Count != 0)
+                {
+                    for (int i = 0; i < FirstSecret.Count; i++)
+                    {
+                        if (SecretCard.IsSecretHit(FirstSecret[i], actionDetail, false))
+                        {
+                            HITCardList.Add(FirstSecret[i] + Card.CardUtility.strSplitDiffMark + actionDetail);
+                        }
+                    }
+                }
+            }
+            String strRtn = String.Empty;
+            if (HITCardList.Count != 0)
+            {
+                foreach (var card in HITCardList)
+                {
+                    strRtn += card + Card.CardUtility.strSplitArrayMark;
+                }
+                strRtn = strRtn.TrimEnd("|".ToCharArray());
+            }
+            return strRtn;
         }
     }
 }

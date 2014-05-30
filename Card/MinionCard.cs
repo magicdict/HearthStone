@@ -69,7 +69,7 @@ namespace Card
         /// <summary>
         /// 体力（标准）
         /// </summary>
-        public int StandardHealthPoint = -1;
+        public int 标准生命值上限 = -1;
         /// <summary>
         /// 嘲讽(标准)
         /// </summary>
@@ -139,12 +139,17 @@ namespace Card
         /// 攻击力（实际、不包含光环效果）
         /// </summary>
         [XmlIgnore]
-        public int ActualAttackPoint = -1;
+        public int 实际攻击力 = -1;
         /// <summary>
         /// 体力（实际）
         /// </summary>
         [XmlIgnore]
-        public int ActualHealthPoint = -1;
+        public int 实际生命值上限 = -1;
+        /// <summary>
+        /// 体力（实际）
+        /// </summary>
+        [XmlIgnore]
+        public int 实际生命值 = -1;
         /// <summary>
         /// 嘲讽(实际)
         /// </summary>
@@ -220,9 +225,10 @@ namespace Card
         public new void Init()
         {
             //将运行时状态设置为设计时状态
-            this.ActualAttackPoint = this.StandardAttackPoint;
+            this.实际攻击力 = this.StandardAttackPoint;
             this.ActualCostPoint = this.StandardCostPoint;
-            this.ActualHealthPoint = this.StandardHealthPoint;
+            this.实际生命值上限 = this.标准生命值上限;
+            this.实际生命值 = this.标准生命值上限;
             this.Actual冲锋 = this.Standard冲锋;
             this.Actual嘲讽 = this.Standard嘲讽;
             this.Actual风怒 = this.Standard风怒;
@@ -284,7 +290,7 @@ namespace Card
             {
 
             }
-            return ActualAttackPoint + BuffAct;
+            return 实际攻击力 + BuffAct;
         }
         /// <summary>
         /// 实际输出效果
@@ -297,7 +303,7 @@ namespace Card
             {
                 BuffAct += int.Parse(buff.BuffInfo.Split("/".ToCharArray())[1]);
             }
-            return ActualHealthPoint + BuffAct;
+            return 实际生命值 + BuffAct;
         }
         /// <summary>
         /// 生存状态
@@ -305,7 +311,7 @@ namespace Card
         /// <returns></returns>
         public bool IsLive()
         {
-            return ActualHealthPoint > 0;
+            return 实际生命值 > 0;
         }
         /// <summary>
         /// 发动战吼
@@ -402,7 +408,7 @@ namespace Card
         /// </summary>
         public void AfterBeAttack(int AttackPoint)
         {
-            if (!Is圣盾Status) ActualHealthPoint -= AttackPoint;
+            if (!Is圣盾Status) 实际生命值 -= AttackPoint;
             //失去圣盾
             Is圣盾Status = false;
         }
@@ -419,7 +425,7 @@ namespace Card
                                        (Actual风怒 ? "|风" : String.Empty) +
                                        (Actual冲锋 ? "|冲" : String.Empty) + 
                                        (冰冻状态!= CardUtility.EffectTurn.无效果?"冻":String.Empty));
-            Status.AppendLine("[实]" + ActualAttackPoint.ToString() + "/" + ActualHealthPoint.ToString() +
+            Status.AppendLine("[实]" + 实际攻击力.ToString() + "/" + 实际生命值.ToString() +
                               "[总]" + TotalAttack().ToString() + "/" + TotalHealth().ToString());
             return Status.ToString();
         }

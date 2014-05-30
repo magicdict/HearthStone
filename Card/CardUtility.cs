@@ -67,7 +67,7 @@ namespace Card
                         break;
                     case "M":
                         Status.AppendLine("标准攻击力：" + ((Card.MinionCard)info).StandardAttackPoint.ToString());
-                        Status.AppendLine("标准生命值：" + ((Card.MinionCard)info).StandardHealthPoint.ToString());
+                        Status.AppendLine("标准生命值：" + ((Card.MinionCard)info).标准生命值上限.ToString());
                         break;
                     case "W":
                         Status.AppendLine("标准攻击力：" + ((Card.WeaponCard)info).StandardAttackPoint.ToString());
@@ -168,6 +168,14 @@ namespace Card
         /// 分隔符号
         /// </summary>
         public const String strSplitMark = "#";
+        /// <summary>
+        /// 分隔符号（不同内容）
+        /// </summary>
+        public const String strSplitDiffMark = "$";
+        /// <summary>
+        /// 分隔符号(数组)
+        /// </summary>
+        public const String strSplitArrayMark = "|";
         #endregion
         #region"枚举值"
         /// <summary>

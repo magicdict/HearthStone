@@ -70,7 +70,7 @@ namespace Card.Client
                         else
                         {
                             //位置从1开始，数组从0开始
-                            game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].ActualHealthPoint = int.Parse(actField[3]);
+                            game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].实际生命值 = int.Parse(actField[3]);
                         }
                     }
                     else
@@ -82,7 +82,7 @@ namespace Card.Client
                         else
                         {
                             //位置从1开始，数组从0开始
-                            game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].ActualHealthPoint = int.Parse(actField[3]);
+                            game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].实际生命值 = int.Parse(actField[3]);
                         }
                     }
                     break;

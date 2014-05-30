@@ -95,7 +95,7 @@ namespace Card.Server
                     Response = GameServer.ReadAction(int.Parse(Request.Substring(3, 5)));
                     break;
                 case RequestType.奥秘判定:
-                    Response = GameServer.SecretHit(int.Parse(Request.Substring(3, 5)), Request.Substring(8, 1) == CardUtility.strTrue);
+                    Response = GameServer.SecretHit(int.Parse(Request.Substring(3, 5)), Request.Substring(8, 1) == CardUtility.strTrue, Request.Substring(9));
                     break;                
                 default:
                     break;

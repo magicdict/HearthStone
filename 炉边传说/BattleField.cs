@@ -110,11 +110,11 @@ namespace 炉边传说
                 Controls.Find("btnYourSecret" + (i + 1).ToString(), true)[0].Enabled = false;
             }
 
-            if (game.MySelf.奥秘.Count > 0)
+            if (game.MySelf.奥秘列表.Count > 0)
             {
-                for (int i = 0; i < game.MySelf.奥秘.Count; i++)
+                for (int i = 0; i < game.MySelf.奥秘列表.Count; i++)
                 {
-                    Controls.Find("btnMySecret" + (i + 1).ToString(), true)[0].Text = game.MySelf.奥秘[i].Name;
+                    Controls.Find("btnMySecret" + (i + 1).ToString(), true)[0].Text = game.MySelf.奥秘列表[i].Name;
                 }
             }
 
@@ -316,10 +316,10 @@ namespace 炉边传说
                 lstAction.Items.Add("Received:[" + item + "]");
                 if (ActionCode.GetActionType(item) != ActionCode.ActionType.EndTurn)
                 {
-                    lstAction.Items.Clear();
-                    ShowMinionInfo("Before:");
+                    //lstAction.Items.Clear();
+                    //ShowMinionInfo("Before:");
                     ProcessAction.Process(item, game);
-                    ShowMinionInfo("After ：");
+                    //ShowMinionInfo("After ：");
                 }
                 else
                 {
@@ -385,29 +385,17 @@ namespace 炉边传说
                     game.MySelf.RoleInfo.crystal.CurrentRemainPoint -= card.ActualCostPoint;
                     if (((Button)sender).Name != "btnMyHeroAblity")
                     {
-                        Card.CardBasicInfo removeCard = new CardBasicInfo();
-                        foreach (var Seekcard in game.MySelf.handCards)
-                        {
-                            if (Seekcard.SN == CardSn)
-                            {
-                                removeCard = Seekcard;
-                            }
-                        }
-                        game.MySelf.handCards.Remove(removeCard);
-                        game.MySelf.RoleInfo.HandCardCount = game.MySelf.handCards.Count;
+                        game.RemoveUsedCard(CardSn);
                     }
                     var action = ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +
                                  game.MySelf.RoleInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentFullPoint;
                     actionlst.Add(action);
                 }
+                actionlst.AddRange(game.奥秘计算(actionlst));
                 Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
             }
+            //界面更新
             if (((Button)sender).Name == "btnMyHeroAblity") game.MySelf.RoleInfo.IsUsedHeroAbility = true;
-            //奥秘计算
-            if (game.YourInfo.SecretCount != 0)
-            {
-                Card.Server.ClientUtlity.IsSecretHit(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst);
-            }
             DisplayMyInfo();
         }
         /// <summary>
@@ -418,12 +406,8 @@ namespace 炉边传说
         {
             var YourPos = SelectPanel(CardUtility.TargetSelectDirectEnum.对方, CardUtility.TargetSelectRoleEnum.所有角色, true);
             List<String> actionlst = RunAction.Fight(game, MyPos, YourPos.Postion);
+            actionlst.AddRange(game.奥秘计算(actionlst));
             Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
-            //奥秘计算
-            if (game.YourInfo.SecretCount != 0)
-            {
-                Card.Server.ClientUtlity.IsSecretHit(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst);
-            }
             DisplayMyInfo();
         }
     }

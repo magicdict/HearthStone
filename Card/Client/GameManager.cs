@@ -240,6 +240,52 @@ namespace Card.Client
             return Result;
         }
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="actionlst"></param>
+        /// <returns></returns>
+        public List<String> 奥秘计算(List<String> actionlst)
+        {
+            List<String> Result = new List<string>();
+            //奥秘计算 START
+            //本方（Fight也需要）
+            if (MySelf.奥秘列表.Count != 0)
+            {
+                //本方的行动触发本方奥秘的检查
+                for (int i = 0; i < actionlst.Count; i++)
+                {
+                    foreach (var secret in MySelf.奥秘列表)
+                    {
+                        if ((!secret.IsHitted) && Card.SecretCard.IsSecretHit(secret.SN, actionlst[i], true))
+                        {
+                            //奥秘执行
+                            Result.AddRange(Card.SecretCard.RunSecretHit(secret.SN, actionlst[i], true, this));
+                            secret.IsHitted = true;
+                        }
+                    }
+                }
+                //移除已经触发的奥秘
+                MySelf.清除命中奥秘();
+            }
+            //对方（Fight也需要）
+            if (YourInfo.SecretCount != 0)
+            {
+                var HitCard = Card.Server.ClientUtlity.IsSecretHit(GameId.ToString(GameServer.GameIdFormat), IsFirst, actionlst);
+                if (!String.IsNullOrEmpty(HitCard))
+                {
+                    var HitCardList = HitCard.Split("|".ToCharArray());
+                    foreach (var hitCard in HitCardList)
+                    {
+                        Result.AddRange(Card.SecretCard.RunSecretHit(hitCard.Split(Card.CardUtility.strSplitMark.ToCharArray())[0],
+                                                                     hitCard.Split(Card.CardUtility.strSplitMark.ToCharArray())[1], false, this));
+                    }
+                }
+            }
+            //奥秘计算 END
+            return Result;
+
+        }
+        /// <summary>
         /// 战斗
         /// </summary>
         /// <param name="MyPos">本方</param>
@@ -364,7 +410,19 @@ namespace Card.Client
             if (YourInfo.Weapon != null && YourInfo.Weapon.实际耐久度 == 0) YourInfo.Weapon = null;
             return actionlst;
         }
-
+        public void RemoveUsedCard(String CardSn)
+        {
+            Card.CardBasicInfo removeCard = new CardBasicInfo();
+            foreach (var Seekcard in MySelf.handCards)
+            {
+                if (Seekcard.SN == CardSn)
+                {
+                    removeCard = Seekcard;
+                }
+            }
+            MySelf.handCards.Remove(removeCard);
+            MySelf.RoleInfo.HandCardCount = MySelf.handCards.Count;
+        }
         /// <summary>
         /// 武器是否可用
         /// </summary>

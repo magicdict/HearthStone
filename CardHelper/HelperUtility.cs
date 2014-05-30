@@ -130,14 +130,14 @@ namespace CardHelper
             狼骑兵.Description = "冲锋";
             狼骑兵.Rare = Card.CardBasicInfo.稀有程度.绿色;
             //属性
-            狼骑兵.ActualAttackPoint = 1;
+            狼骑兵.实际攻击力 = 1;
             狼骑兵.ActualCostPoint = 3;
-            狼骑兵.ActualHealthPoint = 1;
+            狼骑兵.实际生命值 = 1;
             狼骑兵.Actual冲锋 = true;
             狼骑兵.Actual嘲讽 = false;
             狼骑兵.StandardAttackPoint = 1;
             狼骑兵.StandardCostPoint = 3;
-            狼骑兵.StandardHealthPoint = 1;
+            狼骑兵.标准生命值上限 = 1;
             狼骑兵.Standard冲锋 = true;
             狼骑兵.Standard嘲讽 = false;
             return 狼骑兵;
@@ -155,14 +155,14 @@ namespace CardHelper
             鱼人猎潮者.Description = "战吼: 召唤一个1/1的鱼人斥候。";
             鱼人猎潮者.Rare = Card.CardBasicInfo.稀有程度.绿色;
             //属性
-            鱼人猎潮者.ActualAttackPoint = 1;
+            鱼人猎潮者.实际攻击力 = 1;
             鱼人猎潮者.ActualCostPoint = 3;
-            鱼人猎潮者.ActualHealthPoint = 1;
+            鱼人猎潮者.实际生命值 = 1;
             鱼人猎潮者.Actual冲锋 = true;
             鱼人猎潮者.Actual嘲讽 = false;
             鱼人猎潮者.StandardAttackPoint = 1;
             鱼人猎潮者.StandardCostPoint = 3;
-            鱼人猎潮者.StandardHealthPoint = 1;
+            鱼人猎潮者.标准生命值上限 = 1;
             鱼人猎潮者.Standard冲锋 = false;
             鱼人猎潮者.Standard嘲讽 = false;
             //战吼
@@ -183,14 +183,14 @@ namespace CardHelper
             鲜血小鬼.Description = "战吼: 召唤一个1/1的鱼人斥候。";
             鲜血小鬼.Rare = Card.CardBasicInfo.稀有程度.绿色;
             //属性
-            鲜血小鬼.ActualAttackPoint = 1;
+            鲜血小鬼.实际攻击力 = 1;
             鲜血小鬼.ActualCostPoint = 3;
-            鲜血小鬼.ActualHealthPoint = 1;
+            鲜血小鬼.实际生命值 = 1;
             鲜血小鬼.Actual冲锋 = true;
             鲜血小鬼.Actual嘲讽 = false;
             鲜血小鬼.StandardAttackPoint = 1;
             鲜血小鬼.StandardCostPoint = 3;
-            鲜血小鬼.StandardHealthPoint = 1;
+            鲜血小鬼.标准生命值上限 = 1;
             鲜血小鬼.Standard冲锋 = false;
             鲜血小鬼.Standard嘲讽 = false;
             鲜血小鬼.潜行特性 = true;
@@ -214,7 +214,7 @@ namespace CardHelper
             //属性
             羊.StandardAttackPoint = 1;
             羊.StandardCostPoint = 1;
-            羊.StandardHealthPoint = 1;
+            羊.标准生命值上限 = 1;
             return 羊;
         }
     }

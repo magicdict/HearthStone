@@ -36,10 +36,10 @@ namespace Card.Effect
                     else
                     {
                         //位置从1开始，数组从0开始
-                        game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].ActualHealthPoint += HealthPoint;
-                        if (game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].ActualHealthPoint > game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].StandardHealthPoint)
-                            game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].ActualHealthPoint = game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].StandardHealthPoint;
-                        Result.Add(Card.Server.ActionCode.strHealth + Card.CardUtility.strSplitMark + PosInfo + Card.CardUtility.strSplitMark + game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].ActualHealthPoint.ToString());
+                        game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值 += HealthPoint;
+                        if (game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值 > game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].标准生命值上限)
+                            game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值 = game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].标准生命值上限;
+                        Result.Add(Card.Server.ActionCode.strHealth + Card.CardUtility.strSplitMark + PosInfo + Card.CardUtility.strSplitMark + game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值.ToString());
                     }
                 }
                 else
@@ -53,10 +53,10 @@ namespace Card.Effect
                     else
                     {
                         //位置从1开始，数组从0开始
-                        game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].ActualHealthPoint += HealthPoint;
-                        if (game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].ActualHealthPoint > game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].StandardHealthPoint)
-                            game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].ActualHealthPoint = game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].StandardHealthPoint;
-                        Result.Add(Card.Server.ActionCode.strHealth + Card.CardUtility.strSplitMark + PosInfo + Card.CardUtility.strSplitMark + game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].ActualHealthPoint.ToString());
+                        game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值 += HealthPoint;
+                        if (game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值 > game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].标准生命值上限)
+                            game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值 = game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].标准生命值上限;
+                        Result.Add(Card.Server.ActionCode.strHealth + Card.CardUtility.strSplitMark + PosInfo + Card.CardUtility.strSplitMark + game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值.ToString());
                     }
                 }
             }

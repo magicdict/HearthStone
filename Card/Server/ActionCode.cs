@@ -37,6 +37,10 @@ namespace Card.Server
             /// </summary>
             Status,
             /// <summary>
+            /// 改变数值
+            /// </summary>
+            Point,
+            /// <summary>
             /// 治疗
             /// </summary>
             Health,
@@ -98,6 +102,10 @@ namespace Card.Server
         /// </summary>
         public const string strStatus = "STATUS";
         /// <summary>
+        /// 改变数值
+        /// </summary>
+        public const string strPoint = "POINT";
+        /// <summary>
         /// 武器
         /// </summary>
         public const string strWeapon = "WEAPON";
@@ -110,11 +118,15 @@ namespace Card.Server
         /// </summary>
         public const string strAbility = "ABILITY";
         /// <summary>
-        /// 奥秘
+        /// 奥秘(埋伏)
         /// </summary>
         public const string strSecret = "SECRET";
         /// <summary>
-        /// 
+        /// 奥秘(埋伏)
+        /// </summary>
+        public const string strHitSecret = "HITSECRET";
+        /// <summary>
+        /// 战斗
         /// </summary>
         public const string strFight = "FIGHT";
         /// <summary>
@@ -122,7 +134,7 @@ namespace Card.Server
         /// </summary>
         public const String strEndTurn = "ENDTURN";
         /// <summary>
-        /// 
+        /// 随从死亡
         /// </summary>
         public const String strDead = "DEAD";
 
@@ -149,6 +161,7 @@ namespace Card.Server
             if (ActionWord.StartsWith(strCrystal + CardUtility.strSplitMark)) t = ActionType.Crystal;
             if (ActionWord.StartsWith(strSummon + CardUtility.strSplitMark)) t = ActionType.Summon;
             if (ActionWord.StartsWith(strCard + CardUtility.strSplitMark)) t = ActionType.Card;
+            if (ActionWord.StartsWith(strPoint + CardUtility.strSplitMark)) t = ActionType.Point;
 
             return t;
         }

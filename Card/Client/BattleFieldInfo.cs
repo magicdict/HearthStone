@@ -182,7 +182,7 @@ namespace Card.Client
             List<String> InfoList = new List<string>();
             for (int i = 0; i < MinionCount; i++)
             {
-                InfoList.Add("[" + BattleMinions[i].Name + "]" + BattleMinions[i].ActualHealthPoint + "/" + BattleMinions[i].TotalAttack());
+                InfoList.Add("[" + BattleMinions[i].Name + "]" + BattleMinions[i].实际生命值 + "/" + BattleMinions[i].TotalAttack());
             }
             return InfoList;
         }

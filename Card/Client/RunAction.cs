@@ -48,7 +48,7 @@ namespace Card.Client
                     break;
                 case CardBasicInfo.CardTypeEnum.奥秘:
                     ActionCodeLst.Add(UseSecret(CardSn));
-                    game.MySelf.奥秘.Add((Card.SecretCard)card);
+                    game.MySelf.奥秘列表.Add((Card.SecretCard)card);
                     break;
                 default:
                     break;
@@ -86,6 +86,7 @@ namespace Card.Client
         public static String UseMinion(String CardSn, int Position)
         {
             String actionCode = String.Empty;
+            //MINION#M000001#1
             actionCode = ActionCode.strMinion + CardUtility.strSplitMark + CardSn + CardUtility.strSplitMark + Position.ToString("D1");
             return actionCode;
         }

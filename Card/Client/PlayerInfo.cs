@@ -95,6 +95,18 @@ namespace Card.Client
         /// <summary>
         /// 奥秘
         /// </summary>
-        public List<SecretCard> 奥秘 = new List<SecretCard>();
+        public List<SecretCard> 奥秘列表 = new List<SecretCard>();
+        /// <summary>
+        /// 清除命中奥秘
+        /// </summary>
+        public void 清除命中奥秘()
+        {
+            List<SecretCard> 奥秘副本 = new List<SecretCard>();
+            foreach (var item in 奥秘列表)
+            {
+                if (!item.IsHitted) 奥秘副本.Add(item);
+            }
+            奥秘列表 = 奥秘副本;
+        }
     }
 }

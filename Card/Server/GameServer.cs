@@ -135,9 +135,9 @@ namespace Card.Server
         /// </summary>
         /// <param name="GameId"></param>
         /// <returns></returns>
-        public static String SecretHit(int GameId, bool IsFirst)
+        public static String SecretHit(int GameId, bool IsFirst,String ActionList)
         {
-            return GameRunning[GameId].SecretHit(IsFirst);
+            return GameRunning[GameId].SecretHitCheck(ActionList,IsFirst);
         }
     }
 }

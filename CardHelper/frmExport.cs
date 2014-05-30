@@ -146,7 +146,7 @@ namespace CardHelper
                 Minion.ActualCostPoint = Minion.StandardCostPoint;
 
                 Minion.StandardAttackPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 8).Text);
-                Minion.StandardHealthPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 9).Text);
+                Minion.标准生命值上限 = CardUtility.GetInt(worksheet.Cells(rowCount, 9).Text);
                 Minion.Rare = CardUtility.GetEnum<Card.CardBasicInfo.稀有程度>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度.白色);
                 Minion.IsCardReady = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
 

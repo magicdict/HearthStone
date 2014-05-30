@@ -114,9 +114,16 @@ namespace Card.Server
         /// 是否触发了奥秘
         /// </summary>
         /// <returns></returns>
-        public static String IsSecretHit(String GameId, bool IsFirst)
+        public static String IsSecretHit(String GameId, bool IsFirst,List<String> Actionlst)
         {
-            String requestInfo = Card.Server.Communication.RequestType.奥秘判定.GetHashCode().ToString("D3") + GameId + (IsFirst ? CardUtility.strTrue : CardUtility.strFalse);
+            String Transform = String.Empty;
+            foreach (var item in Actionlst)
+            {
+                Transform += item + "|";
+            }
+            Transform = Transform.TrimEnd("|".ToCharArray());
+            String requestInfo = Card.Server.Communication.RequestType.奥秘判定.GetHashCode().ToString("D3") + GameId +
+                (IsFirst ? CardUtility.strTrue : CardUtility.strFalse) + Transform;
             return Card.Server.Communication.Request(requestInfo, strIP);
         }
     }
