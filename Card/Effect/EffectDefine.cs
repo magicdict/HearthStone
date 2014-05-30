@@ -95,7 +95,11 @@ namespace Card.Effect
         /// <summary>
         /// 效果回数
         /// </summary>
-        public int EffectCount;
+        public int StandardEffectCount;
+        /// <summary>
+        /// 效果回数(实际)
+        /// </summary>
+        public int ActualEffectCount;
         /// <summary>
         /// 附加信息
         /// </summary>
@@ -332,6 +336,7 @@ namespace Card.Effect
         public void Init()
         {
             ActualEffectPoint = StandardEffectPoint;
+            ActualEffectCount = StandardEffectCount;
         }
     }
 }

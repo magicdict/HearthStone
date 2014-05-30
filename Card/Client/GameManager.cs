@@ -41,11 +41,11 @@ namespace Card.Client
         /// </summary>
         public Card.CardUtility.delegatePickEffect PickEffect;
         /// <summary>
-        /// 过载
+        /// 上回合过载
         /// </summary>
         public int OverloadPoint = 0;
         /// <summary>
-        /// 
+        /// 游戏信息
         /// </summary>
         /// <returns></returns>
         public string GetGameInfo()
@@ -72,7 +72,7 @@ namespace Card.Client
             //DEBUG START
             MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
-            HandCard.Add("A000014");
+            HandCard.Add("M000067");
             //DEBUG END
             //英雄技能：奥术飞弹
             MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000056");
@@ -214,6 +214,46 @@ namespace Card.Client
         public List<String> UseAbility(Card.AbilityCard card, Boolean ConvertPosDirect)
         {
             List<String> Result = new List<string>();
+            //法术伤害
+            if (MySelf.RoleInfo.BattleField.AbilityEffect != 0)
+            {
+                //法术强度本意是增加法术卡的总伤。以奥术飞弹为例，法术强度+1会令奥术飞弹多1发伤害，而非单发伤害+1。法术强度不影响治疗效果。
+                switch (card.CardAbility.FirstAbilityDefine.AbilityEffectType)
+                {
+                    case EffectDefine.AbilityEffectEnum.攻击:
+                        if (card.CardAbility.FirstAbilityDefine.StandardEffectCount == 1)
+                        {
+                            card.CardAbility.FirstAbilityDefine.ActualEffectPoint = card.CardAbility.FirstAbilityDefine.StandardEffectPoint + MySelf.RoleInfo.BattleField.AbilityEffect;
+                        }
+                        else
+                        {
+                            card.CardAbility.FirstAbilityDefine.ActualEffectCount = card.CardAbility.FirstAbilityDefine.StandardEffectCount + MySelf.RoleInfo.BattleField.AbilityEffect;
+                        }
+                        break;
+                    case EffectDefine.AbilityEffectEnum.回复:
+                        card.CardAbility.FirstAbilityDefine.ActualEffectPoint = card.CardAbility.FirstAbilityDefine.StandardEffectPoint + MySelf.RoleInfo.BattleField.AbilityEffect;
+                        break;
+                }
+                if (card.CardAbility.SecondAbilityDefine.AbilityEffectType != EffectDefine.AbilityEffectEnum.未定义)
+                {
+                    switch (card.CardAbility.SecondAbilityDefine.AbilityEffectType)
+                    {
+                        case EffectDefine.AbilityEffectEnum.攻击:
+                            if (card.CardAbility.SecondAbilityDefine.StandardEffectCount == 1)
+                            {
+                                card.CardAbility.SecondAbilityDefine.ActualEffectPoint = card.CardAbility.SecondAbilityDefine.StandardEffectPoint + MySelf.RoleInfo.BattleField.AbilityEffect;
+                            }
+                            else
+                            {
+                                card.CardAbility.SecondAbilityDefine.ActualEffectCount = card.CardAbility.SecondAbilityDefine.StandardEffectCount + MySelf.RoleInfo.BattleField.AbilityEffect;
+                            }
+                            break;
+                        case EffectDefine.AbilityEffectEnum.回复:
+                            card.CardAbility.SecondAbilityDefine.ActualEffectPoint = card.CardAbility.SecondAbilityDefine.StandardEffectPoint + MySelf.RoleInfo.BattleField.AbilityEffect;
+                            break;
+                    }
+                }
+            }
             Card.CardUtility.PickEffect PickEffectResult = CardUtility.PickEffect.第一效果;
             if (card.CardAbility.IsNeedSelect())
             {
@@ -225,7 +265,7 @@ namespace Card.Client
             {
                 Card.CardUtility.TargetPosition Pos = new CardUtility.TargetPosition();
                 var singleEff = SingleEffectList[i];
-                singleEff.EffectCount = 1;
+                singleEff.StandardEffectCount = 1;
                 if (singleEff.IsNeedSelectTarget())
                 {
                     Pos = GetSelectTarget(singleEff.EffectTargetSelectDirect, singleEff.EffectTargetSelectRole, false);

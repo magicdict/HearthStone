@@ -72,7 +72,7 @@ namespace CardHelper
             //随机抽两张牌
             Card.Effect.CardEffect CardDeckEffect = new Card.Effect.CardEffect();
             CardDeckEffect.StandardEffectPoint = 2;
-            CardDeckEffect.EffectCount = 1;
+            CardDeckEffect.StandardEffectCount = 1;
             CardDeckEffect.EffectTargetSelectDirect = Card.CardUtility.TargetSelectDirectEnum.本方;
             奥术智慧.CardAbility.FirstAbilityDefine = CardDeckEffect;
             return 奥术智慧;

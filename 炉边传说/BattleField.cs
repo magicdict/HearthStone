@@ -374,7 +374,7 @@ namespace 炉边传说
             if (Card.CardUtility.GetCardInfoBySN(CardSn) != null)
             {
                 Card.CardBasicInfo card = Card.CardUtility.GetCardInfoBySN(CardSn);
-                if (game.CheckCondition(card))
+                if (!game.CheckCondition(card))
                 {
                     MessageBox.Show("水晶不够");
                     return;

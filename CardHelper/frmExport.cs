@@ -234,8 +234,8 @@ namespace CardHelper
                 effect.EffectTargetSelectDirect = CardUtility.GetEnum<Card.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 17).Text, CardUtility.TargetSelectDirectEnum.双方);
                 effect.EffectTargetSelectRole = CardUtility.GetEnum<Card.CardUtility.TargetSelectRoleEnum>(worksheet.Cells(rowCount, 18).Text, CardUtility.TargetSelectRoleEnum.随从);
                 effect.StandardEffectPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 19).Text);
-                effect.EffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 20).Text);
-                if (effect.EffectCount == 0) effect.EffectCount = 1;
+                effect.StandardEffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 20).Text);
+                if (effect.StandardEffectCount == 0) effect.StandardEffectCount = 1;
                 effect.AddtionInfo = worksheet.Cells(rowCount, 21).Text;
                 Ability.CardAbility.FirstAbilityDefine = effect;
                 Ability.CardAbility.JoinType = CardUtility.GetEnum<Card.CardUtility.EffectJoinType>(worksheet.Cells(rowCount, 22).Text, Card.CardUtility.EffectJoinType.None);
@@ -257,7 +257,7 @@ namespace CardHelper
                     effect2.EffectTargetSelectDirect = CardUtility.GetEnum<Card.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 26).Text, CardUtility.TargetSelectDirectEnum.双方);
                     effect2.EffectTargetSelectRole = CardUtility.GetEnum<Card.CardUtility.TargetSelectRoleEnum>(worksheet.Cells(rowCount, 27).Text, CardUtility.TargetSelectRoleEnum.随从);
                     effect2.StandardEffectPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 28).Text);
-                    effect2.EffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 29).Text);
+                    effect2.StandardEffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 29).Text);
                     effect2.AddtionInfo = worksheet.Cells(rowCount, 30).Text;
                     Ability.CardAbility.SecondAbilityDefine = effect2;
                 }

@@ -43,14 +43,14 @@ namespace Card.Effect
             {
                 if (IsFirstEffect)
                 {
-                    for (int i = 0; i < FirstAbilityDefine.EffectCount; i++)
+                    for (int i = 0; i < FirstAbilityDefine.ActualEffectCount; i++)
                     {
                         EffectLst.Add(FirstAbilityDefine);
                     }
                 }
                 else
                 {
-                    for (int i = 0; i < SecondAbilityDefine.EffectCount; i++)
+                    for (int i = 0; i < SecondAbilityDefine.ActualEffectCount; i++)
                     {
                         EffectLst.Add(SecondAbilityDefine);
                     }
@@ -58,13 +58,13 @@ namespace Card.Effect
             }
             else
             {
-                for (int i = 0; i < FirstAbilityDefine.EffectCount; i++)
+                for (int i = 0; i < FirstAbilityDefine.ActualEffectCount; i++)
                 {
                     EffectLst.Add(FirstAbilityDefine);
                 }
                 if (SecondAbilityDefine.AbilityEffectType !=  EffectDefine.AbilityEffectEnum.未定义)
                 {
-                    for (int i = 0; i < SecondAbilityDefine.EffectCount; i++)
+                    for (int i = 0; i < SecondAbilityDefine.ActualEffectCount; i++)
                     {
                         EffectLst.Add(SecondAbilityDefine);
                     }

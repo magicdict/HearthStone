@@ -17,6 +17,18 @@ namespace Card.Client
         /// </summary>
         public const int HeroPos = 0;
         /// <summary>
+        /// 法术消耗
+        /// </summary>
+        public int AbilityCost = 0;
+        /// <summary>
+        /// 随从消耗
+        /// </summary>
+        public int MinionCost = 0;
+        /// <summary>
+        /// 法术效果
+        /// </summary>
+        public int AbilityEffect = 0;
+        /// <summary>
         /// 当前随从数量
         /// </summary>
         public int MinionCount
@@ -51,7 +63,7 @@ namespace Card.Client
             PutToBattle(Position, (MinionCard)card);
         }
         /// <summary>
-        /// 
+        /// 卡牌入战场
         /// </summary>
         /// <param name="CardSn"></param>
         public void AppendToBattle(String CardSn)
@@ -100,9 +112,11 @@ namespace Card.Client
             }
             BattleMinions[MaxMinionCount - 1] = null;
         }
+
         /// <summary>
         /// Buff的设置
         /// </summary>
+        /// <param name="game"></param>
         public void ResetBuff()
         {
             //去除所有光环效果
@@ -110,6 +124,9 @@ namespace Card.Client
             {
                 if (BattleMinions[i] != null) BattleMinions[i].受战地效果.Clear();
             }
+            AbilityCost = 0;
+            AbilityEffect = 0;
+            MinionCost = 0;
             //设置光环效果
             for (int i = 0; i < BattleMinions.Length; i++)
             {
@@ -131,15 +148,16 @@ namespace Card.Client
                                         break;
                                     case MinionCard.光环范围.相邻随从:
                                         break;
-                                    case MinionCard.光环范围.英雄:
-                                        break;
-                                    default:
-                                        break;
                                 }
                                 break;
-                            case MinionCard.光环类型.减少施法成本:
+                            case MinionCard.光环类型.施法成本:
+                                AbilityCost += int.Parse(minion.光环效果.BuffInfo);
                                 break;
-                            case MinionCard.光环类型.增加法术效果:
+                            case MinionCard.光环类型.法术效果:
+                                AbilityEffect += int.Parse(minion.光环效果.BuffInfo);
+                                break;
+                            case MinionCard.光环类型.随从成本:
+                                MinionCost += int.Parse(minion.光环效果.BuffInfo);
                                 break;
                             default:
                                 break;

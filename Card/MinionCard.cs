@@ -28,7 +28,7 @@ namespace Card
             /// <summary>
             /// 英雄
             /// </summary>
-            英雄
+            全局
         }
         /// <summary>
         /// 光环类型
@@ -40,13 +40,17 @@ namespace Card
             /// </summary>
             增加攻防,
             /// <summary>
-            /// 减少施法成本
+            /// 施法成本
             /// </summary>
-            减少施法成本,
+            施法成本,
+            /// <summary>
+            /// 随从成本
+            /// </summary>
+            随从成本,
             /// <summary>
             /// 增加法术效果
             /// </summary>
-            增加法术效果
+            法术效果
         }
         /// <summary>
         /// 效果
