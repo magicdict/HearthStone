@@ -12,7 +12,10 @@ namespace Card.Effect
         /// 冰冻状态
         /// </summary>
         public const String strFreeze = "FREEZE";
-
+        /// <summary>
+        /// 沉默
+        /// </summary>
+        public const String strSlience = "SLIENCE";
         /// <summary>
         /// 
         /// </summary>
@@ -33,7 +36,7 @@ namespace Card.Effect
                 var PosField = PosInfo.Split(CardUtility.strSplitMark.ToCharArray());
                 if (PosField[0] == CardUtility.strMe)
                 {
-                    if (PosField[1] == "0")
+                    if (PosField[1] == Card.Client.BattleFieldInfo.HeroPos.ToString())
                     {
                         switch (singleEffect.AddtionInfo)
                         {
@@ -52,6 +55,9 @@ namespace Card.Effect
                             case strFreeze:
                                 game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].冰冻状态 = CardUtility.EffectTurn.效果命中;
                                 break;
+                            case strSlience:
+                                game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].被沉默();
+                                break;
                             default:
                                 break;
                         }
@@ -59,7 +65,7 @@ namespace Card.Effect
                 }
                 else
                 {
-                    if (PosField[1] == "0")
+                    if (PosField[1] == Card.Client.BattleFieldInfo.HeroPos.ToString())
                     {
                         switch (singleEffect.AddtionInfo)
                         {
@@ -77,6 +83,9 @@ namespace Card.Effect
                         {
                             case strFreeze:
                                 game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].冰冻状态 = CardUtility.EffectTurn.效果命中;
+                                break;
+                            case strSlience:
+                                game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].被沉默();
                                 break;
                             default:
                                 break;

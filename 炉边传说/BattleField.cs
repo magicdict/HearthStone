@@ -132,7 +132,7 @@ namespace 炉边传说
                 if (myMinion != null)
                 {
                     Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Text = myMinion.GetInfo();
-                    if (myMinion.RemainAttactTimes > 0)
+                    if (myMinion.CanAttack())
                     {
                         if (game.IsMyTurn) Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = true;
                     }

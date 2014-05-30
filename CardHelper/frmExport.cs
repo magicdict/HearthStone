@@ -170,6 +170,7 @@ namespace CardHelper
                 }
                 if (HasBuff)
                 {
+                    Minion.光环效果.Name = Minion.Name;
                     Minion.光环效果.Scope = CardUtility.GetEnum<Card.MinionCard.光环范围>(worksheet.Cells(rowCount, 22).Text, Card.MinionCard.光环范围.随从全体);
                     Minion.光环效果.EffectType = CardUtility.GetEnum<Card.MinionCard.光环类型>(worksheet.Cells(rowCount, 23).Text, Card.MinionCard.光环类型.增加攻防);
                     Minion.光环效果.BuffInfo = worksheet.Cells(rowCount, 24).Text;

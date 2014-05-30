@@ -13,6 +13,10 @@ namespace Card.Client
         /// </summary>
         public const int MaxMinionCount = 7;
         /// <summary>
+        /// 
+        /// </summary>
+        public const int HeroPos = 0;
+        /// <summary>
         /// 当前随从数量
         /// </summary>
         public int MinionCount
@@ -55,7 +59,6 @@ namespace Card.Client
             int Position = MinionCount + 1;
             PutToBattle(Position, CardSn);
         }
-
         /// <summary>
         /// 卡牌入战场
         /// </summary>

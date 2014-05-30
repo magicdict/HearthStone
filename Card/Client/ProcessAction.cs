@@ -45,13 +45,11 @@ namespace Card.Client
                 case ActionCode.ActionType.Point:
                     if (actField[1] == CardUtility.strYou)
                     {
-                        game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].实际生命值 = int.Parse(actField[3].Substring(0, 1));
-                        game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].实际攻击力 = int.Parse(actField[3].Substring(2, 1));
+                        Card.Effect.PointEffect.RunPointEffect(game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1], actField[3]);
                     }
                     else
                     {
-                        game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].实际生命值 = int.Parse(actField[3].Substring(0, 1));
-                        game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].实际攻击力 = int.Parse(actField[3].Substring(2, 1));
+                        Card.Effect.PointEffect.RunPointEffect(game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1], actField[3]);
                     }
                     break;
                 case ActionCode.ActionType.UseMinion:
@@ -95,7 +93,7 @@ namespace Card.Client
                     //Me代表对方 YOU代表自己，必须反过来
                     if (actField[1] == CardUtility.strYou)
                     {
-                        if (actField[2] == "0")
+                        if (actField[2] == Card.Client.BattleFieldInfo.HeroPos.ToString())
                         {
                             game.MySelf.RoleInfo.HealthPoint = int.Parse(actField[3]);
                         }
@@ -107,7 +105,7 @@ namespace Card.Client
                     }
                     else
                     {
-                        if (actField[2] == "0")
+                        if (actField[2] == Card.Client.BattleFieldInfo.HeroPos.ToString())
                         {
                             game.YourInfo.HealthPoint = int.Parse(actField[3]);
                         }
@@ -123,7 +121,7 @@ namespace Card.Client
                     //Me代表对方 YOU代表自己，必须反过来
                     if (actField[1] == CardUtility.strYou)
                     {
-                        if (actField[2] == "0")
+                        if (actField[2] == Card.Client.BattleFieldInfo.HeroPos.ToString())
                         {
                             switch (actField[3])
                             {
@@ -149,7 +147,7 @@ namespace Card.Client
                     }
                     else
                     {
-                        if (actField[2] == "0")
+                        if (actField[2] == Card.Client.BattleFieldInfo.HeroPos.ToString())
                         {
                             switch (actField[3])
                             {
@@ -206,7 +204,7 @@ namespace Card.Client
                     int AttackPoint = int.Parse(actField[3]);
                     if (actField[1] == CardUtility.strYou)
                     {
-                        if (actField[2] == "0")
+                        if (actField[2] == Card.Client.BattleFieldInfo.HeroPos.ToString())
                         {
                             game.MySelf.RoleInfo.HealthPoint -= AttackPoint;
                         }
@@ -218,7 +216,7 @@ namespace Card.Client
                     }
                     else
                     {
-                        if (actField[2] == "0")
+                        if (actField[2] == Card.Client.BattleFieldInfo.HeroPos.ToString())
                         {
                             game.YourInfo.HealthPoint -= AttackPoint;
                         }

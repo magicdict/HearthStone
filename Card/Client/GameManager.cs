@@ -66,7 +66,8 @@ namespace Card.Client
             MySelf.RoleInfo.crystal.CurrentFullPoint = 0;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 0;
             //DEBUG START
-            HandCard.Add("S000001");
+            HandCard.Add("A000014");
+            HandCard.Add("M000118");
             MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
             //DEBUG END
@@ -283,8 +284,8 @@ namespace Card.Client
                 }
             }
             //奥秘计算 END
+            Result.AddRange(Settle());
             return Result;
-
         }
         /// <summary>
         /// 战斗

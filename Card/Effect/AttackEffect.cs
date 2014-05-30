@@ -26,7 +26,7 @@ namespace Card.Effect
                 var PosField = PosInfo.Split(CardUtility.strSplitMark.ToCharArray());
                 if (PosField[0] == CardUtility.strMe)
                 {
-                    if (PosField[1] == "0")
+                    if (PosField[1] == Card.Client.BattleFieldInfo.HeroPos.ToString())
                     {
                         game.MySelf.RoleInfo.HealthPoint -= AttackPoint;
                     }
@@ -38,7 +38,7 @@ namespace Card.Effect
                 }
                 else
                 {
-                    if (PosField[1] == "0")
+                    if (PosField[1] == Card.Client.BattleFieldInfo.HeroPos.ToString())
                     {
                         game.YourInfo.HealthPoint -= AttackPoint;
                     }

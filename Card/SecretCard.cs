@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Card.Effect;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -89,9 +90,9 @@ namespace Card
                         //在自己的回合运行自己的奥秘
                         //SUMMON#YOU#M000001#POS
                         //例如：亡语的时候可能召唤一个新的随从
-                        game.YourInfo.BattleField.BattleMinions[int.Parse(actionField[3]) - 1].实际生命值 = 1;
+                        PointEffect.RunPointEffect(game.YourInfo.BattleField.BattleMinions[int.Parse(actionField[3]) - 1],card.AdditionInfo);
                         ActionLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + CardUtility.strYou + Card.CardUtility.strSplitMark +
-                                    actionField[3] + Card.CardUtility.strSplitMark + "1/" + game.YourInfo.BattleField.BattleMinions[int.Parse(actionField[3]) - 1].实际攻击力);
+                                    actionField[3] + Card.CardUtility.strSplitMark + card.AdditionInfo);
                     }
                     else
                     {
@@ -99,16 +100,16 @@ namespace Card
                         if (actiontype == Server.ActionCode.ActionType.Summon)
                         {
                             //SUMMON#YOU#M000001#POS
-                            game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actionField[3]) - 1].实际生命值 = 1;
+                            PointEffect.RunPointEffect(game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actionField[3]) - 1], card.AdditionInfo);
                             ActionLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + CardUtility.strMe + Card.CardUtility.strSplitMark +
-                                    actionField[3] + Card.CardUtility.strSplitMark + "1/" + game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actionField[3]) - 1].实际攻击力);
+                                    actionField[3] + Card.CardUtility.strSplitMark + card.AdditionInfo);
                         }
                         else
                         {
                             //MINION#M000001#1
-                            game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actionField[2]) - 1].实际生命值 = 1;
+                            PointEffect.RunPointEffect(game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actionField[2]) - 1], card.AdditionInfo);
                             ActionLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + CardUtility.strMe + Card.CardUtility.strSplitMark +
-                                    actionField[2] + Card.CardUtility.strSplitMark + "1/" + game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actionField[2]) - 1].实际攻击力);
+                                    actionField[2] + Card.CardUtility.strSplitMark + card.AdditionInfo);
                         }
                     }
                     break;

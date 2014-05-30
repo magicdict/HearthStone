@@ -31,12 +31,21 @@ namespace Card
             英雄
         }
         /// <summary>
-        /// 
+        /// 光环类型
         /// </summary>
         public enum 光环类型
         {
+            /// <summary>
+            /// 增加攻防
+            /// </summary>
             增加攻防,
+            /// <summary>
+            /// 减少施法成本
+            /// </summary>
             减少施法成本,
+            /// <summary>
+            /// 增加法术效果
+            /// </summary>
             增加法术效果
         }
         /// <summary>
@@ -57,6 +66,10 @@ namespace Card
             /// 信息
             /// </summary>
             public String BuffInfo;
+            /// <summary>
+            /// 效果来源
+            /// </summary>
+            public String Name;
         }
 
         #region"属性"
@@ -126,8 +139,6 @@ namespace Card
         /// 回合结束(效果号码)
         /// </summary>
         public String 回合结束效果 = String.Empty;
-
-
         /// <summary>
         /// 该单位在战地时的效果
         /// </summary>
@@ -150,6 +161,8 @@ namespace Card
         /// </summary>
         [XmlIgnore]
         public int 实际生命值 = -1;
+        [XmlIgnore]
+        public Boolean 受过伤害 = false;
         /// <summary>
         /// 嘲讽(实际)
         /// </summary>
@@ -271,9 +284,18 @@ namespace Card
             {
                 RemainAttactTimes = 1;
             }
-            if (冰冻状态 != CardUtility.EffectTurn.无效果) RemainAttactTimes = 0;
-            if (Actual不能攻击) RemainAttactTimes = 0;
         }
+        /// <summary>
+        /// 能否攻击
+        /// </summary>
+        /// <returns></returns>
+        public Boolean CanAttack()
+        {
+            if (冰冻状态 != CardUtility.EffectTurn.无效果) return false;
+            if (Actual不能攻击) return false;
+            return RemainAttactTimes > 0;
+        }
+
         /// <summary>
         /// 实际输出效果
         /// </summary>
@@ -293,17 +315,17 @@ namespace Card
             return 实际攻击力 + BuffAct;
         }
         /// <summary>
-        /// 实际输出效果
+        /// 实际生命值上限
         /// </summary>
         /// <returns>包含了光环效果</returns>
-        public int TotalHealth()
+        public int 合计生命值上限()
         {
             int BuffAct = 0;
             foreach (var buff in 受战地效果)
             {
                 BuffAct += int.Parse(buff.BuffInfo.Split("/".ToCharArray())[1]);
             }
-            return 实际生命值 + BuffAct;
+            return 标准生命值上限 + BuffAct;
         }
         /// <summary>
         /// 生存状态
@@ -426,7 +448,7 @@ namespace Card
                                        (Actual冲锋 ? "|冲" : String.Empty) + 
                                        (冰冻状态!= CardUtility.EffectTurn.无效果?"冻":String.Empty));
             Status.AppendLine("[实]" + 实际攻击力.ToString() + "/" + 实际生命值.ToString() +
-                              "[总]" + TotalAttack().ToString() + "/" + TotalHealth().ToString());
+                              "[总]" + TotalAttack().ToString() + "/" + 实际生命值.ToString());
             return Status.ToString();
         }
         #endregion
