@@ -28,8 +28,8 @@ namespace Card.Effect
                     {
                         game.MySelf.RoleInfo.BattleField.AppendToBattle(CardSN);
                         //SUMMON#YOU#M000001#POS
-                        Result.Add(Card.Server.ActionCode.strSummon + Card.CardUtility.strSplitMark + Card.CardUtility.strMe + 
-                                   Card.CardUtility.strSplitMark + CardSN + game.MySelf.RoleInfo.BattleField.MinionCount);
+                        Result.Add(Card.Server.ActionCode.strSummon + Card.CardUtility.strSplitMark + Card.CardUtility.strMe +
+                                   Card.CardUtility.strSplitMark + CardSN + Card.CardUtility.strSplitMark + game.MySelf.RoleInfo.BattleField.MinionCount);
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.对方:
@@ -37,7 +37,7 @@ namespace Card.Effect
                     {
                         game.YourInfo.BattleField.AppendToBattle(CardSN);
                         Result.Add(Card.Server.ActionCode.strSummon + Card.CardUtility.strSplitMark + Card.CardUtility.strYou +
-                            Card.CardUtility.strSplitMark + CardSN + game.YourInfo.BattleField.MinionCount);
+                            Card.CardUtility.strSplitMark + CardSN + Card.CardUtility.strSplitMark + game.YourInfo.BattleField.MinionCount);
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.双方:
@@ -46,13 +46,13 @@ namespace Card.Effect
                         game.MySelf.RoleInfo.BattleField.AppendToBattle(CardSN);
                         //SUMMON#YOU#M000001#POS
                         Result.Add(Card.Server.ActionCode.strSummon + Card.CardUtility.strSplitMark + Card.CardUtility.strMe +
-                                   Card.CardUtility.strSplitMark + CardSN + game.MySelf.RoleInfo.BattleField.MinionCount);
+                                   Card.CardUtility.strSplitMark + CardSN + Card.CardUtility.strSplitMark + game.MySelf.RoleInfo.BattleField.MinionCount);
                     }
                     if (game.YourInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount)
                     {
                         game.YourInfo.BattleField.AppendToBattle(CardSN);
                         Result.Add(Card.Server.ActionCode.strSummon + Card.CardUtility.strSplitMark + Card.CardUtility.strYou +
-                            Card.CardUtility.strSplitMark + CardSN + game.YourInfo.BattleField.MinionCount);
+                            Card.CardUtility.strSplitMark + CardSN + Card.CardUtility.strSplitMark + game.YourInfo.BattleField.MinionCount);
                     }
                     break;
                 default:

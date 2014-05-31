@@ -97,6 +97,7 @@ namespace Card
                 var c = CardCollections[SN].深拷贝();
                 c.Init();
                 if (c.CardType == CardBasicInfo.CardTypeEnum.随从) ((Card.MinionCard)c).Init();
+                if (c.CardType == CardBasicInfo.CardTypeEnum.法术) ((Card.AbilityCard)c).Init();
                 if (c.CardType == CardBasicInfo.CardTypeEnum.武器) ((Card.WeaponCard)c).Init();
                 return c;
             }

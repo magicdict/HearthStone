@@ -114,6 +114,26 @@ namespace Card.Client
         }
 
         /// <summary>
+        /// 触发事件
+        /// </summary>
+        /// <param name="事件"></param>
+        /// <param name="game"></param>
+        /// <returns></returns>
+        public List<String> 触发事件(Card.MinionCard.事件类型列表 事件,GameManager game)
+        {
+            List<String> ActionLst = new List<string>();
+            for (int i = 0; i < BattleMinions.Length; i++)
+            {
+                var minion = BattleMinions[i];
+                if (minion != null)
+                {
+                    ActionLst.AddRange(minion.触发事件(事件,game));
+                }
+            }
+            return ActionLst;
+        }
+
+        /// <summary>
         /// Buff的设置
         /// </summary>
         /// <param name="game"></param>

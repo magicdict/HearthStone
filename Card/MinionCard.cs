@@ -76,6 +76,23 @@ namespace Card
             public String Name;
         }
 
+        public enum 事件类型列表
+        {
+            无,
+            施法,
+            本方施法,
+            治疗,
+            随从治疗,
+            本方随从死亡,
+            本方野兽死亡,
+            召唤鱼人,
+            本方召唤随从,
+            本方召唤野兽,
+            自己受伤,
+            本方随从受伤,
+            本方使用卡牌,
+            奥秘命中,
+        }
         #region"属性"
 
         #region"设计时状态"
@@ -144,13 +161,17 @@ namespace Card
         /// </summary>
         public String 回合结束效果 = String.Empty;
         /// <summary>
-        /// 伤害效果(POINT效果信息)
-        /// </summary>
-        public String 伤害效果 = String.Empty;
-        /// <summary>
         /// 该单位在战地时的效果
         /// </summary>
         public Buff 光环效果;
+        /// <summary>
+        /// 事件名称
+        /// </summary>
+        public 事件类型列表 事件类型 = 事件类型列表.无;
+        /// <summary>
+        /// 事件效果
+        /// </summary>
+        public String 事件效果 = String.Empty;
         #endregion
 
         #region"运行时状态"
@@ -442,10 +463,42 @@ namespace Card
             //失去圣盾
             Is圣盾Status = false;
             if (AttackPoint > 0)
-            { 
+            {
                 受过伤害 = true;
-                if (!Is沉默Status && !String.IsNullOrEmpty(伤害效果)) Card.Effect.PointEffect.RunPointEffect(this, 伤害效果);
+                触发事件(事件类型列表.自己受伤, null);
             }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="事件"></param>
+        public List<String> 触发事件(事件类型列表 事件, GameManager game)
+        {
+            List<String> ActionLst = new List<string>();
+            if (!Is沉默Status && 事件类型 == 事件)
+            {
+                switch (事件)
+                {
+                    case 事件类型列表.无:
+                        break;
+                    case 事件类型列表.自己受伤:
+                        //对方客户端，战斗的时候会进行计算，【AfterBeAttack】
+                        Card.Effect.PointEffect.RunPointEffect(this, 事件效果);
+                        break;
+                    default:
+                        ActionLst.Add(Card.Server.ActionCode.strHitEvent + CardUtility.strSplitMark);
+                        if (事件效果.StartsWith("A"))
+                        {
+                            ActionLst.AddRange(game.UseAbility((Card.AbilityCard)Card.CardUtility.GetCardInfoBySN(事件效果), false));
+                        }
+                        else
+                        {
+                            Card.Effect.PointEffect.RunPointEffect(this, 事件效果);
+                        }
+                        break;
+                }
+            }
+            return ActionLst;
         }
         /// <summary>
         /// 获得信息
@@ -455,11 +508,11 @@ namespace Card
         {
             StringBuilder Status = new StringBuilder();
             Status.AppendLine(Name);
-            Status.AppendLine("[状]" + (Is圣盾Status ? "圣" : String.Empty) + 
-                                       (Actual嘲讽 ? "|嘲" : String.Empty) + 
+            Status.AppendLine("[状]" + (Is圣盾Status ? "圣" : String.Empty) +
+                                       (Actual嘲讽 ? "|嘲" : String.Empty) +
                                        (Actual风怒 ? "|风" : String.Empty) +
-                                       (Actual冲锋 ? "|冲" : String.Empty) + 
-                                       (冰冻状态!= CardUtility.EffectTurn.无效果?"冻":String.Empty));
+                                       (Actual冲锋 ? "|冲" : String.Empty) +
+                                       (冰冻状态 != CardUtility.EffectTurn.无效果 ? "冻" : String.Empty));
             Status.AppendLine("[实]" + 实际攻击力.ToString() + "/" + 实际生命值.ToString() +
                               "[总]" + TotalAttack().ToString() + "/" + 实际生命值.ToString());
             return Status.ToString();

@@ -33,6 +33,10 @@ namespace Card.Server
             /// </summary>
             HitSecret,
             /// <summary>
+            /// 命中事件
+            /// </summary>
+            HitEvent,
+            /// <summary>
             /// 攻击处理
             /// </summary>
             Attack,
@@ -130,6 +134,10 @@ namespace Card.Server
         /// </summary>
         public const string strHitSecret = "HITSECRET";
         /// <summary>
+        /// 
+        /// </summary>
+        public const string strHitEvent = "HITEVENT";
+        /// <summary>
         /// 战斗
         /// </summary>
         public const string strFight = "FIGHT";
@@ -155,6 +163,7 @@ namespace Card.Server
             //服务器不发送具体奥秘内容
             if (ActionWord.Equals(strSecret)) t = ActionType.UseSecret;
             if (ActionWord.StartsWith(strHitSecret + CardUtility.strSplitMark)) t = ActionType.HitSecret;
+            if (ActionWord.StartsWith(strHitEvent + CardUtility.strSplitMark)) t = ActionType.HitEvent;
 
             if (ActionWord.StartsWith(strFight + CardUtility.strSplitMark)) t = ActionType.Fight;
             if (ActionWord.Equals(strEndTurn)) t = ActionType.EndTurn;

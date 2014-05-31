@@ -33,6 +33,7 @@ namespace Card.Client
                     if (ResultArg.Count != 0)
                     {
                         ActionCodeLst.AddRange(ResultArg);
+                        ActionCodeLst.AddRange(game.MySelf.RoleInfo.BattleField.触发事件(MinionCard.事件类型列表.本方施法, game));
                     }
                     else
                     {

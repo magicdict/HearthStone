@@ -181,8 +181,10 @@ namespace CardHelper
                 Minion.连击效果 = worksheet.Cells(rowCount, 28).Text;
                 Minion.回合开始效果 = worksheet.Cells(rowCount, 29).Text;
                 Minion.回合结束效果 = worksheet.Cells(rowCount, 30).Text;
-                Minion.伤害效果 = worksheet.Cells(rowCount, 31).Text;
-                Minion.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 32).Text);
+                Minion.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 31).Text);
+                Minion.事件类型 = CardUtility.GetEnum<Card.MinionCard.事件类型列表>(worksheet.Cells(rowCount, 32).Text, Card.MinionCard.事件类型列表.无);
+                Minion.事件效果 = worksheet.Cells(rowCount, 33).Text;
+
                 switch (target)
                 {
                     case TargetType.MongoDB:

@@ -390,6 +390,7 @@ namespace 炉边传说
                     var action = ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +
                                  game.MySelf.RoleInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentFullPoint;
                     actionlst.Add(action);
+                    //奥秘计算
                     actionlst.AddRange(game.奥秘计算(actionlst));
                     Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
                 }
