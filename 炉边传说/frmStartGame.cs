@@ -7,7 +7,7 @@ namespace 炉边传说
 {
     public partial class frmStartGame : Form
     {
-        GameManager game = new GameManager();
+        private static GameManager game = new GameManager();
         public frmStartGame()
         {
             InitializeComponent();
@@ -22,15 +22,22 @@ namespace 炉边传说
             //新建游戏的时候，已经决定游戏的先后手
             if (!String.IsNullOrEmpty(txtServerIP.Text)) ClientRequest.strIP = txtServerIP.Text;
             if (!String.IsNullOrEmpty(txtNickName.Text)) game.PlayerNickName = txtNickName.Text;
-
+            String GameId;
             game.IsHost = true;
-            String GameId = Card.Client.ClientRequest.CreateGame(game.PlayerNickName);
+            GameId = Card.Client.ClientRequest.CreateGame(game.PlayerNickName);
             Card.CardUtility.Init(txtCardPath.Text);
             game.GameId = int.Parse(GameId);
             btnJoinGame.Enabled = false;
             btnRefresh.Enabled = false;
             btnCreateGame.Enabled = false;
-            while (!Card.Client.ClientRequest.IsGameStart(GameId))
+            Thread ServerThread;
+            ServerThread = new Thread(frmStartGame.Wait);
+            ServerThread.IsBackground = true;
+            ServerThread.Start();
+        }
+        private static void Wait()
+        {
+            while (!Card.Client.ClientRequest.IsGameStart(game.GameId.ToString(GameServer.GameIdFormat)))
             {
                 Thread.Sleep(3000);
             }
@@ -39,7 +46,6 @@ namespace 炉边传说
             var t = new BattleField();
             t.game = game;
             t.ShowDialog();
-            this.Close();
         }
         /// <summary>
         /// 

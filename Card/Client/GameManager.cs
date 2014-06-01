@@ -66,7 +66,8 @@ namespace Card.Client
         public void Init()
         {
             //手牌设定
-            var HandCard = Card.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, IsFirst ? 3 : 4);
+            var HandCard = Card.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst,
+                           IsFirst ? PlayerBasicInfo.BasicHandCardCount : (PlayerBasicInfo.BasicHandCardCount + 1));
             MySelf.RoleInfo.crystal.CurrentFullPoint = 0;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 0;
             //DEBUG START
@@ -77,8 +78,8 @@ namespace Card.Client
             HandCard.Add("A000056");
             //DEBUG END
             //英雄技能：奥术飞弹
-            MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000056");
-            YourInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000056");
+            MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A200001");
+            YourInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A200001");
             if (!IsFirst) HandCard.Add(Card.CardUtility.SN幸运币);
             foreach (var card in HandCard)
             {
@@ -158,7 +159,7 @@ namespace Card.Client
                 var NewCardList = Card.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, 1);
                 foreach (var card in NewCardList)
                 {
-                    MySelf.handCards.Add(CardUtility.GetCardInfoBySN(card));
+                    if (MySelf.handCards.Count < PlayerBasicInfo.MaxHandCardCount) MySelf.handCards.Add(CardUtility.GetCardInfoBySN(card));
                 }
                 MySelf.RoleInfo.HandCardCount++;
                 MySelf.RoleInfo.RemainCardDeckCount--;
@@ -193,7 +194,7 @@ namespace Card.Client
             else
             {
                 YourInfo.crystal.NewTurn();
-                YourInfo.HandCardCount++;
+                if (YourInfo.HandCardCount < PlayerBasicInfo.MaxHandCardCount) YourInfo.HandCardCount++;
                 YourInfo.RemainCardDeckCount--;
                 YourInfo.RemainAttactTimes = 1;
                 YourInfo.IsUsedHeroAbility = false;

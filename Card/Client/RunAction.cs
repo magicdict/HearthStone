@@ -33,7 +33,8 @@ namespace Card.Client
                     if (ResultArg.Count != 0)
                     {
                         ActionCodeLst.AddRange(ResultArg);
-                        ActionCodeLst.AddRange(game.MySelf.RoleInfo.BattleField.触发事件(MinionCard.事件类型列表.本方施法, game));
+                        //英雄技能的时候，不算[本方施法] A900001 幸运币
+                        if (CardSn.Substring(1, 1) != "2") ActionCodeLst.AddRange(game.MySelf.RoleInfo.BattleField.触发事件(MinionCard.事件类型列表.本方施法, game));
                     }
                     else
                     {

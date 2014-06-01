@@ -46,6 +46,14 @@ namespace Card.Client
         /// </summary>
         public int RemainCardDeckCount = 30;
         /// <summary>
+        /// 初始手牌数
+        /// </summary>
+        public const int BasicHandCardCount = 3;
+        /// <summary>
+        /// 最大手牌数
+        /// </summary>
+        public const int MaxHandCardCount = 10;
+        /// <summary>
         /// 手牌数
         /// </summary>
         public int HandCardCount = 0;
@@ -62,11 +70,11 @@ namespace Card.Client
         /// </summary>
         public Boolean IsUsedHeroAbility = true;
         /// <summary>
-        /// 奥秘数
+        /// 当前奥秘数
         /// </summary>
         public int SecretCount = 0;
         /// <summary>
-        /// 
+        /// 获得信息
         /// </summary>
         /// <returns></returns>
         public string GetInfo()

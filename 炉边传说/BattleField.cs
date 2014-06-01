@@ -361,7 +361,15 @@ namespace 炉边传说
         private void btnUseHandCard_Click(object sender, EventArgs e)
         {
             if (((Button)sender).Tag == null) return;
-            CardBasicInfo card = (CardBasicInfo)((Button)sender).Tag;
+            CardBasicInfo card;
+            if (((Button)sender).Name == "btnMyHeroAblity")
+            {
+                card = CardUtility.GetCardInfoBySN(((Button)sender).Tag.ToString());
+            }
+            else
+            {
+                card = (CardBasicInfo)((Button)sender).Tag;
+            }
             var msg = game.CheckCondition(card);
             if (!String.IsNullOrEmpty(msg))
             {
