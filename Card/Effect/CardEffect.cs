@@ -17,7 +17,7 @@ namespace Card.Effect
             {
                 case CardUtility.TargetSelectDirectEnum.本方:
                     //#CARD#ME#M000001
-                    var drawCards = Card.Server.ClientUtlity.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
+                    var drawCards = Card.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
                     if (drawCards.Count == 1)
                     {
                         game.MySelf.handCards.Add(Card.CardUtility.GetCardInfoBySN(drawCards[0]));
@@ -35,7 +35,7 @@ namespace Card.Effect
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.双方:
-                    var drawCardsT = Card.Server.ClientUtlity.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
+                    var drawCardsT = Card.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
                     if (drawCardsT.Count == 1)
                     {
                         game.MySelf.handCards.Add(Card.CardUtility.GetCardInfoBySN(drawCardsT[0]));

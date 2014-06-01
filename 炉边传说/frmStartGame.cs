@@ -20,21 +20,21 @@ namespace 炉边传说
         private void btnCreateGame_Click(object sender, EventArgs e)
         {
             //新建游戏的时候，已经决定游戏的先后手
-            if (!String.IsNullOrEmpty(txtServerIP.Text)) ClientUtlity.strIP = txtServerIP.Text;
+            if (!String.IsNullOrEmpty(txtServerIP.Text)) ClientRequest.strIP = txtServerIP.Text;
             if (!String.IsNullOrEmpty(txtNickName.Text)) game.PlayerNickName = txtNickName.Text;
 
             game.IsHost = true;
-            String GameId = Card.Server.ClientUtlity.CreateGame(game.PlayerNickName);
+            String GameId = Card.Client.ClientRequest.CreateGame(game.PlayerNickName);
             Card.CardUtility.Init(txtCardPath.Text);
             game.GameId = int.Parse(GameId);
             btnJoinGame.Enabled = false;
             btnRefresh.Enabled = false;
             btnCreateGame.Enabled = false;
-            while (!Card.Server.ClientUtlity.IsGameStart(GameId))
+            while (!Card.Client.ClientRequest.IsGameStart(GameId))
             {
                 Thread.Sleep(3000);
             }
-            game.IsFirst = Card.Server.ClientUtlity.IsFirst(game.GameId.ToString(GameServer.GameIdFormat), game.IsHost);
+            game.IsFirst = Card.Client.ClientRequest.IsFirst(game.GameId.ToString(GameServer.GameIdFormat), game.IsHost);
             game.Init();
             var t = new BattleField();
             t.game = game;
@@ -49,7 +49,7 @@ namespace 炉边传说
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             lstWaitGuest.Items.Clear();
-            String WaitGame = Card.Server.ClientUtlity.GetWatiGameList();
+            String WaitGame = Card.Client.ClientRequest.GetWatiGameList();
             String[] WaitGameArray = WaitGame.Split(Card.CardUtility.strSplitArrayMark.ToCharArray());
             for (int i = 0; i < WaitGameArray.Length; i++)
             {
@@ -63,16 +63,16 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnJoinGame_Click(object sender, EventArgs e)
         {
-            if (!String.IsNullOrEmpty(txtServerIP.Text)) ClientUtlity.strIP = txtServerIP.Text;
+            if (!String.IsNullOrEmpty(txtServerIP.Text)) ClientRequest.strIP = txtServerIP.Text;
             if (!String.IsNullOrEmpty(txtNickName.Text)) game.PlayerNickName = txtNickName.Text;
 
             game.IsHost = false;
             if (lstWaitGuest.SelectedItems.Count != 1) return;
             var strWait = lstWaitGuest.SelectedItem.ToString();
             Card.CardUtility.Init(txtCardPath.Text);
-            String GameId = Card.Server.ClientUtlity.JoinGame(int.Parse(strWait.Substring(0, strWait.IndexOf("("))), game.PlayerNickName);
+            String GameId = Card.Client.ClientRequest.JoinGame(int.Parse(strWait.Substring(0, strWait.IndexOf("("))), game.PlayerNickName);
             game.GameId = int.Parse(GameId);
-            game.IsFirst = Card.Server.ClientUtlity.IsFirst(game.GameId.ToString(GameServer.GameIdFormat), game.IsHost);
+            game.IsFirst = Card.Client.ClientRequest.IsFirst(game.GameId.ToString(GameServer.GameIdFormat), game.IsHost);
             game.Init();
             var t = new BattleField();
             t.game = game;

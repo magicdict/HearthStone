@@ -11,16 +11,12 @@ namespace Card.Effect
         /// </summary>
         /// <param name="singleEffect"></param>
         /// <param name="game"></param>
-        /// <param name="Pos"></param>
-        /// <param name="Seed">随机数种子</param>
         /// <returns></returns>
-        public static List<string> RunEffect(EffectDefine singleEffect, Client.GameManager game, CardUtility.TargetPosition Pos, int Seed)
+        public static List<string> RunEffect(EffectDefine singleEffect, Client.GameManager game, List<String> PosList)
         {
-            List<String> PosList = Card.Effect.EffectDefine.GetTargetList(singleEffect, game, Pos, Seed);
             List<String> Result = new List<string>();
             int AttackPoint = singleEffect.ActualEffectPoint;
             //处理对象
-            //ME#POS
             foreach (var PosInfo in PosList)
             {
                 var PosField = PosInfo.Split(CardUtility.strSplitMark.ToCharArray());

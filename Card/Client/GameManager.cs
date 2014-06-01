@@ -66,7 +66,7 @@ namespace Card.Client
         public void Init()
         {
             //手牌设定
-            var HandCard = Card.Server.ClientUtlity.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, IsFirst ? 3 : 4);
+            var HandCard = Card.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, IsFirst ? 3 : 4);
             MySelf.RoleInfo.crystal.CurrentFullPoint = 0;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 0;
             //DEBUG START
@@ -128,7 +128,7 @@ namespace Card.Client
                     OverloadPoint = 0;
                 }
                 //手牌
-                var NewCardList = Card.Server.ClientUtlity.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, 1);
+                var NewCardList = Card.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, 1);
                 foreach (var card in NewCardList)
                 {
                     MySelf.handCards.Add(CardUtility.GetCardInfoBySN(card));
@@ -339,7 +339,7 @@ namespace Card.Client
             //对方（Fight也需要）
             if (YourInfo.SecretCount != 0)
             {
-                var HitCard = Card.Server.ClientUtlity.IsSecretHit(GameId.ToString(GameServer.GameIdFormat), IsFirst, actionlst);
+                var HitCard = Card.Client.ClientRequest.IsSecretHit(GameId.ToString(GameServer.GameIdFormat), IsFirst, actionlst);
                 if (!String.IsNullOrEmpty(HitCard))
                 {
                     var HitCardList = HitCard.Split(Card.CardUtility.strSplitArrayMark.ToCharArray());

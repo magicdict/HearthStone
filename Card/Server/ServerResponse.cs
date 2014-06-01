@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -10,7 +9,7 @@ namespace Card.Server
     /// <summary>
     /// 服务器 - 客户端 通信协议
     /// </summary>
-    public static class Communication
+    public static class ServerResponse
     {
         /// <summary>
         /// 开启服务器
@@ -105,31 +104,6 @@ namespace Card.Server
             client.Close();
             //logger.Log("Request :[" + requestType.ToString() + "]");
             //logger.Log("Response:[" + Response.ToString() + "]");
-        }
-        /// <summary>
-        /// 请求
-        /// </summary>
-        /// <param name="requestType"></param>
-        /// <returns></returns>
-        public static String Request(String requestInfo,String strIP)
-        {
-            TcpClient client = new TcpClient();
-            IPAddress localAddr = IPAddress.Parse(strIP);
-            client.Connect(localAddr, 13000);
-            var stream = client.GetStream();
-            var bytes = new Byte[1024];
-            bytes = Encoding.ASCII.GetBytes(requestInfo);
-            stream.Write(bytes, 0, bytes.Length);
-            String Response = String.Empty;
-            using (StreamReader reader = new StreamReader(stream))
-            {
-                while (reader.Peek() != -1)
-                {
-                    Response = reader.ReadLine();
-                }
-            }
-            client.Close();
-            return Response;
         }
         /// <summary>
         /// 消息类型(3位)

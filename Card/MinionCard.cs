@@ -31,6 +31,14 @@ namespace Card
             全局
         }
         /// <summary>
+        /// 
+        /// </summary>
+        public enum 攻击状态{
+            准备中,
+            可攻击,
+            攻击完毕
+        }
+        /// <summary>
         /// 光环类型
         /// </summary>
         public enum 光环类型
@@ -190,6 +198,9 @@ namespace Card
         /// </summary>
         [XmlIgnore]
         public int 实际生命值 = -1;
+        /// <summary>
+        /// 受过伤害
+        /// </summary>
         [XmlIgnore]
         public Boolean 受过伤害 = false;
         /// <summary>
@@ -256,6 +267,10 @@ namespace Card
         [XmlIgnore]
         public int RemainAttactTimes = 1;
         /// <summary>
+        /// 
+        /// </summary>
+        public 攻击状态 AttactStatus = 攻击状态.准备中;
+        /// <summary>
         /// 该单位受到战地的效果
         /// </summary>
         [XmlIgnore]
@@ -283,21 +298,22 @@ namespace Card
             this.冰冻状态 = CardUtility.EffectTurn.无效果;
             this.Is沉默Status = false;
             this.Is激怒Status = false;
-            //攻击次数
-            if (Actual冲锋)
+            if (Actual风怒)
             {
-                if (Actual风怒)
-                {
-                    RemainAttactTimes = 2;
-                }
-                else
-                {
-                    RemainAttactTimes = 1;
-                }
+                RemainAttactTimes = 2;
             }
             else
             {
-                RemainAttactTimes = 0;
+                RemainAttactTimes = 1;
+            }
+             //攻击次数
+            if (Actual冲锋)
+            {
+                this.AttactStatus = 攻击状态.可攻击;
+            }
+            else
+            {
+                this.AttactStatus = 攻击状态.准备中;
             }
         }
         /// <summary>
@@ -322,7 +338,7 @@ namespace Card
         {
             if (冰冻状态 != CardUtility.EffectTurn.无效果) return false;
             if (Actual不能攻击) return false;
-            return RemainAttactTimes > 0;
+            return RemainAttactTimes > 0 && AttactStatus == 攻击状态.可攻击;
         }
 
         /// <summary>

@@ -65,8 +65,8 @@
     <Compile Include="CardUtility.cs" />
     <Compile Include="SecretCard.cs" />
     <Compile Include="Server\ActionCode.cs" />
-    <Compile Include="Server\ClientUtlity.cs" />
-    <Compile Include="Server\Communication.cs" />
+    <Compile Include="Client\ClientRequest.cs" />
+    <Compile Include="Server\ServerResponse.cs" />
     <Compile Include="Server\GameServer.cs" />
     <Compile Include="Server\GameStatusAtServer.cs" />
     <Compile Include="WeaponCard.cs" />

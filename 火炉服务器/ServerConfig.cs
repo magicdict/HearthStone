@@ -20,7 +20,7 @@ namespace 火炉服务器
             Card.CardUtility.Init(txtCardPath.Text);
             btnStart.Enabled = false;
             btnStop.Enabled = true;
-            ServerThread = new Thread(Card.Server.Communication.StartServer);
+            ServerThread = new Thread(Card.Server.ServerResponse.StartServer);
             ServerThread.IsBackground = true;
             ServerThread.Start();
         }

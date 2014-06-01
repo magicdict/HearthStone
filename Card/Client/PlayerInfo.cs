@@ -28,7 +28,7 @@ namespace Card.Client
         /// <summary>
         /// 护盾
         /// </summary>
-        public int SheildPoint = 0;
+        public int ShieldPoint = 0;
         /// <summary>
         /// 水晶
         /// </summary>
@@ -79,21 +79,21 @@ namespace Card.Client
             return Status.ToString();
         }
         /// <summary>
-        /// 
+        /// 遇到攻击
         /// </summary>
         /// <param name="AttackPoint"></param>
         public void AfterBeAttack(int AttackPoint)
         {
-            if (SheildPoint > 0)
+            if (ShieldPoint > 0)
             {
-                if (SheildPoint >= AttackPoint)
+                if (ShieldPoint >= AttackPoint)
                 {
-                    SheildPoint -= AttackPoint;
+                    ShieldPoint -= AttackPoint;
                 }
                 else
                 {
-                    HealthPoint -= (AttackPoint - SheildPoint);
-                    SheildPoint = 0;
+                    HealthPoint -= (AttackPoint - ShieldPoint);
+                    ShieldPoint = 0;
                 }
             }
             else

@@ -62,7 +62,7 @@ namespace Card.Client
                 case ActionCode.ActionType.Card:
                     if (actField[1] == CardUtility.strYou)
                     {
-                        var drawCards = Card.Server.ClientUtlity.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
+                        var drawCards = Card.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
                         game.MySelf.handCards.Add(Card.CardUtility.GetCardInfoBySN(drawCards[0]));
                         game.MySelf.RoleInfo.HandCardCount++;
                         game.MySelf.RoleInfo.RemainCardDeckCount--;

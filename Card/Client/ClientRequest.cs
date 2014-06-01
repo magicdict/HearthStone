@@ -1,11 +1,42 @@
-﻿using System;
+﻿using Card.Server;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
 
-namespace Card.Server
+namespace Card.Client
 {
-    public static class ClientUtlity
+    public static class ClientRequest
     {
+        /// <summary>
+        /// 请求
+        /// </summary>
+        /// <param name="requestInfo"></param>
+        /// <param name="strIP"></param>
+        /// <returns></returns>
+        public static String Request(String requestInfo, String strIP)
+        {
+            TcpClient client = new TcpClient();
+            IPAddress localAddr = IPAddress.Parse(strIP);
+            client.Connect(localAddr, 13000);
+            var stream = client.GetStream();
+            var bytes = new Byte[1024];
+            bytes = Encoding.ASCII.GetBytes(requestInfo);
+            stream.Write(bytes, 0, bytes.Length);
+            String Response = String.Empty;
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                while (reader.Peek() != -1)
+                {
+                    Response = reader.ReadLine();
+                }
+            }
+            client.Close();
+            return Response;
+        }
         /// <summary>
         /// IP地址
         /// </summary>
@@ -16,8 +47,8 @@ namespace Card.Server
         /// <param name="NickName"></param>
         public static String CreateGame(String NickName)
         {
-            String requestInfo = Card.Server.Communication.RequestType.新建游戏.GetHashCode().ToString("D3") + NickName;
-            return Card.Server.Communication.Request(requestInfo, strIP);
+            String requestInfo = Card.Server.ServerResponse.RequestType.新建游戏.GetHashCode().ToString("D3") + NickName;
+            return Request(requestInfo, strIP);
         }
         /// <summary>
         /// 加入游戏
@@ -27,8 +58,8 @@ namespace Card.Server
         /// <returns></returns>
         public static String JoinGame(int GameId, String NickName)
         {
-            String requestInfo = Card.Server.Communication.RequestType.加入游戏.GetHashCode().ToString("D3") + GameId.ToString(GameServer.GameIdFormat) + NickName;
-            return Card.Server.Communication.Request(requestInfo, strIP);
+            String requestInfo = Card.Server.ServerResponse.RequestType.加入游戏.GetHashCode().ToString("D3") + GameId.ToString(GameServer.GameIdFormat) + NickName;
+            return Request(requestInfo, strIP);
         }
         /// <summary>
         /// 等待游戏列表
@@ -36,8 +67,8 @@ namespace Card.Server
         /// <param name="NickName"></param>
         public static String GetWatiGameList()
         {
-            String requestInfo = Card.Server.Communication.RequestType.等待游戏列表.GetHashCode().ToString("D3");
-            return Card.Server.Communication.Request(requestInfo, strIP);
+            String requestInfo = Card.Server.ServerResponse.RequestType.等待游戏列表.GetHashCode().ToString("D3");
+            return Request(requestInfo, strIP);
         }
         /// <summary>
         /// 确认游戏状态
@@ -45,18 +76,18 @@ namespace Card.Server
         /// <param name="NickName"></param>
         public static Boolean IsGameStart(String GameId)
         {
-            String requestInfo = Card.Server.Communication.RequestType.游戏启动状态.GetHashCode().ToString("D3") + GameId;
-            return Card.Server.Communication.Request(requestInfo, strIP) == CardUtility.strTrue;
+            String requestInfo = Card.Server.ServerResponse.RequestType.游戏启动状态.GetHashCode().ToString("D3") + GameId;
+            return Request(requestInfo, strIP) == CardUtility.strTrue;
         }
-
         /// <summary>
         /// 确认先后手
         /// </summary>
         /// <param name="NickName"></param>
         public static Boolean IsFirst(String GameId, Boolean IsHost)
         {
-            String requestInfo = Card.Server.Communication.RequestType.先后手状态.GetHashCode().ToString("D3") + GameId + (IsHost ? CardUtility.strTrue : CardUtility.strFalse);
-            return Card.Server.Communication.Request(requestInfo, strIP) == CardUtility.strTrue;
+            String requestInfo = Card.Server.ServerResponse.RequestType.先后手状态.GetHashCode().ToString("D3") + GameId + 
+                (IsHost ? CardUtility.strTrue : CardUtility.strFalse);
+            return Request(requestInfo, strIP) == CardUtility.strTrue;
         }
         /// <summary>
         /// 抽牌
@@ -67,16 +98,17 @@ namespace Card.Server
         /// <returns></returns>
         public static List<String> DrawCard(String GameId, bool IsFirst, int CardCount)
         {
-            String requestInfo = Card.Server.Communication.RequestType.抽牌.GetHashCode().ToString("D3") + GameId + (IsFirst ? CardUtility.strTrue : CardUtility.strFalse) + CardCount.ToString("D1");
+            String requestInfo = Card.Server.ServerResponse.RequestType.抽牌.GetHashCode().ToString("D3") + GameId + 
+                (IsFirst ? CardUtility.strTrue : CardUtility.strFalse) + CardCount.ToString("D1");
             List<String> CardList = new List<string>();
-            foreach (var card in Card.Server.Communication.Request(requestInfo, strIP).Split(Card.CardUtility.strSplitArrayMark.ToArray()))
+            foreach (var card in Request(requestInfo, strIP).Split(Card.CardUtility.strSplitArrayMark.ToArray()))
             {
                 CardList.Add(card);
             }
             return CardList;
         }
         /// <summary>
-        /// TurnEnd
+        /// 回合结束
         /// </summary>
         /// <param name="GameId"></param>
         public static void TurnEnd(String GameId)
@@ -97,8 +129,8 @@ namespace Card.Server
                 Transform += item + Card.CardUtility.strSplitArrayMark;
             }
             Transform = Transform.TrimEnd(Card.CardUtility.strSplitArrayMark.ToCharArray());
-            String requestInfo = Card.Server.Communication.RequestType.写入行动.GetHashCode().ToString("D3") + GameId + Transform;
-            Card.Server.Communication.Request(requestInfo, strIP);
+            String requestInfo = Card.Server.ServerResponse.RequestType.写入行动.GetHashCode().ToString("D3") + GameId + Transform;
+            Request(requestInfo, strIP);
         }
         /// <summary>
         /// 读取行动
@@ -107,8 +139,8 @@ namespace Card.Server
         /// <returns></returns>
         public static String ReadAction(String GameId)
         {
-            String requestInfo = Card.Server.Communication.RequestType.读取行动.GetHashCode().ToString("D3") + GameId;
-            return Card.Server.Communication.Request(requestInfo, strIP);
+            String requestInfo = Card.Server.ServerResponse.RequestType.读取行动.GetHashCode().ToString("D3") + GameId;
+            return Request(requestInfo, strIP);
         }
         /// <summary>
         /// 是否触发了奥秘
@@ -122,9 +154,9 @@ namespace Card.Server
                 Transform += item + Card.CardUtility.strSplitArrayMark;
             }
             Transform = Transform.TrimEnd(Card.CardUtility.strSplitArrayMark.ToCharArray());
-            String requestInfo = Card.Server.Communication.RequestType.奥秘判定.GetHashCode().ToString("D3") + GameId +
+            String requestInfo = Card.Server.ServerResponse.RequestType.奥秘判定.GetHashCode().ToString("D3") + GameId +
                 (IsFirst ? CardUtility.strTrue : CardUtility.strFalse) + Transform;
-            return Card.Server.Communication.Request(requestInfo, strIP);
+            return Request(requestInfo, strIP);
         }
     }
 }

@@ -243,9 +243,9 @@ namespace 炉边传说
         private void btnEndTurn_Click(object sender, System.EventArgs e)
         {
             var ActionLst = game.TurnEnd();
-            if (ActionLst.Count != 0) Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), ActionLst);
+            if (ActionLst.Count != 0) Card.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), ActionLst);
             //结束回合
-            Card.Server.ClientUtlity.TurnEnd(game.GameId.ToString(GameServer.GameIdFormat));
+            Card.Client.ClientRequest.TurnEnd(game.GameId.ToString(GameServer.GameIdFormat));
             game.IsMyTurn = false;
             StartNewTurn();
             WaitTimer.Start();
@@ -267,7 +267,7 @@ namespace 炉边传说
                         ActionLst.AddRange(game.MySelf.RoleInfo.BattleField.BattleMinions[i].回合开始(game));
                     }
                 }
-                if (ActionLst.Count != 0) Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), ActionLst);
+                if (ActionLst.Count != 0) Card.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), ActionLst);
                 //按钮可用性设定
                 btnEndTurn.Enabled = true;
                 for (int i = 0; i < 10; i++)
@@ -299,7 +299,7 @@ namespace 炉边传说
         /// </summary>
         private void WaitFor(object sender, System.EventArgs e)
         {
-            var Actions = Card.Server.ClientUtlity.ReadAction(game.GameId.ToString(GameServer.GameIdFormat));
+            var Actions = Card.Client.ClientRequest.ReadAction(game.GameId.ToString(GameServer.GameIdFormat));
             if (String.IsNullOrEmpty(Actions)) return;
             var ActionList = Actions.Split(Card.CardUtility.strSplitArrayMark.ToCharArray());
             foreach (var item in ActionList)
@@ -383,7 +383,7 @@ namespace 炉边传说
                     actionlst.Add(action);
                     //奥秘计算
                     actionlst.AddRange(game.奥秘计算(actionlst));
-                    Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
+                    Card.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
                 }
             }
             //界面更新
@@ -399,7 +399,7 @@ namespace 炉边传说
             var YourPos = SelectPanel(CardUtility.TargetSelectDirectEnum.对方, CardUtility.TargetSelectRoleEnum.所有角色, true);
             List<String> actionlst = RunAction.Fight(game, MyPos, YourPos.Postion);
             actionlst.AddRange(game.奥秘计算(actionlst));
-            Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
+            Card.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
             DisplayMyInfo();
         }
     }
