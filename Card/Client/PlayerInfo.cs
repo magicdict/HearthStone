@@ -52,7 +52,7 @@ namespace Card.Client
         /// <summary>
         /// 装备武器时候的剩余攻击次数
         /// </summary>
-        public int RemainAttackCount = 0;
+        public int RemainAttactTimes = 0;
         /// <summary>
         /// 英雄技能
         /// </summary>
@@ -119,6 +119,20 @@ namespace Card.Client
         /// 奥秘
         /// </summary>
         public List<SecretCard> 奥秘列表 = new List<SecretCard>();
+        /// <summary>
+        /// 手牌消耗重置
+        /// </summary>
+        public void ResetHandCardCost()
+        {
+            foreach (var card in handCards)
+            {
+                if (card.CardType == CardBasicInfo.CardTypeEnum.法术)
+                {
+                    card.ActualCostPoint = card.StandardCostPoint + RoleInfo.BattleField.AbilityCost;
+                    if (card.ActualCostPoint < 0) card.ActualCostPoint = 0;
+                }
+            }
+        }
         /// <summary>
         /// 清除命中奥秘
         /// </summary>

@@ -33,7 +33,8 @@ namespace Card
         /// <summary>
         /// 
         /// </summary>
-        public enum 攻击状态{
+        public enum 攻击状态
+        {
             准备中,
             可攻击,
             攻击完毕
@@ -306,7 +307,7 @@ namespace Card
             {
                 RemainAttactTimes = 1;
             }
-             //攻击次数
+            //攻击次数
             if (Actual冲锋)
             {
                 this.AttactStatus = 攻击状态.可攻击;
@@ -329,6 +330,7 @@ namespace Card
             {
                 RemainAttactTimes = 1;
             }
+            AttactStatus = 攻击状态.可攻击;
         }
         /// <summary>
         /// 能否攻击
@@ -392,7 +394,8 @@ namespace Card
             {
                 var 战吼Result = RunAction.StartAction(game, 战吼效果);
                 //第一条是使用了战吼卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
-                战吼Result.RemoveAt(0);
+                //如果战吼在召唤的时候无法成功，法术机能会误认为是取消
+                if (战吼Result.Count > 0) 战吼Result.RemoveAt(0);
                 ActionCodeLst.AddRange(战吼Result);
             }
             return ActionCodeLst;
@@ -465,10 +468,15 @@ namespace Card
         /// <summary>
         /// 攻击后
         /// </summary>
-        public void AfterAttack()
+        public void AfterAttack(Boolean 被动攻击)
         {
             //失去潜行
-            Is潜行Status = false;
+            if (!被动攻击)
+            {
+                Is潜行Status = false;
+                RemainAttactTimes--;
+                if (RemainAttactTimes == 0) AttactStatus = MinionCard.攻击状态.攻击完毕;
+            }
         }
         /// <summary>
         /// 被攻击后

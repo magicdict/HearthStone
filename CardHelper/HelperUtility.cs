@@ -44,7 +44,6 @@ namespace CardHelper
             奥术飞弹.Description = "造成3点伤害，随机分配给敌方角色。";
             奥术飞弹.Rare = Card.CardBasicInfo.稀有程度.绿色;
             //使用成本
-            奥术飞弹.ActualCostPoint = 1;
             奥术飞弹.StandardCostPoint = 1;
             //3回1点攻击
             //奥术飞弹.FirstAbilityDefine.StandardEffectPoint = 1;
@@ -65,7 +64,6 @@ namespace CardHelper
             奥术智慧.Description = "随机抽两张牌。";
             奥术智慧.Rare = Card.CardBasicInfo.稀有程度.绿色;
             //使用成本
-            奥术智慧.ActualCostPoint = 1;
             奥术智慧.StandardCostPoint = 1;
             奥术智慧.CardAbility.JoinType = Card.CardUtility.EffectJoinType.None;
 

@@ -202,7 +202,7 @@ namespace 炉边传说
                 if (i < game.MySelf.handCards.Count)
                 {
                     Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Text = game.MySelf.handCards[i].GetInfo();
-                    Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Tag = game.MySelf.handCards[i].SN;
+                    Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Tag = game.MySelf.handCards[i];
                     if (game.IsMyTurn) Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Enabled = true;
                 }
                 else
@@ -361,34 +361,34 @@ namespace 炉边传说
         private void btnUseHandCard_Click(object sender, EventArgs e)
         {
             if (((Button)sender).Tag == null) return;
-            String CardSn = ((Button)sender).Tag.ToString();
-            if (Card.CardUtility.GetCardInfoBySN(CardSn) != null)
+            CardBasicInfo card = (CardBasicInfo)((Button)sender).Tag;
+            var msg = game.CheckCondition(card);
+            if (!String.IsNullOrEmpty(msg))
             {
-                Card.CardBasicInfo card = Card.CardUtility.GetCardInfoBySN(CardSn);
-                if (!game.CheckCondition(card))
-                {
-                    MessageBox.Show("水晶不够");
-                    return;
-                }
-                var actionlst = RunAction.StartAction(game, CardSn);
-                if (actionlst.Count != 0)
-                {
-                    game.MySelf.RoleInfo.crystal.CurrentRemainPoint -= card.ActualCostPoint;
-                    if (((Button)sender).Name != "btnMyHeroAblity")
-                    {
-                        game.RemoveUsedCard(CardSn);
-                    }
-                    var action = ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +
-                                 game.MySelf.RoleInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentFullPoint;
-                    actionlst.Add(action);
-                    //奥秘计算
-                    actionlst.AddRange(game.奥秘计算(actionlst));
-                    Card.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
-                }
+                MessageBox.Show(msg);
+                return;
             }
-            //界面更新
-            if (((Button)sender).Name == "btnMyHeroAblity") game.MySelf.RoleInfo.IsUsedHeroAbility = true;
-            DisplayMyInfo();
+            var actionlst = RunAction.StartAction(game, card.SN);
+            if (actionlst.Count != 0)
+            {
+                game.MySelf.RoleInfo.crystal.CurrentRemainPoint -= card.ActualCostPoint;
+                if (((Button)sender).Name != "btnMyHeroAblity")
+                {
+                    game.RemoveUsedCard(card.SN);
+                }
+                else
+                {
+                    game.MySelf.RoleInfo.IsUsedHeroAbility = true;
+                }
+                actionlst.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +
+                             game.MySelf.RoleInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentFullPoint);
+                //奥秘计算
+                actionlst.AddRange(game.奥秘计算(actionlst));
+                game.MySelf.ResetHandCardCost();
+                Card.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
+                DisplayMyInfo();
+            }
+
         }
         /// <summary>
         /// 攻击
@@ -399,6 +399,7 @@ namespace 炉边传说
             var YourPos = SelectPanel(CardUtility.TargetSelectDirectEnum.对方, CardUtility.TargetSelectRoleEnum.所有角色, true);
             List<String> actionlst = RunAction.Fight(game, MyPos, YourPos.Postion);
             actionlst.AddRange(game.奥秘计算(actionlst));
+            game.MySelf.ResetHandCardCost();
             Card.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
             DisplayMyInfo();
         }

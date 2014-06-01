@@ -72,7 +72,9 @@ namespace Card.Client
             //DEBUG START
             MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
-            HandCard.Add("M000138");
+            HandCard.Add("M000076");
+            HandCard.Add("M000061");
+            HandCard.Add("A000056");
             //DEBUG END
             //英雄技能：奥术飞弹
             MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A000056");
@@ -106,11 +108,36 @@ namespace Card.Client
         /// 检查是否可以使用
         /// </summary>
         /// <returns></returns>
-        public Boolean CheckCondition(Card.CardBasicInfo card)
+        public String CheckCondition(Card.CardBasicInfo card)
         {
             //剩余的法力是否足够实际召唤的法力
-            if (card.Overload > 0 && OverloadPoint > 0) return false;
-            return MySelf.RoleInfo.crystal.CurrentRemainPoint >= card.ActualCostPoint;
+            String Message = String.Empty;
+            if (card.Overload > 0 && OverloadPoint > 0)
+            {
+                Message = "已经使用过载";
+                return Message;
+            }
+            if (card.CardType == CardBasicInfo.CardTypeEnum.法术)
+            {
+                if (((Card.AbilityCard)card).CheckCondition(this) == false)
+                {
+                    Message = "没有法术使用对象";
+                    return Message;
+                }
+            }
+            if (card.CardType == CardBasicInfo.CardTypeEnum.随从)
+            {
+                if (MySelf.RoleInfo.BattleField.MinionCount == Card.Client.BattleFieldInfo.MaxMinionCount)
+                {
+                    Message = "随从已经满员";
+                    return Message;
+                }
+            }
+            if (MySelf.RoleInfo.crystal.CurrentRemainPoint < card.ActualCostPoint)
+            {
+                Message = "法力水晶不足";
+            }
+            return Message;
         }
         /// <summary>
         /// 新的回合
@@ -135,7 +162,7 @@ namespace Card.Client
                 }
                 MySelf.RoleInfo.HandCardCount++;
                 MySelf.RoleInfo.RemainCardDeckCount--;
-                MySelf.RoleInfo.RemainAttackCount = 1;
+                MySelf.RoleInfo.RemainAttactTimes = 1;
                 MySelf.RoleInfo.IsUsedHeroAbility = false;
                 foreach (var minion in MySelf.RoleInfo.BattleField.BattleMinions)
                 {
@@ -160,13 +187,15 @@ namespace Card.Client
                 {
                     if (minion != null) minion.ResetAttackTimes();
                 }
+                //手牌消耗的计算
+                MySelf.ResetHandCardCost();
             }
             else
             {
                 YourInfo.crystal.NewTurn();
                 YourInfo.HandCardCount++;
                 YourInfo.RemainCardDeckCount--;
-                YourInfo.RemainAttackCount = 1;
+                YourInfo.RemainAttactTimes = 1;
                 YourInfo.IsUsedHeroAbility = false;
                 //重置攻击次数
                 foreach (var minion in YourInfo.BattleField.BattleMinions)
@@ -358,52 +387,36 @@ namespace Card.Client
         /// <summary>
         /// 战斗
         /// </summary>
-        /// <param name="MyPos">本方</param>
-        /// <param name="YourPos">对方</param>
+        /// <param name="攻击方Pos">本方</param>
+        /// <param name="被攻击方Pos">对方</param>
         /// <param name="被动攻击">被动攻击</param>
         /// <returns></returns>
-        public List<String> Fight(int MyPos, int YourPos, Boolean 被动攻击 = false)
+        public List<String> Fight(int 攻击方Pos, int 被攻击方Pos, Boolean 被动攻击 = false)
         {
             List<String> Result = new List<string>();
-            //攻击次数的清算
-            if (被动攻击)
-            {
-                if (YourPos != BattleFieldInfo.HeroPos)
-                {
-                    YourInfo.BattleField.BattleMinions[YourPos - 1].RemainAttactTimes--;
-                }
-                else
-                {
-                    if (YourInfo.Weapon != null)
-                    {
-                        YourInfo.Weapon.实际耐久度--;
-                        YourInfo.RemainAttackCount = 0;
-                    }
-                }
-            }
-            else
+            //主动攻击方的状态变化
+            if (!被动攻击)
             {
                 //攻击次数
-                if (MyPos != BattleFieldInfo.HeroPos)
-                {
-                    MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].RemainAttactTimes--;
-                }
-                else
+                if (攻击方Pos == BattleFieldInfo.HeroPos)
                 {
                     if (MySelf.RoleInfo.Weapon != null)
                     {
                         MySelf.RoleInfo.Weapon.实际耐久度--;
-                        MySelf.RoleInfo.RemainAttackCount = 0;
+                        MySelf.RoleInfo.RemainAttactTimes = 0;
                     }
                 }
+                else
+                {
+                    //攻击次数的清算,潜行等去除(如果不是被攻击方的处理)
+                    MySelf.RoleInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterAttack(被动攻击);
+                }
             }
-            //潜行等去除(如果不是被攻击方的处理)
-            if (!被动攻击 && (MyPos != BattleFieldInfo.HeroPos)) MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].AfterAttack();
             //伤害计算(本方)
             var YourAttackPoint = 0;
-            if (YourPos != BattleFieldInfo.HeroPos)
+            if (被攻击方Pos != BattleFieldInfo.HeroPos)
             {
-                YourAttackPoint = YourInfo.BattleField.BattleMinions[YourPos - 1].TotalAttack();
+                YourAttackPoint = YourInfo.BattleField.BattleMinions[被攻击方Pos - 1].TotalAttack();
             }
             else
             {
@@ -412,9 +425,9 @@ namespace Card.Client
                     YourAttackPoint = YourInfo.Weapon.ActualAttackPoint;
                 }
             }
-            if (MyPos != BattleFieldInfo.HeroPos)
+            if (攻击方Pos != BattleFieldInfo.HeroPos)
             {
-                MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].AfterBeAttack(YourAttackPoint);
+                MySelf.RoleInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterBeAttack(YourAttackPoint);
             }
             else
             {
@@ -422,17 +435,17 @@ namespace Card.Client
             }
             //伤害计算(对方)
             var MyAttackPoint = 0;
-            if (MyPos != BattleFieldInfo.HeroPos)
+            if (攻击方Pos != BattleFieldInfo.HeroPos)
             {
-                MyAttackPoint = MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].TotalAttack();
+                MyAttackPoint = MySelf.RoleInfo.BattleField.BattleMinions[攻击方Pos - 1].TotalAttack();
             }
             else
             {
                 if (MySelf.RoleInfo.Weapon != null) MyAttackPoint = MySelf.RoleInfo.Weapon.ActualAttackPoint;
             }
-            if (YourPos != BattleFieldInfo.HeroPos)
+            if (被攻击方Pos != BattleFieldInfo.HeroPos)
             {
-                YourInfo.BattleField.BattleMinions[YourPos - 1].AfterBeAttack(MyAttackPoint);
+                YourInfo.BattleField.BattleMinions[被攻击方Pos - 1].AfterBeAttack(MyAttackPoint);
             }
             else
             {
@@ -500,7 +513,7 @@ namespace Card.Client
         /// <returns></returns>
         public Boolean IsWeaponEnable()
         {
-            return MySelf.RoleInfo.RemainAttackCount != 0 &&
+            return MySelf.RoleInfo.RemainAttactTimes != 0 &&
                    MySelf.RoleInfo.Weapon != null &&
                    MySelf.RoleInfo.Weapon.实际耐久度 > 0 &&
                    IsMyTurn;

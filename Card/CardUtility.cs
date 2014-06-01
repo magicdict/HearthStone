@@ -115,7 +115,6 @@ namespace Card
             {
                 XmlSerializer xml = new XmlSerializer(typeof(Card.AbilityCard));
                 Card.AbilityCard ability = (AbilityCard)xml.Deserialize(new StreamReader(AbilityXml));
-                ability.ActualCostPoint = ability.StandardCostPoint;
                 CardCollections.Add(ability.SN, ability);
             }
             //随从
