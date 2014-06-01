@@ -196,10 +196,19 @@ namespace Card.Client
         /// <summary>
         /// 结束回合
         /// </summary>
-        public void TurnEnd()
+        public List<String> TurnEnd()
         {
             //调用这个方法的时候，IsMyTurn肯定是True
-            //本方的回合结束效果
+            //回合结束效果
+            List<String> ActionLst = new List<string>();
+            for (int i = 0; i < MySelf.RoleInfo.BattleField.MinionCount; i++)
+            {
+                if (MySelf.RoleInfo.BattleField.BattleMinions[i] != null)
+                {
+                    ActionLst.AddRange(MySelf.RoleInfo.BattleField.BattleMinions[i].回合结束(this));
+                }
+            }
+            return ActionLst;
         }
 
         /// <summary>
@@ -356,9 +365,10 @@ namespace Card.Client
         public List<String> Fight(int MyPos, int YourPos, Boolean 被动攻击 = false)
         {
             List<String> Result = new List<string>();
+            //攻击次数的清算
             if (被动攻击)
             {
-                if (YourPos != 0)
+                if (YourPos != BattleFieldInfo.HeroPos)
                 {
                     YourInfo.BattleField.BattleMinions[YourPos - 1].RemainAttactTimes--;
                 }
@@ -374,7 +384,7 @@ namespace Card.Client
             else
             {
                 //攻击次数
-                if (MyPos != 0)
+                if (MyPos != BattleFieldInfo.HeroPos)
                 {
                     MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].RemainAttactTimes--;
                 }
@@ -388,10 +398,10 @@ namespace Card.Client
                 }
             }
             //潜行等去除(如果不是被攻击方的处理)
-            if (!被动攻击 && (MyPos != 0)) MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].AfterAttack();
+            if (!被动攻击 && (MyPos != BattleFieldInfo.HeroPos)) MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].AfterAttack();
             //伤害计算(本方)
             var YourAttackPoint = 0;
-            if (YourPos != 0)
+            if (YourPos != BattleFieldInfo.HeroPos)
             {
                 YourAttackPoint = YourInfo.BattleField.BattleMinions[YourPos - 1].TotalAttack();
             }
@@ -402,17 +412,17 @@ namespace Card.Client
                     YourAttackPoint = YourInfo.Weapon.ActualAttackPoint;
                 }
             }
-            if (MyPos != 0)
+            if (MyPos != BattleFieldInfo.HeroPos)
             {
                 MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].AfterBeAttack(YourAttackPoint);
             }
             else
             {
-                MySelf.RoleInfo.HealthPoint -= YourAttackPoint;
+                MySelf.RoleInfo.AfterBeAttack(YourAttackPoint);
             }
             //伤害计算(对方)
             var MyAttackPoint = 0;
-            if (MyPos != 0)
+            if (MyPos != BattleFieldInfo.HeroPos)
             {
                 MyAttackPoint = MySelf.RoleInfo.BattleField.BattleMinions[MyPos - 1].TotalAttack();
             }
@@ -420,13 +430,13 @@ namespace Card.Client
             {
                 if (MySelf.RoleInfo.Weapon != null) MyAttackPoint = MySelf.RoleInfo.Weapon.ActualAttackPoint;
             }
-            if (YourPos != 0)
+            if (YourPos != BattleFieldInfo.HeroPos)
             {
                 YourInfo.BattleField.BattleMinions[YourPos - 1].AfterBeAttack(MyAttackPoint);
             }
             else
             {
-                YourInfo.HealthPoint -= MyAttackPoint;
+                YourInfo.AfterBeAttack(MyAttackPoint);
             }
             //每次操作后进行一次清算
             if (!被动攻击)

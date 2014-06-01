@@ -242,18 +242,9 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnEndTurn_Click(object sender, System.EventArgs e)
         {
-            //回合结束效果
-            List<String> ActionLst = new List<string>();
-            for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
-            {
-                if (game.MySelf.RoleInfo.BattleField.BattleMinions[i] != null)
-                {
-                    ActionLst.AddRange(game.MySelf.RoleInfo.BattleField.BattleMinions[i].回合结束(game));
-                }
-            }
+            var ActionLst = game.TurnEnd();
             if (ActionLst.Count != 0) Card.Server.ClientUtlity.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), ActionLst);
             //结束回合
-            game.TurnEnd();
             Card.Server.ClientUtlity.TurnEnd(game.GameId.ToString(GameServer.GameIdFormat));
             game.IsMyTurn = false;
             StartNewTurn();

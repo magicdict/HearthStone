@@ -22,13 +22,13 @@ namespace Card.Client
         /// </summary>
         public Card.CardUtility.EffectTurn 冰冻状态 = CardUtility.EffectTurn.无效果;
         /// <summary>
-        /// 护盾点数
-        /// </summary>
-        public int Sheild = 0;
-        /// <summary>
         /// 生命力
         /// </summary>
         public int HealthPoint = 30;
+        /// <summary>
+        /// 护盾
+        /// </summary>
+        public int SheildPoint = 0;
         /// <summary>
         /// 水晶
         /// </summary>
@@ -77,6 +77,29 @@ namespace Card.Client
             Status.AppendLine("HealthPoint：" + HealthPoint);
             Status.AppendLine("RemainCardDeckCount：" + RemainCardDeckCount);
             return Status.ToString();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="AttackPoint"></param>
+        public void AfterBeAttack(int AttackPoint)
+        {
+            if (SheildPoint > 0)
+            {
+                if (SheildPoint >= AttackPoint)
+                {
+                    SheildPoint -= AttackPoint;
+                }
+                else
+                {
+                    HealthPoint -= (AttackPoint - SheildPoint);
+                    SheildPoint = 0;
+                }
+            }
+            else
+            {
+                HealthPoint -= AttackPoint;
+            }
         }
     }
     /// <summary>

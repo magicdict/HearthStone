@@ -28,7 +28,7 @@ namespace Card.Effect
                 {
                     if (PosField[1] == Card.Client.BattleFieldInfo.HeroPos.ToString())
                     {
-                        game.MySelf.RoleInfo.HealthPoint -= AttackPoint;
+                        game.MySelf.RoleInfo.AfterBeAttack(AttackPoint);
                     }
                     else
                     {
@@ -40,7 +40,8 @@ namespace Card.Effect
                 {
                     if (PosField[1] == Card.Client.BattleFieldInfo.HeroPos.ToString())
                     {
-                        game.YourInfo.HealthPoint -= AttackPoint;
+
+                        game.YourInfo.AfterBeAttack(AttackPoint);
                     }
                     else
                     {
