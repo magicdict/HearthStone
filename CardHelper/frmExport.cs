@@ -102,7 +102,7 @@ namespace CardHelper
                 Secret.ActualCostPoint = Secret.StandardCostPoint;
                 Secret.Rare = CardUtility.GetEnum<Card.CardBasicInfo.稀有程度>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度.白色);
                 Secret.IsCardReady = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
-                Secret.Condition = CardUtility.GetEnum<Card.SecretCard.SecretCondition>(worksheet.Cells(rowCount, 14).Text,SecretCard.SecretCondition.对方召唤随从);
+                Secret.Condition = CardUtility.GetEnum<Card.SecretCard.SecretCondition>(worksheet.Cells(rowCount, 14).Text, SecretCard.SecretCondition.对方召唤随从);
                 Secret.AdditionInfo = worksheet.Cells(rowCount, 15).Text;
                 switch (target)
                 {
@@ -142,8 +142,8 @@ namespace CardHelper
                 Minion.Name = worksheet.Cells(rowCount, 3).Text;
                 Minion.Description = worksheet.Cells(rowCount, 4).Text;
                 Minion.Class = CardUtility.GetEnum<Card.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 5).Text, Card.CardUtility.ClassEnum.中立);
+                Minion.种族 = CardUtility.GetEnum<Card.CardUtility.种族Enum>(worksheet.Cells(rowCount, 6).Text, Card.CardUtility.种族Enum.无);
                 Minion.StandardCostPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
-                Minion.ActualCostPoint = Minion.StandardCostPoint;
 
                 Minion.StandardAttackPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 8).Text);
                 Minion.标准生命值上限 = CardUtility.GetInt(worksheet.Cells(rowCount, 9).Text);
@@ -176,14 +176,16 @@ namespace CardHelper
                     Minion.光环效果.BuffInfo = worksheet.Cells(rowCount, 24).Text;
                 }
                 Minion.战吼效果 = worksheet.Cells(rowCount, 25).Text;
-                Minion.亡语效果 = worksheet.Cells(rowCount, 26).Text;
-                Minion.激怒效果 = worksheet.Cells(rowCount, 27).Text;
-                Minion.连击效果 = worksheet.Cells(rowCount, 28).Text;
-                Minion.回合开始效果 = worksheet.Cells(rowCount, 29).Text;
-                Minion.回合结束效果 = worksheet.Cells(rowCount, 30).Text;
-                Minion.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 31).Text);
-                Minion.事件类型 = CardUtility.GetEnum<Card.MinionCard.事件类型列表>(worksheet.Cells(rowCount, 32).Text, Card.MinionCard.事件类型列表.无);
-                Minion.事件效果 = worksheet.Cells(rowCount, 33).Text;
+                Minion.战吼类型 = CardUtility.GetEnum<Card.MinionCard.战吼类型列表>(worksheet.Cells(rowCount, 26).Text, Card.MinionCard.战吼类型列表.默认);
+
+                Minion.亡语效果 = worksheet.Cells(rowCount, 27).Text;
+                Minion.激怒效果 = worksheet.Cells(rowCount, 28).Text;
+                Minion.连击效果 = worksheet.Cells(rowCount, 29).Text;
+                Minion.回合开始效果 = worksheet.Cells(rowCount, 30).Text;
+                Minion.回合结束效果 = worksheet.Cells(rowCount, 31).Text;
+                Minion.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 32).Text);
+                Minion.事件类型 = CardUtility.GetEnum<Card.MinionCard.事件类型列表>(worksheet.Cells(rowCount, 33).Text, Card.MinionCard.事件类型列表.无);
+                Minion.事件效果 = worksheet.Cells(rowCount, 34).Text;
 
                 switch (target)
                 {
@@ -231,17 +233,36 @@ namespace CardHelper
                 Card.Effect.EffectDefine effect = new Card.Effect.EffectDefine();
                 effect.Description = String.IsNullOrEmpty(worksheet.Cells(rowCount, 14).Text) ? String.Empty : worksheet.Cells(rowCount, 14).Text;
                 effect.AbilityEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(worksheet.Cells(rowCount, 15).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
-                effect.EffictTargetSelectMode = CardUtility.GetEnum<Card.CardUtility.TargetSelectModeEnum>(worksheet.Cells(rowCount, 16).Text, CardUtility.TargetSelectModeEnum.不用选择);
-                effect.EffectTargetSelectDirect = CardUtility.GetEnum<Card.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 17).Text, CardUtility.TargetSelectDirectEnum.双方);
-                effect.EffectTargetSelectRole = CardUtility.GetEnum<Card.CardUtility.TargetSelectRoleEnum>(worksheet.Cells(rowCount, 18).Text, CardUtility.TargetSelectRoleEnum.随从);
-                effect.StandardEffectPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 19).Text);
-                effect.StandardEffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 20).Text);
+                effect.SelectOpt.EffictTargetSelectMode = CardUtility.GetEnum<Card.CardUtility.TargetSelectModeEnum>(worksheet.Cells(rowCount, 16).Text, CardUtility.TargetSelectModeEnum.不用选择);
+                effect.SelectOpt.EffectTargetSelectDirect = CardUtility.GetEnum<Card.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 17).Text, CardUtility.TargetSelectDirectEnum.双方);
+                effect.SelectOpt.EffectTargetSelectRole = CardUtility.GetEnum<Card.CardUtility.TargetSelectRoleEnum>(worksheet.Cells(rowCount, 18).Text, CardUtility.TargetSelectRoleEnum.随从);
+
+                String 种族限制 = worksheet.Cells(rowCount, 19).Text;
+                if (!String.IsNullOrEmpty(种族限制))
+                {
+                    if (种族限制.StartsWith("非"))
+                    {
+                        effect.SelectOpt.EffectTargetSelect种族条件 = CardUtility.GetEnum<Card.CardUtility.种族Enum>(种族限制.Substring(1), CardUtility.种族Enum.无);
+                        effect.SelectOpt.EffectTargetSelect种族条件取反 = true;
+                    }
+                    else
+                    {
+                        effect.SelectOpt.EffectTargetSelect种族条件 = CardUtility.GetEnum<Card.CardUtility.种族Enum>(种族限制, CardUtility.种族Enum.无);
+                    }
+                }
+                else
+                {
+                    effect.SelectOpt.EffectTargetSelect种族条件 = CardUtility.种族Enum.无;
+                }
+
+                effect.StandardEffectPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 20).Text);
+                effect.StandardEffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 21).Text);
                 if (effect.StandardEffectCount == 0) effect.StandardEffectCount = 1;
-                effect.AddtionInfo = worksheet.Cells(rowCount, 21).Text;
+                effect.AddtionInfo = worksheet.Cells(rowCount, 22).Text;
                 Ability.CardAbility.FirstAbilityDefine = effect;
-                Ability.CardAbility.JoinType = CardUtility.GetEnum<Card.CardUtility.EffectJoinType>(worksheet.Cells(rowCount, 22).Text, Card.CardUtility.EffectJoinType.None);
+                Ability.CardAbility.JoinType = CardUtility.GetEnum<Card.CardUtility.EffectJoinType>(worksheet.Cells(rowCount, 23).Text, Card.CardUtility.EffectJoinType.None);
                 Boolean HasSecond = false;
-                for (int i = 23; i < 31; i++)
+                for (int i = 24; i < 32; i++)
                 {
                     if (!String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text))
                     {
@@ -252,17 +273,36 @@ namespace CardHelper
                 if (HasSecond)
                 {
                     Card.Effect.EffectDefine effect2 = new Card.Effect.EffectDefine();
-                    effect2.Description = String.IsNullOrEmpty(worksheet.Cells(rowCount, 23).Text) ? String.Empty : worksheet.Cells(rowCount, 23).Text;
-                    effect2.AbilityEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(worksheet.Cells(rowCount, 24).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
-                    effect2.EffictTargetSelectMode = CardUtility.GetEnum<Card.CardUtility.TargetSelectModeEnum>(worksheet.Cells(rowCount, 25).Text, CardUtility.TargetSelectModeEnum.不用选择);
-                    effect2.EffectTargetSelectDirect = CardUtility.GetEnum<Card.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 26).Text, CardUtility.TargetSelectDirectEnum.双方);
-                    effect2.EffectTargetSelectRole = CardUtility.GetEnum<Card.CardUtility.TargetSelectRoleEnum>(worksheet.Cells(rowCount, 27).Text, CardUtility.TargetSelectRoleEnum.随从);
-                    effect2.StandardEffectPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 28).Text);
-                    effect2.StandardEffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 29).Text);
-                    effect2.AddtionInfo = worksheet.Cells(rowCount, 30).Text;
+                    effect2.Description = String.IsNullOrEmpty(worksheet.Cells(rowCount, 24).Text) ? String.Empty : worksheet.Cells(rowCount, 24).Text;
+                    effect2.AbilityEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(worksheet.Cells(rowCount, 25).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
+                    effect2.SelectOpt.EffictTargetSelectMode = CardUtility.GetEnum<Card.CardUtility.TargetSelectModeEnum>(worksheet.Cells(rowCount, 26).Text, CardUtility.TargetSelectModeEnum.不用选择);
+                    effect2.SelectOpt.EffectTargetSelectDirect = CardUtility.GetEnum<Card.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 27).Text, CardUtility.TargetSelectDirectEnum.双方);
+                    effect2.SelectOpt.EffectTargetSelectRole = CardUtility.GetEnum<Card.CardUtility.TargetSelectRoleEnum>(worksheet.Cells(rowCount, 28).Text, CardUtility.TargetSelectRoleEnum.随从);
+
+                    种族限制 = worksheet.Cells(rowCount, 29).Text;
+                    if (!String.IsNullOrEmpty(种族限制))
+                    {
+                        if (种族限制.StartsWith("非"))
+                        {
+                            effect.SelectOpt.EffectTargetSelect种族条件 = CardUtility.GetEnum<Card.CardUtility.种族Enum>(种族限制.Substring(1), CardUtility.种族Enum.无);
+                            effect.SelectOpt.EffectTargetSelect种族条件取反 = true;
+                        }
+                        else
+                        {
+                            effect.SelectOpt.EffectTargetSelect种族条件 = CardUtility.GetEnum<Card.CardUtility.种族Enum>(种族限制, CardUtility.种族Enum.无);
+                        }
+                    }
+                    else
+                    {
+                        effect.SelectOpt.EffectTargetSelect种族条件 = CardUtility.种族Enum.无;
+                    }
+                    
+                    effect2.StandardEffectPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 30).Text);
+                    effect2.StandardEffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 31).Text);
+                    effect2.AddtionInfo = worksheet.Cells(rowCount, 32).Text;
                     Ability.CardAbility.SecondAbilityDefine = effect2;
                 }
-                Ability.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 31).Text);
+                Ability.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 33).Text);
                 switch (target)
                 {
                     case TargetType.MongoDB:

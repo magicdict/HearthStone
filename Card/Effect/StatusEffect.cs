@@ -63,30 +63,7 @@ namespace Card.Effect
                     {
                         //位置从1开始，数组从0开始
                         var myMinion = game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1];
-                        switch (singleEffect.AddtionInfo)
-                        {
-                            case strFreeze:
-                                myMinion.冰冻状态 = CardUtility.EffectTurn.效果命中;
-                                break;
-                            case strSlience:
-                                myMinion.被沉默();
-                                break;
-                            case strAngry:
-                                myMinion.Actual风怒 = true;
-                                break;
-                            case strCharge:
-                                myMinion.Actual冲锋 = true;
-                                if (myMinion.AttactStatus == MinionCard.攻击状态.准备中)
-                                {
-                                    myMinion.AttactStatus = MinionCard.攻击状态.可攻击;
-                                }
-                                break;
-                            case strTaunt:
-                                myMinion.Actual嘲讽 = true;
-                                break;
-                            default:
-                                break;
-                        }
+                        RunStatusEffect(myMinion, singleEffect.AddtionInfo);
                     }
                 }
                 else
@@ -106,32 +83,41 @@ namespace Card.Effect
                     {
                         //位置从1开始，数组从0开始
                         var yourMinion = game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1];
-                        switch (singleEffect.AddtionInfo)
-                        {
-                            case strFreeze:
-                                yourMinion.冰冻状态 = CardUtility.EffectTurn.效果命中;
-                                break;
-                            case strSlience:
-                                yourMinion.被沉默();
-                                break;
-                            case strAngry:
-                                yourMinion.Actual风怒 = true;
-                                break;
-                            case strCharge:
-                                yourMinion.Actual冲锋 = true;
-                                break;
-                            case strTaunt:
-                                yourMinion.Actual嘲讽 = true;
-                                break;
-                            default:
-                                break;
-                        }
+                        RunStatusEffect(yourMinion, singleEffect.AddtionInfo);
                     }
                 }
                 //STATUS#ME#1#FREEZE
-                Result.Add(Card.Server.ActionCode.strStatus + Card.CardUtility.strSplitMark + PosInfo + Card.CardUtility.strSplitMark + strFreeze);
+                Result.Add(Card.Server.ActionCode.strStatus + Card.CardUtility.strSplitMark + PosInfo + Card.CardUtility.strSplitMark + singleEffect.AddtionInfo);
             }
             return Result;
+        }
+
+        public static void RunStatusEffect(MinionCard myMinion, String AddtionInfo)
+        {
+            switch (AddtionInfo)
+            {
+                case strFreeze:
+                    myMinion.冰冻状态 = CardUtility.EffectTurn.效果命中;
+                    break;
+                case strSlience:
+                    myMinion.被沉默();
+                    break;
+                case strAngry:
+                    myMinion.Actual风怒 = true;
+                    break;
+                case strCharge:
+                    myMinion.Actual冲锋 = true;
+                    if (myMinion.AttactStatus == MinionCard.攻击状态.准备中)
+                    {
+                        myMinion.AttactStatus = MinionCard.攻击状态.可攻击;
+                    }
+                    break;
+                case strTaunt:
+                    myMinion.Actual嘲讽 = true;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

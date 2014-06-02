@@ -1,5 +1,6 @@
 ﻿using Card;
 using Card.Client;
+using Card.Effect;
 using System;
 using System.Windows.Forms;
 
@@ -7,10 +8,9 @@ namespace 炉边传说
 {
     public partial class TargetSelect : Form
     {
-        Card.CardUtility.TargetSelectDirectEnum direct;
-        Card.CardUtility.TargetSelectRoleEnum role;
         GameManager game;
         Boolean 嘲讽限制;
+        CardUtility.SelectOption SelectOption;
         public CardUtility.TargetPosition pos = new CardUtility.TargetPosition();
         /// <summary>
         /// 
@@ -19,11 +19,10 @@ namespace 炉边传说
         /// <param name="mRole"></param>
         /// <param name="mGame"></param>
         /// <param name="嘲讽限制"></param>
-        public TargetSelect(CardUtility.TargetSelectDirectEnum mDirect, CardUtility.TargetSelectRoleEnum mRole, GameManager mGame, Boolean m嘲讽限制)
+        public TargetSelect(CardUtility.SelectOption opt, GameManager mGame, Boolean m嘲讽限制)
         {
             InitializeComponent();
-            direct = mDirect;
-            role = mRole;
+            SelectOption = opt;
             game = mGame;
             嘲讽限制 = m嘲讽限制;
         }
@@ -93,15 +92,16 @@ namespace 炉边传说
             {
                 Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = false;
             }
-            switch (direct)
+            switch (SelectOption.EffectTargetSelectDirect)
             {
                 case CardUtility.TargetSelectDirectEnum.本方:
-                    switch (role)
+                    switch (SelectOption.EffectTargetSelectRole)
                     {
                         case CardUtility.TargetSelectRoleEnum.随从:
                             for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
                             {
-                                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = true;
+                                if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], SelectOption)) 
+                                    Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = true;
                             }
                             break;
                         case CardUtility.TargetSelectRoleEnum.英雄:
@@ -111,6 +111,7 @@ namespace 炉边传说
                             btnMyHero.Enabled = true;
                             for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
                             {
+                                if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], SelectOption)) 
                                 Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = true;
                             }
                             break;
@@ -119,11 +120,12 @@ namespace 炉边传说
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.对方:
-                    switch (role)
+                    switch (SelectOption.EffectTargetSelectRole)
                     {
                         case CardUtility.TargetSelectRoleEnum.随从:
                             for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                             {
+                                if (Card.CardUtility.符合种族条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption)) 
                                 Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = true;
                             }
                             break;
@@ -141,7 +143,6 @@ namespace 炉边传说
                                     break;
                                 }
                             }
-
                             if (嘲讽限制 && Has嘲讽)
                             {
                                 btnYourHero.Enabled = false;
@@ -159,6 +160,7 @@ namespace 炉边传说
                                 btnYourHero.Enabled = true;
                                 for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                                 {
+                                    if (Card.CardUtility.符合种族条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption))
                                     Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = true;
                                 }
                             }
@@ -168,15 +170,17 @@ namespace 炉边传说
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.双方:
-                    switch (role)
+                    switch (SelectOption.EffectTargetSelectRole)
                     {
                         case CardUtility.TargetSelectRoleEnum.随从:
                             for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
                             {
+                                if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], SelectOption)) 
                                 Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = true;
                             }
                             for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                             {
+                                if (Card.CardUtility.符合种族条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption)) 
                                 Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = true;
                             }
                             break;
@@ -189,10 +193,12 @@ namespace 炉边传说
                             btnYourHero.Enabled = true;
                             for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
                             {
+                                if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], SelectOption)) 
                                 Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = true;
                             }
                             for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                             {
+                                if (Card.CardUtility.符合种族条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption)) 
                                 Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = true;
                             }
                             break;
@@ -204,7 +210,5 @@ namespace 炉边传说
                     break;
             }
         }
-
-
     }
 }

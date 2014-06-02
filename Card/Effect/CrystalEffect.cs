@@ -22,7 +22,7 @@ namespace Card.Effect
                 point = int.Parse(Op[0].Substring(1, 1));
                 if (Op[0].Substring(0, 1) == "+")
                 {
-                    if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
+                    if (singleEffect.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
                     {
                         game.MySelf.RoleInfo.crystal.AddCurrentPoint(point);
                     }
@@ -33,7 +33,7 @@ namespace Card.Effect
                 }
                 else
                 {
-                    if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
+                    if (singleEffect.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
                     {
                         game.MySelf.RoleInfo.crystal.ReduceCurrentPoint(point);
                     }
@@ -49,7 +49,7 @@ namespace Card.Effect
                 point = int.Parse(Op[1].Substring(1, 1));
                 if (Op[1].Substring(0, 1) == "+")
                 {
-                    if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
+                    if (singleEffect.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
                     {
                         game.MySelf.RoleInfo.crystal.AddFullPoint(point);
                     }
@@ -60,7 +60,7 @@ namespace Card.Effect
                 }
                 else
                 {
-                    if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
+                    if (singleEffect.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
                     {
                         game.MySelf.RoleInfo.crystal.ReduceFullPoint(point);
                     }
@@ -71,7 +71,7 @@ namespace Card.Effect
                 }
             }
             //Crystal#ME#4#4
-            if (singleEffect.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
+            if (singleEffect.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
             {
                 Result.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentFullPoint);
             }

@@ -61,25 +61,15 @@ namespace Card.Effect
         /// 法术类型
         /// </summary>
         public AbilityEffectEnum AbilityEffectType;
-        /// <summary>
-        /// 法术对象选择模式
-        /// </summary>
-        public CardUtility.TargetSelectModeEnum EffictTargetSelectMode;
-        /// <summary>
-        /// 法术对象选择角色
-        /// </summary>
-        public CardUtility.TargetSelectRoleEnum EffectTargetSelectRole;
-        /// <summary>
-        /// 法术对象选择方向
-        /// </summary>
-        public CardUtility.TargetSelectDirectEnum EffectTargetSelectDirect;
+
+        public CardUtility.SelectOption SelectOpt = new CardUtility.SelectOption();
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
         public Boolean IsNeedSelectTarget()
         {
-            return EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.指定;
+            return SelectOpt.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.指定;
         }
         /// 攻击的时候：99表示消灭一个单位
         /// 治疗的时候：99表示完全回复一个单位
@@ -161,14 +151,14 @@ namespace Card.Effect
         {
             //切记，这里的EffectCount都是1
             List<string> Result = new List<string>();
-            switch (singleEffect.EffictTargetSelectMode)
+            switch (singleEffect.SelectOpt.EffictTargetSelectMode)
             {
                 case CardUtility.TargetSelectModeEnum.随机:
                     Random t = new Random(DateTime.Now.Millisecond + Seed);
-                    switch (singleEffect.EffectTargetSelectDirect)
+                    switch (singleEffect.SelectOpt.EffectTargetSelectDirect)
                     {
                         case CardUtility.TargetSelectDirectEnum.本方:
-                            switch (singleEffect.EffectTargetSelectRole)
+                            switch (singleEffect.SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
                                     Pos.Postion = t.Next(1, game.MySelf.RoleInfo.BattleField.MinionCount + 1);
@@ -183,7 +173,7 @@ namespace Card.Effect
                             Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Pos.Postion.ToString("D1"));
                             break;
                         case CardUtility.TargetSelectDirectEnum.对方:
-                            switch (singleEffect.EffectTargetSelectRole)
+                            switch (singleEffect.SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
                                     Pos.Postion = t.Next(1, game.YourInfo.BattleField.MinionCount + 1);
@@ -210,7 +200,7 @@ namespace Card.Effect
                                 Pos.MeOrYou = false;
                                 MinionCount = game.YourInfo.BattleField.MinionCount;
                             }
-                            switch (singleEffect.EffectTargetSelectRole)
+                            switch (singleEffect.SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
                                     Pos.Postion = t.Next(1, MinionCount + 1);
@@ -227,10 +217,10 @@ namespace Card.Effect
                     }
                     break;
                 case CardUtility.TargetSelectModeEnum.全体:
-                    switch (singleEffect.EffectTargetSelectDirect)
+                    switch (singleEffect.SelectOpt.EffectTargetSelectDirect)
                     {
                         case CardUtility.TargetSelectDirectEnum.本方:
-                            switch (singleEffect.EffectTargetSelectRole)
+                            switch (singleEffect.SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
                                     for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
@@ -251,7 +241,7 @@ namespace Card.Effect
                             }
                             break;
                         case CardUtility.TargetSelectDirectEnum.对方:
-                            switch (singleEffect.EffectTargetSelectRole)
+                            switch (singleEffect.SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
                                     for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
@@ -272,7 +262,7 @@ namespace Card.Effect
                             }
                             break;
                         case CardUtility.TargetSelectDirectEnum.双方:
-                            switch (singleEffect.EffectTargetSelectRole)
+                            switch (singleEffect.SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
                                     for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
@@ -308,9 +298,9 @@ namespace Card.Effect
                     Result.Add((Pos.MeOrYou ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + Pos.Postion.ToString("D1"));
                     break;
                 case CardUtility.TargetSelectModeEnum.不用选择:
-                    if (singleEffect.EffectTargetSelectRole == CardUtility.TargetSelectRoleEnum.英雄)
+                    if (singleEffect.SelectOpt.EffectTargetSelectRole == CardUtility.TargetSelectRoleEnum.英雄)
                     {
-                        switch (singleEffect.EffectTargetSelectDirect)
+                        switch (singleEffect.SelectOpt.EffectTargetSelectDirect)
                         {
                             case CardUtility.TargetSelectDirectEnum.本方:
                                 Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));

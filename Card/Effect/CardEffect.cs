@@ -13,7 +13,7 @@ namespace Card.Effect
         public static List<string> RunEffect(EffectDefine singleEffect, GameManager game)
         {
             List<string> Result = new List<string>();
-            switch (singleEffect.EffectTargetSelectDirect)
+            switch (singleEffect.SelectOpt.EffectTargetSelectDirect)
             {
                 case CardUtility.TargetSelectDirectEnum.本方:
                     //#CARD#ME#M000001

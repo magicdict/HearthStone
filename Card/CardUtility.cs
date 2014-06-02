@@ -61,19 +61,15 @@ namespace Card
                 Status.AppendLine("Description" + info.Description);
                 Status.AppendLine("StandardCostPoint" + info.StandardCostPoint);
                 Status.AppendLine("Type：" + info.CardType.ToString());
-                switch (CardSn.Substring(0, 1))
+                switch (info.CardType)
                 {
-                    case "A":
-                        break;
-                    case "M":
+                    case CardBasicInfo.CardTypeEnum.随从:
                         Status.AppendLine("标准攻击力：" + ((Card.MinionCard)info).StandardAttackPoint.ToString());
                         Status.AppendLine("标准生命值：" + ((Card.MinionCard)info).标准生命值上限.ToString());
                         break;
-                    case "W":
+                    case CardBasicInfo.CardTypeEnum.武器:
                         Status.AppendLine("标准攻击力：" + ((Card.WeaponCard)info).StandardAttackPoint.ToString());
                         Status.AppendLine("标准耐久度：" + ((Card.WeaponCard)info).标准耐久度.ToString());
-                        break;
-                    default:
                         break;
                 }
                 Status.AppendLine("==============");
@@ -195,6 +191,18 @@ namespace Card
             战士,
         }
         /// <summary>
+        /// 种族
+        /// </summary>
+        public enum 种族Enum
+        {
+            无,
+            恶魔,
+            龙,
+            海盗,
+            鱼人,
+            野兽,
+        }
+        /// <summary>
         /// 目标选择模式
         /// </summary>
         public enum TargetSelectModeEnum
@@ -234,6 +242,53 @@ namespace Card
             /// </summary>
             双方
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        [Serializable]
+        public struct SelectOption
+        {
+            /// <summary>
+            /// 法术对象选择模式
+            /// </summary>
+            public CardUtility.TargetSelectModeEnum EffictTargetSelectMode;
+            /// <summary>
+            /// 法术对象选择角色
+            /// </summary>
+            public CardUtility.TargetSelectRoleEnum EffectTargetSelectRole;
+            /// <summary>
+            /// 法术对象选择方向
+            /// </summary>
+            public CardUtility.TargetSelectDirectEnum EffectTargetSelectDirect;
+            /// <summary>
+            /// 
+            /// </summary>
+            public CardUtility.种族Enum EffectTargetSelect种族条件;
+            /// <summary>
+            /// 种族限制 是否要取反
+            /// （为了非某个种族的表达）
+            /// </summary>
+            public Boolean EffectTargetSelect种族条件取反;
+        }
+        /// <summary>
+        /// 符合种族条件
+        /// </summary>
+        /// <param name="minion"></param>
+        /// <param name="SelectOpt"></param>
+        /// <returns></returns>
+        public static Boolean 符合种族条件(Card.MinionCard minion, SelectOption SelectOpt)
+        {
+            if (SelectOpt.EffectTargetSelect种族条件 == 种族Enum.无) return true;
+            if (SelectOpt.EffectTargetSelect种族条件取反)
+            {
+                return SelectOpt.EffectTargetSelect种族条件 != minion.种族;
+            }
+            else
+            {
+                return SelectOpt.EffectTargetSelect种族条件 == minion.种族;
+            }
+        }
+
         /// <summary>
         /// 目标选择角色
         /// </summary>
@@ -420,7 +475,7 @@ namespace Card
         /// 获得位置
         /// </summary>
         /// <returns></returns>
-        public delegate TargetPosition deleteGetTargetPosition(TargetSelectDirectEnum 方向, TargetSelectRoleEnum 角色,Boolean 嘲讽限制);
+        public delegate TargetPosition deleteGetTargetPosition(Card.CardUtility.SelectOption 选择参数, Boolean 嘲讽限制);
         /// <summary>
         /// 随从进场位置
         /// </summary>

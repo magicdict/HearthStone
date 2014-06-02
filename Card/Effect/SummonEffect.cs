@@ -21,7 +21,7 @@ namespace Card.Effect
             Random t = new Random(DateTime.Now.Millisecond + Seed);
             var CardSN = MinionLst[t.Next(0,MinionLst.Length)];
             var Minion = Card.CardUtility.GetCardInfoBySN(CardSN);
-            switch (singleEffect.EffectTargetSelectDirect)
+            switch (singleEffect.SelectOpt.EffectTargetSelectDirect)
             {
                 case CardUtility.TargetSelectDirectEnum.本方:
                     if (game.MySelf.RoleInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount)

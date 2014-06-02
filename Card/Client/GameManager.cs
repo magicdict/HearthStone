@@ -73,9 +73,7 @@ namespace Card.Client
             //DEBUG START
             MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
-            HandCard.Add("M000076");
-            HandCard.Add("M000061");
-            HandCard.Add("A000056");
+            HandCard.Add("M000148");
             //DEBUG END
             //英雄技能：奥术飞弹
             MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A200001");
@@ -256,42 +254,7 @@ namespace Card.Client
             //法术伤害
             if (MySelf.RoleInfo.BattleField.AbilityEffect != 0)
             {
-                //法术强度本意是增加法术卡的总伤。以奥术飞弹为例，法术强度+1会令奥术飞弹多1发伤害，而非单发伤害+1。法术强度不影响治疗效果。
-                switch (card.CardAbility.FirstAbilityDefine.AbilityEffectType)
-                {
-                    case EffectDefine.AbilityEffectEnum.攻击:
-                        if (card.CardAbility.FirstAbilityDefine.StandardEffectCount == 1)
-                        {
-                            card.CardAbility.FirstAbilityDefine.ActualEffectPoint = card.CardAbility.FirstAbilityDefine.StandardEffectPoint + MySelf.RoleInfo.BattleField.AbilityEffect;
-                        }
-                        else
-                        {
-                            card.CardAbility.FirstAbilityDefine.ActualEffectCount = card.CardAbility.FirstAbilityDefine.StandardEffectCount + MySelf.RoleInfo.BattleField.AbilityEffect;
-                        }
-                        break;
-                    case EffectDefine.AbilityEffectEnum.回复:
-                        card.CardAbility.FirstAbilityDefine.ActualEffectPoint = card.CardAbility.FirstAbilityDefine.StandardEffectPoint + MySelf.RoleInfo.BattleField.AbilityEffect;
-                        break;
-                }
-                if (card.CardAbility.SecondAbilityDefine.AbilityEffectType != EffectDefine.AbilityEffectEnum.未定义)
-                {
-                    switch (card.CardAbility.SecondAbilityDefine.AbilityEffectType)
-                    {
-                        case EffectDefine.AbilityEffectEnum.攻击:
-                            if (card.CardAbility.SecondAbilityDefine.StandardEffectCount == 1)
-                            {
-                                card.CardAbility.SecondAbilityDefine.ActualEffectPoint = card.CardAbility.SecondAbilityDefine.StandardEffectPoint + MySelf.RoleInfo.BattleField.AbilityEffect;
-                            }
-                            else
-                            {
-                                card.CardAbility.SecondAbilityDefine.ActualEffectCount = card.CardAbility.SecondAbilityDefine.StandardEffectCount + MySelf.RoleInfo.BattleField.AbilityEffect;
-                            }
-                            break;
-                        case EffectDefine.AbilityEffectEnum.回复:
-                            card.CardAbility.SecondAbilityDefine.ActualEffectPoint = card.CardAbility.SecondAbilityDefine.StandardEffectPoint + MySelf.RoleInfo.BattleField.AbilityEffect;
-                            break;
-                    }
-                }
+                card.JustfyEffectPoint(MySelf.RoleInfo.BattleField.AbilityEffect);
             }
             Card.CardUtility.PickEffect PickEffectResult = CardUtility.PickEffect.第一效果;
             if (card.CardAbility.IsNeedSelect())
@@ -307,7 +270,7 @@ namespace Card.Client
                 singleEff.StandardEffectCount = 1;
                 if (singleEff.IsNeedSelectTarget())
                 {
-                    Pos = GetSelectTarget(singleEff.EffectTargetSelectDirect, singleEff.EffectTargetSelectRole, false);
+                    Pos = GetSelectTarget(singleEff.SelectOpt, false);
                     //取消处理
                     if (Pos.Postion == -1) return new List<string>();
                 }
@@ -315,13 +278,13 @@ namespace Card.Client
                 {
                     if (ConvertPosDirect)
                     {
-                        switch (singleEff.EffectTargetSelectDirect)
+                        switch (singleEff.SelectOpt.EffectTargetSelectDirect)
                         {
                             case CardUtility.TargetSelectDirectEnum.本方:
-                                singleEff.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
+                                singleEff.SelectOpt.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
                                 break;
                             case CardUtility.TargetSelectDirectEnum.对方:
-                                singleEff.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.本方;
+                                singleEff.SelectOpt.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.本方;
                                 break;
                             case CardUtility.TargetSelectDirectEnum.双方:
                                 break;

@@ -102,9 +102,34 @@ namespace Card
             本方使用卡牌,
             奥秘命中,
         }
+
+        public enum 战吼类型列表
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            默认,
+            /// <summary>
+            /// 入场之前进行结算
+            /// </summary>
+            抢先,
+            /// <summary>
+            /// 入场后相邻随从
+            /// </summary>
+            相邻,
+            /// <summary>
+            /// 自身
+            /// </summary>
+            自身,
+        }
+
         #region"属性"
 
         #region"设计时状态"
+        /// <summary>
+        /// 
+        /// </summary>
+        public CardUtility.种族Enum 种族 = CardUtility.种族Enum.无;
         /// <summary>
         /// 攻击力（标准）
         /// </summary>
@@ -149,6 +174,10 @@ namespace Card
         /// 战吼(效果号码)
         /// </summary>
         public String 战吼效果 = String.Empty;
+        /// <summary>
+        /// 战吼类型
+        /// </summary>
+        public 战吼类型列表 战吼类型 = 战吼类型列表.默认;
         /// <summary>
         /// 亡语(效果号码)
         /// </summary>
@@ -383,8 +412,10 @@ namespace Card
             return 实际生命值 > 0;
         }
         /// <summary>
-        /// 发动战吼
+        /// 发动战吼(默认)
         /// </summary>
+        /// <param name="game"></param>
+        /// <param name="SelfPosition"></param>
         /// <returns></returns>
         public List<String> 发动战吼(GameManager game)
         {

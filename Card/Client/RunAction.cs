@@ -49,8 +49,25 @@ namespace Card.Client
                         var minion = (Card.MinionCard)card;
                         //初始化
                         minion.Init();
-                        game.MySelf.RoleInfo.BattleField.PutToBattle(MinionPos, minion);
-                        ActionCodeLst.AddRange(minion.发动战吼(game));
+                        switch (minion.战吼类型)
+                        {
+                            case MinionCard.战吼类型列表.默认:
+                                game.MySelf.RoleInfo.BattleField.PutToBattle(MinionPos, minion);
+                                ActionCodeLst.AddRange(minion.发动战吼(game));
+                                break;
+                            case MinionCard.战吼类型列表.抢先:
+                                //战吼中，其他 系列的法术效果
+                                ActionCodeLst.AddRange(minion.发动战吼(game));
+                                game.MySelf.RoleInfo.BattleField.PutToBattle(MinionPos, minion);
+                                break;
+                            case MinionCard.战吼类型列表.相邻:
+                            case MinionCard.战吼类型列表.自身:
+                                game.MySelf.RoleInfo.BattleField.PutToBattle(MinionPos, minion);
+                                game.MySelf.RoleInfo.BattleField.发动战吼(MinionPos);
+                                break;
+                            default:
+                                break;
+                        }
                         game.MySelf.RoleInfo.BattleField.ResetBuff();
                     }
                     else

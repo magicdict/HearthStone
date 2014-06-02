@@ -52,7 +52,7 @@ namespace Card
         /// </remarks>
         public 稀有程度 Rare;
         /// <summary>
-        /// 
+        /// 获得卡牌种类
         /// </summary>
         public CardTypeEnum CardType {
             get {

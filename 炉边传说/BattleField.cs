@@ -84,14 +84,11 @@ namespace 炉边传说
         /// 选择目标
         /// </summary>
         /// <returns></returns>
-        private CardUtility.TargetPosition SelectPanel(Card.CardUtility.TargetSelectDirectEnum direct,
-                                                       Card.CardUtility.TargetSelectRoleEnum role,
-                                                       Boolean 嘲讽限制)
+        private CardUtility.TargetPosition SelectPanel(CardUtility.SelectOption SelectOpt, Boolean 嘲讽限制)
         {
-            CardUtility.TargetPosition SelectPos;
-            var frm = new TargetSelect(direct, role, game, 嘲讽限制);
+            var frm = new TargetSelect(SelectOpt, game, 嘲讽限制);
             frm.ShowDialog();
-            SelectPos = frm.pos;
+            var SelectPos = frm.pos;
             return SelectPos;
         }
         /// <summary>
@@ -404,7 +401,10 @@ namespace 炉边传说
         /// <param name="MyPos"></param>
         private void Fight(int MyPos)
         {
-            var YourPos = SelectPanel(CardUtility.TargetSelectDirectEnum.对方, CardUtility.TargetSelectRoleEnum.所有角色, true);
+            var SelectOpt = new Card.CardUtility.SelectOption();
+            SelectOpt.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
+            SelectOpt.EffectTargetSelectRole = CardUtility.TargetSelectRoleEnum.所有角色;
+            var YourPos = SelectPanel(SelectOpt, true);
             List<String> actionlst = RunAction.Fight(game, MyPos, YourPos.Postion);
             actionlst.AddRange(game.奥秘计算(actionlst));
             game.MySelf.ResetHandCardCost();

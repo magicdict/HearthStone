@@ -100,6 +100,64 @@ namespace Card.Client
             }
         }
         /// <summary>
+        /// 发动战吼
+        /// 自身/相邻
+        /// </summary>
+        /// <param name="MinionPos"></param>
+        public List<String> 发动战吼(int MinionPos)
+        {
+            List<String> ActionCodeLst = new List<string>();
+            if (!String.IsNullOrEmpty(BattleMinions[MinionPos - 1].战吼效果))
+            {
+                List<int> PosList = new List<int>();
+                if (BattleMinions[MinionPos - 1].战吼类型 == MinionCard.战吼类型列表.相邻)
+                {
+                    //相邻
+                    //左边随从存在？
+                    if (MinionPos != 1) PosList.Add(MinionPos - 1);
+                    if (MinionPos != MinionCount) PosList.Add(MinionPos + 1);
+                }
+                else
+                {
+                    //自身
+                    PosList.Add(MinionPos);
+                }
+                //处理状态和数值变化
+                var 战吼 = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN(BattleMinions[MinionPos - 1].战吼效果);
+
+                foreach (int PosInfo in PosList)
+                {
+                    switch (战吼.CardAbility.FirstAbilityDefine.AbilityEffectType)
+                    {
+                        case Card.Effect.EffectDefine.AbilityEffectEnum.点数:
+                            Card.Effect.PointEffect.RunPointEffect(BattleMinions[PosInfo - 1], 战吼.CardAbility.FirstAbilityDefine.AddtionInfo);
+                            ActionCodeLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + Card.CardUtility.strMe + Card.CardUtility.strSplitMark +
+                            PosInfo + Card.CardUtility.strSplitMark + 战吼.CardAbility.FirstAbilityDefine.AddtionInfo);
+                            break;
+                        case Card.Effect.EffectDefine.AbilityEffectEnum.状态:
+                            Card.Effect.StatusEffect.RunStatusEffect(BattleMinions[PosInfo - 1], 战吼.CardAbility.FirstAbilityDefine.AddtionInfo);
+                            ActionCodeLst.Add(Card.Server.ActionCode.strStatus + Card.CardUtility.strSplitMark + Card.CardUtility.strMe + Card.CardUtility.strSplitMark +
+                            PosInfo + Card.CardUtility.strSplitMark + 战吼.CardAbility.FirstAbilityDefine.AddtionInfo);
+                            break;
+                    }
+                    switch (战吼.CardAbility.SecondAbilityDefine.AbilityEffectType)
+                    {
+                        case Card.Effect.EffectDefine.AbilityEffectEnum.点数:
+                            Card.Effect.PointEffect.RunPointEffect(BattleMinions[PosInfo - 1], 战吼.CardAbility.SecondAbilityDefine.AddtionInfo);
+                            ActionCodeLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + Card.CardUtility.strMe + Card.CardUtility.strSplitMark +
+                            PosInfo + Card.CardUtility.strSplitMark + 战吼.CardAbility.SecondAbilityDefine.AddtionInfo);
+                            break;
+                        case Card.Effect.EffectDefine.AbilityEffectEnum.状态:
+                            Card.Effect.StatusEffect.RunStatusEffect(BattleMinions[PosInfo - 1], 战吼.CardAbility.SecondAbilityDefine.AddtionInfo);
+                            ActionCodeLst.Add(Card.Server.ActionCode.strStatus + Card.CardUtility.strSplitMark + Card.CardUtility.strMe + Card.CardUtility.strSplitMark +
+                            PosInfo + Card.CardUtility.strSplitMark + 战吼.CardAbility.SecondAbilityDefine.AddtionInfo);
+                            break;
+                    }
+                }
+            }
+            return ActionCodeLst;
+        }
+        /// <summary>
         /// 从战场移除单位
         /// </summary>
         /// <param name="Position">从1开始的位置</param>
@@ -119,7 +177,7 @@ namespace Card.Client
         /// <param name="事件"></param>
         /// <param name="game"></param>
         /// <returns></returns>
-        public List<String> 触发事件(Card.MinionCard.事件类型列表 事件,GameManager game)
+        public List<String> 触发事件(Card.MinionCard.事件类型列表 事件, GameManager game)
         {
             List<String> ActionLst = new List<string>();
             for (int i = 0; i < BattleMinions.Length; i++)
@@ -127,7 +185,7 @@ namespace Card.Client
                 var minion = BattleMinions[i];
                 if (minion != null)
                 {
-                    ActionLst.AddRange(minion.触发事件(事件,game));
+                    ActionLst.AddRange(minion.触发事件(事件, game));
                 }
             }
             return ActionLst;
@@ -227,6 +285,5 @@ namespace Card.Client
             }
             return InfoList;
         }
-
     }
 }
