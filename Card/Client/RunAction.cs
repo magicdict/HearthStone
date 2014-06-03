@@ -57,7 +57,19 @@ namespace Card.Client
                                 break;
                             case MinionCard.战吼类型列表.抢先:
                                 //战吼中，其他 系列的法术效果
-                                ActionCodeLst.AddRange(minion.发动战吼(game));
+                                foreach (var result in minion.发动战吼(game))
+                                {
+                                    var resultArray = result.Split(CardUtility.strSplitMark.ToCharArray());
+                                    if (int.Parse(resultArray[2]) < MinionPos)
+                                    {
+                                        ActionCodeLst.Add(result);
+                                    }
+                                    else
+                                    {
+                                        ActionCodeLst.Add(resultArray[0] + CardUtility.strSplitMark + resultArray[1] + CardUtility.strSplitMark +
+                                                           (int.Parse(resultArray[2]) + 1).ToString() + CardUtility.strSplitMark + resultArray[3]);
+                                    }
+                                }
                                 game.MySelf.RoleInfo.BattleField.PutToBattle(MinionPos, minion);
                                 break;
                             case MinionCard.战吼类型列表.相邻:

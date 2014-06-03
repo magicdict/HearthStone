@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
-namespace CardHelper
+namespace 炉边传说
 {
     public partial class ctlFilePicker : UserControl
     {

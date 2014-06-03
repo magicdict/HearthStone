@@ -6,7 +6,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
-namespace CardHelper
+namespace 炉边传说
 {
     public partial class frmExport : Form
     {

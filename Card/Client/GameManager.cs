@@ -73,7 +73,9 @@ namespace Card.Client
             //DEBUG START
             MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
-            HandCard.Add("M000148");
+            HandCard.Add("M000142");
+            HandCard.Add("M000082");
+            HandCard.Add("M000082");
             //DEBUG END
             //英雄技能：奥术飞弹
             MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A200001");

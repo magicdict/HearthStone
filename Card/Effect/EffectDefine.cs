@@ -122,6 +122,7 @@ namespace Card.Effect
                     Result.AddRange(SummonEffect.RunEffect(singleEffect, game, Seed));
                     break;
                 case AbilityEffectEnum.点数:
+                    Result.AddRange(PointEffect.RunEffect(singleEffect, game, PosList));
                     break;
                 case AbilityEffectEnum.卡牌:
                     Result.AddRange(CardEffect.RunEffect(singleEffect, game));
@@ -140,14 +141,14 @@ namespace Card.Effect
             return Result;
         }
         /// <summary>
-        /// 
+        /// 施法对象列表
         /// </summary>
         /// <param name="singleEffect"></param>
         /// <param name="game"></param>
-        /// <param name="Pos"></param>
+        /// <param name="PosInfo"></param>
         /// <param name="Seed"></param>
         /// <returns></returns>
-        public static List<string> GetTargetList(EffectDefine singleEffect, Client.GameManager game, CardUtility.TargetPosition Pos, int Seed)
+        public static List<string> GetTargetList(EffectDefine singleEffect, Client.GameManager game, CardUtility.TargetPosition PosInfo, int Seed)
         {
             //切记，这里的EffectCount都是1
             List<string> Result = new List<string>();
@@ -161,56 +162,56 @@ namespace Card.Effect
                             switch (singleEffect.SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
-                                    Pos.Postion = t.Next(1, game.MySelf.RoleInfo.BattleField.MinionCount + 1);
-                                    Pos.MeOrYou = true;
+                                    PosInfo.Postion = t.Next(1, game.MySelf.RoleInfo.BattleField.MinionCount + 1);
+                                    PosInfo.MeOrYou = true;
                                     break;
                                 case CardUtility.TargetSelectRoleEnum.所有角色:
-                                    Pos.Postion = t.Next(Client.BattleFieldInfo.HeroPos, game.MySelf.RoleInfo.BattleField.MinionCount + 1);
-                                    Pos.MeOrYou = true;
+                                    PosInfo.Postion = t.Next(Client.BattleFieldInfo.HeroPos, game.MySelf.RoleInfo.BattleField.MinionCount + 1);
+                                    PosInfo.MeOrYou = true;
                                     break;
                             }
                             //ME#POS
-                            Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Pos.Postion.ToString("D1"));
+                            Result.Add(CardUtility.strMe + CardUtility.strSplitMark + PosInfo.Postion.ToString("D1"));
                             break;
                         case CardUtility.TargetSelectDirectEnum.对方:
                             switch (singleEffect.SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
-                                    Pos.Postion = t.Next(1, game.YourInfo.BattleField.MinionCount + 1);
-                                    Pos.MeOrYou = false;
+                                    PosInfo.Postion = t.Next(1, game.YourInfo.BattleField.MinionCount + 1);
+                                    PosInfo.MeOrYou = false;
                                     break;
                                 case CardUtility.TargetSelectRoleEnum.所有角色:
-                                    Pos.Postion = t.Next(Client.BattleFieldInfo.HeroPos, game.YourInfo.BattleField.MinionCount + 1);
-                                    Pos.MeOrYou = false;
+                                    PosInfo.Postion = t.Next(Client.BattleFieldInfo.HeroPos, game.YourInfo.BattleField.MinionCount + 1);
+                                    PosInfo.MeOrYou = false;
                                     break;
                             }
                             //ME#POS
-                            Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Pos.Postion.ToString("D1"));
+                            Result.Add(CardUtility.strYou + CardUtility.strSplitMark + PosInfo.Postion.ToString("D1"));
                             break;
                         case CardUtility.TargetSelectDirectEnum.双方:
                             //本方对方
                             int MinionCount;
                             if (t.Next(1, 3) == 1)
                             {
-                                Pos.MeOrYou = true;
+                                PosInfo.MeOrYou = true;
                                 MinionCount = game.MySelf.RoleInfo.BattleField.MinionCount;
                             }
                             else
                             {
-                                Pos.MeOrYou = false;
+                                PosInfo.MeOrYou = false;
                                 MinionCount = game.YourInfo.BattleField.MinionCount;
                             }
                             switch (singleEffect.SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
-                                    Pos.Postion = t.Next(1, MinionCount + 1);
+                                    PosInfo.Postion = t.Next(1, MinionCount + 1);
                                     break;
                                 case CardUtility.TargetSelectRoleEnum.所有角色:
-                                    Pos.Postion = t.Next(Client.BattleFieldInfo.HeroPos, MinionCount + 1);
+                                    PosInfo.Postion = t.Next(Client.BattleFieldInfo.HeroPos, MinionCount + 1);
                                     break;
                             }
                             //ME#POS
-                            Result.Add((Pos.MeOrYou ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + Pos.Postion.ToString("D1"));
+                            Result.Add((PosInfo.MeOrYou ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + PosInfo.Postion.ToString("D1"));
                             break;
                         default:
                             break;
@@ -225,6 +226,7 @@ namespace Card.Effect
                                 case CardUtility.TargetSelectRoleEnum.随从:
                                     for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
                                     {
+                                        if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], singleEffect.SelectOpt)) 
                                         Result.Add(CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString("D1"));
                                     }
                                     break;
@@ -235,6 +237,7 @@ namespace Card.Effect
                                     Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                     for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
                                     {
+                                        if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], singleEffect.SelectOpt)) 
                                         Result.Add(CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString("D1"));
                                     }
                                     break;
@@ -246,6 +249,7 @@ namespace Card.Effect
                                 case CardUtility.TargetSelectRoleEnum.随从:
                                     for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                                     {
+                                        if (Card.CardUtility.符合种族条件(game.YourInfo.BattleField.BattleMinions[i], singleEffect.SelectOpt)) 
                                         Result.Add(CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1"));
                                     }
                                     break;
@@ -256,6 +260,7 @@ namespace Card.Effect
                                     Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                     for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                                     {
+                                        if (Card.CardUtility.符合种族条件(game.YourInfo.BattleField.BattleMinions[i], singleEffect.SelectOpt)) 
                                         Result.Add(CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1"));
                                     }
                                     break;
@@ -267,10 +272,12 @@ namespace Card.Effect
                                 case CardUtility.TargetSelectRoleEnum.随从:
                                     for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
                                     {
+                                        if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], singleEffect.SelectOpt)) 
                                         Result.Add(CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString("D1"));
                                     }
                                     for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                                     {
+                                        if (Card.CardUtility.符合种族条件(game.YourInfo.BattleField.BattleMinions[i], singleEffect.SelectOpt)) 
                                         Result.Add(CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1"));
                                     }
                                     break;
@@ -283,10 +290,12 @@ namespace Card.Effect
                                     Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                     for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
                                     {
+                                        if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], singleEffect.SelectOpt)) 
                                         Result.Add(CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString("D1"));
                                     }
                                     for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                                     {
+                                        if (Card.CardUtility.符合种族条件(game.YourInfo.BattleField.BattleMinions[i], singleEffect.SelectOpt)) 
                                         Result.Add(CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1"));
                                     }
                                     break;
@@ -295,7 +304,7 @@ namespace Card.Effect
                     }
                     break;
                 case CardUtility.TargetSelectModeEnum.指定:
-                    Result.Add((Pos.MeOrYou ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + Pos.Postion.ToString("D1"));
+                    Result.Add((PosInfo.MeOrYou ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + PosInfo.Postion.ToString("D1"));
                     break;
                 case CardUtility.TargetSelectModeEnum.不用选择:
                     if (singleEffect.SelectOpt.EffectTargetSelectRole == CardUtility.TargetSelectRoleEnum.英雄)

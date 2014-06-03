@@ -1,4 +1,4 @@
-﻿namespace CardHelper
+﻿namespace 炉边传说
 {
     partial class frmExport
     {
