@@ -212,6 +212,10 @@ namespace Card
             /// </summary>
             不用选择,
             /// <summary>
+            /// 继承第一效果的位置信息
+            /// </summary>
+            继承,
+            /// <summary>
             /// 随机
             /// </summary>
             随机,

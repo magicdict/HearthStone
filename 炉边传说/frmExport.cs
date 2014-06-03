@@ -303,6 +303,7 @@ namespace 炉边传说
                     Ability.CardAbility.SecondAbilityDefine = effect2;
                 }
                 Ability.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 33).Text);
+                Ability.连击效果 = worksheet.Cells(rowCount, 34).Text;
                 switch (target)
                 {
                     case TargetType.MongoDB:
@@ -376,7 +377,7 @@ namespace 炉边传说
         }
         private void frmExport_Load(object sender, EventArgs e)
         {
-            Card.CardUtility.CardXmlFolder = @"C:\炉石Git\CardHelper\CardXML";
+            Card.CardUtility.CardXmlFolder = @"C:\炉石Git\炉石设计\Card";
             XmlFolderPicker.SelectedPathOrFileName = Card.CardUtility.CardXmlFolder;
             ExcelPicker.SelectedPathOrFileName = @"C:\炉石Git\炉石设计\卡牌整理版本.xls";
         }

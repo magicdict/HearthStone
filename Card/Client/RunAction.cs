@@ -28,13 +28,18 @@ namespace Card.Client
                     ActionCodeLst.Add(UseAbility(CardSn));
                     //初始化 Buff效果等等
                     Card.AbilityCard ablity = (Card.AbilityCard)CardUtility.GetCardInfoBySN(CardSn);
+                    //连击效果的法术修改
+                    if (game.MySelf.RoleInfo.IsCombit && (!String.IsNullOrEmpty(card.连击效果)))
+                    {
+                        ablity = (Card.AbilityCard)CardUtility.GetCardInfoBySN(card.连击效果);
+                    }
                     ablity.CardAbility.Init();
                     var ResultArg = game.UseAbility(ablity, ConvertPosDirect);
                     if (ResultArg.Count != 0)
                     {
                         ActionCodeLst.AddRange(ResultArg);
-                        //英雄技能的时候，不算[本方施法] A900001 幸运币
-                        if (CardSn.Substring(1, 1) != "2") ActionCodeLst.AddRange(game.MySelf.RoleInfo.BattleField.触发事件(MinionCard.事件类型列表.本方施法, game));
+                        //英雄技能等的时候，不算[本方施法] 
+                        if (CardSn.Substring(1, 1) == "0") ActionCodeLst.AddRange(game.MySelf.RoleInfo.BattleField.触发事件(MinionCard.事件类型列表.本方施法, game));
                     }
                     else
                     {
@@ -98,6 +103,23 @@ namespace Card.Client
                 default:
                     break;
             }
+            //连击启动(法术的时候是修改法术内容)
+            if (card.CardType != CardBasicInfo.CardTypeEnum.法术 && game.MySelf.RoleInfo.IsCombit)
+            {
+                if (!String.IsNullOrEmpty(card.连击效果)) {
+                    //初始化 Buff效果等等
+                    Card.AbilityCard ablity = (Card.AbilityCard)CardUtility.GetCardInfoBySN(card.连击效果);
+                    ablity.CardAbility.Init();
+                    var ResultArg = game.UseAbility(ablity, ConvertPosDirect);
+                    if (ResultArg.Count != 0)
+                    {
+                        ActionCodeLst.AddRange(ResultArg);
+                        //英雄技能等的时候，不算[本方施法] 
+                        if (CardSn.Substring(1, 1) == "0") ActionCodeLst.AddRange(game.MySelf.RoleInfo.BattleField.触发事件(MinionCard.事件类型列表.本方施法, game));
+                    }
+                }
+            }
+            if (ActionCodeLst.Count != 0) game.MySelf.RoleInfo.IsCombit = true;
             return ActionCodeLst;
         }
         /// <summary>

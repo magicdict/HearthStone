@@ -74,6 +74,10 @@ namespace Card.Client
         /// </summary>
         public int SecretCount = 0;
         /// <summary>
+        /// 是否连击
+        /// </summary>
+        public Boolean IsCombit = false;
+        /// <summary>
         /// 获得信息
         /// </summary>
         /// <returns></returns>

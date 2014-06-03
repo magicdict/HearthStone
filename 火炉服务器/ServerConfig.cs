@@ -35,7 +35,11 @@ namespace 火炉服务器
             ServerThread = null;
             GC.Collect();
         }
-
+        /// <summary>
+        /// 选择卡牌目录
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnPickCard_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog cardPath = new FolderBrowserDialog();
@@ -44,11 +48,15 @@ namespace 火炉服务器
                 txtCardPath.Text = cardPath.SelectedPath;
             }
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ServerConfig_Load(object sender, EventArgs e)
         {
             //DEBUG
-            txtCardPath.Text = @"C:\炉石Git\CardHelper\CardXML";
+            txtCardPath.Text = @"C:\炉石Git\炉石设计\Card";
         }
     }
 }

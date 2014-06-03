@@ -93,7 +93,7 @@ namespace 炉边传说
         private void frmStartGame_Load(object sender, EventArgs e)
         {
             //DEBUG
-            txtCardPath.Text = @"C:\炉石Git\CardHelper\CardXML";
+            txtCardPath.Text = @"C:\炉石Git\炉石设计\Card";
             txtNickName.Text = game.PlayerNickName;
         }
         private void btnPickCard_Click(object sender, EventArgs e)
@@ -103,6 +103,11 @@ namespace 炉边传说
             {
                 txtCardPath.Text = cardPath.SelectedPath;
             }
+        }
+
+        private void btnCreateCard_Click(object sender, EventArgs e)
+        {
+            (new frmExport()).ShowDialog();
         }
     }
 }

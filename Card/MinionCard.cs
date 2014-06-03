@@ -13,7 +13,7 @@ namespace Card
     public class MinionCard : CardBasicInfo
     {
         /// <summary>
-        /// 
+        /// 光环范围
         /// </summary>
         public enum 光环范围
         {
@@ -186,10 +186,6 @@ namespace Card
         /// 激怒(效果号码)
         /// </summary>
         public String 激怒效果 = String.Empty;
-        /// <summary>
-        /// 连击(效果号码)
-        /// </summary>
-        public String 连击效果 = String.Empty;
         /// <summary>
         /// 回合开始(效果号码)
         /// </summary>

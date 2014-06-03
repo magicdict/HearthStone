@@ -73,9 +73,8 @@ namespace Card.Client
             //DEBUG START
             MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
-            HandCard.Add("M000142");
-            HandCard.Add("M000082");
-            HandCard.Add("M000082");
+            HandCard.Add("M000001");
+            HandCard.Add("A000011");
             //DEBUG END
             //英雄技能：奥术飞弹
             MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A200001");
@@ -155,6 +154,8 @@ namespace Card.Client
                     MySelf.RoleInfo.crystal.ReduceCurrentPoint(OverloadPoint);
                     OverloadPoint = 0;
                 }
+                //连击的重置
+                MySelf.RoleInfo.IsCombit = false;
                 //手牌
                 var NewCardList = Card.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, 1);
                 foreach (var card in NewCardList)
@@ -265,28 +266,29 @@ namespace Card.Client
                 if (PickEffectResult == CardUtility.PickEffect.取消) return new List<string>();
             }
             var SingleEffectList = card.CardAbility.GetSingleEffectList(PickEffectResult == CardUtility.PickEffect.第一效果);
+            //Pos放在循环外部，这样的话，达到继承的效果
+            Card.CardUtility.TargetPosition TargetPosInfo = new CardUtility.TargetPosition();
             for (int i = 0; i < SingleEffectList.Count; i++)
             {
-                Card.CardUtility.TargetPosition Pos = new CardUtility.TargetPosition();
-                var singleEff = SingleEffectList[i];
-                singleEff.StandardEffectCount = 1;
-                if (singleEff.IsNeedSelectTarget())
+                var singleEffect = SingleEffectList[i];
+                singleEffect.StandardEffectCount = 1;
+                if (singleEffect.IsNeedSelectTarget())
                 {
-                    Pos = GetSelectTarget(singleEff.SelectOpt, false);
+                    TargetPosInfo = GetSelectTarget(singleEffect.SelectOpt, false);
                     //取消处理
-                    if (Pos.Postion == -1) return new List<string>();
+                    if (TargetPosInfo.Postion == -1) return new List<string>();
                 }
                 else
                 {
                     if (ConvertPosDirect)
                     {
-                        switch (singleEff.SelectOpt.EffectTargetSelectDirect)
+                        switch (singleEffect.SelectOpt.EffectTargetSelectDirect)
                         {
                             case CardUtility.TargetSelectDirectEnum.本方:
-                                singleEff.SelectOpt.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
+                                singleEffect.SelectOpt.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
                                 break;
                             case CardUtility.TargetSelectDirectEnum.对方:
-                                singleEff.SelectOpt.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.本方;
+                                singleEffect.SelectOpt.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.本方;
                                 break;
                             case CardUtility.TargetSelectDirectEnum.双方:
                                 break;
@@ -295,7 +297,7 @@ namespace Card.Client
                         }
                     }
                 }
-                Result.AddRange(EffectDefine.RunSingleEffect(singleEff, this, Pos, Seed));
+                Result.AddRange(EffectDefine.RunSingleEffect(singleEffect, this, TargetPosInfo, Seed));
                 Seed++;
                 //每次原子操作后进行一次清算
                 //将亡语效果也发送给对方

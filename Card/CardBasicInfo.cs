@@ -106,6 +106,10 @@ namespace Card
         /// </summary>
         public int Overload;
         /// <summary>
+        /// 连击(效果号码)
+        /// </summary>
+        public String 连击效果 = String.Empty;
+        /// <summary>
         /// 职业
         /// </summary>
         public CardUtility.ClassEnum Class;

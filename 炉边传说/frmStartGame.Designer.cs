@@ -39,6 +39,7 @@
             this.txtServerIP = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.txtNickName = new System.Windows.Forms.TextBox();
+            this.btnCreateCard = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnCreateGame
@@ -56,14 +57,14 @@
             this.lstWaitGuest.FormattingEnabled = true;
             this.lstWaitGuest.Location = new System.Drawing.Point(12, 187);
             this.lstWaitGuest.Name = "lstWaitGuest";
-            this.lstWaitGuest.Size = new System.Drawing.Size(333, 95);
+            this.lstWaitGuest.Size = new System.Drawing.Size(494, 95);
             this.lstWaitGuest.TabIndex = 1;
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(274, 158);
+            this.btnRefresh.Location = new System.Drawing.Point(398, 158);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(71, 23);
+            this.btnRefresh.Size = new System.Drawing.Size(108, 23);
             this.btnRefresh.TabIndex = 2;
             this.btnRefresh.Text = "刷新";
             this.btnRefresh.UseVisualStyleBackColor = true;
@@ -92,14 +93,14 @@
             // 
             this.txtCardPath.Location = new System.Drawing.Point(26, 41);
             this.txtCardPath.Name = "txtCardPath";
-            this.txtCardPath.Size = new System.Drawing.Size(319, 20);
+            this.txtCardPath.Size = new System.Drawing.Size(362, 20);
             this.txtCardPath.TabIndex = 5;
             // 
             // btnPickCard
             // 
-            this.btnPickCard.Location = new System.Drawing.Point(116, 10);
+            this.btnPickCard.Location = new System.Drawing.Point(398, 41);
             this.btnPickCard.Name = "btnPickCard";
-            this.btnPickCard.Size = new System.Drawing.Size(75, 23);
+            this.btnPickCard.Size = new System.Drawing.Size(108, 23);
             this.btnPickCard.TabIndex = 6;
             this.btnPickCard.Text = "选择..";
             this.btnPickCard.UseVisualStyleBackColor = true;
@@ -118,7 +119,7 @@
             // 
             this.txtServerIP.Location = new System.Drawing.Point(106, 67);
             this.txtServerIP.Name = "txtServerIP";
-            this.txtServerIP.Size = new System.Drawing.Size(239, 20);
+            this.txtServerIP.Size = new System.Drawing.Size(282, 20);
             this.txtServerIP.TabIndex = 8;
             // 
             // label3
@@ -134,15 +135,26 @@
             // 
             this.txtNickName.Location = new System.Drawing.Point(106, 104);
             this.txtNickName.Name = "txtNickName";
-            this.txtNickName.Size = new System.Drawing.Size(239, 20);
+            this.txtNickName.Size = new System.Drawing.Size(282, 20);
             this.txtNickName.TabIndex = 10;
+            // 
+            // btnCreateCard
+            // 
+            this.btnCreateCard.Location = new System.Drawing.Point(398, 12);
+            this.btnCreateCard.Name = "btnCreateCard";
+            this.btnCreateCard.Size = new System.Drawing.Size(105, 23);
+            this.btnCreateCard.TabIndex = 11;
+            this.btnCreateCard.Text = "卡牌资料生成";
+            this.btnCreateCard.UseVisualStyleBackColor = true;
+            this.btnCreateCard.Click += new System.EventHandler(this.btnCreateCard_Click);
             // 
             // frmStartGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(360, 290);
+            this.ClientSize = new System.Drawing.Size(518, 290);
+            this.Controls.Add(this.btnCreateCard);
             this.Controls.Add(this.txtNickName);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtServerIP);
@@ -175,5 +187,6 @@
         private System.Windows.Forms.TextBox txtServerIP;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtNickName;
+        private System.Windows.Forms.Button btnCreateCard;
     }
 }

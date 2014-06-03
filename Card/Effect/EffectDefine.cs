@@ -304,6 +304,7 @@ namespace Card.Effect
                     }
                     break;
                 case CardUtility.TargetSelectModeEnum.指定:
+                case CardUtility.TargetSelectModeEnum.继承:
                     Result.Add((PosInfo.MeOrYou ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + PosInfo.Postion.ToString("D1"));
                     break;
                 case CardUtility.TargetSelectModeEnum.不用选择:
