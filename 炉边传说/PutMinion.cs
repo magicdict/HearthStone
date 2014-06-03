@@ -28,19 +28,20 @@ namespace 炉边传说
         {
             for (int i = 0; i < Card.Client.BattleFieldInfo.MaxMinionCount - 1; i++)
             {
-                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Text = "[空]";
-                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = false;
+                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = false;
+                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = false;
             }
             for (int i = 0; i < Card.Client.BattleFieldInfo.MaxMinionCount; i++)
             {
-                Controls.Find("btnPos" + (i + 1).ToString(), true)[0].Enabled = false;
+                Controls.Find("btnPos" + (i + 1).ToString(), true)[0].Visible = false;
             }
             for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
             {
-                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Text = game.MySelf.RoleInfo.BattleField.BattleMinions[i].GetInfo();
-                Controls.Find("btnPos" + (i + 1).ToString(), true)[0].Enabled = true;
+                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).Minion = game.MySelf.RoleInfo.BattleField.BattleMinions[i];
+                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = true;
+                Controls.Find("btnPos" + (i + 1).ToString(), true)[0].Visible = true;
             }
-            Controls.Find("btnPos" + (game.MySelf.RoleInfo.BattleField.MinionCount + 1).ToString(), true)[0].Enabled = true;
+            Controls.Find("btnPos" + (game.MySelf.RoleInfo.BattleField.MinionCount + 1).ToString(), true)[0].Visible = true;
 
             for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount + 1; i++)
             {

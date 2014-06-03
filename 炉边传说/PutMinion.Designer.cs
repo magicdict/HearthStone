@@ -28,12 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnMe6 = new System.Windows.Forms.Button();
-            this.btnMe5 = new System.Windows.Forms.Button();
-            this.btnMe4 = new System.Windows.Forms.Button();
-            this.btnMe3 = new System.Windows.Forms.Button();
-            this.btnMe2 = new System.Windows.Forms.Button();
-            this.btnMe1 = new System.Windows.Forms.Button();
+            this.btnMe6 = new 炉边传说.ctlCard();
+            this.btnMe5 = new 炉边传说.ctlCard();
+            this.btnMe4 = new 炉边传说.ctlCard();
+            this.btnMe3 = new 炉边传说.ctlCard();
+            this.btnMe2 = new 炉边传说.ctlCard();
+            this.btnMe1 = new 炉边传说.ctlCard();
             this.btnPos7 = new System.Windows.Forms.Button();
             this.btnPos6 = new System.Windows.Forms.Button();
             this.btnPos5 = new System.Windows.Forms.Button();
@@ -46,57 +46,57 @@
             // 
             // btnMe6
             // 
-            this.btnMe6.Location = new System.Drawing.Point(611, 26);
+            this.btnMe6.BackColor = System.Drawing.Color.White;
+            this.btnMe6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnMe6.Location = new System.Drawing.Point(611, 22);
             this.btnMe6.Name = "btnMe6";
-            this.btnMe6.Size = new System.Drawing.Size(100, 67);
+            this.btnMe6.Size = new System.Drawing.Size(100, 71);
             this.btnMe6.TabIndex = 53;
-            this.btnMe6.Text = "本方随从6";
-            this.btnMe6.UseVisualStyleBackColor = true;
             // 
             // btnMe5
             // 
-            this.btnMe5.Location = new System.Drawing.Point(505, 26);
+            this.btnMe5.BackColor = System.Drawing.Color.White;
+            this.btnMe5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnMe5.Location = new System.Drawing.Point(505, 22);
             this.btnMe5.Name = "btnMe5";
-            this.btnMe5.Size = new System.Drawing.Size(100, 67);
+            this.btnMe5.Size = new System.Drawing.Size(100, 71);
             this.btnMe5.TabIndex = 52;
-            this.btnMe5.Text = "本方随从5";
-            this.btnMe5.UseVisualStyleBackColor = true;
             // 
             // btnMe4
             // 
-            this.btnMe4.Location = new System.Drawing.Point(399, 26);
+            this.btnMe4.BackColor = System.Drawing.Color.White;
+            this.btnMe4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnMe4.Location = new System.Drawing.Point(399, 22);
             this.btnMe4.Name = "btnMe4";
-            this.btnMe4.Size = new System.Drawing.Size(100, 67);
+            this.btnMe4.Size = new System.Drawing.Size(100, 71);
             this.btnMe4.TabIndex = 51;
-            this.btnMe4.Text = "本方随从4";
-            this.btnMe4.UseVisualStyleBackColor = true;
             // 
             // btnMe3
             // 
-            this.btnMe3.Location = new System.Drawing.Point(293, 26);
+            this.btnMe3.BackColor = System.Drawing.Color.White;
+            this.btnMe3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnMe3.Location = new System.Drawing.Point(293, 22);
             this.btnMe3.Name = "btnMe3";
-            this.btnMe3.Size = new System.Drawing.Size(100, 67);
+            this.btnMe3.Size = new System.Drawing.Size(100, 71);
             this.btnMe3.TabIndex = 50;
-            this.btnMe3.Text = "本方随从3";
-            this.btnMe3.UseVisualStyleBackColor = true;
             // 
             // btnMe2
             // 
-            this.btnMe2.Location = new System.Drawing.Point(187, 26);
+            this.btnMe2.BackColor = System.Drawing.Color.White;
+            this.btnMe2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnMe2.Location = new System.Drawing.Point(187, 22);
             this.btnMe2.Name = "btnMe2";
-            this.btnMe2.Size = new System.Drawing.Size(100, 67);
+            this.btnMe2.Size = new System.Drawing.Size(100, 71);
             this.btnMe2.TabIndex = 49;
-            this.btnMe2.Text = "本方随从2";
-            this.btnMe2.UseVisualStyleBackColor = true;
             // 
             // btnMe1
             // 
-            this.btnMe1.Location = new System.Drawing.Point(81, 26);
+            this.btnMe1.BackColor = System.Drawing.Color.White;
+            this.btnMe1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnMe1.Location = new System.Drawing.Point(81, 22);
             this.btnMe1.Name = "btnMe1";
-            this.btnMe1.Size = new System.Drawing.Size(100, 67);
+            this.btnMe1.Size = new System.Drawing.Size(100, 71);
             this.btnMe1.TabIndex = 48;
-            this.btnMe1.Text = "本方随从1";
-            this.btnMe1.UseVisualStyleBackColor = true;
             // 
             // btnPos7
             // 
@@ -202,12 +202,13 @@
 
         #endregion
 
-        private System.Windows.Forms.Button btnMe6;
-        private System.Windows.Forms.Button btnMe5;
-        private System.Windows.Forms.Button btnMe4;
-        private System.Windows.Forms.Button btnMe3;
-        private System.Windows.Forms.Button btnMe2;
-        private System.Windows.Forms.Button btnMe1;
+        private ctlCard btnMe6;
+        private ctlCard btnMe5;
+        private ctlCard btnMe4;
+        private ctlCard btnMe3;
+        private ctlCard btnMe2;
+        private ctlCard btnMe1;
+
         private System.Windows.Forms.Button btnPos7;
         private System.Windows.Forms.Button btnPos6;
         private System.Windows.Forms.Button btnPos5;

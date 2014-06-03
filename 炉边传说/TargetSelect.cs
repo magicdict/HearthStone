@@ -47,25 +47,25 @@ namespace 炉边传说
             btnYourHero.Text = game.YourInfo.GetInfo();
             for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
             {
-                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Text = game.MySelf.RoleInfo.BattleField.BattleMinions[i].GetInfo();
-                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Click += (x, y) =>
+                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).Minion = game.MySelf.RoleInfo.BattleField.BattleMinions[i];
+                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).FightClick += (x, y) =>
                 {
                     pos.MeOrYou = true;
                     //这里千万不能使用 i ,每次 i 都是固定值
                     //pos.Postion = i + 1;
-                    pos.Postion = int.Parse(((Button)x).Name.Substring("btnMe".Length));
+                    pos.Postion = int.Parse(((Button)x).Parent.Name.Substring("btnMe".Length));
                     this.Close();
                 };
             }
             for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
             {
-                Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Text = game.YourInfo.BattleField.BattleMinions[i].GetInfo();
-                Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Click += (x, y) =>
+                ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).Minion = game.YourInfo.BattleField.BattleMinions[i];
+                ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).FightClick += (x, y) =>
                 {
                     pos.MeOrYou = false;
                     //这里千万不能使用 i ,每次 i 都是固定值
                     //pos.Postion = i + 1;
-                    pos.Postion = int.Parse(((Button)x).Name.Substring("btnYou".Length));
+                    pos.Postion = int.Parse(((Button)x).Parent.Name.Substring("btnYou".Length));
                     this.Close();
                 };
             }
@@ -86,11 +86,11 @@ namespace 炉边传说
 
             for (int i = 0; i < 7; i++)
             {
-                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = false;
+                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = false;
             }
             for (int i = 0; i < 7; i++)
             {
-                Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = false;
+                Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Visible = false;
             }
             switch (SelectOption.EffectTargetSelectDirect)
             {
@@ -100,8 +100,9 @@ namespace 炉边传说
                         case CardUtility.TargetSelectRoleEnum.随从:
                             for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
                             {
-                                if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], SelectOption)) 
-                                    Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = true;
+                                if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], SelectOption))
+                                    Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = true;
+                                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = true;
                             }
                             break;
                         case CardUtility.TargetSelectRoleEnum.英雄:
@@ -111,8 +112,9 @@ namespace 炉边传说
                             btnMyHero.Enabled = true;
                             for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
                             {
-                                if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], SelectOption)) 
-                                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = true;
+                                if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], SelectOption))
+                                    Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = true;
+                                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = true;
                             }
                             break;
                         default:
@@ -125,8 +127,9 @@ namespace 炉边传说
                         case CardUtility.TargetSelectRoleEnum.随从:
                             for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                             {
-                                if (Card.CardUtility.符合种族条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption)) 
-                                Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = true;
+                                if (Card.CardUtility.符合种族条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption))
+                                    Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Visible = true;
+                                ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CanAttack = true;
                             }
                             break;
                         case CardUtility.TargetSelectRoleEnum.英雄:
@@ -151,7 +154,8 @@ namespace 炉边传说
                                     //只能选择嘲讽对象
                                     if (game.YourInfo.BattleField.BattleMinions[i].Actual嘲讽)
                                     {
-                                        Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = true;
+                                        Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Visible = true;
+                                        ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CanAttack = true;
                                     }
                                 }
                             }
@@ -161,7 +165,8 @@ namespace 炉边传说
                                 for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                                 {
                                     if (Card.CardUtility.符合种族条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption))
-                                    Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = true;
+                                        Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Visible = true;
+                                    ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CanAttack = true;
                                 }
                             }
                             break;
@@ -175,13 +180,15 @@ namespace 炉边传说
                         case CardUtility.TargetSelectRoleEnum.随从:
                             for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
                             {
-                                if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], SelectOption)) 
-                                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = true;
+                                if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], SelectOption))
+                                    Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = true;
+                                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = true;
                             }
                             for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                             {
-                                if (Card.CardUtility.符合种族条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption)) 
-                                Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = true;
+                                if (Card.CardUtility.符合种族条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption))
+                                    Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Visible = true;
+                                ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CanAttack = true;
                             }
                             break;
                         case CardUtility.TargetSelectRoleEnum.英雄:
@@ -193,13 +200,15 @@ namespace 炉边传说
                             btnYourHero.Enabled = true;
                             for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
                             {
-                                if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], SelectOption)) 
-                                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = true;
+                                if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], SelectOption))
+                                    Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = true;
+                                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = true;
                             }
                             for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                             {
-                                if (Card.CardUtility.符合种族条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption)) 
-                                Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = true;
+                                if (Card.CardUtility.符合种族条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption))
+                                    Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Visible = true;
+                                ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CanAttack = true;
                             }
                             break;
                         default:

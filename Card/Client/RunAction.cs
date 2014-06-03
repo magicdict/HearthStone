@@ -47,7 +47,8 @@ namespace Card.Client
                     }
                     break;
                 case CardBasicInfo.CardTypeEnum.随从:
-                    int MinionPos = GetPutPos(game);
+                    int MinionPos = 1;
+                    if (game.MySelf.RoleInfo.BattleField.MinionCount != 0) MinionPos = GetPutPos(game);
                     if (MinionPos != -1)
                     {
                         ActionCodeLst.Add(UseMinion(CardSn, MinionPos));
@@ -106,7 +107,8 @@ namespace Card.Client
             //连击启动(法术的时候是修改法术内容)
             if (card.CardType != CardBasicInfo.CardTypeEnum.法术 && game.MySelf.RoleInfo.IsCombit)
             {
-                if (!String.IsNullOrEmpty(card.连击效果)) {
+                if (!String.IsNullOrEmpty(card.连击效果))
+                {
                     //初始化 Buff效果等等
                     Card.AbilityCard ablity = (Card.AbilityCard)CardUtility.GetCardInfoBySN(card.连击效果);
                     ablity.CardAbility.Init();

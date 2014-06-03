@@ -52,6 +52,12 @@
     <Compile Include="BattleField.Designer.cs">
       <DependentUpon>BattleField.cs</DependentUpon>
     </Compile>
+    <Compile Include="ctlCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctlCard.Designer.cs">
+      <DependentUpon>ctlCard.cs</DependentUpon>
+    </Compile>
     <Compile Include="ctlFilePicker.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -92,6 +98,9 @@
     </Compile>
     <EmbeddedResource Include="BattleField.resx">
       <DependentUpon>BattleField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ctlCard.resx">
+      <DependentUpon>ctlCard.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ctlFilePicker.resx">
       <DependentUpon>ctlFilePicker.cs</DependentUpon>

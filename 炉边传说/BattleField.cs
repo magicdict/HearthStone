@@ -39,13 +39,13 @@ namespace 炉边传说
             }
             for (int i = 0; i < 7; i++)
             {
-                Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Enabled = false;
-                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = false;
-                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Click += (x, y) =>
+                ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CanAttack = false;
+                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = false;
+                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).FightClick += (x, y) =>
                 {
                     //这里千万不能使用 i ,每次 i 都是固定值
                     //pos.Postion = i + 1;
-                    int AttackPostion = int.Parse(((Button)x).Name.Substring("btnMe".Length));
+                    int AttackPostion = int.Parse(((Button)x).Parent.Name.Substring("btnMe".Length));
                     Fight(AttackPostion);
                 };
             }
@@ -128,20 +128,20 @@ namespace 炉边传说
                 var myMinion = game.MySelf.RoleInfo.BattleField.BattleMinions[i];
                 if (myMinion != null)
                 {
-                    Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Text = myMinion.GetInfo();
+                    Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = true;
+                    ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).Minion = myMinion;
                     if (myMinion.CanAttack())
                     {
-                        if (game.IsMyTurn) Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = true;
+                        if (game.IsMyTurn) ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = true;
                     }
                     else
                     {
-                        Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = false;
+                        ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = false;
                     }
                 }
                 else
                 {
-                    Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Text = "[无]";
-                    Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = false;
+                    Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = false;
                 }
             }
             //武器
@@ -186,11 +186,13 @@ namespace 炉边传说
             {
                 if (game.YourInfo.BattleField.BattleMinions[i] != null)
                 {
-                    Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Text = game.YourInfo.BattleField.BattleMinions[i].GetInfo();
+                    Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Visible = true;
+                    ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CanAttack = false;
+                    ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).Minion = game.YourInfo.BattleField.BattleMinions[i];
                 }
                 else
                 {
-                    Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Text = "[无]";
+                    Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Visible = false;
                 }
             }
 
@@ -284,7 +286,7 @@ namespace 炉边传说
                 }
                 for (int i = 0; i < 7; i++)
                 {
-                    Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Enabled = false;
+                    ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = false;
                 }
                 WaitTimer.Start();
             }
