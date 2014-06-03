@@ -7,6 +7,14 @@ namespace Card.Client
     {
         #region"处理对方的动作"
         /// <summary>
+        /// 攻击位置修正
+        /// 全体伤害的时候，如果有目标被杀死，
+        /// 则清算的时候，攻击目标会出现偏移
+        /// </summary>
+        private static int AttackTargetOffsetMe = 0;
+        private static int AttackTargetOffsetYou = 0;
+
+        /// <summary>
         /// 处理对方的动作
         /// </summary>
         /// <param name="item"></param>
@@ -14,15 +22,41 @@ namespace Card.Client
         public static void Process(string item, GameManager game)
         {
             var actField = item.Split(CardUtility.strSplitMark.ToCharArray());
+            //AttackTargetOffset 在使用手牌或者进行卡牌直接攻击的时候，清零！
             switch (Card.Server.ActionCode.GetActionType(item))
             {
+                case ActionCode.ActionType.UseMinion:
+                    AttackTargetOffsetMe = 0;
+                    AttackTargetOffsetYou = 0;
+                    int Pos = int.Parse(actField[2]);
+                    var minion = (Card.MinionCard)Card.CardUtility.GetCardInfoBySN(actField[1]);
+                    minion.Init();
+                    game.YourInfo.BattleField.PutToBattle(Pos, minion);
+                    game.YourInfo.BattleField.ResetBuff();
+                    break;
                 case ActionCode.ActionType.UseWeapon:
+                    AttackTargetOffsetMe = 0;
+                    AttackTargetOffsetYou = 0;
                     game.YourInfo.Weapon = (Card.WeaponCard)Card.CardUtility.GetCardInfoBySN(actField[1]);
                     break;
                 case ActionCode.ActionType.UseSecret:
+                    AttackTargetOffsetMe = 0;
+                    AttackTargetOffsetYou = 0;
                     game.YourInfo.SecretCount++; ;
                     break;
+                case ActionCode.ActionType.UseAbility:
+                    AttackTargetOffsetMe = 0;
+                    AttackTargetOffsetYou = 0;
+                    break;
+                case ActionCode.ActionType.Fight:
+                    //FIGHT#1#2
+                    AttackTargetOffsetMe = 0;
+                    AttackTargetOffsetYou = 0;
+                    game.Fight(int.Parse(actField[2]), int.Parse(actField[1]), true);
+                    break;
                 case ActionCode.ActionType.HitSecret:
+                    AttackTargetOffsetMe = 0;
+                    AttackTargetOffsetYou = 0;
                     if (actField[1] == CardUtility.strYou)
                     {
                         //
@@ -52,13 +86,6 @@ namespace Card.Client
                         Card.Effect.PointEffect.RunPointEffect(game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1], actField[3]);
                     }
                     break;
-                case ActionCode.ActionType.UseMinion:
-                    int Pos = int.Parse(actField[2]);
-                    var minion = (Card.MinionCard)Card.CardUtility.GetCardInfoBySN(actField[1]);
-                    minion.Init();
-                    game.YourInfo.BattleField.PutToBattle(Pos, minion);
-                    game.YourInfo.BattleField.ResetBuff();
-                    break;
                 case ActionCode.ActionType.Card:
                     if (actField[1] == CardUtility.strYou)
                     {
@@ -85,8 +112,6 @@ namespace Card.Client
                     {
                         game.YourInfo.BattleField.AppendToBattle(actField[2]);
                     }
-                    break;
-                case ActionCode.ActionType.UseAbility:
                     break;
                 case ActionCode.ActionType.Health:
                     //HEALTH#ME#1#2
@@ -211,7 +236,7 @@ namespace Card.Client
                         else
                         {
                             //位置从1开始，数组从0开始
-                            game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeAttack(AttackPoint);
+                            game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1 - AttackTargetOffsetMe].AfterBeAttack(AttackPoint);
                         }
                     }
                     else
@@ -223,20 +248,21 @@ namespace Card.Client
                         else
                         {
                             //位置从1开始，数组从0开始
-                            game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeAttack(AttackPoint);
+                            game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1 - AttackTargetOffsetYou].AfterBeAttack(AttackPoint);
                         }
                     }
-                    break;
-                case ActionCode.ActionType.Fight:
-                    //FIGHT#1#2
-                    game.Fight(int.Parse(actField[2]), int.Parse(actField[1]), true);
                     break;
                 case ActionCode.ActionType.UnKnown:
                     break;
             }
             //这里不需要发送亡语效果，
             //由法术或者攻击发动放将结果发送给接受方
-            game.Settle();
+            var resultLst = game.Settle();
+            foreach (var result in resultLst)
+            {
+                if (result.StartsWith(Card.Server.ActionCode.strDead + Card.CardUtility.strSplitMark + CardUtility.strMe)) AttackTargetOffsetMe++;
+                if (result.StartsWith(Card.Server.ActionCode.strDead + Card.CardUtility.strSplitMark + CardUtility.strYou)) AttackTargetOffsetYou++;
+            }
         }
         #endregion
 

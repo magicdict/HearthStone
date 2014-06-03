@@ -27,7 +27,7 @@ namespace Card.Effect
                 if (PosField[0] == CardUtility.strMe)
                 {
                     //位置从1开始，数组从0开始
-                    RunPointEffect(game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1],singleEffect.AddtionInfo);
+                    RunPointEffect(game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1], singleEffect.AddtionInfo);
                 }
                 else
                 {
@@ -46,28 +46,37 @@ namespace Card.Effect
         public static void RunPointEffect(MinionCard Minion, String Addition)
         {
             var AttackHealth = Addition.Split("/".ToArray());
-            if (AttackHealth[0] != strIgnore)
+            Minion.实际攻击力 = PointProcess(Minion.实际攻击力, AttackHealth[0]);
+            Minion.实际生命值 = PointProcess(Minion.实际生命值, AttackHealth[1]);
+        }
+        /// <summary>
+        /// PointProcess
+        /// </summary>
+        /// <param name="oldPoint"></param>
+        /// <param name="ModifyPoint"></param>
+        /// <returns></returns>
+        public static int PointProcess(int oldPoint, String ModifyPoint)
+        {
+            int newPoint = oldPoint;
+            if (ModifyPoint != strIgnore)
             {
-                if (AttackHealth[0].Length != 1)
+                if (ModifyPoint.Length != 1)
                 {
-                    Minion.实际攻击力 += int.Parse(AttackHealth[0]);
-                }
-                else
-                {
-                    Minion.实际攻击力 = int.Parse(AttackHealth[0]);
+                    switch (ModifyPoint.Substring(0, 1))
+                    {
+                        case "+":
+                        case "-":
+                            newPoint += int.Parse(ModifyPoint);
+                            break;
+                        case "*":
+                            newPoint *= int.Parse(ModifyPoint.Substring(1, 1));
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
-            if (AttackHealth[1] != strIgnore)
-            {
-                if (AttackHealth[1].Length != 1)
-                {
-                    Minion.实际生命值 += int.Parse(AttackHealth[1]);
-                }
-                else
-                {
-                    Minion.实际生命值 = int.Parse(AttackHealth[1]);
-                }
-            }
+            return newPoint;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Card.Client
         /// <summary>
         /// 游戏玩家名称
         /// </summary>
-        public String PlayerNickName = "DARUMA";
+        public String PlayerNickName = "NickName";
         /// <summary>
         /// 是否主机
         /// </summary>
@@ -73,8 +73,8 @@ namespace Card.Client
             //DEBUG START
             MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
-            HandCard.Add("M000001");
-            HandCard.Add("A000011");
+            HandCard.Add("M000059");
+            HandCard.Add("A000015");
             //DEBUG END
             //英雄技能：奥术飞弹
             MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A200001");
