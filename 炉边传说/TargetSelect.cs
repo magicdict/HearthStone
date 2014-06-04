@@ -43,11 +43,11 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void TargetSelect_Load(object sender, EventArgs e)
         {
-            btnMyHero.Text = game.MySelf.RoleInfo.GetInfo();
-            btnYourHero.Text = game.YourInfo.GetInfo();
+            btnMyHero.Hero = game.MySelf.RoleInfo;
+            btnYourHero.Hero = game.YourInfo;
             for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
             {
-                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).Minion = game.MySelf.RoleInfo.BattleField.BattleMinions[i];
+                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CardInfo = game.MySelf.RoleInfo.BattleField.BattleMinions[i];
                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).FightClick += (x, y) =>
                 {
                     pos.MeOrYou = true;
@@ -59,7 +59,7 @@ namespace 炉边传说
             }
             for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
             {
-                ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).Minion = game.YourInfo.BattleField.BattleMinions[i];
+                ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CardInfo = game.YourInfo.BattleField.BattleMinions[i];
                 ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).FightClick += (x, y) =>
                 {
                     pos.MeOrYou = false;

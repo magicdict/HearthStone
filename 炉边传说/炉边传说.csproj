@@ -52,6 +52,18 @@
     <Compile Include="BattleField.Designer.cs">
       <DependentUpon>BattleField.cs</DependentUpon>
     </Compile>
+    <Compile Include="ctlHandCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctlHandCard.Designer.cs">
+      <DependentUpon>ctlHandCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ctlHero.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctlHero.Designer.cs">
+      <DependentUpon>ctlHero.cs</DependentUpon>
+    </Compile>
     <Compile Include="ctlCard.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -63,6 +75,12 @@
     </Compile>
     <Compile Include="ctlFilePicker.Designer.cs">
       <DependentUpon>ctlFilePicker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ctlHeroAbility.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ctlHeroAbility.Designer.cs">
+      <DependentUpon>ctlHeroAbility.cs</DependentUpon>
     </Compile>
     <Compile Include="EffectSelect.cs">
       <SubType>Form</SubType>
@@ -104,6 +122,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="ctlFilePicker.resx">
       <DependentUpon>ctlFilePicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ctlHandCard.resx">
+      <DependentUpon>ctlHandCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ctlHero.resx">
+      <DependentUpon>ctlHero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ctlHeroAbility.resx">
+      <DependentUpon>ctlHeroAbility.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EffectSelect.resx">
       <DependentUpon>EffectSelect.cs</DependentUpon>

@@ -35,7 +35,7 @@ namespace 炉边传说
             game.IsMyTurn = game.IsFirst;
             for (int i = 0; i < 10; i++)
             {
-                Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Click += this.btnUseHandCard_Click;
+                ((ctlHandCard)Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0]).UseClick += this.btnUseHandCard_Click;
             }
             for (int i = 0; i < 7; i++)
             {
@@ -60,11 +60,8 @@ namespace 炉边传说
             };
 
             btnYourHeroAblity.Enabled = false;
-            btnYourHeroAblity.Text = game.YourInfo.HeroAbility.Name;
-
             btnMyHeroAblity.Enabled = false;
-            btnMyHeroAblity.Text = game.MySelf.RoleInfo.HeroAbility.Name;
-            btnMyHeroAblity.Tag = game.MySelf.RoleInfo.HeroAbility.SN;
+            btnMyHeroAblity.Tag = game.MySelf.RoleInfo.HeroAbility;
             btnMyHeroAblity.Click += btnUseHandCard_Click;
             StartNewTurn();
             DisplayMyInfo();
@@ -96,8 +93,8 @@ namespace 炉边传说
         /// </summary>
         private void DisplayMyInfo()
         {
-            btnMyHero.Text = game.MySelf.RoleInfo.GetInfo();
-            btnYourHero.Text = game.YourInfo.GetInfo();
+            btnMyHero.Hero = game.MySelf.RoleInfo;
+            btnYourHero.Hero = game.YourInfo;
 
             for (int i = 0; i < 3; i++)
             {
@@ -129,7 +126,7 @@ namespace 炉边传说
                 if (myMinion != null)
                 {
                     Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = true;
-                    ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).Minion = myMinion;
+                    ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CardInfo = myMinion;
                     if (myMinion.CanAttack())
                     {
                         if (game.IsMyTurn) ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = true;
@@ -147,20 +144,20 @@ namespace 炉边传说
             //武器
             if (game.MySelf.RoleInfo.Weapon == null)
             {
-                btnMyWeapon.Text = "武器[无]";
+                //
             }
             else
             {
-                btnMyWeapon.Text = game.MySelf.RoleInfo.Weapon.GetInfo();
+                btnMyWeapon.CardInfo = game.MySelf.RoleInfo.Weapon;
             }
 
             if (game.YourInfo.Weapon == null)
             {
-                btnYourWeapon.Text = "武器[无]";
+                //
             }
             else
             {
-                btnYourWeapon.Text = game.YourInfo.Weapon.GetInfo();
+                btnYourWeapon.CardInfo = game.YourInfo.Weapon;
             }
 
 
@@ -188,7 +185,7 @@ namespace 炉边传说
                 {
                     Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Visible = true;
                     ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CanAttack = false;
-                    ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).Minion = game.YourInfo.BattleField.BattleMinions[i];
+                    ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CardInfo = game.YourInfo.BattleField.BattleMinions[i];
                 }
                 else
                 {
@@ -200,7 +197,7 @@ namespace 炉边传说
             {
                 if (i < game.MySelf.handCards.Count)
                 {
-                    Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Text = game.MySelf.handCards[i].GetInfo();
+                    ((ctlHandCard)Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0]).HandCard = game.MySelf.handCards[i];
                     Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Tag = game.MySelf.handCards[i];
                     if (game.IsMyTurn) Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Enabled = true;
                 }
@@ -303,7 +300,7 @@ namespace 炉边传说
             var ActionList = Actions.Split(Card.CardUtility.strSplitArrayMark.ToCharArray());
             foreach (var item in ActionList)
             {
-                lstAction.Items.Add("Received:[" + item + "]");
+                //lstAction.Items.Add("Received:[" + item + "]");
                 if (ActionCode.GetActionType(item) != ActionCode.ActionType.EndTurn)
                 {
                     //lstAction.Items.Clear();
@@ -330,11 +327,11 @@ namespace 炉边传说
         {
             foreach (var item in game.MySelf.RoleInfo.BattleField.ShowMinions())
             {
-                lstAction.Items.Add(title + "My:" + item);
+                //lstAction.Items.Add(title + "My:" + item);
             }
             foreach (var item in game.YourInfo.BattleField.ShowMinions())
             {
-                lstAction.Items.Add(title + "You:" + item);
+                //lstAction.Items.Add(title + "You:" + item);
             }
         }
         /// <summary>
@@ -359,15 +356,13 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnUseHandCard_Click(object sender, EventArgs e)
         {
-            if (((Button)sender).Tag == null) return;
             CardBasicInfo card;
-            if (((Button)sender).Name == "btnMyHeroAblity")
+            if ((sender.GetType()) == typeof(Button))
             {
-                card = CardUtility.GetCardInfoBySN(((Button)sender).Tag.ToString());
+                card = (CardBasicInfo)((ctlHandCard)(((Button)sender).Parent)).Tag;
             }
-            else
-            {
-                card = (CardBasicInfo)((Button)sender).Tag;
+            else {
+                card = (CardBasicInfo)(((ctlHeroAbility)sender).Tag);
             }
             var msg = game.CheckCondition(card);
             if (!String.IsNullOrEmpty(msg))
@@ -378,13 +373,14 @@ namespace 炉边传说
             var actionlst = RunAction.StartAction(game, card.SN);
             if (actionlst.Count != 0)
             {
-                game.MySelf.RoleInfo.crystal.CurrentRemainPoint -= card.ActualCostPoint;
-                if (((Button)sender).Name != "btnMyHeroAblity")
+                if ((sender.GetType()) == typeof(Button))
                 {
+                    game.MySelf.RoleInfo.crystal.CurrentRemainPoint -= card.ActualCostPoint;
                     game.RemoveUsedCard(card.SN);
                 }
                 else
                 {
+                    game.MySelf.RoleInfo.crystal.CurrentRemainPoint -= card.StandardCostPoint;
                     game.MySelf.RoleInfo.IsUsedHeroAbility = true;
                 }
                 actionlst.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +

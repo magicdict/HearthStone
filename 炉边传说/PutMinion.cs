@@ -37,7 +37,7 @@ namespace 炉边传说
             }
             for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
             {
-                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).Minion = game.MySelf.RoleInfo.BattleField.BattleMinions[i];
+                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CardInfo = game.MySelf.RoleInfo.BattleField.BattleMinions[i];
                 Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = true;
                 Controls.Find("btnPos" + (i + 1).ToString(), true)[0].Visible = true;
             }

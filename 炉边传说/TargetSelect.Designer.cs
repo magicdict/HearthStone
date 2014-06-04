@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TargetSelect));
             this.btnMe7 = new 炉边传说.ctlCard();
             this.btnMe6 = new 炉边传说.ctlCard();
             this.btnMe5 = new 炉边传说.ctlCard();
@@ -42,8 +43,8 @@
             this.btnYou3 = new 炉边传说.ctlCard();
             this.btnYou2 = new 炉边传说.ctlCard();
             this.btnYou1 = new 炉边传说.ctlCard();
-            this.btnMyHero = new System.Windows.Forms.Button();
-            this.btnYourHero = new System.Windows.Forms.Button();
+            this.btnMyHero = new 炉边传说.ctlHero();
+            this.btnYourHero = new 炉边传说.ctlHero();
             this.btnCancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -175,21 +176,23 @@
             // 
             // btnMyHero
             // 
-            this.btnMyHero.Location = new System.Drawing.Point(270, 282);
+            this.btnMyHero.BackColor = System.Drawing.Color.White;
+            this.btnMyHero.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnMyHero.BackgroundImage")));
+            this.btnMyHero.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnMyHero.Location = new System.Drawing.Point(335, 282);
             this.btnMyHero.Name = "btnMyHero";
-            this.btnMyHero.Size = new System.Drawing.Size(239, 93);
+            this.btnMyHero.Size = new System.Drawing.Size(96, 96);
             this.btnMyHero.TabIndex = 33;
-            this.btnMyHero.Text = "本方英雄";
-            this.btnMyHero.UseVisualStyleBackColor = true;
             // 
             // btnYourHero
             // 
-            this.btnYourHero.Location = new System.Drawing.Point(270, 12);
+            this.btnYourHero.BackColor = System.Drawing.Color.White;
+            this.btnYourHero.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnYourHero.BackgroundImage")));
+            this.btnYourHero.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnYourHero.Location = new System.Drawing.Point(339, 12);
             this.btnYourHero.Name = "btnYourHero";
-            this.btnYourHero.Size = new System.Drawing.Size(239, 88);
+            this.btnYourHero.Size = new System.Drawing.Size(96, 96);
             this.btnYourHero.TabIndex = 32;
-            this.btnYourHero.Text = "对方英雄";
-            this.btnYourHero.UseVisualStyleBackColor = true;
             // 
             // btnCancel
             // 
@@ -250,8 +253,8 @@
         private ctlCard btnYou2;
         private ctlCard btnYou1;
 
-        private System.Windows.Forms.Button btnMyHero;
-        private System.Windows.Forms.Button btnYourHero;
+        private ctlHero btnMyHero;
+        private ctlHero btnYourHero;
         private System.Windows.Forms.Button btnCancel;
     }
 }

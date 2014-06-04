@@ -28,30 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BattleField));
             this.btnEndTurn = new System.Windows.Forms.Button();
-            this.lstAction = new System.Windows.Forms.ListBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.btnYourSecret1 = new System.Windows.Forms.Button();
             this.btnYourSecret2 = new System.Windows.Forms.Button();
             this.btnYourSecret3 = new System.Windows.Forms.Button();
             this.btnMySecret1 = new System.Windows.Forms.Button();
             this.btnMySecret2 = new System.Windows.Forms.Button();
             this.btnMySecret3 = new System.Windows.Forms.Button();
-            this.btnYourWeapon = new System.Windows.Forms.Button();
-            this.btnYourHeroAblity = new System.Windows.Forms.Button();
-            this.btnMyWeapon = new System.Windows.Forms.Button();
-            this.btnMyHeroAblity = new System.Windows.Forms.Button();
-            this.btnHandCard10 = new System.Windows.Forms.Button();
-            this.btnHandCard9 = new System.Windows.Forms.Button();
-            this.btnHandCard8 = new System.Windows.Forms.Button();
-            this.btnHandCard7 = new System.Windows.Forms.Button();
-            this.btnHandCard6 = new System.Windows.Forms.Button();
-            this.btnHandCard5 = new System.Windows.Forms.Button();
-            this.btnHandCard4 = new System.Windows.Forms.Button();
-            this.btnHandCard3 = new System.Windows.Forms.Button();
-            this.btnHandCard2 = new System.Windows.Forms.Button();
-            this.btnHandCard1 = new System.Windows.Forms.Button();
+            this.btnYourWeapon = new 炉边传说.ctlCard();
+            this.btnYourHeroAblity = new 炉边传说.ctlHeroAbility();
+            this.btnMyWeapon = new 炉边传说.ctlCard();
+            this.btnMyHeroAblity = new 炉边传说.ctlHeroAbility();
+            this.btnHandCard10 = new 炉边传说.ctlHandCard();
+            this.btnHandCard9 = new 炉边传说.ctlHandCard();
+            this.btnHandCard8 = new 炉边传说.ctlHandCard();
+            this.btnHandCard7 = new 炉边传说.ctlHandCard();
+            this.btnHandCard6 = new 炉边传说.ctlHandCard();
+            this.btnHandCard5 = new 炉边传说.ctlHandCard();
+            this.btnHandCard4 = new 炉边传说.ctlHandCard();
+            this.btnHandCard3 = new 炉边传说.ctlHandCard();
+            this.btnHandCard2 = new 炉边传说.ctlHandCard();
+            this.btnHandCard1 = new 炉边传说.ctlHandCard();
             this.btnMe7 = new 炉边传说.ctlCard();
             this.btnMe6 = new 炉边传说.ctlCard();
             this.btnMe5 = new 炉边传说.ctlCard();
@@ -66,99 +65,34 @@
             this.btnYou3 = new 炉边传说.ctlCard();
             this.btnYou2 = new 炉边传说.ctlCard();
             this.btnYou1 = new 炉边传说.ctlCard();
-            this.btnMyHero = new System.Windows.Forms.Button();
-            this.btnYourHero = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            this.btnMyHero = new 炉边传说.ctlHero();
+            this.btnYourHero = new 炉边传说.ctlHero();
             this.SuspendLayout();
             // 
             // btnEndTurn
             // 
-            this.btnEndTurn.Location = new System.Drawing.Point(996, 194);
+            this.btnEndTurn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.btnEndTurn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this.btnEndTurn.Location = new System.Drawing.Point(844, 204);
             this.btnEndTurn.Name = "btnEndTurn";
-            this.btnEndTurn.Size = new System.Drawing.Size(120, 39);
+            this.btnEndTurn.Size = new System.Drawing.Size(106, 39);
             this.btnEndTurn.TabIndex = 3;
             this.btnEndTurn.Text = "结束回合";
-            this.btnEndTurn.UseVisualStyleBackColor = true;
+            this.btnEndTurn.UseVisualStyleBackColor = false;
             this.btnEndTurn.Click += new System.EventHandler(this.btnEndTurn_Click);
-            // 
-            // lstAction
-            // 
-            this.lstAction.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lstAction.FormattingEnabled = true;
-            this.lstAction.Location = new System.Drawing.Point(0, 0);
-            this.lstAction.Name = "lstAction";
-            this.lstAction.Size = new System.Drawing.Size(1128, 115);
-            this.lstAction.TabIndex = 7;
             // 
             // statusStrip1
             // 
             this.statusStrip1.Location = new System.Drawing.Point(0, 598);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1128, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(966, 22);
             this.statusStrip1.TabIndex = 8;
             this.statusStrip1.Text = "statusStrip1";
-            // 
-            // splitContainer1
-            // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitContainer1.Panel1
-            // 
-            this.splitContainer1.Panel1.Controls.Add(this.btnYourSecret1);
-            this.splitContainer1.Panel1.Controls.Add(this.btnYourSecret2);
-            this.splitContainer1.Panel1.Controls.Add(this.btnYourSecret3);
-            this.splitContainer1.Panel1.Controls.Add(this.btnMySecret1);
-            this.splitContainer1.Panel1.Controls.Add(this.btnMySecret2);
-            this.splitContainer1.Panel1.Controls.Add(this.btnMySecret3);
-            this.splitContainer1.Panel1.Controls.Add(this.btnYourWeapon);
-            this.splitContainer1.Panel1.Controls.Add(this.btnYourHeroAblity);
-            this.splitContainer1.Panel1.Controls.Add(this.btnMyWeapon);
-            this.splitContainer1.Panel1.Controls.Add(this.btnMyHeroAblity);
-            this.splitContainer1.Panel1.Controls.Add(this.btnHandCard10);
-            this.splitContainer1.Panel1.Controls.Add(this.btnHandCard9);
-            this.splitContainer1.Panel1.Controls.Add(this.btnHandCard8);
-            this.splitContainer1.Panel1.Controls.Add(this.btnHandCard7);
-            this.splitContainer1.Panel1.Controls.Add(this.btnHandCard6);
-            this.splitContainer1.Panel1.Controls.Add(this.btnHandCard5);
-            this.splitContainer1.Panel1.Controls.Add(this.btnHandCard4);
-            this.splitContainer1.Panel1.Controls.Add(this.btnHandCard3);
-            this.splitContainer1.Panel1.Controls.Add(this.btnHandCard2);
-            this.splitContainer1.Panel1.Controls.Add(this.btnHandCard1);
-            this.splitContainer1.Panel1.Controls.Add(this.btnMe7);
-            this.splitContainer1.Panel1.Controls.Add(this.btnMe6);
-            this.splitContainer1.Panel1.Controls.Add(this.btnMe5);
-            this.splitContainer1.Panel1.Controls.Add(this.btnMe4);
-            this.splitContainer1.Panel1.Controls.Add(this.btnMe3);
-            this.splitContainer1.Panel1.Controls.Add(this.btnMe2);
-            this.splitContainer1.Panel1.Controls.Add(this.btnMe1);
-            this.splitContainer1.Panel1.Controls.Add(this.btnYou7);
-            this.splitContainer1.Panel1.Controls.Add(this.btnYou6);
-            this.splitContainer1.Panel1.Controls.Add(this.btnYou5);
-            this.splitContainer1.Panel1.Controls.Add(this.btnYou4);
-            this.splitContainer1.Panel1.Controls.Add(this.btnYou3);
-            this.splitContainer1.Panel1.Controls.Add(this.btnYou2);
-            this.splitContainer1.Panel1.Controls.Add(this.btnYou1);
-            this.splitContainer1.Panel1.Controls.Add(this.btnMyHero);
-            this.splitContainer1.Panel1.Controls.Add(this.btnYourHero);
-            this.splitContainer1.Panel1.Controls.Add(this.btnEndTurn);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.lstAction);
-            this.splitContainer1.Size = new System.Drawing.Size(1128, 598);
-            this.splitContainer1.SplitterDistance = 479;
-            this.splitContainer1.TabIndex = 9;
             // 
             // btnYourSecret1
             // 
             this.btnYourSecret1.Enabled = false;
-            this.btnYourSecret1.Location = new System.Drawing.Point(798, 32);
+            this.btnYourSecret1.Location = new System.Drawing.Point(719, 32);
             this.btnYourSecret1.Name = "btnYourSecret1";
             this.btnYourSecret1.Size = new System.Drawing.Size(85, 23);
             this.btnYourSecret1.TabIndex = 45;
@@ -168,7 +102,7 @@
             // btnYourSecret2
             // 
             this.btnYourSecret2.Enabled = false;
-            this.btnYourSecret2.Location = new System.Drawing.Point(889, 32);
+            this.btnYourSecret2.Location = new System.Drawing.Point(799, 32);
             this.btnYourSecret2.Name = "btnYourSecret2";
             this.btnYourSecret2.Size = new System.Drawing.Size(75, 23);
             this.btnYourSecret2.TabIndex = 46;
@@ -178,7 +112,7 @@
             // btnYourSecret3
             // 
             this.btnYourSecret3.Enabled = false;
-            this.btnYourSecret3.Location = new System.Drawing.Point(970, 32);
+            this.btnYourSecret3.Location = new System.Drawing.Point(880, 32);
             this.btnYourSecret3.Name = "btnYourSecret3";
             this.btnYourSecret3.Size = new System.Drawing.Size(75, 23);
             this.btnYourSecret3.TabIndex = 47;
@@ -188,9 +122,9 @@
             // btnMySecret1
             // 
             this.btnMySecret1.Enabled = false;
-            this.btnMySecret1.Location = new System.Drawing.Point(809, 381);
+            this.btnMySecret1.Location = new System.Drawing.Point(341, 417);
             this.btnMySecret1.Name = "btnMySecret1";
-            this.btnMySecret1.Size = new System.Drawing.Size(85, 23);
+            this.btnMySecret1.Size = new System.Drawing.Size(48, 23);
             this.btnMySecret1.TabIndex = 10;
             this.btnMySecret1.Text = "[无奥秘]";
             this.btnMySecret1.UseVisualStyleBackColor = true;
@@ -198,9 +132,9 @@
             // btnMySecret2
             // 
             this.btnMySecret2.Enabled = false;
-            this.btnMySecret2.Location = new System.Drawing.Point(900, 381);
+            this.btnMySecret2.Location = new System.Drawing.Point(416, 417);
             this.btnMySecret2.Name = "btnMySecret2";
-            this.btnMySecret2.Size = new System.Drawing.Size(75, 23);
+            this.btnMySecret2.Size = new System.Drawing.Size(38, 23);
             this.btnMySecret2.TabIndex = 11;
             this.btnMySecret2.Text = "[无奥秘]";
             this.btnMySecret2.UseVisualStyleBackColor = true;
@@ -208,144 +142,144 @@
             // btnMySecret3
             // 
             this.btnMySecret3.Enabled = false;
-            this.btnMySecret3.Location = new System.Drawing.Point(981, 381);
+            this.btnMySecret3.Location = new System.Drawing.Point(476, 417);
             this.btnMySecret3.Name = "btnMySecret3";
-            this.btnMySecret3.Size = new System.Drawing.Size(75, 23);
+            this.btnMySecret3.Size = new System.Drawing.Size(38, 23);
             this.btnMySecret3.TabIndex = 12;
             this.btnMySecret3.Text = "[无奥秘]";
             this.btnMySecret3.UseVisualStyleBackColor = true;
             // 
             // btnYourWeapon
             // 
-            this.btnYourWeapon.Location = new System.Drawing.Point(309, 59);
+            this.btnYourWeapon.BackColor = System.Drawing.Color.White;
+            this.btnYourWeapon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnYourWeapon.Location = new System.Drawing.Point(332, 12);
             this.btnYourWeapon.Name = "btnYourWeapon";
-            this.btnYourWeapon.Size = new System.Drawing.Size(96, 35);
+            this.btnYourWeapon.Size = new System.Drawing.Size(48, 48);
             this.btnYourWeapon.TabIndex = 44;
-            this.btnYourWeapon.Text = "武器[无]";
-            this.btnYourWeapon.UseVisualStyleBackColor = true;
             // 
             // btnYourHeroAblity
             // 
-            this.btnYourHeroAblity.Location = new System.Drawing.Point(688, 59);
+            this.btnYourHeroAblity.BackColor = System.Drawing.Color.White;
+            this.btnYourHeroAblity.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnYourHeroAblity.Location = new System.Drawing.Point(488, 12);
             this.btnYourHeroAblity.Name = "btnYourHeroAblity";
-            this.btnYourHeroAblity.Size = new System.Drawing.Size(87, 35);
+            this.btnYourHeroAblity.Size = new System.Drawing.Size(48, 48);
             this.btnYourHeroAblity.TabIndex = 43;
-            this.btnYourHeroAblity.Text = "英雄技能";
-            this.btnYourHeroAblity.UseVisualStyleBackColor = true;
             // 
             // btnMyWeapon
             // 
-            this.btnMyWeapon.Location = new System.Drawing.Point(309, 336);
+            this.btnMyWeapon.BackColor = System.Drawing.Color.White;
+            this.btnMyWeapon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnMyWeapon.Location = new System.Drawing.Point(332, 360);
             this.btnMyWeapon.Name = "btnMyWeapon";
-            this.btnMyWeapon.Size = new System.Drawing.Size(96, 35);
+            this.btnMyWeapon.Size = new System.Drawing.Size(48, 48);
             this.btnMyWeapon.TabIndex = 42;
-            this.btnMyWeapon.Text = "武器[无]";
-            this.btnMyWeapon.UseVisualStyleBackColor = true;
             // 
             // btnMyHeroAblity
             // 
-            this.btnMyHeroAblity.Location = new System.Drawing.Point(688, 336);
+            this.btnMyHeroAblity.BackColor = System.Drawing.Color.White;
+            this.btnMyHeroAblity.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnMyHeroAblity.Location = new System.Drawing.Point(488, 360);
             this.btnMyHeroAblity.Name = "btnMyHeroAblity";
-            this.btnMyHeroAblity.Size = new System.Drawing.Size(87, 35);
+            this.btnMyHeroAblity.Size = new System.Drawing.Size(48, 48);
             this.btnMyHeroAblity.TabIndex = 10;
-            this.btnMyHeroAblity.Text = "英雄技能";
-            this.btnMyHeroAblity.UseVisualStyleBackColor = true;
             // 
             // btnHandCard10
             // 
-            this.btnHandCard10.Location = new System.Drawing.Point(794, 443);
+            this.btnHandCard10.BackColor = System.Drawing.Color.White;
+            this.btnHandCard10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnHandCard10.Location = new System.Drawing.Point(832, 446);
             this.btnHandCard10.Name = "btnHandCard10";
-            this.btnHandCard10.Size = new System.Drawing.Size(161, 23);
+            this.btnHandCard10.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard10.TabIndex = 41;
-            this.btnHandCard10.Text = "手牌10";
-            this.btnHandCard10.UseVisualStyleBackColor = true;
             // 
             // btnHandCard9
             // 
-            this.btnHandCard9.Location = new System.Drawing.Point(627, 443);
+            this.btnHandCard9.BackColor = System.Drawing.Color.White;
+            this.btnHandCard9.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnHandCard9.Location = new System.Drawing.Point(743, 446);
             this.btnHandCard9.Name = "btnHandCard9";
-            this.btnHandCard9.Size = new System.Drawing.Size(161, 23);
+            this.btnHandCard9.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard9.TabIndex = 40;
-            this.btnHandCard9.Text = "手牌9";
-            this.btnHandCard9.UseVisualStyleBackColor = true;
             // 
             // btnHandCard8
             // 
-            this.btnHandCard8.Location = new System.Drawing.Point(460, 443);
+            this.btnHandCard8.BackColor = System.Drawing.Color.White;
+            this.btnHandCard8.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnHandCard8.Location = new System.Drawing.Point(654, 446);
             this.btnHandCard8.Name = "btnHandCard8";
-            this.btnHandCard8.Size = new System.Drawing.Size(161, 23);
+            this.btnHandCard8.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard8.TabIndex = 39;
-            this.btnHandCard8.Text = "手牌8";
-            this.btnHandCard8.UseVisualStyleBackColor = true;
             // 
             // btnHandCard7
             // 
-            this.btnHandCard7.Location = new System.Drawing.Point(294, 443);
+            this.btnHandCard7.BackColor = System.Drawing.Color.White;
+            this.btnHandCard7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnHandCard7.Location = new System.Drawing.Point(565, 446);
             this.btnHandCard7.Name = "btnHandCard7";
-            this.btnHandCard7.Size = new System.Drawing.Size(161, 23);
+            this.btnHandCard7.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard7.TabIndex = 38;
-            this.btnHandCard7.Text = "手牌7";
-            this.btnHandCard7.UseVisualStyleBackColor = true;
             // 
             // btnHandCard6
             // 
-            this.btnHandCard6.Location = new System.Drawing.Point(126, 443);
+            this.btnHandCard6.BackColor = System.Drawing.Color.White;
+            this.btnHandCard6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnHandCard6.Location = new System.Drawing.Point(476, 446);
             this.btnHandCard6.Name = "btnHandCard6";
-            this.btnHandCard6.Size = new System.Drawing.Size(161, 23);
+            this.btnHandCard6.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard6.TabIndex = 37;
-            this.btnHandCard6.Text = "手牌6";
-            this.btnHandCard6.UseVisualStyleBackColor = true;
             // 
             // btnHandCard5
             // 
-            this.btnHandCard5.Location = new System.Drawing.Point(794, 414);
+            this.btnHandCard5.BackColor = System.Drawing.Color.White;
+            this.btnHandCard5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnHandCard5.Location = new System.Drawing.Point(387, 446);
             this.btnHandCard5.Name = "btnHandCard5";
-            this.btnHandCard5.Size = new System.Drawing.Size(161, 23);
+            this.btnHandCard5.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard5.TabIndex = 36;
-            this.btnHandCard5.Text = "手牌5";
-            this.btnHandCard5.UseVisualStyleBackColor = true;
             // 
             // btnHandCard4
             // 
-            this.btnHandCard4.Location = new System.Drawing.Point(627, 414);
+            this.btnHandCard4.BackColor = System.Drawing.Color.White;
+            this.btnHandCard4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnHandCard4.Location = new System.Drawing.Point(298, 446);
             this.btnHandCard4.Name = "btnHandCard4";
-            this.btnHandCard4.Size = new System.Drawing.Size(161, 23);
+            this.btnHandCard4.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard4.TabIndex = 35;
-            this.btnHandCard4.Text = "手牌4";
-            this.btnHandCard4.UseVisualStyleBackColor = true;
             // 
             // btnHandCard3
             // 
-            this.btnHandCard3.Location = new System.Drawing.Point(460, 414);
+            this.btnHandCard3.BackColor = System.Drawing.Color.White;
+            this.btnHandCard3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnHandCard3.Location = new System.Drawing.Point(209, 446);
             this.btnHandCard3.Name = "btnHandCard3";
-            this.btnHandCard3.Size = new System.Drawing.Size(161, 23);
+            this.btnHandCard3.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard3.TabIndex = 34;
-            this.btnHandCard3.Text = "手牌3";
-            this.btnHandCard3.UseVisualStyleBackColor = true;
             // 
             // btnHandCard2
             // 
-            this.btnHandCard2.Location = new System.Drawing.Point(293, 414);
+            this.btnHandCard2.BackColor = System.Drawing.Color.White;
+            this.btnHandCard2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnHandCard2.Location = new System.Drawing.Point(120, 446);
             this.btnHandCard2.Name = "btnHandCard2";
-            this.btnHandCard2.Size = new System.Drawing.Size(161, 23);
+            this.btnHandCard2.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard2.TabIndex = 33;
-            this.btnHandCard2.Text = "手牌2";
-            this.btnHandCard2.UseVisualStyleBackColor = true;
             // 
             // btnHandCard1
             // 
-            this.btnHandCard1.Location = new System.Drawing.Point(126, 414);
+            this.btnHandCard1.BackColor = System.Drawing.Color.White;
+            this.btnHandCard1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnHandCard1.Location = new System.Drawing.Point(31, 446);
             this.btnHandCard1.Name = "btnHandCard1";
-            this.btnHandCard1.Size = new System.Drawing.Size(161, 23);
+            this.btnHandCard1.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard1.TabIndex = 32;
-            this.btnHandCard1.Text = "手牌1";
-            this.btnHandCard1.UseVisualStyleBackColor = true;
             // 
             // btnMe7
             // 
             this.btnMe7.BackColor = System.Drawing.Color.White;
             this.btnMe7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnMe7.Location = new System.Drawing.Point(794, 230);
+            this.btnMe7.Location = new System.Drawing.Point(704, 230);
             this.btnMe7.Name = "btnMe7";
             this.btnMe7.Size = new System.Drawing.Size(100, 71);
             this.btnMe7.TabIndex = 31;
@@ -354,7 +288,7 @@
             // 
             this.btnMe6.BackColor = System.Drawing.Color.White;
             this.btnMe6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnMe6.Location = new System.Drawing.Point(688, 230);
+            this.btnMe6.Location = new System.Drawing.Point(598, 230);
             this.btnMe6.Name = "btnMe6";
             this.btnMe6.Size = new System.Drawing.Size(100, 71);
             this.btnMe6.TabIndex = 30;
@@ -363,7 +297,7 @@
             // 
             this.btnMe5.BackColor = System.Drawing.Color.White;
             this.btnMe5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnMe5.Location = new System.Drawing.Point(582, 230);
+            this.btnMe5.Location = new System.Drawing.Point(492, 230);
             this.btnMe5.Name = "btnMe5";
             this.btnMe5.Size = new System.Drawing.Size(100, 71);
             this.btnMe5.TabIndex = 29;
@@ -372,7 +306,7 @@
             // 
             this.btnMe4.BackColor = System.Drawing.Color.White;
             this.btnMe4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnMe4.Location = new System.Drawing.Point(476, 230);
+            this.btnMe4.Location = new System.Drawing.Point(386, 230);
             this.btnMe4.Name = "btnMe4";
             this.btnMe4.Size = new System.Drawing.Size(100, 71);
             this.btnMe4.TabIndex = 28;
@@ -381,7 +315,7 @@
             // 
             this.btnMe3.BackColor = System.Drawing.Color.White;
             this.btnMe3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnMe3.Location = new System.Drawing.Point(370, 230);
+            this.btnMe3.Location = new System.Drawing.Point(280, 230);
             this.btnMe3.Name = "btnMe3";
             this.btnMe3.Size = new System.Drawing.Size(100, 71);
             this.btnMe3.TabIndex = 27;
@@ -390,7 +324,7 @@
             // 
             this.btnMe2.BackColor = System.Drawing.Color.White;
             this.btnMe2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnMe2.Location = new System.Drawing.Point(264, 230);
+            this.btnMe2.Location = new System.Drawing.Point(174, 230);
             this.btnMe2.Name = "btnMe2";
             this.btnMe2.Size = new System.Drawing.Size(100, 71);
             this.btnMe2.TabIndex = 26;
@@ -399,7 +333,7 @@
             // 
             this.btnMe1.BackColor = System.Drawing.Color.White;
             this.btnMe1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnMe1.Location = new System.Drawing.Point(158, 230);
+            this.btnMe1.Location = new System.Drawing.Point(68, 230);
             this.btnMe1.Name = "btnMe1";
             this.btnMe1.Size = new System.Drawing.Size(100, 71);
             this.btnMe1.TabIndex = 25;
@@ -408,7 +342,7 @@
             // 
             this.btnYou7.BackColor = System.Drawing.Color.White;
             this.btnYou7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnYou7.Location = new System.Drawing.Point(794, 139);
+            this.btnYou7.Location = new System.Drawing.Point(704, 139);
             this.btnYou7.Name = "btnYou7";
             this.btnYou7.Size = new System.Drawing.Size(100, 71);
             this.btnYou7.TabIndex = 24;
@@ -417,7 +351,7 @@
             // 
             this.btnYou6.BackColor = System.Drawing.Color.White;
             this.btnYou6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnYou6.Location = new System.Drawing.Point(688, 139);
+            this.btnYou6.Location = new System.Drawing.Point(598, 139);
             this.btnYou6.Name = "btnYou6";
             this.btnYou6.Size = new System.Drawing.Size(100, 71);
             this.btnYou6.TabIndex = 23;
@@ -426,7 +360,7 @@
             // 
             this.btnYou5.BackColor = System.Drawing.Color.White;
             this.btnYou5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnYou5.Location = new System.Drawing.Point(582, 139);
+            this.btnYou5.Location = new System.Drawing.Point(492, 139);
             this.btnYou5.Name = "btnYou5";
             this.btnYou5.Size = new System.Drawing.Size(100, 71);
             this.btnYou5.TabIndex = 22;
@@ -435,7 +369,7 @@
             // 
             this.btnYou4.BackColor = System.Drawing.Color.White;
             this.btnYou4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnYou4.Location = new System.Drawing.Point(476, 139);
+            this.btnYou4.Location = new System.Drawing.Point(386, 139);
             this.btnYou4.Name = "btnYou4";
             this.btnYou4.Size = new System.Drawing.Size(100, 71);
             this.btnYou4.TabIndex = 21;
@@ -444,7 +378,7 @@
             // 
             this.btnYou3.BackColor = System.Drawing.Color.White;
             this.btnYou3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnYou3.Location = new System.Drawing.Point(370, 139);
+            this.btnYou3.Location = new System.Drawing.Point(280, 139);
             this.btnYou3.Name = "btnYou3";
             this.btnYou3.Size = new System.Drawing.Size(100, 71);
             this.btnYou3.TabIndex = 20;
@@ -453,7 +387,7 @@
             // 
             this.btnYou2.BackColor = System.Drawing.Color.White;
             this.btnYou2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnYou2.Location = new System.Drawing.Point(264, 139);
+            this.btnYou2.Location = new System.Drawing.Point(174, 139);
             this.btnYou2.Name = "btnYou2";
             this.btnYou2.Size = new System.Drawing.Size(100, 71);
             this.btnYou2.TabIndex = 19;
@@ -462,44 +396,80 @@
             // 
             this.btnYou1.BackColor = System.Drawing.Color.White;
             this.btnYou1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnYou1.Location = new System.Drawing.Point(158, 139);
+            this.btnYou1.Location = new System.Drawing.Point(68, 139);
             this.btnYou1.Name = "btnYou1";
             this.btnYou1.Size = new System.Drawing.Size(100, 71);
             this.btnYou1.TabIndex = 18;
             // 
             // btnMyHero
             // 
-            this.btnMyHero.Location = new System.Drawing.Point(443, 303);
+            this.btnMyHero.BackColor = System.Drawing.Color.White;
+            this.btnMyHero.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnMyHero.BackgroundImage")));
+            this.btnMyHero.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnMyHero.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnMyHero.Location = new System.Drawing.Point(386, 312);
             this.btnMyHero.Name = "btnMyHero";
-            this.btnMyHero.Size = new System.Drawing.Size(239, 97);
+            this.btnMyHero.Size = new System.Drawing.Size(96, 96);
             this.btnMyHero.TabIndex = 17;
-            this.btnMyHero.Text = "本方英雄";
-            this.btnMyHero.UseVisualStyleBackColor = true;
             // 
             // btnYourHero
             // 
-            this.btnYourHero.Location = new System.Drawing.Point(446, 32);
+            this.btnYourHero.BackColor = System.Drawing.Color.White;
+            this.btnYourHero.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnYourHero.BackgroundImage")));
+            this.btnYourHero.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnYourHero.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnYourHero.Location = new System.Drawing.Point(386, 12);
             this.btnYourHero.Name = "btnYourHero";
-            this.btnYourHero.Size = new System.Drawing.Size(239, 88);
+            this.btnYourHero.Size = new System.Drawing.Size(96, 96);
             this.btnYourHero.TabIndex = 16;
-            this.btnYourHero.Text = "对方英雄";
-            this.btnYourHero.UseVisualStyleBackColor = true;
             // 
             // BattleField
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1128, 620);
-            this.Controls.Add(this.splitContainer1);
+            this.ClientSize = new System.Drawing.Size(966, 620);
+            this.Controls.Add(this.btnYourSecret1);
+            this.Controls.Add(this.btnYourSecret2);
             this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.btnYourSecret3);
+            this.Controls.Add(this.btnYourWeapon);
+            this.Controls.Add(this.btnMySecret1);
+            this.Controls.Add(this.btnEndTurn);
+            this.Controls.Add(this.btnMySecret2);
+            this.Controls.Add(this.btnYourHero);
+            this.Controls.Add(this.btnMySecret3);
+            this.Controls.Add(this.btnMyHero);
+            this.Controls.Add(this.btnYou1);
+            this.Controls.Add(this.btnYourHeroAblity);
+            this.Controls.Add(this.btnYou2);
+            this.Controls.Add(this.btnMyWeapon);
+            this.Controls.Add(this.btnYou3);
+            this.Controls.Add(this.btnMyHeroAblity);
+            this.Controls.Add(this.btnYou4);
+            this.Controls.Add(this.btnHandCard10);
+            this.Controls.Add(this.btnYou5);
+            this.Controls.Add(this.btnHandCard9);
+            this.Controls.Add(this.btnYou6);
+            this.Controls.Add(this.btnHandCard8);
+            this.Controls.Add(this.btnYou7);
+            this.Controls.Add(this.btnHandCard7);
+            this.Controls.Add(this.btnMe1);
+            this.Controls.Add(this.btnHandCard6);
+            this.Controls.Add(this.btnMe2);
+            this.Controls.Add(this.btnHandCard5);
+            this.Controls.Add(this.btnMe3);
+            this.Controls.Add(this.btnHandCard4);
+            this.Controls.Add(this.btnMe4);
+            this.Controls.Add(this.btnHandCard3);
+            this.Controls.Add(this.btnMe5);
+            this.Controls.Add(this.btnHandCard2);
+            this.Controls.Add(this.btnMe6);
+            this.Controls.Add(this.btnHandCard1);
+            this.Controls.Add(this.btnMe7);
             this.Name = "BattleField";
             this.Text = "战场";
             this.Load += new System.EventHandler(this.BattleField_Load);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -508,9 +478,7 @@
         #endregion
 
         private System.Windows.Forms.Button btnEndTurn;
-        private System.Windows.Forms.ListBox lstAction;
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.SplitContainer splitContainer1;
         
         private ctlCard btnMe7;
         private ctlCard btnMe6;
@@ -527,22 +495,25 @@
         private ctlCard btnYou2;
         private ctlCard btnYou1;
 
-        private System.Windows.Forms.Button btnMyHero;
-        private System.Windows.Forms.Button btnYourHero;
-        private System.Windows.Forms.Button btnHandCard10;
-        private System.Windows.Forms.Button btnHandCard9;
-        private System.Windows.Forms.Button btnHandCard8;
-        private System.Windows.Forms.Button btnHandCard7;
-        private System.Windows.Forms.Button btnHandCard6;
-        private System.Windows.Forms.Button btnHandCard5;
-        private System.Windows.Forms.Button btnHandCard4;
-        private System.Windows.Forms.Button btnHandCard3;
-        private System.Windows.Forms.Button btnHandCard2;
-        private System.Windows.Forms.Button btnHandCard1;
-        private System.Windows.Forms.Button btnMyHeroAblity;
-        private System.Windows.Forms.Button btnMyWeapon;
-        private System.Windows.Forms.Button btnYourHeroAblity;
-        private System.Windows.Forms.Button btnYourWeapon;
+        private ctlHero btnMyHero;
+        private ctlHero btnYourHero;
+
+        private ctlHandCard btnHandCard10;
+        private ctlHandCard btnHandCard9;
+        private ctlHandCard btnHandCard8;
+        private ctlHandCard btnHandCard7;
+        private ctlHandCard btnHandCard6;
+        private ctlHandCard btnHandCard5;
+        private ctlHandCard btnHandCard4;
+        private ctlHandCard btnHandCard3;
+        private ctlHandCard btnHandCard2;
+        private ctlHandCard btnHandCard1;
+
+        private ctlHeroAbility btnMyHeroAblity;
+        private ctlCard btnMyWeapon;
+        private ctlHeroAbility btnYourHeroAblity;
+        private ctlCard btnYourWeapon;
+
         private System.Windows.Forms.Button btnMySecret1;
         private System.Windows.Forms.Button btnMySecret2;
         private System.Windows.Forms.Button btnMySecret3;

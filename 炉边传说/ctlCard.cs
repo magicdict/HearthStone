@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using Card;
 
 namespace 炉边传说
 {
@@ -15,14 +8,36 @@ namespace 炉边传说
         /// <summary>
         /// 随从
         /// </summary>
-        public Card.MinionCard Minion
+        public Card.CardBasicInfo CardInfo
         {
             set
             {
                 lblName.Text = value.Name;
                 lblDescription.Text = value.Description;
-                lblAttackPoint.Text = value.TotalAttack().ToString();
-                lblHealthPoint.Text = value.实际生命值.ToString();
+                switch (value.CardType)
+                {
+                    case Card.CardBasicInfo.CardTypeEnum.随从:
+                        lblHealthPoint.Visible = true;
+                        lblAttackPoint.Visible = true;
+                        lblAttackPoint.Text = ((Card.MinionCard)value).TotalAttack().ToString();
+                        lblHealthPoint.Text = ((Card.MinionCard)value).实际生命值.ToString();
+                        break;
+                    case Card.CardBasicInfo.CardTypeEnum.法术:
+                        lblHealthPoint.Visible = false;
+                        lblAttackPoint.Visible = true;
+                        lblAttackPoint.Text = ((Card.AbilityCard)value).StandardCostPoint.ToString();
+                        break;
+                    case Card.CardBasicInfo.CardTypeEnum.奥秘:
+                        break;
+                    case Card.CardBasicInfo.CardTypeEnum.武器:
+                        lblHealthPoint.Visible = true;
+                        lblAttackPoint.Visible = true;
+                        lblAttackPoint.Text = ((Card.WeaponCard)value).ActualAttackPoint.ToString();
+                        lblHealthPoint.Text = ((Card.WeaponCard)value).实际耐久度.ToString();
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         public Boolean CanAttack
