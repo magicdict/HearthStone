@@ -37,6 +37,7 @@
             this.btnPickCard = new System.Windows.Forms.Button();
             this.txtCardPath = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.lblIP = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
@@ -120,12 +121,22 @@
             this.label1.TabIndex = 7;
             this.label1.Text = "卡牌文件夹：";
             // 
+            // lblIP
+            // 
+            this.lblIP.AutoSize = true;
+            this.lblIP.Location = new System.Drawing.Point(18, 120);
+            this.lblIP.Name = "lblIP";
+            this.lblIP.Size = new System.Drawing.Size(61, 13);
+            this.lblIP.TabIndex = 10;
+            this.lblIP.Text = "IP Address:";
+            // 
             // ServerConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(352, 181);
+            this.Controls.Add(this.lblIP);
             this.Controls.Add(this.btnPickCard);
             this.Controls.Add(this.txtCardPath);
             this.Controls.Add(this.label1);
@@ -156,5 +167,6 @@
         private System.Windows.Forms.Button btnPickCard;
         private System.Windows.Forms.TextBox txtCardPath;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblIP;
     }
 }

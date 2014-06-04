@@ -99,17 +99,24 @@ namespace 炉边传说
         private void DisplayMyInfo()
         {
             int LeftPos = (this.Width - (btnMyHero.Width + btnMyHeroAblity.Width + btnMyWeapon.Width + 2 * Megrate)) / 2;
-
             //武器
             btnMyWeapon.Left = LeftPos;
             if (game.MySelf.RoleInfo.Weapon != null)
             {
-                btnMyWeapon.CardInfo = game.MySelf.RoleInfo.Weapon;
+                btnMyWeapon.Weapon = game.MySelf.RoleInfo.Weapon;
+            }
+            else
+            {
+                btnMyWeapon.Clear();
             }
             btnYourWeapon.Left = LeftPos;
             if (game.YourInfo.Weapon != null)
             {
-                btnYourWeapon.CardInfo = game.YourInfo.Weapon;
+                btnYourWeapon.Weapon = game.YourInfo.Weapon;
+            }
+            else
+            {
+                btnYourWeapon.Clear();
             }
             LeftPos += (btnMyWeapon.Width + Megrate);
             //没有使用过，有武器，武器耐久度不为零
@@ -142,9 +149,12 @@ namespace 炉边传说
             btnMyHeroAblity.Left = LeftPos;
             btnYourHeroAblity.Left = LeftPos;
 
+            MyCrystalBar.CrystalInfo = game.MySelf.RoleInfo.crystal;
+            YourCrystalBar.CrystalInfo = game.YourInfo.crystal;
+
 
             LeftPos = (this.Width - (game.MySelf.RoleInfo.BattleField.MinionCount * btnMe1.Width +
-                (game.MySelf.RoleInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
+                      (game.MySelf.RoleInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
             for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
             {
                 var myMinion = game.MySelf.RoleInfo.BattleField.BattleMinions[i];
@@ -169,7 +179,7 @@ namespace 炉边传说
                 }
             }
             LeftPos = (this.Width - (game.YourInfo.BattleField.MinionCount * btnYou1.Width +
-                (game.YourInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
+                      (game.YourInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
             for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
             {
                 if (game.YourInfo.BattleField.BattleMinions[i] != null)
@@ -193,6 +203,7 @@ namespace 炉边传说
                     ((ctlHandCard)Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0]).HandCard = game.MySelf.handCards[i];
                     Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Tag = game.MySelf.handCards[i];
                     if (game.IsMyTurn) Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Enabled = true;
+                    Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Visible = true;
                     Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Left = LeftPos;
                     LeftPos += btnHandCard1.Width + Megrate;
                 }

@@ -70,12 +70,13 @@ namespace Card.Client
                            IsFirst ? PlayerBasicInfo.BasicHandCardCount : (PlayerBasicInfo.BasicHandCardCount + 1));
             MySelf.RoleInfo.crystal.CurrentFullPoint = 0;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 0;
+            YourInfo.crystal.CurrentFullPoint = 0;
+            YourInfo.crystal.CurrentRemainPoint = 0;
             //DEBUG START
             MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
             MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
-            HandCard.Add("S000001");
-            HandCard.Add("S000001");
-            HandCard.Add("S000001");
+            YourInfo.crystal.CurrentFullPoint = 5;
+            YourInfo.crystal.CurrentRemainPoint = 5;
             //DEBUG END
             //英雄技能：奥术飞弹
             MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A200001");
