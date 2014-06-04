@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -70,6 +71,15 @@ namespace Card.Server
                     //返回GameId
                     Response = GameServer.CreateNewGame(Request.Substring(3)).ToString(GameServer.GameIdFormat);
                     break;
+                case RequestType.传送套牌:
+                    Stack<String> Deck = new  Stack<string>();
+                    foreach (var card in Request.Substring(9).Split(CardUtility.strSplitArrayMark.ToCharArray()))
+                    {
+                        Deck.Push(card);
+                    }
+                    GameServer.SetCardStack(int.Parse(Request.Substring(3, 5)), Request.Substring(8, 1) == CardUtility.strTrue, Deck);
+                    Response = CardUtility.strTrue; 
+                    break;
                 case RequestType.等待游戏列表:
                     Response = GameServer.GetWaitGameList();
                     break;
@@ -114,6 +124,10 @@ namespace Card.Server
             /// 新建一个游戏
             /// </summary>
             新建游戏,
+            /// <summary>
+            /// 传送套牌
+            /// </summary>
+            传送套牌,
             /// <summary>
             /// 获得等待中游戏列表
             /// </summary>

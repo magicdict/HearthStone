@@ -11,6 +11,7 @@ namespace 炉边传说
 {
     public partial class ctlHandCard : UserControl
     {
+        Card.CardBasicInfo mHandCard = new Card.CardBasicInfo();
         public Card.CardBasicInfo HandCard
         {
             set
@@ -18,6 +19,7 @@ namespace 炉边传说
                 lblName.Text = value.Name;
                 lblCostPoint.Text = value.ActualCostPoint.ToString();
                 lblDescription.Text = value.Description;
+                mHandCard = value;
                 switch (value.CardType)
                 {
                     case Card.CardBasicInfo.CardTypeEnum.随从:
@@ -45,6 +47,10 @@ namespace 炉边传说
                     default:
                         break;
                 }
+            }
+            get
+            {
+                return mHandCard;
             }
         }
 

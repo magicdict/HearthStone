@@ -42,6 +42,22 @@ namespace Card.Client
         /// </summary>
         public static String strIP = "127.0.0.1";
         /// <summary>
+        /// 传送套牌
+        /// </summary>
+        /// <param name="NickName"></param>
+        public static Boolean SendDeck(int GameId, Boolean IsHost, List<String> CardDeck)
+        {
+            String info = String.Empty;
+            foreach (var card in CardDeck)
+            {
+                info += card + CardUtility.strSplitArrayMark;
+            }
+            info = info.TrimEnd(CardUtility.strSplitArrayMark.ToCharArray());
+            String requestInfo = Card.Server.ServerResponse.RequestType.传送套牌.GetHashCode().ToString("D3") + GameId.ToString(GameServer.GameIdFormat) +
+                (IsHost ? CardUtility.strTrue : CardUtility.strFalse) + info;
+            return Request(requestInfo, strIP) == CardUtility.strTrue;
+        }
+        /// <summary>
         /// 新建游戏
         /// </summary>
         /// <param name="NickName"></param>

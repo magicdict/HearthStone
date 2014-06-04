@@ -45,13 +45,10 @@ namespace Card.Server
             {
                 GameWaitGuest[GameId].GuestNickName = GuestNickName;
                 GameRunning.Add(GameId, GameWaitGuest[GameId]);
-                System.Diagnostics.Debug.WriteLine("RunningA:" + GameRunning.Count.ToString());
                 GameWaitGuest.Remove(GameId);
                 //套牌
-                GameRunning[GameId].SetCardStack(true, CardDeck.GetRandomCardStack(0));
-                System.Diagnostics.Debug.WriteLine("RunningB:" + GameRunning.Count.ToString());
-                GameRunning[GameId].SetCardStack(false, CardDeck.GetRandomCardStack(1));
-                System.Diagnostics.Debug.WriteLine("RunningC:" + GameRunning.Count.ToString());
+                //GameRunning[GameId].SetCardStack(true, CardDeck.GetRandomCardStack(0));
+                //GameRunning[GameId].SetCardStack(false, CardDeck.GetRandomCardStack(1));
                 return GameId;
             }
             else
@@ -92,15 +89,22 @@ namespace Card.Server
             return ((IsHost && GameRunning[GameId].HostAsFirst) || (!IsHost && !GameRunning[GameId].HostAsFirst));
         }
         /// <summary>
-        /// 
+        /// 向服务器发送套牌
         /// </summary>
         /// <param name="GameId"></param>
         /// <param name="card"></param>
         public static void SetCardStack(int GameId, Boolean IsHost, Stack<String> card)
         {
             //IsHost == false 的时候，初始化已经完成，
-            //网络版的时候，要向两个客户端发送开始游戏的下一步指令            
-            var result = GameRunning[GameId].SetCardStack(IsHost, card);
+            //网络版的时候，要向两个客户端发送开始游戏的下一步指令
+            if (IsHost)
+            {
+                GameWaitGuest[GameId].SetCardStack(IsHost, card);
+            }
+            else
+            {
+                GameRunning[GameId].SetCardStack(IsHost, card);
+            }
         }
         /// <summary>
         /// 抽牌
@@ -118,7 +122,8 @@ namespace Card.Server
         /// </summary>
         /// <param name="GameId"></param>
         /// <param name="Action"></param>
-        public static void WriteAction(int GameId, String Action) {
+        public static void WriteAction(int GameId, String Action)
+        {
             GameRunning[GameId].WriteAction(Action);
         }
         /// <summary>
@@ -135,9 +140,9 @@ namespace Card.Server
         /// </summary>
         /// <param name="GameId"></param>
         /// <returns></returns>
-        public static String SecretHit(int GameId, bool IsFirst,String ActionList)
+        public static String SecretHit(int GameId, bool IsFirst, String ActionList)
         {
-            return GameRunning[GameId].SecretHitCheck(ActionList,IsFirst);
+            return GameRunning[GameId].SecretHitCheck(ActionList, IsFirst);
         }
     }
 }
