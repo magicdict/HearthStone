@@ -31,6 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ctlHero));
             this.lblHealthPoint = new System.Windows.Forms.Label();
             this.lblShieldPoint = new System.Windows.Forms.Label();
+            this.lblSecret1 = new System.Windows.Forms.Label();
+            this.lblSecret2 = new System.Windows.Forms.Label();
+            this.lblSecret3 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblHealthPoint
@@ -55,6 +58,42 @@
             this.lblShieldPoint.Text = "99";
             this.lblShieldPoint.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lblSecret1
+            // 
+            this.lblSecret1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.lblSecret1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSecret1.ForeColor = System.Drawing.Color.Yellow;
+            this.lblSecret1.Location = new System.Drawing.Point(55, 0);
+            this.lblSecret1.Name = "lblSecret1";
+            this.lblSecret1.Size = new System.Drawing.Size(24, 24);
+            this.lblSecret1.TabIndex = 4;
+            this.lblSecret1.Text = "?";
+            this.lblSecret1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblSecret2
+            // 
+            this.lblSecret2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.lblSecret2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSecret2.ForeColor = System.Drawing.Color.Yellow;
+            this.lblSecret2.Location = new System.Drawing.Point(3, 46);
+            this.lblSecret2.Name = "lblSecret2";
+            this.lblSecret2.Size = new System.Drawing.Size(24, 24);
+            this.lblSecret2.TabIndex = 5;
+            this.lblSecret2.Text = "?";
+            this.lblSecret2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // lblSecret3
+            // 
+            this.lblSecret3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.lblSecret3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSecret3.ForeColor = System.Drawing.Color.Yellow;
+            this.lblSecret3.Location = new System.Drawing.Point(103, 46);
+            this.lblSecret3.Name = "lblSecret3";
+            this.lblSecret3.Size = new System.Drawing.Size(24, 24);
+            this.lblSecret3.TabIndex = 6;
+            this.lblSecret3.Text = "?";
+            this.lblSecret3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // ctlHero
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -63,6 +102,9 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.lblSecret3);
+            this.Controls.Add(this.lblSecret2);
+            this.Controls.Add(this.lblSecret1);
             this.Controls.Add(this.lblShieldPoint);
             this.Controls.Add(this.lblHealthPoint);
             this.Name = "ctlHero";
@@ -75,5 +117,8 @@
 
         private System.Windows.Forms.Label lblHealthPoint;
         private System.Windows.Forms.Label lblShieldPoint;
+        private System.Windows.Forms.Label lblSecret1;
+        private System.Windows.Forms.Label lblSecret2;
+        private System.Windows.Forms.Label lblSecret3;
     }
 }

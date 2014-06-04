@@ -21,12 +21,17 @@ namespace 炉边传说
         /// </summary>
         private Timer WaitTimer = new Timer();
         /// <summary>
+        /// 间距
+        /// </summary>
+        int Megrate = 3;
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void BattleField_Load(object sender, System.EventArgs e)
         {
+
             game.GetSelectTarget = SelectPanel;
             game.PickEffect = PickEffect;
             RunAction.GetPutPos = GetPutPos;
@@ -93,33 +98,53 @@ namespace 炉边传说
         /// </summary>
         private void DisplayMyInfo()
         {
+            int LeftPos = (this.Width - (btnMyHero.Width + btnMyHeroAblity.Width + btnMyWeapon.Width + 2 * Megrate)) / 2;
+
+            //武器
+            btnMyWeapon.Left = LeftPos;
+            if (game.MySelf.RoleInfo.Weapon != null)
+            {
+                btnMyWeapon.CardInfo = game.MySelf.RoleInfo.Weapon;
+            }
+            btnYourWeapon.Left = LeftPos;
+            if (game.YourInfo.Weapon != null)
+            {
+                btnYourWeapon.CardInfo = game.YourInfo.Weapon;
+            }
+            LeftPos += (btnMyWeapon.Width + Megrate);
+            //没有使用过，有武器，武器耐久度不为零
+            if (game.IsWeaponEnable())
+            {
+                btnMyWeapon.Enabled = true;
+            }
+            else
+            {
+                btnMyWeapon.Enabled = false;
+            }
+
             btnMyHero.Hero = game.MySelf.RoleInfo;
+            btnMyHero.Left = LeftPos;
             btnYourHero.Hero = game.YourInfo;
+            btnYourHero.Left = LeftPos;
 
-            for (int i = 0; i < 3; i++)
+            LeftPos += btnMyHero.Width + Megrate;
+
+
+            //没有使用过，能够使用
+            if (game.IsHeroAblityEnable())
             {
-                Controls.Find("btnMySecret" + (i + 1).ToString(), true)[0].Text = "[无奥秘]";
-                Controls.Find("btnMySecret" + (i + 1).ToString(), true)[0].Enabled = false;
-                Controls.Find("btnYourSecret" + (i + 1).ToString(), true)[0].Text = "[无奥秘]";
-                Controls.Find("btnYourSecret" + (i + 1).ToString(), true)[0].Enabled = false;
+                btnMyHeroAblity.Enabled = true;
             }
-
-            if (game.MySelf.奥秘列表.Count > 0)
+            else
             {
-                for (int i = 0; i < game.MySelf.奥秘列表.Count; i++)
-                {
-                    Controls.Find("btnMySecret" + (i + 1).ToString(), true)[0].Text = game.MySelf.奥秘列表[i].Name;
-                }
+                btnMyHeroAblity.Enabled = false;
             }
+            btnMyHeroAblity.Left = LeftPos;
+            btnYourHeroAblity.Left = LeftPos;
 
-            if (game.YourInfo.SecretCount > 0)
-            {
-                for (int i = 0; i < game.YourInfo.SecretCount; i++)
-                {
-                    Controls.Find("btnYourSecret" + (i + 1).ToString(), true)[0].Text = "[奥秘待机]";
-                }
-            }
 
+            LeftPos = (this.Width - (game.MySelf.RoleInfo.BattleField.MinionCount * btnMe1.Width +
+                (game.MySelf.RoleInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
             for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
             {
                 var myMinion = game.MySelf.RoleInfo.BattleField.BattleMinions[i];
@@ -127,6 +152,8 @@ namespace 炉边传说
                 {
                     Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = true;
                     ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CardInfo = myMinion;
+                    Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Left = LeftPos;
+                    LeftPos += btnMe1.Width + Megrate;
                     if (myMinion.CanAttack())
                     {
                         if (game.IsMyTurn) ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = true;
@@ -141,44 +168,8 @@ namespace 炉边传说
                     Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = false;
                 }
             }
-            //武器
-            if (game.MySelf.RoleInfo.Weapon == null)
-            {
-                //
-            }
-            else
-            {
-                btnMyWeapon.CardInfo = game.MySelf.RoleInfo.Weapon;
-            }
-
-            if (game.YourInfo.Weapon == null)
-            {
-                //
-            }
-            else
-            {
-                btnYourWeapon.CardInfo = game.YourInfo.Weapon;
-            }
-
-
-            //没有使用过，有武器，武器耐久度不为零
-            if (game.IsWeaponEnable())
-            {
-                btnMyWeapon.Enabled = true;
-            }
-            else
-            {
-                btnMyWeapon.Enabled = false;
-            }
-            //没有使用过，能够使用
-            if (game.IsHeroAblityEnable())
-            {
-                btnMyHeroAblity.Enabled = true;
-            }
-            else
-            {
-                btnMyHeroAblity.Enabled = false;
-            }
+            LeftPos = (this.Width - (game.YourInfo.BattleField.MinionCount * btnYou1.Width +
+                (game.YourInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
             for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
             {
                 if (game.YourInfo.BattleField.BattleMinions[i] != null)
@@ -186,13 +177,15 @@ namespace 炉边传说
                     Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Visible = true;
                     ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CanAttack = false;
                     ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CardInfo = game.YourInfo.BattleField.BattleMinions[i];
+                    Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Left = LeftPos;
+                    LeftPos += btnYou1.Width + Megrate;
                 }
                 else
                 {
                     Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Visible = false;
                 }
             }
-
+            LeftPos = (this.Width - (game.MySelf.handCards.Count * btnHandCard1.Width + (game.MySelf.handCards.Count - 1) * Megrate)) / 2;
             for (int i = 0; i < 10; i++)
             {
                 if (i < game.MySelf.handCards.Count)
@@ -200,12 +193,14 @@ namespace 炉边传说
                     ((ctlHandCard)Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0]).HandCard = game.MySelf.handCards[i];
                     Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Tag = game.MySelf.handCards[i];
                     if (game.IsMyTurn) Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Enabled = true;
+                    Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Left = LeftPos;
+                    LeftPos += btnHandCard1.Width + Megrate;
                 }
                 else
                 {
                     Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Text = "[无]";
                     Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Tag = null;
-                    Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Enabled = false;
+                    Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Visible = false;
                 }
             }
             //胜负判定
@@ -361,7 +356,8 @@ namespace 炉边传说
             {
                 card = (CardBasicInfo)((ctlHandCard)(((Button)sender).Parent)).Tag;
             }
-            else {
+            else
+            {
                 card = (CardBasicInfo)(((ctlHeroAbility)sender).Tag);
             }
             var msg = game.CheckCondition(card);

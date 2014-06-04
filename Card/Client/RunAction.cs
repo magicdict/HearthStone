@@ -100,6 +100,7 @@ namespace Card.Client
                 case CardBasicInfo.CardTypeEnum.奥秘:
                     ActionCodeLst.Add(UseSecret(CardSn));
                     game.MySelf.奥秘列表.Add((Card.SecretCard)card);
+                    game.MySelf.RoleInfo.SecretCount = game.MySelf.奥秘列表.Count;
                     break;
                 default:
                     break;

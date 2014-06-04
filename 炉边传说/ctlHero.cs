@@ -18,6 +18,21 @@ namespace 炉边传说
                     lblShieldPoint.Visible = true;
                     lblShieldPoint.Text = value.ShieldPoint.ToString();
                 }
+                lblSecret1.Visible = false;
+                lblSecret2.Visible = false;
+                lblSecret3.Visible = false;
+                if (value.SecretCount == 1) { 
+                    lblSecret1.Visible = true;
+                }
+                if (value.SecretCount == 2) {
+                    lblSecret1.Visible = true;
+                    lblSecret2.Visible = true; 
+                }
+                if (value.SecretCount == 3) {
+                    lblSecret1.Visible = true;
+                    lblSecret2.Visible = true; 
+                    lblSecret3.Visible = true; 
+                }
             }
         }
         public ctlHero()

@@ -26,30 +26,39 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void PutMinion_Load(object sender, EventArgs e)
         {
+            int Megrate = 3;
+            int LeftPos = (this.Width - (game.MySelf.RoleInfo.BattleField.MinionCount * btnMe1.Width +
+            (game.MySelf.RoleInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
+
             for (int i = 0; i < Card.Client.BattleFieldInfo.MaxMinionCount - 1; i++)
             {
                 Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = false;
-                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = false;
             }
+            for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
+            {
+                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = true;
+                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Left = LeftPos;
+                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CardInfo = game.MySelf.RoleInfo.BattleField.BattleMinions[i];
+                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = false;
+                LeftPos += btnMe1.Width + Megrate;
+            }
+
+            LeftPos = (this.Width - ((game.MySelf.RoleInfo.BattleField.MinionCount + 1) * btnPos1.Width +
+            (game.MySelf.RoleInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
             for (int i = 0; i < Card.Client.BattleFieldInfo.MaxMinionCount; i++)
             {
                 Controls.Find("btnPos" + (i + 1).ToString(), true)[0].Visible = false;
             }
-            for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
-            {
-                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CardInfo = game.MySelf.RoleInfo.BattleField.BattleMinions[i];
-                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = true;
-                Controls.Find("btnPos" + (i + 1).ToString(), true)[0].Visible = true;
-            }
-            Controls.Find("btnPos" + (game.MySelf.RoleInfo.BattleField.MinionCount + 1).ToString(), true)[0].Visible = true;
-
             for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount + 1; i++)
             {
+                Controls.Find("btnPos" + (i + 1).ToString(), true)[0].Visible = true;
+                Controls.Find("btnPos" + (i + 1).ToString(), true)[0].Left = LeftPos;
                 Controls.Find("btnPos" + (i + 1).ToString(), true)[0].Click += (x, y) =>
                 {
                     MinionPos = int.Parse(((Button)x).Name.Substring("btnPos".Length));
                     this.Close();
                 };
+                LeftPos += btnPos1.Width + Megrate;
             }
         }
         /// <summary>

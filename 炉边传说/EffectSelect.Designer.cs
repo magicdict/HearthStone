@@ -35,22 +35,24 @@
             // 
             // btnEffect1
             // 
+            this.btnEffect1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.btnEffect1.Location = new System.Drawing.Point(79, 38);
             this.btnEffect1.Name = "btnEffect1";
             this.btnEffect1.Size = new System.Drawing.Size(291, 42);
             this.btnEffect1.TabIndex = 0;
             this.btnEffect1.Text = "效果1";
-            this.btnEffect1.UseVisualStyleBackColor = true;
+            this.btnEffect1.UseVisualStyleBackColor = false;
             this.btnEffect1.Click += new System.EventHandler(this.btnEffect1_Click);
             // 
             // btnEffect2
             // 
+            this.btnEffect2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.btnEffect2.Location = new System.Drawing.Point(79, 117);
             this.btnEffect2.Name = "btnEffect2";
             this.btnEffect2.Size = new System.Drawing.Size(291, 42);
             this.btnEffect2.TabIndex = 1;
             this.btnEffect2.Text = "效果2";
-            this.btnEffect2.UseVisualStyleBackColor = true;
+            this.btnEffect2.UseVisualStyleBackColor = false;
             this.btnEffect2.Click += new System.EventHandler(this.btnEffect2_Click);
             // 
             // btnCancel
@@ -75,7 +77,7 @@
             this.Controls.Add(this.btnEffect1);
             this.Name = "EffectSelect";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "EffectSelect";
+            this.Text = "抉择";
             this.ResumeLayout(false);
 
         }

@@ -12,6 +12,7 @@ namespace 炉边传说
         Boolean 嘲讽限制;
         CardUtility.SelectOption SelectOption;
         public CardUtility.TargetPosition pos = new CardUtility.TargetPosition();
+        int Megrate = 3;
         /// <summary>
         /// 
         /// </summary>
@@ -45,9 +46,12 @@ namespace 炉边传说
         {
             btnMyHero.Hero = game.MySelf.RoleInfo;
             btnYourHero.Hero = game.YourInfo;
+            int LeftPos = (this.Width - (game.MySelf.RoleInfo.BattleField.MinionCount * btnMe1.Width +
+            (game.MySelf.RoleInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
             for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
             {
                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CardInfo = game.MySelf.RoleInfo.BattleField.BattleMinions[i];
+                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).Left = LeftPos;
                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).FightClick += (x, y) =>
                 {
                     pos.MeOrYou = true;
@@ -56,10 +60,14 @@ namespace 炉边传说
                     pos.Postion = int.Parse(((Button)x).Parent.Name.Substring("btnMe".Length));
                     this.Close();
                 };
+                LeftPos += btnMe1.Width + Megrate;
             }
+
+            LeftPos = (this.Width - (game.YourInfo.BattleField.MinionCount * btnMe1.Width + (game.YourInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
             for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
             {
                 ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CardInfo = game.YourInfo.BattleField.BattleMinions[i];
+                ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).Left = LeftPos;
                 ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).FightClick += (x, y) =>
                 {
                     pos.MeOrYou = false;
@@ -68,8 +76,10 @@ namespace 炉边传说
                     pos.Postion = int.Parse(((Button)x).Parent.Name.Substring("btnYou".Length));
                     this.Close();
                 };
+                LeftPos += btnMe1.Width + Megrate;
             }
             btnMyHero.Enabled = false;
+            btnMyHero.Left = (this.Width - btnMyHero.Width) / 2;
             btnMyHero.Click += (x, y) =>
             {
                 pos.MeOrYou = true;
@@ -77,6 +87,7 @@ namespace 炉边传说
                 this.Close();
             };
             btnYourHero.Enabled = false;
+            btnYourHero.Left = (this.Width - btnYourHero.Width) / 2;
             btnYourHero.Click += (x, y) =>
             {
                 pos.MeOrYou = false;

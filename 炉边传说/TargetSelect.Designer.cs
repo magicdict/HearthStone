@@ -179,6 +179,7 @@
             this.btnMyHero.BackColor = System.Drawing.Color.White;
             this.btnMyHero.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnMyHero.BackgroundImage")));
             this.btnMyHero.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btnMyHero.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.btnMyHero.Location = new System.Drawing.Point(335, 282);
             this.btnMyHero.Name = "btnMyHero";
             this.btnMyHero.Size = new System.Drawing.Size(96, 96);
@@ -189,9 +190,10 @@
             this.btnYourHero.BackColor = System.Drawing.Color.White;
             this.btnYourHero.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnYourHero.BackgroundImage")));
             this.btnYourHero.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnYourHero.Location = new System.Drawing.Point(339, 12);
+            this.btnYourHero.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.btnYourHero.Location = new System.Drawing.Point(335, 12);
             this.btnYourHero.Name = "btnYourHero";
-            this.btnYourHero.Size = new System.Drawing.Size(96, 96);
+            this.btnYourHero.Size = new System.Drawing.Size(100, 96);
             this.btnYourHero.TabIndex = 32;
             // 
             // btnCancel
@@ -230,7 +232,7 @@
             this.Controls.Add(this.btnYourHero);
             this.Name = "TargetSelect";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "TargetSelect";
+            this.Text = "目标对象选择";
             this.Load += new System.EventHandler(this.TargetSelect_Load);
             this.ResumeLayout(false);
 
