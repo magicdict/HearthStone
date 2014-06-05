@@ -33,13 +33,14 @@
             this.lblName = new System.Windows.Forms.Label();
             this.lblDescription = new System.Windows.Forms.Label();
             this.btnFight = new System.Windows.Forms.Button();
+            this.lblStatus = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblAttackPoint
             // 
             this.lblAttackPoint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblAttackPoint.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.lblAttackPoint.Location = new System.Drawing.Point(3, 56);
+            this.lblAttackPoint.Location = new System.Drawing.Point(3, 66);
             this.lblAttackPoint.Name = "lblAttackPoint";
             this.lblAttackPoint.Size = new System.Drawing.Size(21, 13);
             this.lblAttackPoint.TabIndex = 0;
@@ -50,7 +51,7 @@
             // 
             this.lblHealthPoint.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblHealthPoint.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.lblHealthPoint.Location = new System.Drawing.Point(88, 56);
+            this.lblHealthPoint.Location = new System.Drawing.Point(88, 66);
             this.lblHealthPoint.Name = "lblHealthPoint";
             this.lblHealthPoint.Size = new System.Drawing.Size(19, 13);
             this.lblHealthPoint.TabIndex = 1;
@@ -73,7 +74,7 @@
             this.lblDescription.Dock = System.Windows.Forms.DockStyle.Top;
             this.lblDescription.Location = new System.Drawing.Point(0, 13);
             this.lblDescription.Name = "lblDescription";
-            this.lblDescription.Size = new System.Drawing.Size(110, 45);
+            this.lblDescription.Size = new System.Drawing.Size(110, 36);
             this.lblDescription.TabIndex = 3;
             this.lblDescription.Text = "Description";
             this.lblDescription.TextAlign = System.Drawing.ContentAlignment.TopCenter;
@@ -81,7 +82,7 @@
             // btnFight
             // 
             this.btnFight.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            this.btnFight.Location = new System.Drawing.Point(37, 52);
+            this.btnFight.Location = new System.Drawing.Point(37, 62);
             this.btnFight.Name = "btnFight";
             this.btnFight.Size = new System.Drawing.Size(35, 19);
             this.btnFight.TabIndex = 4;
@@ -89,20 +90,31 @@
             this.btnFight.UseVisualStyleBackColor = false;
             this.btnFight.Click += new System.EventHandler(this.btnFight_Click);
             // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.Location = new System.Drawing.Point(3, 49);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(31, 13);
+            this.lblStatus.TabIndex = 5;
+            this.lblStatus.Text = "状态";
+            // 
             // ctlCard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.btnFight);
             this.Controls.Add(this.lblDescription);
             this.Controls.Add(this.lblName);
             this.Controls.Add(this.lblHealthPoint);
             this.Controls.Add(this.lblAttackPoint);
             this.Name = "ctlCard";
-            this.Size = new System.Drawing.Size(110, 69);
+            this.Size = new System.Drawing.Size(110, 79);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -113,5 +125,6 @@
         private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.Label lblDescription;
         private System.Windows.Forms.Button btnFight;
+        private System.Windows.Forms.Label lblStatus;
     }
 }

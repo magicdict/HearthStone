@@ -63,6 +63,7 @@ namespace 炉边传说
             }
             newDeck.Close();
             MessageBox.Show("保存完了");
+            this.Close();
         }
     }
 }

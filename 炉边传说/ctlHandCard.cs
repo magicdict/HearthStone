@@ -12,6 +12,11 @@ namespace 炉边传说
     public partial class ctlHandCard : UserControl
     {
         Card.CardBasicInfo mHandCard = new Card.CardBasicInfo();
+        /// <summary>
+        /// 
+        /// </summary>
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
         public Card.CardBasicInfo HandCard
         {
             set

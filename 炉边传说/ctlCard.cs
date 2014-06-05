@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Card;
+using System;
 using System.Windows.Forms;
 
 namespace 炉边传说
@@ -19,8 +20,14 @@ namespace 炉边传说
                     case Card.CardBasicInfo.CardTypeEnum.随从:
                         lblHealthPoint.Visible = true;
                         lblAttackPoint.Visible = true;
-                        lblAttackPoint.Text = ((Card.MinionCard)value).TotalAttack().ToString();
-                        lblHealthPoint.Text = ((Card.MinionCard)value).实际生命值.ToString();
+                        var minion = ((Card.MinionCard)value);
+                        lblAttackPoint.Text = minion.TotalAttack().ToString();
+                        lblHealthPoint.Text = minion.实际生命值.ToString();
+                        lblStatus.Text = "[状]" + (minion.Is圣盾Status ? "圣" : String.Empty) +
+                           (minion.Actual嘲讽 ? "|嘲" : String.Empty) +
+                           (minion.Actual风怒 ? "|风" : String.Empty) +
+                           (minion.Actual冲锋 ? "|冲" : String.Empty) +
+                           (minion.冰冻状态 != CardUtility.EffectTurn.无效果 ? "冻" : String.Empty);
                         break;
                     case Card.CardBasicInfo.CardTypeEnum.法术:
                         lblHealthPoint.Visible = false;

@@ -150,6 +150,14 @@ namespace 炉边传说
         {
             Card.CardUtility.Init(txtCardPath.Text);
             (new CardDeck()).ShowDialog();
+            cmbCardDeck.Items.Clear();
+            if (Directory.Exists(DeckDir))
+            {
+                foreach (var item in Directory.GetFiles(DeckDir))
+                {
+                    cmbCardDeck.Items.Add(item.Substring(DeckDir.Length).TrimEnd(".txt".ToCharArray()));
+                }
+            }
         }
     }
 }
