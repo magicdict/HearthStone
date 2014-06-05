@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
+using Card;
 namespace Card
 {
     /// <summary>
@@ -85,23 +86,7 @@ namespace Card
             public String Name;
         }
 
-        public enum 事件类型列表
-        {
-            无,
-            施法,
-            本方施法,
-            治疗,
-            随从治疗,
-            本方随从死亡,
-            本方野兽死亡,
-            召唤鱼人,
-            本方召唤随从,
-            本方召唤野兽,
-            自己受伤,
-            本方随从受伤,
-            本方使用卡牌,
-            奥秘命中,
-        }
+
 
         public enum 战吼类型列表
         {
@@ -199,13 +184,9 @@ namespace Card
         /// </summary>
         public Buff 光环效果;
         /// <summary>
-        /// 事件名称
+        /// 
         /// </summary>
-        public 事件类型列表 事件类型 = 事件类型列表.无;
-        /// <summary>
-        /// 事件效果
-        /// </summary>
-        public String 事件效果 = String.Empty;
+        public Card.CardUtility.全局事件 自身事件 = new CardUtility.全局事件();
         #endregion
 
         #region"运行时状态"
@@ -293,7 +274,7 @@ namespace Card
         [XmlIgnore]
         public int RemainAttactTimes = 1;
         /// <summary>
-        /// 
+        /// 攻击状态
         /// </summary>
         public 攻击状态 AttactStatus = 攻击状态.准备中;
         /// <summary>
@@ -516,37 +497,31 @@ namespace Card
             if (AttackPoint > 0)
             {
                 受过伤害 = true;
-                触发事件(事件类型列表.自己受伤, null);
+                触发事件(new Card.CardUtility.全局事件() { 事件类型 = CardUtility.事件类型列表.受伤 }, null);
             }
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="事件"></param>
-        public List<String> 触发事件(事件类型列表 事件, GameManager game)
+        public List<String> 触发事件(Card.CardUtility.全局事件 事件, GameManager game)
         {
             List<String> ActionLst = new List<string>();
-            if (!Is沉默Status && 事件类型 == 事件)
+            if (!Is沉默Status && 事件.事件类型 == 自身事件.事件类型)
             {
-                switch (事件)
+                if (自身事件.触发方向 != CardUtility.TargetSelectDirectEnum.双方)
                 {
-                    case 事件类型列表.无:
-                        break;
-                    case 事件类型列表.自己受伤:
-                        //对方客户端，战斗的时候会进行计算，【AfterBeAttack】
-                        Card.Effect.PointEffect.RunPointEffect(this, 事件效果);
-                        break;
-                    default:
-                        ActionLst.Add(Card.Server.ActionCode.strHitEvent + CardUtility.strSplitMark);
-                        if (事件效果.StartsWith("A"))
-                        {
-                            ActionLst.AddRange(game.UseAbility((Card.AbilityCard)Card.CardUtility.GetCardInfoBySN(事件效果), false));
-                        }
-                        else
-                        {
-                            Card.Effect.PointEffect.RunPointEffect(this, 事件效果);
-                        }
-                        break;
+                    if (自身事件.触发方向 != 事件.触发方向) return ActionLst;
+                }
+                if (!String.IsNullOrEmpty(自身事件.附加信息) && (事件.附加信息 != 自身事件.附加信息)) return ActionLst;
+                ActionLst.Add(Card.Server.ActionCode.strHitEvent + CardUtility.strSplitMark);
+                if (自身事件.事件效果.StartsWith("A"))
+                {
+                    ActionLst.AddRange(game.UseAbility((Card.AbilityCard)Card.CardUtility.GetCardInfoBySN(自身事件.事件效果), false));
+                }
+                else
+                {
+                    Card.Effect.PointEffect.RunPointEffect(this, 自身事件.事件效果);
                 }
             }
             return ActionLst;

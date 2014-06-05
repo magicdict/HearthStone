@@ -18,8 +18,8 @@ namespace Card.Effect
         {
             List<String> Result = new List<string>();
             var MinionLst = singleEffect.AddtionInfo.Split(Card.CardUtility.strSplitMark.ToCharArray());
-            Random t = new Random(DateTime.Now.Millisecond + Seed);
-            var CardSN = MinionLst[t.Next(0,MinionLst.Length)];
+            Random random = new Random(DateTime.Now.Millisecond + Seed);
+            var CardSN = MinionLst[random.Next(0,MinionLst.Length)];
             var Minion = Card.CardUtility.GetCardInfoBySN(CardSN);
             switch (singleEffect.SelectOpt.EffectTargetSelectDirect)
             {

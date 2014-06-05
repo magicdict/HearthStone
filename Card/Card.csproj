@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Effect\Ability.cs" />
     <Compile Include="Effect\AttackEffect.cs" />
+    <Compile Include="Effect\ControlEffect.cs" />
     <Compile Include="Effect\HealthEffect.cs" />
     <Compile Include="Effect\PointEffect.cs" />
     <Compile Include="Effect\StatusEffect.cs" />

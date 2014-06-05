@@ -69,6 +69,10 @@ namespace Card.Server
             /// </summary>
             Summon,
             /// <summary>
+            /// 控制
+            /// </summary>
+            Control,
+            /// <summary>
             /// 水晶
             /// </summary>
             Crystal,
@@ -125,6 +129,9 @@ namespace Card.Server
         /// 法术
         /// </summary>
         public const string strAbility = "ABILITY";
+
+
+        public const string strControl = "CONTROL";
         /// <summary>
         /// 奥秘(埋伏)
         /// </summary>
@@ -176,6 +183,7 @@ namespace Card.Server
             if (ActionWord.StartsWith(strSummon + CardUtility.strSplitMark)) t = ActionType.Summon;
             if (ActionWord.StartsWith(strCard + CardUtility.strSplitMark)) t = ActionType.Card;
             if (ActionWord.StartsWith(strPoint + CardUtility.strSplitMark)) t = ActionType.Point;
+            if (ActionWord.StartsWith(strControl + CardUtility.strSplitMark)) t = ActionType.Control;
 
             return t;
         }

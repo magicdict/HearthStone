@@ -76,6 +76,10 @@ namespace Card.Client
                         game.YourInfo.SecretCount--;
                     }
                     break;
+                case ActionCode.ActionType.Control:
+                    game.YourInfo.BattleField.AppendToBattle(game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1].深拷贝());
+                    game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1] = null;
+                    break;
                 case ActionCode.ActionType.Point:
                     if (actField[1] == CardUtility.strYou)
                     {

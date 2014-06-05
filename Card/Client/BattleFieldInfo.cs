@@ -55,21 +55,30 @@ namespace Card.Client
         /// <summary>
         /// 卡牌入战场
         /// </summary>
+        /// <param name="CardSn"></param>
+        public void AppendToBattle(String CardSn)
+        {
+            int Position = MinionCount + 1;
+            PutToBattle(Position, CardSn);
+        }
+        /// <summary>
+        /// 卡牌入战场
+        /// </summary>
+        /// <param name="CardSn"></param>
+        public void AppendToBattle(MinionCard Minion)
+        {
+            int Position = MinionCount + 1;
+            PutToBattle(Position, Minion);
+        }
+        /// <summary>
+        /// 卡牌入战场
+        /// </summary>
         /// <param name="Position"></param>
         /// <param name="CardSn"></param>
         public void PutToBattle(int Position, String CardSn)
         {
             Card.CardBasicInfo card = Card.CardUtility.GetCardInfoBySN(CardSn);
             PutToBattle(Position, (MinionCard)card);
-        }
-        /// <summary>
-        /// 卡牌入战场
-        /// </summary>
-        /// <param name="CardSn"></param>
-        public void AppendToBattle(String CardSn)
-        {
-            int Position = MinionCount + 1;
-            PutToBattle(Position, CardSn);
         }
         /// <summary>
         /// 卡牌入战场
@@ -177,7 +186,7 @@ namespace Card.Client
         /// <param name="事件"></param>
         /// <param name="game"></param>
         /// <returns></returns>
-        public List<String> 触发事件(Card.MinionCard.事件类型列表 事件, GameManager game)
+        public List<String> 触发事件(CardUtility.全局事件 事件, GameManager game)
         {
             List<String> ActionLst = new List<string>();
             for (int i = 0; i < BattleMinions.Length; i++)

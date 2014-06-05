@@ -184,8 +184,10 @@ namespace 炉边传说
                 Minion.回合开始效果 = worksheet.Cells(rowCount, 30).Text;
                 Minion.回合结束效果 = worksheet.Cells(rowCount, 31).Text;
                 Minion.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 32).Text);
-                Minion.事件类型 = CardUtility.GetEnum<Card.MinionCard.事件类型列表>(worksheet.Cells(rowCount, 33).Text, Card.MinionCard.事件类型列表.无);
-                Minion.事件效果 = worksheet.Cells(rowCount, 34).Text;
+                Minion.自身事件.事件类型 = CardUtility.GetEnum<Card.CardUtility.事件类型列表>(worksheet.Cells(rowCount, 33).Text, Card.CardUtility.事件类型列表.无);
+                Minion.自身事件.事件效果 = worksheet.Cells(rowCount, 34).Text;
+                Minion.自身事件.触发方向 = CardUtility.GetEnum<Card.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 35).Text, Card.CardUtility.TargetSelectDirectEnum.本方);
+                Minion.自身事件.附加信息 = worksheet.Cells(rowCount, 36).Text;
 
                 switch (target)
                 {

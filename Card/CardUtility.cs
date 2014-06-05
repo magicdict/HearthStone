@@ -385,7 +385,43 @@ namespace Card
             /// </summary>
             效果作用
         }
-
+        /// <summary>
+        /// 事件类型列表
+        /// </summary>
+        public enum 事件类型列表
+        {
+            无,
+            施法,
+            治疗,
+            死亡,
+            奥秘命中,
+            受伤,
+            召唤,
+            卡牌,
+        }
+        /// <summary>
+        /// 全局事件
+        /// </summary>
+        [Serializable]
+        public struct 全局事件
+        {
+            /// <summary>
+            /// 事件名称
+            /// </summary>
+            public 事件类型列表 事件类型;
+            /// <summary>
+            /// 事件效果
+            /// </summary>
+            public String 事件效果;
+            /// <summary>
+            /// 触发方向
+            /// </summary>
+            public TargetSelectDirectEnum 触发方向;
+            /// <summary>
+            /// 
+            /// </summary>
+            public String 附加信息;
+        }
         #endregion
         /// <summary>
         /// 随机打算数组

@@ -39,7 +39,7 @@ namespace Card.Client
                     {
                         ActionCodeLst.AddRange(ResultArg);
                         //英雄技能等的时候，不算[本方施法] 
-                        if (CardSn.Substring(1, 1) == "0") ActionCodeLst.AddRange(game.MySelf.RoleInfo.BattleField.触发事件(MinionCard.事件类型列表.本方施法, game));
+                        if (CardSn.Substring(1, 1) == "0") ActionCodeLst.AddRange(game.MySelf.RoleInfo.BattleField.触发事件(new Card.CardUtility.全局事件(){ 事件类型= CardUtility.事件类型列表.施法},game));
                     }
                     else
                     {
@@ -55,6 +55,9 @@ namespace Card.Client
                         var minion = (Card.MinionCard)card;
                         //初始化
                         minion.Init();
+                        //必须在放入之前做得原因是，被放入的随从不能被触发这个事件
+                        ActionCodeLst.AddRange(game.MySelf.RoleInfo.BattleField.触发事件(
+                            new Card.CardUtility.全局事件() { 事件类型 = CardUtility.事件类型列表.召唤, 附加信息 = minion.种族.ToString() }, game));
                         switch (minion.战吼类型)
                         {
                             case MinionCard.战吼类型列表.默认:
@@ -118,7 +121,7 @@ namespace Card.Client
                     {
                         ActionCodeLst.AddRange(ResultArg);
                         //英雄技能等的时候，不算[本方施法] 
-                        if (CardSn.Substring(1, 1) == "0") ActionCodeLst.AddRange(game.MySelf.RoleInfo.BattleField.触发事件(MinionCard.事件类型列表.本方施法, game));
+                        if (CardSn.Substring(1, 1) == "0") ActionCodeLst.AddRange(game.MySelf.RoleInfo.BattleField.触发事件(new Card.CardUtility.全局事件() { 事件类型 = CardUtility.事件类型列表.施法 }, game));
                     }
                 }
             }

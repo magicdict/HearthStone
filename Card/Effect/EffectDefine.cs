@@ -53,6 +53,10 @@ namespace Card.Effect
             /// </summary>
             水晶,
             /// <summary>
+            /// 控制权
+            /// </summary>
+            控制,
+            /// <summary>
             /// 奥秘
             /// </summary>
             奥秘,
@@ -132,6 +136,9 @@ namespace Card.Effect
                     break;
                 case AbilityEffectEnum.水晶:
                     Result.AddRange(CrystalEffect.RunEffect(singleEffect, game));
+                    break;
+                case AbilityEffectEnum.控制:
+                    Result.AddRange(ControlEffect.RunEffect(singleEffect, game, PosList));
                     break;
                 case AbilityEffectEnum.奥秘:
                     break;

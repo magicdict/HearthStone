@@ -52,126 +52,126 @@
             // 
             this.btnMe7.BackColor = System.Drawing.Color.White;
             this.btnMe7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnMe7.Location = new System.Drawing.Point(653, 205);
+            this.btnMe7.Location = new System.Drawing.Point(648, 228);
             this.btnMe7.Name = "btnMe7";
-            this.btnMe7.Size = new System.Drawing.Size(100, 71);
+            this.btnMe7.Size = new System.Drawing.Size(100, 87);
             this.btnMe7.TabIndex = 47;
             // 
             // btnMe6
             // 
             this.btnMe6.BackColor = System.Drawing.Color.White;
             this.btnMe6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnMe6.Location = new System.Drawing.Point(547, 205);
+            this.btnMe6.Location = new System.Drawing.Point(542, 228);
             this.btnMe6.Name = "btnMe6";
-            this.btnMe6.Size = new System.Drawing.Size(100, 71);
+            this.btnMe6.Size = new System.Drawing.Size(100, 87);
             this.btnMe6.TabIndex = 46;
             // 
             // btnMe5
             // 
             this.btnMe5.BackColor = System.Drawing.Color.White;
             this.btnMe5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnMe5.Location = new System.Drawing.Point(441, 205);
+            this.btnMe5.Location = new System.Drawing.Point(436, 228);
             this.btnMe5.Name = "btnMe5";
-            this.btnMe5.Size = new System.Drawing.Size(100, 71);
+            this.btnMe5.Size = new System.Drawing.Size(100, 87);
             this.btnMe5.TabIndex = 45;
             // 
             // btnMe4
             // 
             this.btnMe4.BackColor = System.Drawing.Color.White;
             this.btnMe4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnMe4.Location = new System.Drawing.Point(335, 205);
+            this.btnMe4.Location = new System.Drawing.Point(330, 228);
             this.btnMe4.Name = "btnMe4";
-            this.btnMe4.Size = new System.Drawing.Size(100, 71);
+            this.btnMe4.Size = new System.Drawing.Size(100, 87);
             this.btnMe4.TabIndex = 44;
             // 
             // btnMe3
             // 
             this.btnMe3.BackColor = System.Drawing.Color.White;
             this.btnMe3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnMe3.Location = new System.Drawing.Point(229, 205);
+            this.btnMe3.Location = new System.Drawing.Point(224, 228);
             this.btnMe3.Name = "btnMe3";
-            this.btnMe3.Size = new System.Drawing.Size(100, 71);
+            this.btnMe3.Size = new System.Drawing.Size(100, 87);
             this.btnMe3.TabIndex = 43;
             // 
             // btnMe2
             // 
             this.btnMe2.BackColor = System.Drawing.Color.White;
             this.btnMe2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnMe2.Location = new System.Drawing.Point(123, 205);
+            this.btnMe2.Location = new System.Drawing.Point(118, 228);
             this.btnMe2.Name = "btnMe2";
-            this.btnMe2.Size = new System.Drawing.Size(100, 71);
+            this.btnMe2.Size = new System.Drawing.Size(100, 87);
             this.btnMe2.TabIndex = 42;
             // 
             // btnMe1
             // 
             this.btnMe1.BackColor = System.Drawing.Color.White;
             this.btnMe1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnMe1.Location = new System.Drawing.Point(17, 205);
+            this.btnMe1.Location = new System.Drawing.Point(12, 228);
             this.btnMe1.Name = "btnMe1";
-            this.btnMe1.Size = new System.Drawing.Size(100, 71);
+            this.btnMe1.Size = new System.Drawing.Size(100, 87);
             this.btnMe1.TabIndex = 41;
             // 
             // btnYou7
             // 
             this.btnYou7.BackColor = System.Drawing.Color.White;
             this.btnYou7.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnYou7.Location = new System.Drawing.Point(653, 114);
+            this.btnYou7.Location = new System.Drawing.Point(648, 137);
             this.btnYou7.Name = "btnYou7";
-            this.btnYou7.Size = new System.Drawing.Size(100, 71);
+            this.btnYou7.Size = new System.Drawing.Size(100, 87);
             this.btnYou7.TabIndex = 40;
             // 
             // btnYou6
             // 
             this.btnYou6.BackColor = System.Drawing.Color.White;
             this.btnYou6.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnYou6.Location = new System.Drawing.Point(547, 114);
+            this.btnYou6.Location = new System.Drawing.Point(542, 137);
             this.btnYou6.Name = "btnYou6";
-            this.btnYou6.Size = new System.Drawing.Size(100, 71);
+            this.btnYou6.Size = new System.Drawing.Size(100, 87);
             this.btnYou6.TabIndex = 39;
             // 
             // btnYou5
             // 
             this.btnYou5.BackColor = System.Drawing.Color.White;
             this.btnYou5.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnYou5.Location = new System.Drawing.Point(441, 114);
+            this.btnYou5.Location = new System.Drawing.Point(436, 137);
             this.btnYou5.Name = "btnYou5";
-            this.btnYou5.Size = new System.Drawing.Size(100, 71);
+            this.btnYou5.Size = new System.Drawing.Size(100, 87);
             this.btnYou5.TabIndex = 38;
             // 
             // btnYou4
             // 
             this.btnYou4.BackColor = System.Drawing.Color.White;
             this.btnYou4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnYou4.Location = new System.Drawing.Point(335, 114);
+            this.btnYou4.Location = new System.Drawing.Point(330, 137);
             this.btnYou4.Name = "btnYou4";
-            this.btnYou4.Size = new System.Drawing.Size(100, 71);
+            this.btnYou4.Size = new System.Drawing.Size(100, 87);
             this.btnYou4.TabIndex = 37;
             // 
             // btnYou3
             // 
             this.btnYou3.BackColor = System.Drawing.Color.White;
             this.btnYou3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnYou3.Location = new System.Drawing.Point(229, 114);
+            this.btnYou3.Location = new System.Drawing.Point(224, 137);
             this.btnYou3.Name = "btnYou3";
-            this.btnYou3.Size = new System.Drawing.Size(100, 71);
+            this.btnYou3.Size = new System.Drawing.Size(100, 87);
             this.btnYou3.TabIndex = 36;
             // 
             // btnYou2
             // 
             this.btnYou2.BackColor = System.Drawing.Color.White;
             this.btnYou2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnYou2.Location = new System.Drawing.Point(123, 114);
+            this.btnYou2.Location = new System.Drawing.Point(118, 137);
             this.btnYou2.Name = "btnYou2";
-            this.btnYou2.Size = new System.Drawing.Size(100, 71);
+            this.btnYou2.Size = new System.Drawing.Size(100, 87);
             this.btnYou2.TabIndex = 35;
             // 
             // btnYou1
             // 
             this.btnYou1.BackColor = System.Drawing.Color.White;
             this.btnYou1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnYou1.Location = new System.Drawing.Point(17, 114);
+            this.btnYou1.Location = new System.Drawing.Point(12, 137);
             this.btnYou1.Name = "btnYou1";
-            this.btnYou1.Size = new System.Drawing.Size(100, 71);
+            this.btnYou1.Size = new System.Drawing.Size(100, 87);
             this.btnYou1.TabIndex = 34;
             // 
             // btnMyHero
@@ -180,9 +180,9 @@
             this.btnMyHero.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnMyHero.BackgroundImage")));
             this.btnMyHero.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnMyHero.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnMyHero.Location = new System.Drawing.Point(335, 282);
+            this.btnMyHero.Location = new System.Drawing.Point(330, 329);
             this.btnMyHero.Name = "btnMyHero";
-            this.btnMyHero.Size = new System.Drawing.Size(96, 96);
+            this.btnMyHero.Size = new System.Drawing.Size(128, 128);
             this.btnMyHero.TabIndex = 33;
             // 
             // btnYourHero
@@ -191,17 +191,17 @@
             this.btnYourHero.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnYourHero.BackgroundImage")));
             this.btnYourHero.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.btnYourHero.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.btnYourHero.Location = new System.Drawing.Point(335, 12);
+            this.btnYourHero.Location = new System.Drawing.Point(330, 3);
             this.btnYourHero.Name = "btnYourHero";
-            this.btnYourHero.Size = new System.Drawing.Size(100, 96);
+            this.btnYourHero.Size = new System.Drawing.Size(128, 128);
             this.btnYourHero.TabIndex = 32;
             // 
             // btnCancel
             // 
             this.btnCancel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.btnCancel.Location = new System.Drawing.Point(662, 344);
+            this.btnCancel.Location = new System.Drawing.Point(605, 404);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.Size = new System.Drawing.Size(143, 47);
             this.btnCancel.TabIndex = 48;
             this.btnCancel.Text = "取消";
             this.btnCancel.UseVisualStyleBackColor = false;
@@ -212,7 +212,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(777, 379);
+            this.ClientSize = new System.Drawing.Size(757, 463);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnMe7);
             this.Controls.Add(this.btnMe6);
