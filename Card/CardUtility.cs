@@ -418,7 +418,11 @@ namespace Card
             /// </summary>
             public TargetSelectDirectEnum 触发方向;
             /// <summary>
-            /// 
+            /// 触发位置
+            /// </summary>
+            public int 触发位置;
+            /// <summary>
+            /// 附加信息
             /// </summary>
             public String 附加信息;
         }

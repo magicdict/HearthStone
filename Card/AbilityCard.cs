@@ -21,6 +21,14 @@ namespace Card
         {
             CardAbility.Init();
         }
+        /// <summary>
+        /// 原生法术
+        /// </summary>
+        public const String 原生法术 = "0";
+        /// <summary>
+        /// 调整法术效果
+        /// </summary>
+        /// <param name="AbilityEffect"></param>
         public void JustfyEffectPoint(int AbilityEffect)
         {
             //法术强度本意是增加法术卡的总伤。以奥术飞弹为例，法术强度+1会令奥术飞弹多1发伤害，而非单发伤害+1。法术强度不影响治疗效果。

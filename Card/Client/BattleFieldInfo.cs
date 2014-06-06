@@ -13,9 +13,13 @@ namespace Card.Client
         /// </summary>
         public const int MaxMinionCount = 7;
         /// <summary>
-        /// 
+        /// 英雄
         /// </summary>
         public const int HeroPos = 0;
+        /// <summary>
+        /// 全体
+        /// </summary>
+        public const int AllPos = 9;
         /// <summary>
         /// 法术消耗
         /// </summary>
@@ -194,7 +198,7 @@ namespace Card.Client
                 var minion = BattleMinions[i];
                 if (minion != null)
                 {
-                    ActionLst.AddRange(minion.触发事件(事件, game));
+                    ActionLst.AddRange(minion.事件处理方法(事件, game));
                 }
             }
             return ActionLst;

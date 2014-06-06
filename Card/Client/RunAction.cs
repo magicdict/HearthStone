@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace Card.Client
 {
+    /// <summary>
+    /// 执行
+    /// </summary>
     public static class RunAction
     {
         /// <summary>
@@ -20,6 +23,8 @@ namespace Card.Client
         /// <returns></returns>
         public static List<String> StartAction(GameManager game, String CardSn, Boolean ConvertPosDirect = false)
         {
+            //清除事件池，注意，事件将在动作结束后整体结算
+            game.事件池.Clear();
             Card.CardBasicInfo card = Card.CardUtility.GetCardInfoBySN(CardSn);
             List<String> ActionCodeLst = new List<string>();
             switch (card.CardType)
@@ -29,7 +34,7 @@ namespace Card.Client
                     //初始化 Buff效果等等
                     Card.AbilityCard ablity = (Card.AbilityCard)CardUtility.GetCardInfoBySN(CardSn);
                     //连击效果的法术修改
-                    if (game.MySelf.RoleInfo.IsCombit && (!String.IsNullOrEmpty(card.连击效果)))
+                    if (game.MySelf.RoleInfo.连击状态 && (!String.IsNullOrEmpty(card.连击效果)))
                     {
                         ablity = (Card.AbilityCard)CardUtility.GetCardInfoBySN(card.连击效果);
                     }
@@ -39,7 +44,8 @@ namespace Card.Client
                     {
                         ActionCodeLst.AddRange(ResultArg);
                         //英雄技能等的时候，不算[本方施法] 
-                        if (CardSn.Substring(1, 1) == "0") ActionCodeLst.AddRange(game.MySelf.RoleInfo.BattleField.触发事件(new Card.CardUtility.全局事件(){ 事件类型= CardUtility.事件类型列表.施法},game));
+                        if (CardSn.Substring(1, 1) == Card.AbilityCard.原生法术)
+                            game.事件池.Add(new Card.CardUtility.全局事件() { 事件类型 = CardUtility.事件类型列表.施法, 触发方向 = CardUtility.TargetSelectDirectEnum.本方 });
                     }
                     else
                     {
@@ -56,8 +62,7 @@ namespace Card.Client
                         //初始化
                         minion.Init();
                         //必须在放入之前做得原因是，被放入的随从不能被触发这个事件
-                        ActionCodeLst.AddRange(game.MySelf.RoleInfo.BattleField.触发事件(
-                            new Card.CardUtility.全局事件() { 事件类型 = CardUtility.事件类型列表.召唤, 附加信息 = minion.种族.ToString() }, game));
+                        game.事件池.Add(new Card.CardUtility.全局事件() { 事件类型 = CardUtility.事件类型列表.召唤, 附加信息 = minion.种族.ToString(), 触发位置 = MinionPos });
                         switch (minion.战吼类型)
                         {
                             case MinionCard.战吼类型列表.默认:
@@ -108,8 +113,8 @@ namespace Card.Client
                 default:
                     break;
             }
-            //连击启动(法术的时候是修改法术内容)
-            if (card.CardType != CardBasicInfo.CardTypeEnum.法术 && game.MySelf.RoleInfo.IsCombit)
+            //随从卡牌的连击效果启动
+            if (card.CardType != CardBasicInfo.CardTypeEnum.法术 && game.MySelf.RoleInfo.连击状态)
             {
                 if (!String.IsNullOrEmpty(card.连击效果))
                 {
@@ -121,11 +126,16 @@ namespace Card.Client
                     {
                         ActionCodeLst.AddRange(ResultArg);
                         //英雄技能等的时候，不算[本方施法] 
-                        if (CardSn.Substring(1, 1) == "0") ActionCodeLst.AddRange(game.MySelf.RoleInfo.BattleField.触发事件(new Card.CardUtility.全局事件() { 事件类型 = CardUtility.事件类型列表.施法 }, game));
+                        if (CardSn.Substring(1, 1) == Card.AbilityCard.原生法术)
+                            game.事件池.Add(new Card.CardUtility.全局事件() { 事件类型 = CardUtility.事件类型列表.施法, 触发方向 = CardUtility.TargetSelectDirectEnum.本方 });
                     }
                 }
             }
-            if (ActionCodeLst.Count != 0) game.MySelf.RoleInfo.IsCombit = true;
+            if (ActionCodeLst.Count != 0)
+            {
+                game.MySelf.RoleInfo.连击状态 = true;
+                ActionCodeLst.AddRange(game.事件处理());
+            }
             return ActionCodeLst;
         }
         /// <summary>
@@ -175,7 +185,7 @@ namespace Card.Client
             return actionCode;
         }
         /// <summary>
-        /// 
+        /// 战斗
         /// </summary>
         /// <param name="game"></param>
         /// <param name="MyPos"></param>

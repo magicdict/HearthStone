@@ -1,19 +1,11 @@
-﻿using Card.Server;
-using System;
+﻿using Card.Effect;
+using Card.Server;
 
 namespace Card.Client
 {
     public static class ProcessAction
     {
         #region"处理对方的动作"
-        /// <summary>
-        /// 攻击位置修正
-        /// 全体伤害的时候，如果有目标被杀死，
-        /// 则清算的时候，攻击目标会出现偏移
-        /// </summary>
-        private static int AttackTargetOffsetMe = 0;
-        private static int AttackTargetOffsetYou = 0;
-
         /// <summary>
         /// 处理对方的动作
         /// </summary>
@@ -22,12 +14,9 @@ namespace Card.Client
         public static void Process(string item, GameManager game)
         {
             var actField = item.Split(CardUtility.strSplitMark.ToCharArray());
-            //AttackTargetOffset 在使用手牌或者进行卡牌直接攻击的时候，清零！
             switch (Card.Server.ActionCode.GetActionType(item))
             {
                 case ActionCode.ActionType.UseMinion:
-                    AttackTargetOffsetMe = 0;
-                    AttackTargetOffsetYou = 0;
                     int Pos = int.Parse(actField[2]);
                     var minion = (Card.MinionCard)Card.CardUtility.GetCardInfoBySN(actField[1]);
                     minion.Init();
@@ -35,31 +24,27 @@ namespace Card.Client
                     game.YourInfo.BattleField.ResetBuff();
                     break;
                 case ActionCode.ActionType.UseWeapon:
-                    AttackTargetOffsetMe = 0;
-                    AttackTargetOffsetYou = 0;
                     game.YourInfo.Weapon = (Card.WeaponCard)Card.CardUtility.GetCardInfoBySN(actField[1]);
                     break;
                 case ActionCode.ActionType.UseSecret:
-                    AttackTargetOffsetMe = 0;
-                    AttackTargetOffsetYou = 0;
                     game.YourInfo.SecretCount++; ;
                     break;
                 case ActionCode.ActionType.UseAbility:
-                    AttackTargetOffsetMe = 0;
-                    AttackTargetOffsetYou = 0;
                     break;
                 case ActionCode.ActionType.Fight:
                     //FIGHT#1#2
-                    AttackTargetOffsetMe = 0;
-                    AttackTargetOffsetYou = 0;
                     game.Fight(int.Parse(actField[2]), int.Parse(actField[1]), true);
                     break;
+                case ActionCode.ActionType.Point:
+                case ActionCode.ActionType.Health:
+                case ActionCode.ActionType.Status:
+                case ActionCode.ActionType.Transform:
+                case ActionCode.ActionType.Attack:
+                    RunNormalEffect(game, actField);
+                    break;
                 case ActionCode.ActionType.HitSecret:
-                    AttackTargetOffsetMe = 0;
-                    AttackTargetOffsetYou = 0;
                     if (actField[1] == CardUtility.strYou)
                     {
-                        //
                         Card.SecretCard Hit = new SecretCard();
                         foreach (var secret in game.MySelf.奥秘列表)
                         {
@@ -79,16 +64,6 @@ namespace Card.Client
                 case ActionCode.ActionType.Control:
                     game.YourInfo.BattleField.AppendToBattle(game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1].深拷贝());
                     game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1] = null;
-                    break;
-                case ActionCode.ActionType.Point:
-                    if (actField[1] == CardUtility.strYou)
-                    {
-                        Card.Effect.PointEffect.RunPointEffect(game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1], actField[3]);
-                    }
-                    else
-                    {
-                        Card.Effect.PointEffect.RunPointEffect(game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1], actField[3]);
-                    }
                     break;
                 case ActionCode.ActionType.Card:
                     if (actField[1] == CardUtility.strYou)
@@ -117,90 +92,6 @@ namespace Card.Client
                         game.YourInfo.BattleField.AppendToBattle(actField[2]);
                     }
                     break;
-                case ActionCode.ActionType.Health:
-                    //HEALTH#ME#1#2
-                    //Me代表对方 YOU代表自己，必须反过来
-                    if (actField[1] == CardUtility.strYou)
-                    {
-                        if (actField[2] == Card.Client.BattleFieldInfo.HeroPos.ToString())
-                        {
-                            game.MySelf.RoleInfo.HealthPoint = int.Parse(actField[3]);
-                        }
-                        else
-                        {
-                            //位置从1开始，数组从0开始
-                            game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].实际生命值 = int.Parse(actField[3]);
-                        }
-                    }
-                    else
-                    {
-                        if (actField[2] == Card.Client.BattleFieldInfo.HeroPos.ToString())
-                        {
-                            game.YourInfo.HealthPoint = int.Parse(actField[3]);
-                        }
-                        else
-                        {
-                            //位置从1开始，数组从0开始
-                            game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].实际生命值 = int.Parse(actField[3]);
-                        }
-                    }
-                    break;
-                case ActionCode.ActionType.Status:
-                    //STATUS#ME#1#FREEZE
-                    //Me代表对方 YOU代表自己，必须反过来
-                    if (actField[1] == CardUtility.strYou)
-                    {
-                        if (actField[2] == Card.Client.BattleFieldInfo.HeroPos.ToString())
-                        {
-                            switch (actField[3])
-                            {
-                                case Card.Effect.StatusEffect.strFreeze:
-                                    game.MySelf.RoleInfo.冰冻状态 = CardUtility.EffectTurn.效果命中;
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            //位置从1开始，数组从0开始
-                            switch (actField[3])
-                            {
-                                case Card.Effect.StatusEffect.strFreeze:
-                                    game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].冰冻状态 = CardUtility.EffectTurn.效果命中;
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (actField[2] == Card.Client.BattleFieldInfo.HeroPos.ToString())
-                        {
-                            switch (actField[3])
-                            {
-                                case Card.Effect.StatusEffect.strFreeze:
-                                    game.YourInfo.冰冻状态 = CardUtility.EffectTurn.效果命中;
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            //位置从1开始，数组从0开始
-                            switch (actField[3])
-                            {
-                                case Card.Effect.StatusEffect.strFreeze:
-                                    game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].冰冻状态 = CardUtility.EffectTurn.效果命中;
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    }
-                    break;
                 case ActionCode.ActionType.Crystal:
                     //Crystal#ME#4#4
                     //Me代表对方 YOU代表自己，必须反过来
@@ -215,57 +106,78 @@ namespace Card.Client
                         game.MySelf.RoleInfo.crystal.CurrentFullPoint = int.Parse(actField[3]);
                     }
                     break;
-                case ActionCode.ActionType.Transform:
-                    //TRANSFORM#ME#1#M9000001
-                    //Me代表对方 YOU代表自己，必须反过来
-                    if (actField[1] == CardUtility.strYou)
-                    {
-                        game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1] = (Card.MinionCard)Card.CardUtility.GetCardInfoBySN(actField[3]);
-                    }
-                    else
-                    {
-                        game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1] = (Card.MinionCard)Card.CardUtility.GetCardInfoBySN(actField[3]);
-                    }
-                    break;
-                case ActionCode.ActionType.Attack:
-                    //ATTACK#ME#POS#AP
-                    //Me代表对方 YOU代表自己，必须反过来
-                    int AttackPoint = int.Parse(actField[3]);
-                    if (actField[1] == CardUtility.strYou)
-                    {
-                        if (actField[2] == Card.Client.BattleFieldInfo.HeroPos.ToString())
-                        {
-                            game.MySelf.RoleInfo.AfterBeAttack(AttackPoint);
-                        }
-                        else
-                        {
-                            //位置从1开始，数组从0开始
-                            game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1 - AttackTargetOffsetMe].AfterBeAttack(AttackPoint);
-                        }
-                    }
-                    else
-                    {
-                        if (actField[2] == Card.Client.BattleFieldInfo.HeroPos.ToString())
-                        {
-                            game.YourInfo.AfterBeAttack(AttackPoint);
-                        }
-                        else
-                        {
-                            //位置从1开始，数组从0开始
-                            game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1 - AttackTargetOffsetYou].AfterBeAttack(AttackPoint);
-                        }
-                    }
-                    break;
                 case ActionCode.ActionType.UnKnown:
                     break;
             }
             //这里不需要发送亡语效果，
             //由法术或者攻击发动放将结果发送给接受方
-            var resultLst = game.Settle();
-            foreach (var result in resultLst)
+            game.Settle();
+        }
+
+        private static void RunNormalEffect(GameManager game, string[] actField)
+        {
+            //ATTACK#ME#POS#AP
+            //Me代表对方 YOU代表自己，必须反过来
+            IEffectHandler handler = new AttackEffect();
+            EffectDefine SingleEffect = new EffectDefine();
+            switch (actField[0])
             {
-                if (result.StartsWith(Card.Server.ActionCode.strDead + Card.CardUtility.strSplitMark + CardUtility.strMe)) AttackTargetOffsetMe++;
-                if (result.StartsWith(Card.Server.ActionCode.strDead + Card.CardUtility.strSplitMark + CardUtility.strYou)) AttackTargetOffsetYou++;
+                case Card.Server.ActionCode.strAttack:
+                    handler = new AttackEffect();
+                    SingleEffect.ActualEffectPoint = int.Parse(actField[3]);
+                    break;
+                case Card.Server.ActionCode.strHealth:
+                    handler = new HealthEffect();
+                    SingleEffect.ActualEffectPoint = int.Parse(actField[3]);
+                    break;
+                case Card.Server.ActionCode.strStatus:
+                    handler = new StatusEffect();
+                    SingleEffect.AddtionInfo = actField[3];
+                    break;
+                case Card.Server.ActionCode.strPoint:
+                    handler = new PointEffect();
+                    SingleEffect.AddtionInfo = actField[3];
+                    break;
+                case Card.Server.ActionCode.strTransform:
+                    handler = new TransformEffect();
+                    SingleEffect.AddtionInfo = actField[3];
+                    break;
+            }
+            if (actField[1] == CardUtility.strYou)
+            {
+                switch (int.Parse(actField[2]))
+                {
+                    case BattleFieldInfo.HeroPos:
+                        handler.DealHero(game, SingleEffect, true);
+                        break;
+                    case BattleFieldInfo.AllPos:
+                        for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
+                        {
+                            handler.DealMinion(game, SingleEffect, true, i);
+                        }
+                        break;
+                    default:
+                        handler.DealMinion(game, SingleEffect, true, int.Parse(actField[2]) - 1);
+                        break;
+                }
+            }
+            else
+            {
+                switch (int.Parse(actField[2]))
+                {
+                    case BattleFieldInfo.HeroPos:
+                        handler.DealHero(game, SingleEffect, false);
+                        break;
+                    case BattleFieldInfo.AllPos:
+                        for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
+                        {
+                            handler.DealMinion(game, SingleEffect, false, i);
+                        }
+                        break;
+                    default:
+                        handler.DealMinion(game, SingleEffect, false, int.Parse(actField[2]) - 1);
+                        break;
+                }
             }
         }
         #endregion

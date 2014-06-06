@@ -14,11 +14,11 @@ namespace Card.Effect
         /// <param name="game"></param>
         /// <param name="Seed"></param>
         /// <returns></returns>
-        public static List<string> RunEffect(EffectDefine singleEffect, Client.GameManager game,int Seed)
+        public static List<string> RunEffect(EffectDefine singleEffect, Client.GameManager game)
         {
             List<String> Result = new List<string>();
             var MinionLst = singleEffect.AddtionInfo.Split(Card.CardUtility.strSplitMark.ToCharArray());
-            Random random = new Random(DateTime.Now.Millisecond + Seed);
+            Random random = new Random(DateTime.Now.Millisecond);
             var CardSN = MinionLst[random.Next(0,MinionLst.Length)];
             var Minion = Card.CardUtility.GetCardInfoBySN(CardSN);
             switch (singleEffect.SelectOpt.EffectTargetSelectDirect)

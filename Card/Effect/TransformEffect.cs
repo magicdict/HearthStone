@@ -1,39 +1,27 @@
-﻿using Card.Server;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
 
 namespace Card.Effect
 {
-    public static class TransformEffect
+    public class TransformEffect : IEffectHandler
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="singleEffect"></param>
-        /// <param name="game"></param>
-        /// <returns></returns>
-        public static List<string> RunEffect(EffectDefine singleEffect, Client.GameManager game, CardUtility.TargetPosition Pos)
+        void IEffectHandler.DealHero(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou)
         {
-            List<string> Result = new List<string>();
+            throw new NotImplementedException();
+        }
+
+        void IEffectHandler.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
+        {
             var Summon = (Card.MinionCard)CardUtility.GetCardInfoBySN(singleEffect.AddtionInfo);
             //一定要初始化，不然的话，生命值是-1；
             Summon.Init();
-            if (Pos.MeOrYou)
+            if (MeOrYou)
             {
-                game.MySelf.RoleInfo.BattleField.BattleMinions[Pos.Postion - 1] = Summon;
-                //TRANSFORM#ME#1#M9000001
-                Result.Add(ActionCode.strTransform + Card.CardUtility.strSplitMark + CardUtility.strMe +
-                    Card.CardUtility.strSplitMark + Pos.Postion + Card.CardUtility.strSplitMark + singleEffect.AddtionInfo);
+                game.MySelf.RoleInfo.BattleField.BattleMinions[PosIndex] = Summon;
             }
             else
             {
-                game.YourInfo.BattleField.BattleMinions[Pos.Postion - 1] = Summon;
-                Result.Add(ActionCode.strTransform + Card.CardUtility.strSplitMark + CardUtility.strYou +
-                    Card.CardUtility.strSplitMark + Pos.Postion + Card.CardUtility.strSplitMark + singleEffect.AddtionInfo);
+                game.YourInfo.BattleField.BattleMinions[PosIndex] = Summon;
             }
-            return Result;
         }
     }
 }

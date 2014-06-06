@@ -85,9 +85,9 @@ namespace Card
             /// </summary>
             public String Name;
         }
-
-
-
+        /// <summary>
+        /// 战吼类型列表
+        /// </summary>
         public enum 战吼类型列表
         {
             /// <summary>
@@ -184,7 +184,7 @@ namespace Card
         /// </summary>
         public Buff 光环效果;
         /// <summary>
-        /// 
+        /// 自身事件
         /// </summary>
         public Card.CardUtility.全局事件 自身事件 = new CardUtility.全局事件();
         #endregion
@@ -352,20 +352,20 @@ namespace Card
         /// <summary>
         /// 实际输出效果
         /// </summary>
-        /// <returns>包含了光环效果</returns>
+        /// <returns>包含了光环/激怒效果</returns>
         public int TotalAttack()
         {
-            int BuffAct = 0;
+            int rtnAttack = 实际攻击力;
             foreach (var buff in 受战地效果)
             {
-                BuffAct += int.Parse(buff.BuffInfo.Split("/".ToCharArray())[0]);
+                rtnAttack += int.Parse(buff.BuffInfo.Split("/".ToCharArray())[0]);
             }
             //激怒效果
-            if (!Is沉默Status)
+            if (!Is沉默Status && Is激怒Status)
             {
-
+                if (!String.IsNullOrEmpty(激怒效果)) rtnAttack += int.Parse(激怒效果);
             }
-            return 实际攻击力 + BuffAct;
+            return 实际攻击力;
         }
         /// <summary>
         /// 实际生命值上限
@@ -497,14 +497,25 @@ namespace Card
             if (AttackPoint > 0)
             {
                 受过伤害 = true;
-                触发事件(new Card.CardUtility.全局事件() { 事件类型 = CardUtility.事件类型列表.受伤 }, null);
+                if (!String.IsNullOrEmpty(激怒效果)) Is激怒Status = true;
             }
+        }
+        /// <summary>
+        /// 被治疗
+        /// </summary>
+        /// <param name="HealthPoint"></param>
+        public void AfterBeHealth(int HealthPoint)
+        {
+            实际生命值 += HealthPoint;
+            if (实际生命值 > 实际生命值上限) 实际生命值 = 实际生命值上限;
+            //取消风怒
+            if (实际生命值 == 实际生命值上限) Is激怒Status = false;
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="事件"></param>
-        public List<String> 触发事件(Card.CardUtility.全局事件 事件, GameManager game)
+        public List<String> 事件处理方法(Card.CardUtility.全局事件 事件, GameManager game)
         {
             List<String> ActionLst = new List<string>();
             if (!Is沉默Status && 事件.事件类型 == 自身事件.事件类型)
@@ -544,5 +555,7 @@ namespace Card
             return Status.ToString();
         }
         #endregion
+
+
     }
 }

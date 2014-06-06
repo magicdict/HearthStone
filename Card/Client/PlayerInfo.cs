@@ -76,7 +76,7 @@ namespace Card.Client
         /// <summary>
         /// 是否连击
         /// </summary>
-        public Boolean IsCombit = false;
+        public Boolean 连击状态 = false;
         /// <summary>
         /// 获得信息
         /// </summary>
@@ -112,6 +112,15 @@ namespace Card.Client
             {
                 HealthPoint -= AttackPoint;
             }
+        }
+        /// <summary>
+        /// 遇到攻击
+        /// </summary>
+        /// <param name="HealthPoint"></param>
+        public void AfterBeHealth(int HealthPoint)
+        {
+            HealthPoint += HealthPoint;
+            if (HealthPoint > PlayerBasicInfo.MaxHealthPoint) HealthPoint = PlayerBasicInfo.MaxHealthPoint;
         }
     }
     /// <summary>

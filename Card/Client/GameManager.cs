@@ -161,7 +161,7 @@ namespace Card.Client
                     OverloadPoint = 0;
                 }
                 //连击的重置
-                MySelf.RoleInfo.IsCombit = false;
+                MySelf.RoleInfo.连击状态 = false;
                 //手牌
                 var NewCardList = Card.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, 1);
                 foreach (var card in NewCardList)
@@ -303,7 +303,7 @@ namespace Card.Client
                         }
                     }
                 }
-                Result.AddRange(EffectDefine.RunSingleEffect(singleEffect, this, TargetPosInfo, Seed));
+                Result.AddRange(Effecthandler.RunSingleEffect(singleEffect, this, TargetPosInfo, Seed));
                 Seed++;
                 //每次原子操作后进行一次清算
                 //将亡语效果也发送给对方
@@ -402,6 +402,7 @@ namespace Card.Client
             if (攻击方Pos != BattleFieldInfo.HeroPos)
             {
                 MySelf.RoleInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterBeAttack(YourAttackPoint);
+                事件池.Add(new Card.CardUtility.全局事件() { 事件类型 = CardUtility.事件类型列表.受伤, 触发方向 = CardUtility.TargetSelectDirectEnum.本方 });
             }
             else
             {
@@ -420,6 +421,7 @@ namespace Card.Client
             if (被攻击方Pos != BattleFieldInfo.HeroPos)
             {
                 YourInfo.BattleField.BattleMinions[被攻击方Pos - 1].AfterBeAttack(MyAttackPoint);
+                事件池.Add(new Card.CardUtility.全局事件() { 事件类型 = CardUtility.事件类型列表.受伤, 触发方向 = CardUtility.TargetSelectDirectEnum.对方 });
             }
             else
             {
@@ -468,6 +470,10 @@ namespace Card.Client
             if (YourInfo.Weapon != null && YourInfo.Weapon.实际耐久度 == 0) YourInfo.Weapon = null;
             return actionlst;
         }
+        /// <summary>
+        /// 去掉使用过的手牌
+        /// </summary>
+        /// <param name="CardSn"></param>
         public void RemoveUsedCard(String CardSn)
         {
             Card.CardBasicInfo removeCard = new CardBasicInfo();
@@ -501,5 +507,22 @@ namespace Card.Client
             return (!MySelf.RoleInfo.IsUsedHeroAbility) && IsMyTurn &&
                     MySelf.RoleInfo.crystal.CurrentRemainPoint >= MySelf.RoleInfo.HeroAbility.ActualCostPoint;
         }
+
+        #region "Event"
+        /// <summary>
+        /// 事件池
+        /// </summary>
+        public List<CardUtility.全局事件> 事件池 = new List<CardUtility.全局事件>();
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public List<String> 事件处理()
+        {
+            List<String> Result = new List<string>();
+
+            return Result;
+        }
+        #endregion
     }
 }

@@ -1,64 +1,47 @@
 ﻿using Card.Client;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Card.Effect
 {
-    public static class HealthEffect
+    public class HealthEffect : IEffectHandler
     {
         /// <summary>
-        /// 治疗
+        /// 
         /// </summary>
-        /// <param name="singleEffect"></param>
         /// <param name="game"></param>
-        /// <returns></returns>
-        public static List<string> RunEffect(EffectDefine singleEffect, Client.GameManager game, List<String> PosList)
+        /// <param name="singleEffect"></param>
+        /// <param name="MeOrYou"></param>
+        void IEffectHandler.DealHero(GameManager game, EffectDefine singleEffect, bool MeOrYou)
         {
-            List<String> Result = new List<string>();
             int HealthPoint = singleEffect.ActualEffectPoint;
-            //处理对象
-            //ME#POS
-            foreach (var PosInfo in PosList)
+            if (MeOrYou)
             {
-                var PosField = PosInfo.Split(CardUtility.strSplitMark.ToCharArray());
-                if (PosField[0] == CardUtility.strMe)
-                {
-                    if (PosField[1] == Card.Client.BattleFieldInfo.HeroPos.ToString())
-                    {
-                        game.MySelf.RoleInfo.HealthPoint += HealthPoint;
-                        if (game.MySelf.RoleInfo.HealthPoint > PlayerBasicInfo.MaxHealthPoint) game.MySelf.RoleInfo.HealthPoint = PlayerBasicInfo.MaxHealthPoint;
-                        Result.Add(Card.Server.ActionCode.strHealth + Card.CardUtility.strSplitMark + PosInfo + Card.CardUtility.strSplitMark + game.MySelf.RoleInfo.HealthPoint.ToString());
-                    }
-                    else
-                    {
-                        //位置从1开始，数组从0开始
-                        game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值 += HealthPoint;
-                        if (game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值 > game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值上限)
-                            game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值 = game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值上限;
-                        Result.Add(Card.Server.ActionCode.strHealth + Card.CardUtility.strSplitMark + PosInfo + Card.CardUtility.strSplitMark + game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值.ToString());
-                    }
-                }
-                else
-                {
-                    if (PosField[1] == Card.Client.BattleFieldInfo.HeroPos.ToString())
-                    {
-                        game.YourInfo.HealthPoint += HealthPoint;
-                        if (game.YourInfo.HealthPoint > PlayerBasicInfo.MaxHealthPoint) game.YourInfo.HealthPoint = PlayerBasicInfo.MaxHealthPoint;
-                        Result.Add(Card.Server.ActionCode.strHealth + Card.CardUtility.strSplitMark + PosInfo + Card.CardUtility.strSplitMark + game.YourInfo.HealthPoint.ToString());
-                    }
-                    else
-                    {
-                        //位置从1开始，数组从0开始
-                        game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值 += HealthPoint;
-                        if (game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值 > game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值上限)
-                            game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值 = game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值上限;
-                        Result.Add(Card.Server.ActionCode.strHealth + Card.CardUtility.strSplitMark + PosInfo + Card.CardUtility.strSplitMark + game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1].实际生命值.ToString());
-                    }
-                }
+                game.MySelf.RoleInfo.AfterBeHealth(HealthPoint);
             }
-            return Result;
+            else
+            {
+                game.YourInfo.AfterBeHealth(HealthPoint);
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="singleEffect"></param>
+        /// <param name="MeOrYou"></param>
+        /// <param name="PosIndex"></param>
+        void IEffectHandler.DealMinion(GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
+        {
+            int HealthPoint = singleEffect.ActualEffectPoint;
+            if (MeOrYou)
+            {
+                game.MySelf.RoleInfo.BattleField.BattleMinions[PosIndex].AfterBeHealth(HealthPoint);
+            }
+            else
+            {
+                game.YourInfo.BattleField.BattleMinions[PosIndex].AfterBeHealth(HealthPoint);
+            }
         }
     }
 }

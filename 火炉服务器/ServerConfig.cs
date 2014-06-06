@@ -59,7 +59,7 @@ namespace 火炉服务器
             //DEBUG
             txtCardPath.Text = @"C:\炉石Git\炉石设计\Card";
             IPAddress[] hostipspool = Dns.GetHostAddresses("");
-            lblIP.Text = "IP Address:" + hostipspool[3];
+            if (hostipspool.Length >3) lblIP.Text = "IP Address:" + hostipspool[3];
         }
     }
 }

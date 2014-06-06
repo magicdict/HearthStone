@@ -6,7 +6,7 @@ namespace Card.Effect
     /// <summary>
     /// 状态改变效果
     /// </summary>
-    public static class StatusEffect
+    public class StatusEffect : IEffectHandler
     {
         /// <summary>
         /// 冰冻状态
@@ -35,63 +35,8 @@ namespace Card.Effect
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="singleEffect"></param>
-        /// <param name="game"></param>
-        /// <returns></returns>
-        public static List<string> RunEffect(EffectDefine singleEffect, Client.GameManager game, List<String> PosList)
-        {
-            List<String> Result = new List<string>();
-            //处理对象
-            //ME#POS
-            foreach (var PosInfo in PosList)
-            {
-                var PosField = PosInfo.Split(CardUtility.strSplitMark.ToCharArray());
-                if (PosField[0] == CardUtility.strMe)
-                {
-                    if (PosField[1] == Card.Client.BattleFieldInfo.HeroPos.ToString())
-                    {
-                        switch (singleEffect.AddtionInfo)
-                        {
-                            case strFreeze:
-                                game.MySelf.RoleInfo.冰冻状态 = CardUtility.EffectTurn.效果命中;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        //位置从1开始，数组从0开始
-                        var myMinion = game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1];
-                        RunStatusEffect(myMinion, singleEffect.AddtionInfo);
-                    }
-                }
-                else
-                {
-                    if (PosField[1] == Card.Client.BattleFieldInfo.HeroPos.ToString())
-                    {
-                        switch (singleEffect.AddtionInfo)
-                        {
-                            case strFreeze:
-                                game.YourInfo.冰冻状态 = CardUtility.EffectTurn.效果命中;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        //位置从1开始，数组从0开始
-                        var yourMinion = game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1];
-                        RunStatusEffect(yourMinion, singleEffect.AddtionInfo);
-                    }
-                }
-                //STATUS#ME#1#FREEZE
-                Result.Add(Card.Server.ActionCode.strStatus + Card.CardUtility.strSplitMark + PosInfo + Card.CardUtility.strSplitMark + singleEffect.AddtionInfo);
-            }
-            return Result;
-        }
-
+        /// <param name="myMinion"></param>
+        /// <param name="AddtionInfo"></param>
         public static void RunStatusEffect(MinionCard myMinion, String AddtionInfo)
         {
             switch (AddtionInfo)
@@ -117,6 +62,35 @@ namespace Card.Effect
                     break;
                 default:
                     break;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="singleEffect"></param>
+        /// <param name="MeOrYou"></param>
+        void IEffectHandler.DealHero(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou)
+        {
+            throw new NotImplementedException();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="singleEffect"></param>
+        /// <param name="MeOrYou"></param>
+        /// <param name="PosIndex"></param>
+        void IEffectHandler.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
+        {
+            int HealthPoint = singleEffect.ActualEffectPoint;
+            if (MeOrYou)
+            {
+                RunStatusEffect(game.MySelf.RoleInfo.BattleField.BattleMinions[PosIndex], singleEffect.AddtionInfo);
+            }
+            else
+            {
+                RunStatusEffect(game.YourInfo.BattleField.BattleMinions[PosIndex], singleEffect.AddtionInfo);
             }
         }
     }

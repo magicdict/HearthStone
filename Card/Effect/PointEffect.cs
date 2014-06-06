@@ -4,42 +4,14 @@ using System.Linq;
 
 namespace Card.Effect
 {
-    public static class PointEffect
+    public class PointEffect : IEffectHandler
     {
         /// <summary>
-        /// 
+        /// 忽略
         /// </summary>
         public const String strIgnore = "X";
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="singleEffect"></param>
-        /// <param name="game"></param>
-        /// <returns></returns>
-        public static List<string> RunEffect(EffectDefine singleEffect, Client.GameManager game, List<String> PosList)
-        {
-            List<String> Result = new List<string>();
-            int AttackPoint = singleEffect.ActualEffectPoint;
-            //处理对象
-            foreach (var PosInfo in PosList)
-            {
-                var PosField = PosInfo.Split(CardUtility.strSplitMark.ToCharArray());
-                if (PosField[0] == CardUtility.strMe)
-                {
-                    //位置从1开始，数组从0开始
-                    RunPointEffect(game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1], singleEffect.AddtionInfo);
-                }
-                else
-                {
-                    //位置从1开始，数组从0开始
-                    RunPointEffect(game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1], singleEffect.AddtionInfo);
-                }
-                Result.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + PosInfo + Card.CardUtility.strSplitMark + singleEffect.AddtionInfo);
-            }
-            return Result;
-        }
-        /// <summary>
-        /// 
+        /// 运行
         /// </summary>
         /// <param name="Minion"></param>
         /// <param name="Addition"></param>
@@ -48,6 +20,7 @@ namespace Card.Effect
             var AttackHealth = Addition.Split("/".ToArray());
             Minion.实际攻击力 = PointProcess(Minion.实际攻击力, AttackHealth[0]);
             Minion.实际生命值 = PointProcess(Minion.实际生命值, AttackHealth[1]);
+            Minion.实际生命值上限 = PointProcess(Minion.实际生命值上限, AttackHealth[1]);
         }
         /// <summary>
         /// PointProcess
@@ -77,6 +50,23 @@ namespace Card.Effect
                 }
             }
             return newPoint;
+        }
+
+        void IEffectHandler.DealHero(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou)
+        {
+            throw new NotImplementedException();
+        }
+        void IEffectHandler.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
+        {
+            int HealthPoint = singleEffect.ActualEffectPoint;
+            if (MeOrYou)
+            {
+                RunPointEffect(game.MySelf.RoleInfo.BattleField.BattleMinions[PosIndex], singleEffect.AddtionInfo);
+            }
+            else
+            {
+                RunPointEffect(game.YourInfo.BattleField.BattleMinions[PosIndex], singleEffect.AddtionInfo);
+            }
         }
     }
 }
