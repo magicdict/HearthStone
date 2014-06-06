@@ -21,6 +21,7 @@ namespace 火炉服务器
             Card.CardUtility.Init(txtCardPath.Text);
             btnStart.Enabled = false;
             btnStop.Enabled = true;
+            Card.logger.Init();
             ServerThread = new Thread(Card.Server.ServerResponse.StartServer);
             ServerThread.IsBackground = true;
             ServerThread.Start();
@@ -34,6 +35,7 @@ namespace 火炉服务器
         {
             ServerThread.Abort();
             ServerThread = null;
+            Card.logger.Terminate();
             GC.Collect();
         }
         /// <summary>

@@ -24,12 +24,12 @@ namespace Card.Effect
             switch (singleEffect.SelectOpt.EffectTargetSelectDirect)
             {
                 case CardUtility.TargetSelectDirectEnum.本方:
-                    if (game.MySelf.RoleInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount)
+                    if (game.MyInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount)
                     {
-                        game.MySelf.RoleInfo.BattleField.AppendToBattle(CardSN);
+                        game.MyInfo.BattleField.AppendToBattle(CardSN);
                         //SUMMON#YOU#M000001#POS
                         Result.Add(Card.Server.ActionCode.strSummon + Card.CardUtility.strSplitMark + Card.CardUtility.strMe +
-                                   Card.CardUtility.strSplitMark + CardSN + Card.CardUtility.strSplitMark + game.MySelf.RoleInfo.BattleField.MinionCount);
+                                   Card.CardUtility.strSplitMark + CardSN + Card.CardUtility.strSplitMark + game.MyInfo.BattleField.MinionCount);
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.对方:
@@ -41,12 +41,12 @@ namespace Card.Effect
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.双方:
-                    if (game.MySelf.RoleInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount)
+                    if (game.MyInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount)
                     {
-                        game.MySelf.RoleInfo.BattleField.AppendToBattle(CardSN);
+                        game.MyInfo.BattleField.AppendToBattle(CardSN);
                         //SUMMON#YOU#M000001#POS
                         Result.Add(Card.Server.ActionCode.strSummon + Card.CardUtility.strSplitMark + Card.CardUtility.strMe +
-                                   Card.CardUtility.strSplitMark + CardSN + Card.CardUtility.strSplitMark + game.MySelf.RoleInfo.BattleField.MinionCount);
+                                   Card.CardUtility.strSplitMark + CardSN + Card.CardUtility.strSplitMark + game.MyInfo.BattleField.MinionCount);
                     }
                     if (game.YourInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount)
                     {

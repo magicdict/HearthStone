@@ -20,9 +20,9 @@ namespace Card.Effect
                     var drawCards = Card.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
                     if (drawCards.Count == 1)
                     {
-                        game.MySelf.handCards.Add(Card.CardUtility.GetCardInfoBySN(drawCards[0]));
-                        game.MySelf.RoleInfo.HandCardCount++;
-                        game.MySelf.RoleInfo.RemainCardDeckCount--;
+                        game.MySelfInfo.handCards.Add(Card.CardUtility.GetCardInfoBySN(drawCards[0]));
+                        game.MyInfo.HandCardCount++;
+                        game.MyInfo.RemainCardDeckCount--;
                         Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strMe);
                     }
                     break;
@@ -38,9 +38,9 @@ namespace Card.Effect
                     var drawCardsT = Card.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
                     if (drawCardsT.Count == 1)
                     {
-                        game.MySelf.handCards.Add(Card.CardUtility.GetCardInfoBySN(drawCardsT[0]));
-                        game.MySelf.RoleInfo.HandCardCount++;
-                        game.MySelf.RoleInfo.RemainCardDeckCount--;
+                        game.MySelfInfo.handCards.Add(Card.CardUtility.GetCardInfoBySN(drawCardsT[0]));
+                        game.MyInfo.HandCardCount++;
+                        game.MyInfo.RemainCardDeckCount--;
                         Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strMe);
                     }
                     if (game.YourInfo.RemainCardDeckCount > 0)

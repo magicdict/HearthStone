@@ -44,13 +44,13 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void TargetSelect_Load(object sender, EventArgs e)
         {
-            btnMyHero.Hero = game.MySelf.RoleInfo;
+            btnMyHero.Hero = game.MyInfo;
             btnYourHero.Hero = game.YourInfo;
-            int LeftPos = (this.Width - (game.MySelf.RoleInfo.BattleField.MinionCount * btnMe1.Width +
-            (game.MySelf.RoleInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
-            for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
+            int LeftPos = (this.Width - (game.MyInfo.BattleField.MinionCount * btnMe1.Width +
+            (game.MyInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
+            for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
             {
-                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CardInfo = game.MySelf.RoleInfo.BattleField.BattleMinions[i];
+                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CardInfo = game.MyInfo.BattleField.BattleMinions[i];
                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).Left = LeftPos;
                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).FightClick += (x, y) =>
                 {
@@ -109,9 +109,9 @@ namespace 炉边传说
                     switch (SelectOption.EffectTargetSelectRole)
                     {
                         case CardUtility.TargetSelectRoleEnum.随从:
-                            for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
+                            for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
                             {
-                                if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], SelectOption))
+                                if (Card.CardUtility.符合种族条件(game.MyInfo.BattleField.BattleMinions[i], SelectOption))
                                     Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = true;
                                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = true;
                             }
@@ -121,9 +121,9 @@ namespace 炉边传说
                             break;
                         case CardUtility.TargetSelectRoleEnum.所有角色:
                             btnMyHero.Enabled = true;
-                            for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
+                            for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
                             {
-                                if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], SelectOption))
+                                if (Card.CardUtility.符合种族条件(game.MyInfo.BattleField.BattleMinions[i], SelectOption))
                                     Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = true;
                                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = true;
                             }
@@ -189,9 +189,9 @@ namespace 炉边传说
                     switch (SelectOption.EffectTargetSelectRole)
                     {
                         case CardUtility.TargetSelectRoleEnum.随从:
-                            for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
+                            for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
                             {
-                                if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], SelectOption))
+                                if (Card.CardUtility.符合种族条件(game.MyInfo.BattleField.BattleMinions[i], SelectOption))
                                     Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = true;
                                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = true;
                             }
@@ -209,9 +209,9 @@ namespace 炉边传说
                         case CardUtility.TargetSelectRoleEnum.所有角色:
                             btnMyHero.Enabled = true;
                             btnYourHero.Enabled = true;
-                            for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
+                            for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
                             {
-                                if (Card.CardUtility.符合种族条件(game.MySelf.RoleInfo.BattleField.BattleMinions[i], SelectOption))
+                                if (Card.CardUtility.符合种族条件(game.MyInfo.BattleField.BattleMinions[i], SelectOption))
                                     Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = true;
                                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = true;
                             }

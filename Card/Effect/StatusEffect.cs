@@ -86,7 +86,7 @@ namespace Card.Effect
             int HealthPoint = singleEffect.ActualEffectPoint;
             if (MeOrYou)
             {
-                RunStatusEffect(game.MySelf.RoleInfo.BattleField.BattleMinions[PosIndex], singleEffect.AddtionInfo);
+                RunStatusEffect(game.MyInfo.BattleField.BattleMinions[PosIndex], singleEffect.AddtionInfo);
             }
             else
             {

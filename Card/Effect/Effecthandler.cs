@@ -27,11 +27,11 @@ namespace Card.Effect
                             switch (singleEffect.SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
-                                    PosInfo.Postion = t.Next(1, game.MySelf.RoleInfo.BattleField.MinionCount + 1);
+                                    PosInfo.Postion = t.Next(1, game.MyInfo.BattleField.MinionCount + 1);
                                     PosInfo.MeOrYou = true;
                                     break;
                                 case CardUtility.TargetSelectRoleEnum.所有角色:
-                                    PosInfo.Postion = t.Next(Client.BattleFieldInfo.HeroPos, game.MySelf.RoleInfo.BattleField.MinionCount + 1);
+                                    PosInfo.Postion = t.Next(Client.BattleFieldInfo.HeroPos, game.MyInfo.BattleField.MinionCount + 1);
                                     PosInfo.MeOrYou = true;
                                     break;
                             }
@@ -59,7 +59,7 @@ namespace Card.Effect
                             if (t.Next(1, 3) == 1)
                             {
                                 PosInfo.MeOrYou = true;
-                                MinionCount = game.MySelf.RoleInfo.BattleField.MinionCount;
+                                MinionCount = game.MyInfo.BattleField.MinionCount;
                             }
                             else
                             {
@@ -258,7 +258,7 @@ namespace Card.Effect
                             strResult += Card.Client.BattleFieldInfo.HeroPos.ToString();
                             break;
                         case Card.Client.BattleFieldInfo.AllPos:
-                            for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
+                            for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
                             {
                                 handler.DealMinion(game, singleEffect, true, i);
                             }

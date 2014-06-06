@@ -67,14 +67,14 @@ namespace Card.Client
         {
             //手牌设定
             var HandCard = Card.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst,
-                           IsFirst ? PlayerBasicInfo.BasicHandCardCount : (PlayerBasicInfo.BasicHandCardCount + 1));
-            MySelf.RoleInfo.crystal.CurrentFullPoint = 0;
-            MySelf.RoleInfo.crystal.CurrentRemainPoint = 0;
+                           IsFirst ? PublicInfo.BasicHandCardCount : (PublicInfo.BasicHandCardCount + 1));
+            MyInfo.crystal.CurrentFullPoint = 0;
+            MyInfo.crystal.CurrentRemainPoint = 0;
             YourInfo.crystal.CurrentFullPoint = 0;
             YourInfo.crystal.CurrentRemainPoint = 0;
             //DEBUG START
-            MySelf.RoleInfo.crystal.CurrentFullPoint = 5;
-            MySelf.RoleInfo.crystal.CurrentRemainPoint = 5;
+            MyInfo.crystal.CurrentFullPoint = 5;
+            MyInfo.crystal.CurrentRemainPoint = 5;
             YourInfo.crystal.CurrentFullPoint = 5;
             YourInfo.crystal.CurrentRemainPoint = 5;
 
@@ -83,33 +83,37 @@ namespace Card.Client
 
             //DEBUG END
             //英雄技能：奥术飞弹
-            MySelf.RoleInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A200001");
+            MyInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A200001");
             YourInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A200001");
             if (!IsFirst) HandCard.Add(Card.CardUtility.SN幸运币);
             foreach (var card in HandCard)
             {
-                MySelf.handCards.Add(CardUtility.GetCardInfoBySN(card));
+                MySelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(card));
             }
-            MySelf.RoleInfo.HandCardCount = HandCard.Count;
+            MyInfo.HandCardCount = HandCard.Count;
             if (IsFirst)
             {
-                MySelf.RoleInfo.RemainCardDeckCount = Card.Client.CardDeck.MaxCards - 3;
+                MyInfo.RemainCardDeckCount = Card.Client.CardDeck.MaxCards - 3;
                 YourInfo.RemainCardDeckCount = Card.Client.CardDeck.MaxCards - 4;
             }
             else
             {
-                MySelf.RoleInfo.RemainCardDeckCount = Card.Client.CardDeck.MaxCards - 4;
+                MyInfo.RemainCardDeckCount = Card.Client.CardDeck.MaxCards - 4;
                 YourInfo.RemainCardDeckCount = Card.Client.CardDeck.MaxCards - 3;
             }
         }
         /// <summary>
+        /// 本方私有情报
+        /// </summary>
+        public PrivateInfo MySelfInfo = new PrivateInfo();
+        /// <summary>
         /// 本方情报
         /// </summary>
-        public PlayerDetailInfo MySelf = new PlayerDetailInfo();
+        public PublicInfo MyInfo = new PublicInfo();
         /// <summary>
         /// 对方情报
         /// </summary>
-        public PlayerBasicInfo YourInfo = new PlayerBasicInfo();
+        public PublicInfo YourInfo = new PublicInfo();
         /// <summary>
         /// 检查是否可以使用
         /// </summary>
@@ -133,13 +137,13 @@ namespace Card.Client
             }
             if (card.CardType == CardBasicInfo.CardTypeEnum.随从)
             {
-                if (MySelf.RoleInfo.BattleField.MinionCount == Card.Client.BattleFieldInfo.MaxMinionCount)
+                if (MyInfo.BattleField.MinionCount == Card.Client.BattleFieldInfo.MaxMinionCount)
                 {
                     Message = "随从已经满员";
                     return Message;
                 }
             }
-            if (MySelf.RoleInfo.crystal.CurrentRemainPoint < card.ActualCostPoint)
+            if (MyInfo.crystal.CurrentRemainPoint < card.ActualCostPoint)
             {
                 Message = "法力水晶不足";
             }
@@ -153,26 +157,26 @@ namespace Card.Client
             if (IsMyTurn)
             {
                 //魔法水晶的增加
-                MySelf.RoleInfo.crystal.NewTurn();
+                MyInfo.crystal.NewTurn();
                 //过载的清算
                 if (OverloadPoint != 0)
                 {
-                    MySelf.RoleInfo.crystal.ReduceCurrentPoint(OverloadPoint);
+                    MyInfo.crystal.ReduceCurrentPoint(OverloadPoint);
                     OverloadPoint = 0;
                 }
                 //连击的重置
-                MySelf.RoleInfo.连击状态 = false;
+                MyInfo.连击状态 = false;
                 //手牌
                 var NewCardList = Card.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, 1);
                 foreach (var card in NewCardList)
                 {
-                    if (MySelf.handCards.Count < PlayerBasicInfo.MaxHandCardCount) MySelf.handCards.Add(CardUtility.GetCardInfoBySN(card));
+                    if (MySelfInfo.handCards.Count < PublicInfo.MaxHandCardCount) MySelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(card));
                 }
-                MySelf.RoleInfo.HandCardCount++;
-                MySelf.RoleInfo.RemainCardDeckCount--;
-                MySelf.RoleInfo.RemainAttactTimes = 1;
-                MySelf.RoleInfo.IsUsedHeroAbility = false;
-                foreach (var minion in MySelf.RoleInfo.BattleField.BattleMinions)
+                MyInfo.HandCardCount++;
+                MyInfo.RemainCardDeckCount--;
+                MyInfo.RemainAttactTimes = 1;
+                MyInfo.IsUsedHeroAbility = false;
+                foreach (var minion in MyInfo.BattleField.BattleMinions)
                 {
                     if (minion != null)
                     {
@@ -191,17 +195,17 @@ namespace Card.Client
                 }
                 //重置攻击次数,必须放在状态变化之后！
                 //原因是剩余攻击回数和状态有关！
-                foreach (var minion in MySelf.RoleInfo.BattleField.BattleMinions)
+                foreach (var minion in MyInfo.BattleField.BattleMinions)
                 {
                     if (minion != null) minion.ResetAttackTimes();
                 }
                 //手牌消耗的计算
-                MySelf.ResetHandCardCost();
+                MySelfInfo.ResetHandCardCost(this);
             }
             else
             {
                 YourInfo.crystal.NewTurn();
-                if (YourInfo.HandCardCount < PlayerBasicInfo.MaxHandCardCount) YourInfo.HandCardCount++;
+                if (YourInfo.HandCardCount < PublicInfo.MaxHandCardCount) YourInfo.HandCardCount++;
                 YourInfo.RemainCardDeckCount--;
                 YourInfo.RemainAttactTimes = 1;
                 YourInfo.IsUsedHeroAbility = false;
@@ -238,11 +242,11 @@ namespace Card.Client
             //调用这个方法的时候，IsMyTurn肯定是True
             //回合结束效果
             List<String> ActionLst = new List<string>();
-            for (int i = 0; i < MySelf.RoleInfo.BattleField.MinionCount; i++)
+            for (int i = 0; i < MyInfo.BattleField.MinionCount; i++)
             {
-                if (MySelf.RoleInfo.BattleField.BattleMinions[i] != null)
+                if (MyInfo.BattleField.BattleMinions[i] != null)
                 {
-                    ActionLst.AddRange(MySelf.RoleInfo.BattleField.BattleMinions[i].回合结束(this));
+                    ActionLst.AddRange(MyInfo.BattleField.BattleMinions[i].回合结束(this));
                 }
             }
             return ActionLst;
@@ -261,9 +265,9 @@ namespace Card.Client
         {
             List<String> Result = new List<string>();
             //法术伤害
-            if (MySelf.RoleInfo.BattleField.AbilityEffect != 0)
+            if (MyInfo.BattleField.AbilityEffect != 0)
             {
-                card.JustfyEffectPoint(MySelf.RoleInfo.BattleField.AbilityEffect);
+                card.JustfyEffectPoint(MyInfo.BattleField.AbilityEffect);
             }
             Card.CardUtility.PickEffect PickEffectResult = CardUtility.PickEffect.第一效果;
             if (card.CardAbility.IsNeedSelect())
@@ -321,12 +325,12 @@ namespace Card.Client
             List<String> Result = new List<string>();
             //奥秘计算 START
             //本方（Fight也需要）
-            if (MySelf.奥秘列表.Count != 0)
+            if (MySelfInfo.奥秘列表.Count != 0)
             {
                 //本方的行动触发本方奥秘的检查
                 for (int i = 0; i < actionlst.Count; i++)
                 {
-                    foreach (var secret in MySelf.奥秘列表)
+                    foreach (var secret in MySelfInfo.奥秘列表)
                     {
                         if ((!secret.IsHitted) && Card.SecretCard.IsSecretHit(secret.SN, actionlst[i], true))
                         {
@@ -337,7 +341,7 @@ namespace Card.Client
                     }
                 }
                 //移除已经触发的奥秘
-                MySelf.清除命中奥秘();
+                MySelfInfo.清除命中奥秘();
             }
             //对方（Fight也需要）
             if (YourInfo.SecretCount != 0)
@@ -374,16 +378,16 @@ namespace Card.Client
                 //攻击次数
                 if (攻击方Pos == BattleFieldInfo.HeroPos)
                 {
-                    if (MySelf.RoleInfo.Weapon != null)
+                    if (MyInfo.Weapon != null)
                     {
-                        MySelf.RoleInfo.Weapon.实际耐久度--;
-                        MySelf.RoleInfo.RemainAttactTimes = 0;
+                        MyInfo.Weapon.实际耐久度--;
+                        MyInfo.RemainAttactTimes = 0;
                     }
                 }
                 else
                 {
                     //攻击次数的清算,潜行等去除(如果不是被攻击方的处理)
-                    MySelf.RoleInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterAttack(被动攻击);
+                    MyInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterAttack(被动攻击);
                 }
             }
             //伤害计算(本方)
@@ -401,22 +405,22 @@ namespace Card.Client
             }
             if (攻击方Pos != BattleFieldInfo.HeroPos)
             {
-                MySelf.RoleInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterBeAttack(YourAttackPoint);
+                MyInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterBeAttack(YourAttackPoint);
                 事件池.Add(new Card.CardUtility.全局事件() { 事件类型 = CardUtility.事件类型列表.受伤, 触发方向 = CardUtility.TargetSelectDirectEnum.本方 });
             }
             else
             {
-                MySelf.RoleInfo.AfterBeAttack(YourAttackPoint);
+                MyInfo.AfterBeAttack(YourAttackPoint);
             }
             //伤害计算(对方)
             var MyAttackPoint = 0;
             if (攻击方Pos != BattleFieldInfo.HeroPos)
             {
-                MyAttackPoint = MySelf.RoleInfo.BattleField.BattleMinions[攻击方Pos - 1].TotalAttack();
+                MyAttackPoint = MyInfo.BattleField.BattleMinions[攻击方Pos - 1].TotalAttack();
             }
             else
             {
-                if (MySelf.RoleInfo.Weapon != null) MyAttackPoint = MySelf.RoleInfo.Weapon.ActualAttackPoint;
+                if (MyInfo.Weapon != null) MyAttackPoint = MyInfo.Weapon.ActualAttackPoint;
             }
             if (被攻击方Pos != BattleFieldInfo.HeroPos)
             {
@@ -448,7 +452,7 @@ namespace Card.Client
         {
             List<String> actionlst = new List<string>();
             //1.检查需要移除的对象
-            var MyDeadMinion = MySelf.RoleInfo.BattleField.ClearDead();
+            var MyDeadMinion = MyInfo.BattleField.ClearDead();
             foreach (var minion in MyDeadMinion)
             {
                 actionlst.Add(Card.Server.ActionCode.strDead + Card.CardUtility.strSplitMark + CardUtility.strMe + Card.CardUtility.strSplitMark + minion.SN);
@@ -463,10 +467,10 @@ namespace Card.Client
                 actionlst.AddRange(minion.发动亡语(this, true));
             }
             //2.重新计算Buff
-            MySelf.RoleInfo.BattleField.ResetBuff();
+            MyInfo.BattleField.ResetBuff();
             YourInfo.BattleField.ResetBuff();
             //3.武器的移除
-            if (MySelf.RoleInfo.Weapon != null && MySelf.RoleInfo.Weapon.实际耐久度 == 0) MySelf.RoleInfo.Weapon = null;
+            if (MyInfo.Weapon != null && MyInfo.Weapon.实际耐久度 == 0) MyInfo.Weapon = null;
             if (YourInfo.Weapon != null && YourInfo.Weapon.实际耐久度 == 0) YourInfo.Weapon = null;
             return actionlst;
         }
@@ -477,15 +481,15 @@ namespace Card.Client
         public void RemoveUsedCard(String CardSn)
         {
             Card.CardBasicInfo removeCard = new CardBasicInfo();
-            foreach (var Seekcard in MySelf.handCards)
+            foreach (var Seekcard in MySelfInfo.handCards)
             {
                 if (Seekcard.SN == CardSn)
                 {
                     removeCard = Seekcard;
                 }
             }
-            MySelf.handCards.Remove(removeCard);
-            MySelf.RoleInfo.HandCardCount = MySelf.handCards.Count;
+            MySelfInfo.handCards.Remove(removeCard);
+            MyInfo.HandCardCount = MySelfInfo.handCards.Count;
         }
         /// <summary>
         /// 武器是否可用
@@ -493,9 +497,9 @@ namespace Card.Client
         /// <returns></returns>
         public Boolean IsWeaponEnable()
         {
-            return MySelf.RoleInfo.RemainAttactTimes != 0 &&
-                   MySelf.RoleInfo.Weapon != null &&
-                   MySelf.RoleInfo.Weapon.实际耐久度 > 0 &&
+            return MyInfo.RemainAttactTimes != 0 &&
+                   MyInfo.Weapon != null &&
+                   MyInfo.Weapon.实际耐久度 > 0 &&
                    IsMyTurn;
         }
         /// <summary>
@@ -504,8 +508,8 @@ namespace Card.Client
         /// <returns></returns>
         public Boolean IsHeroAblityEnable()
         {
-            return (!MySelf.RoleInfo.IsUsedHeroAbility) && IsMyTurn &&
-                    MySelf.RoleInfo.crystal.CurrentRemainPoint >= MySelf.RoleInfo.HeroAbility.ActualCostPoint;
+            return (!MyInfo.IsUsedHeroAbility) && IsMyTurn &&
+                    MyInfo.crystal.CurrentRemainPoint >= MyInfo.HeroAbility.ActualCostPoint;
         }
 
         #region "Event"

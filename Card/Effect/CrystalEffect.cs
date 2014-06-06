@@ -24,7 +24,7 @@ namespace Card.Effect
                 {
                     if (singleEffect.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
                     {
-                        game.MySelf.RoleInfo.crystal.AddCurrentPoint(point);
+                        game.MyInfo.crystal.AddCurrentPoint(point);
                     }
                     else
                     {
@@ -35,7 +35,7 @@ namespace Card.Effect
                 {
                     if (singleEffect.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
                     {
-                        game.MySelf.RoleInfo.crystal.ReduceCurrentPoint(point);
+                        game.MyInfo.crystal.ReduceCurrentPoint(point);
                     }
                     else
                     {
@@ -51,7 +51,7 @@ namespace Card.Effect
                 {
                     if (singleEffect.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
                     {
-                        game.MySelf.RoleInfo.crystal.AddFullPoint(point);
+                        game.MyInfo.crystal.AddFullPoint(point);
                     }
                     else
                     {
@@ -62,7 +62,7 @@ namespace Card.Effect
                 {
                     if (singleEffect.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
                     {
-                        game.MySelf.RoleInfo.crystal.ReduceFullPoint(point);
+                        game.MyInfo.crystal.ReduceFullPoint(point);
                     }
                     else
                     {
@@ -73,7 +73,7 @@ namespace Card.Effect
             //Crystal#ME#4#4
             if (singleEffect.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
             {
-                Result.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentFullPoint);
+                Result.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark + game.MyInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MyInfo.crystal.CurrentFullPoint);
             }
             else
             {

@@ -7,7 +7,7 @@ namespace Card.Client
     /// <summary>
     /// 共通情报
     /// </summary>
-    public class PlayerBasicInfo
+    public class PublicInfo
     {
         /// <summary>
         /// 最大生命值
@@ -120,18 +120,14 @@ namespace Card.Client
         public void AfterBeHealth(int HealthPoint)
         {
             HealthPoint += HealthPoint;
-            if (HealthPoint > PlayerBasicInfo.MaxHealthPoint) HealthPoint = PlayerBasicInfo.MaxHealthPoint;
+            if (HealthPoint > PublicInfo.MaxHealthPoint) HealthPoint = PublicInfo.MaxHealthPoint;
         }
     }
     /// <summary>
     /// 本方情报
     /// </summary>
-    public class PlayerDetailInfo
+    public class PrivateInfo
     {
-        /// <summary>
-        /// 基本情报
-        /// </summary>
-        public PlayerBasicInfo RoleInfo = new PlayerBasicInfo();
         /// <summary>
         /// 手牌
         /// </summary>
@@ -143,13 +139,13 @@ namespace Card.Client
         /// <summary>
         /// 手牌消耗重置
         /// </summary>
-        public void ResetHandCardCost()
+        public void ResetHandCardCost(GameManager game)
         {
             foreach (var card in handCards)
             {
                 if (card.CardType == CardBasicInfo.CardTypeEnum.法术)
                 {
-                    card.ActualCostPoint = card.StandardCostPoint + RoleInfo.BattleField.AbilityCost;
+                    card.ActualCostPoint = card.StandardCostPoint + game.MyInfo.BattleField.AbilityCost;
                     if (card.ActualCostPoint < 0) card.ActualCostPoint = 0;
                 }
             }

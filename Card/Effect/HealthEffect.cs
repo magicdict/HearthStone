@@ -17,7 +17,7 @@ namespace Card.Effect
             int HealthPoint = singleEffect.ActualEffectPoint;
             if (MeOrYou)
             {
-                game.MySelf.RoleInfo.AfterBeHealth(HealthPoint);
+                game.MyInfo.AfterBeHealth(HealthPoint);
             }
             else
             {
@@ -36,7 +36,7 @@ namespace Card.Effect
             int HealthPoint = singleEffect.ActualEffectPoint;
             if (MeOrYou)
             {
-                game.MySelf.RoleInfo.BattleField.BattleMinions[PosIndex].AfterBeHealth(HealthPoint);
+                game.MyInfo.BattleField.BattleMinions[PosIndex].AfterBeHealth(HealthPoint);
             }
             else
             {

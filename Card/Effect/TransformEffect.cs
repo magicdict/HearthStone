@@ -16,7 +16,7 @@ namespace Card.Effect
             Summon.Init();
             if (MeOrYou)
             {
-                game.MySelf.RoleInfo.BattleField.BattleMinions[PosIndex] = Summon;
+                game.MyInfo.BattleField.BattleMinions[PosIndex] = Summon;
             }
             else
             {

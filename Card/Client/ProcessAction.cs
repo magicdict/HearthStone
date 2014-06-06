@@ -46,7 +46,7 @@ namespace Card.Client
                     if (actField[1] == CardUtility.strYou)
                     {
                         Card.SecretCard Hit = new SecretCard();
-                        foreach (var secret in game.MySelf.奥秘列表)
+                        foreach (var secret in game.MySelfInfo.奥秘列表)
                         {
                             if (secret.SN == actField[2])
                             {
@@ -54,7 +54,7 @@ namespace Card.Client
                                 break;
                             }
                         }
-                        game.MySelf.奥秘列表.Remove(Hit);
+                        game.MySelfInfo.奥秘列表.Remove(Hit);
                     }
                     else
                     {
@@ -62,16 +62,16 @@ namespace Card.Client
                     }
                     break;
                 case ActionCode.ActionType.Control:
-                    game.YourInfo.BattleField.AppendToBattle(game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1].深拷贝());
-                    game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1] = null;
+                    game.YourInfo.BattleField.AppendToBattle(game.MyInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1].深拷贝());
+                    game.MyInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1] = null;
                     break;
                 case ActionCode.ActionType.Card:
                     if (actField[1] == CardUtility.strYou)
                     {
                         var drawCards = Card.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
-                        game.MySelf.handCards.Add(Card.CardUtility.GetCardInfoBySN(drawCards[0]));
-                        game.MySelf.RoleInfo.HandCardCount++;
-                        game.MySelf.RoleInfo.RemainCardDeckCount--;
+                        game.MySelfInfo.handCards.Add(Card.CardUtility.GetCardInfoBySN(drawCards[0]));
+                        game.MyInfo.HandCardCount++;
+                        game.MyInfo.RemainCardDeckCount--;
                     }
                     else
                     {
@@ -85,7 +85,7 @@ namespace Card.Client
                     //Me代表对方 YOU代表自己，必须反过来
                     if (actField[1] == CardUtility.strYou)
                     {
-                        game.MySelf.RoleInfo.BattleField.AppendToBattle(actField[2]);
+                        game.MyInfo.BattleField.AppendToBattle(actField[2]);
                     }
                     else
                     {
@@ -102,8 +102,8 @@ namespace Card.Client
                     }
                     else
                     {
-                        game.MySelf.RoleInfo.crystal.CurrentRemainPoint = int.Parse(actField[2]);
-                        game.MySelf.RoleInfo.crystal.CurrentFullPoint = int.Parse(actField[3]);
+                        game.MyInfo.crystal.CurrentRemainPoint = int.Parse(actField[2]);
+                        game.MyInfo.crystal.CurrentFullPoint = int.Parse(actField[3]);
                     }
                     break;
                 case ActionCode.ActionType.UnKnown:
@@ -151,7 +151,7 @@ namespace Card.Client
                         handler.DealHero(game, SingleEffect, true);
                         break;
                     case BattleFieldInfo.AllPos:
-                        for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
+                        for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
                         {
                             handler.DealMinion(game, SingleEffect, true, i);
                         }

@@ -66,7 +66,7 @@ namespace 炉边传说
 
             btnYourHeroAblity.Enabled = false;
             btnMyHeroAblity.Enabled = false;
-            btnMyHeroAblity.Tag = game.MySelf.RoleInfo.HeroAbility;
+            btnMyHeroAblity.Tag = game.MyInfo.HeroAbility;
             btnMyHeroAblity.Click += btnUseHandCard_Click;
             StartNewTurn();
             DisplayMyInfo();
@@ -101,9 +101,9 @@ namespace 炉边传说
             int LeftPos = (this.Width - (btnMyHero.Width + btnMyHeroAblity.Width + btnMyWeapon.Width + 2 * Megrate)) / 2;
             //武器
             btnMyWeapon.Left = LeftPos;
-            if (game.MySelf.RoleInfo.Weapon != null)
+            if (game.MyInfo.Weapon != null)
             {
-                btnMyWeapon.Weapon = game.MySelf.RoleInfo.Weapon;
+                btnMyWeapon.Weapon = game.MyInfo.Weapon;
             }
             else
             {
@@ -129,7 +129,7 @@ namespace 炉边传说
                 btnMyWeapon.Enabled = false;
             }
 
-            btnMyHero.Hero = game.MySelf.RoleInfo;
+            btnMyHero.Hero = game.MyInfo;
             btnMyHero.Left = LeftPos;
             btnYourHero.Hero = game.YourInfo;
             btnYourHero.Left = LeftPos;
@@ -149,15 +149,15 @@ namespace 炉边传说
             btnMyHeroAblity.Left = LeftPos;
             btnYourHeroAblity.Left = LeftPos;
 
-            MyCrystalBar.CrystalInfo = game.MySelf.RoleInfo.crystal;
+            MyCrystalBar.CrystalInfo = game.MyInfo.crystal;
             YourCrystalBar.CrystalInfo = game.YourInfo.crystal;
 
 
-            LeftPos = (this.Width - (game.MySelf.RoleInfo.BattleField.MinionCount * btnMe1.Width +
-                      (game.MySelf.RoleInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
+            LeftPos = (this.Width - (game.MyInfo.BattleField.MinionCount * btnMe1.Width +
+                      (game.MyInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
             for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
             {
-                var myMinion = game.MySelf.RoleInfo.BattleField.BattleMinions[i];
+                var myMinion = game.MyInfo.BattleField.BattleMinions[i];
                 if (myMinion != null)
                 {
                     Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = true;
@@ -195,13 +195,13 @@ namespace 炉边传说
                     Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Visible = false;
                 }
             }
-            LeftPos = (this.Width - (game.MySelf.handCards.Count * btnHandCard1.Width + (game.MySelf.handCards.Count - 1) * Megrate)) / 2;
+            LeftPos = (this.Width - (game.MySelfInfo.handCards.Count * btnHandCard1.Width + (game.MySelfInfo.handCards.Count - 1) * Megrate)) / 2;
             for (int i = 0; i < 10; i++)
             {
-                if (i < game.MySelf.handCards.Count)
+                if (i < game.MySelfInfo.handCards.Count)
                 {
-                    ((ctlHandCard)Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0]).HandCard = game.MySelf.handCards[i];
-                    Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Tag = game.MySelf.handCards[i];
+                    ((ctlHandCard)Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0]).HandCard = game.MySelfInfo.handCards[i];
+                    Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Tag = game.MySelfInfo.handCards[i];
                     if (game.IsMyTurn) Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Enabled = true;
                     Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Visible = true;
                     Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Left = LeftPos;
@@ -215,7 +215,7 @@ namespace 炉边传说
                 }
             }
             //胜负判定
-            if (game.MySelf.RoleInfo.HealthPoint <= 0 && game.YourInfo.HealthPoint <= 0)
+            if (game.MyInfo.HealthPoint <= 0 && game.YourInfo.HealthPoint <= 0)
             {
                 MessageBox.Show("Draw Game");
                 WaitTimer.Stop();
@@ -223,7 +223,7 @@ namespace 炉边传说
             }
             else
             {
-                if (game.MySelf.RoleInfo.HealthPoint <= 0)
+                if (game.MyInfo.HealthPoint <= 0)
                 {
                     MessageBox.Show("You Lose");
                     WaitTimer.Stop();
@@ -262,11 +262,11 @@ namespace 炉边传说
             {
                 //回合开始效果
                 List<String> ActionLst = new List<string>();
-                for (int i = 0; i < game.MySelf.RoleInfo.BattleField.MinionCount; i++)
+                for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
                 {
-                    if (game.MySelf.RoleInfo.BattleField.BattleMinions[i] != null)
+                    if (game.MyInfo.BattleField.BattleMinions[i] != null)
                     {
-                        ActionLst.AddRange(game.MySelf.RoleInfo.BattleField.BattleMinions[i].回合开始(game));
+                        ActionLst.AddRange(game.MyInfo.BattleField.BattleMinions[i].回合开始(game));
                     }
                 }
                 if (ActionLst.Count != 0) Card.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), ActionLst);
@@ -331,7 +331,7 @@ namespace 炉边传说
         /// <param name="title"></param>
         private void ShowMinionInfo(string title)
         {
-            foreach (var item in game.MySelf.RoleInfo.BattleField.ShowMinions())
+            foreach (var item in game.MyInfo.BattleField.ShowMinions())
             {
                 //lstAction.Items.Add(title + "My:" + item);
             }
@@ -382,19 +382,19 @@ namespace 炉边传说
             {
                 if ((sender.GetType()) == typeof(Button))
                 {
-                    game.MySelf.RoleInfo.crystal.CurrentRemainPoint -= card.ActualCostPoint;
+                    game.MyInfo.crystal.CurrentRemainPoint -= card.ActualCostPoint;
                     game.RemoveUsedCard(card.SN);
                 }
                 else
                 {
-                    game.MySelf.RoleInfo.crystal.CurrentRemainPoint -= card.StandardCostPoint;
-                    game.MySelf.RoleInfo.IsUsedHeroAbility = true;
+                    game.MyInfo.crystal.CurrentRemainPoint -= card.StandardCostPoint;
+                    game.MyInfo.IsUsedHeroAbility = true;
                 }
                 actionlst.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +
-                             game.MySelf.RoleInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MySelf.RoleInfo.crystal.CurrentFullPoint);
+                             game.MyInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MyInfo.crystal.CurrentFullPoint);
                 //奥秘计算
                 actionlst.AddRange(game.奥秘计算(actionlst));
-                game.MySelf.ResetHandCardCost();
+                game.MySelfInfo.ResetHandCardCost(game);
                 Card.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
                 DisplayMyInfo();
             }
@@ -412,7 +412,7 @@ namespace 炉边传说
             var YourPos = SelectPanel(SelectOpt, true);
             List<String> actionlst = RunAction.Fight(game, MyPos, YourPos.Postion);
             actionlst.AddRange(game.奥秘计算(actionlst));
-            game.MySelf.ResetHandCardCost();
+            game.MySelfInfo.ResetHandCardCost(game);
             Card.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
             DisplayMyInfo();
         }

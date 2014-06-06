@@ -83,7 +83,7 @@ namespace Card
                 case EffectDefine.AbilityEffectEnum.变形:
                     if (CardAbility.FirstAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
                     {
-                        return gameManager.MySelf.RoleInfo.BattleField.MinionCount > 0;
+                        return gameManager.MyInfo.BattleField.MinionCount > 0;
                     }
                     if (CardAbility.FirstAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.对方)
                     {
@@ -92,13 +92,13 @@ namespace Card
                     if (CardAbility.FirstAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.双方)
                     {
                         return (gameManager.YourInfo.BattleField.MinionCount +
-                                gameManager.MySelf.RoleInfo.BattleField.MinionCount) > 0;
+                                gameManager.MyInfo.BattleField.MinionCount) > 0;
                     }
                     break;
                 case EffectDefine.AbilityEffectEnum.召唤:
                     if (CardAbility.FirstAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
                     {
-                        return gameManager.MySelf.RoleInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount;
+                        return gameManager.MyInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount;
                     }
                     if (CardAbility.FirstAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.对方)
                     {
@@ -107,7 +107,7 @@ namespace Card
                     if (CardAbility.FirstAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.双方)
                     {
                         return (gameManager.YourInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount) &&
-                               (gameManager.MySelf.RoleInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount);
+                               (gameManager.MyInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount);
                     }
                     break;
             }

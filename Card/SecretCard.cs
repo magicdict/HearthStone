@@ -100,14 +100,14 @@ namespace Card
                         if (actiontype == Server.ActionCode.ActionType.Summon)
                         {
                             //SUMMON#YOU#M000001#POS
-                            PointEffect.RunPointEffect(game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actionField[3]) - 1], card.AdditionInfo);
+                            PointEffect.RunPointEffect(game.MyInfo.BattleField.BattleMinions[int.Parse(actionField[3]) - 1], card.AdditionInfo);
                             ActionLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + CardUtility.strMe + Card.CardUtility.strSplitMark +
                                     actionField[3] + Card.CardUtility.strSplitMark + card.AdditionInfo);
                         }
                         else
                         {
                             //MINION#M000001#1
-                            PointEffect.RunPointEffect(game.MySelf.RoleInfo.BattleField.BattleMinions[int.Parse(actionField[2]) - 1], card.AdditionInfo);
+                            PointEffect.RunPointEffect(game.MyInfo.BattleField.BattleMinions[int.Parse(actionField[2]) - 1], card.AdditionInfo);
                             ActionLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + CardUtility.strMe + Card.CardUtility.strSplitMark +
                                     actionField[2] + Card.CardUtility.strSplitMark + card.AdditionInfo);
                         }

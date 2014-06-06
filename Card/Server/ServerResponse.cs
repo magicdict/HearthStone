@@ -112,8 +112,8 @@ namespace Card.Server
             bytes = Encoding.ASCII.GetBytes(Response);
             stream.Write(bytes, 0, bytes.Length);
             client.Close();
-            //logger.Log("Request :[" + requestType.ToString() + "]");
-            //logger.Log("Response:[" + Response.ToString() + "]");
+            logger.TextLog("Request :[" + requestType.ToString() + "]" + Request);
+            logger.TextLog("Response:[" + Response.ToString() + "]");
         }
         /// <summary>
         /// 消息类型(3位)

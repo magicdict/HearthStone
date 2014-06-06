@@ -17,7 +17,7 @@ namespace Card.Effect
             int AttackPoint = singleEffect.ActualEffectPoint;
             if (MeOrYou)
             {
-                game.MySelf.RoleInfo.AfterBeAttack(AttackPoint);
+                game.MyInfo.AfterBeAttack(AttackPoint);
             }
             else
             {
@@ -36,7 +36,7 @@ namespace Card.Effect
             int AttackPoint = singleEffect.ActualEffectPoint;
             if (MeOrYou)
             {
-                game.MySelf.RoleInfo.BattleField.BattleMinions[PosIndex].AfterBeAttack(AttackPoint);
+                game.MyInfo.BattleField.BattleMinions[PosIndex].AfterBeAttack(AttackPoint);
             }
             else
             {
