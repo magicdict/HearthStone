@@ -13,6 +13,10 @@ namespace Card.Client
         /// </summary>
         public const int MaxMinionCount = 7;
         /// <summary>
+        /// 未知
+        /// </summary>
+        public const int UnknowPos = -1;
+        /// <summary>
         /// 英雄
         /// </summary>
         public const int HeroPos = 0;
@@ -183,27 +187,6 @@ namespace Card.Client
             }
             BattleMinions[MaxMinionCount - 1] = null;
         }
-
-        /// <summary>
-        /// 触发事件
-        /// </summary>
-        /// <param name="事件"></param>
-        /// <param name="game"></param>
-        /// <returns></returns>
-        public List<String> 触发事件(CardUtility.全局事件 事件, GameManager game)
-        {
-            List<String> ActionLst = new List<string>();
-            for (int i = 0; i < BattleMinions.Length; i++)
-            {
-                var minion = BattleMinions[i];
-                if (minion != null)
-                {
-                    ActionLst.AddRange(minion.事件处理方法(事件, game));
-                }
-            }
-            return ActionLst;
-        }
-
         /// <summary>
         /// Buff的设置
         /// </summary>
@@ -260,7 +243,10 @@ namespace Card.Client
         /// <summary>
         /// 去除死去随从
         /// </summary>
-        public List<MinionCard> ClearDead()
+        /// <param name="game"></param>
+        /// <param name="MeOrYou"></param>
+        /// <returns></returns>
+        public List<MinionCard> ClearDead(GameManager game, Boolean MeOrYou)
         {
             //必须是当前的随从，不能使编号
             //如果是沉默状态的随从，无亡语效果！
@@ -279,6 +265,13 @@ namespace Card.Client
                     else
                     {
                         DeadList.Add(BattleMinions[i]);
+                        game.事件池.Add(new Card.CardUtility.全局事件()
+                        {
+                            事件类型 = CardUtility.事件类型列表.死亡,
+                            触发位置 = i + 1,
+                            触发方向 = MeOrYou ? CardUtility.TargetSelectDirectEnum.本方 : CardUtility.TargetSelectDirectEnum.对方,
+                            附加信息 = BattleMinions[i].种族.ToString()
+                        });
                     }
                 }
             }

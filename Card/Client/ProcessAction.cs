@@ -16,6 +16,20 @@ namespace Card.Client
             var actField = item.Split(CardUtility.strSplitMark.ToCharArray());
             switch (Card.Server.ActionCode.GetActionType(item))
             {
+                case ActionCode.ActionType.Card:
+                    if (actField[1] == CardUtility.strYou)
+                    {
+                        var drawCards = Card.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
+                        game.MySelfInfo.handCards.Add(Card.CardUtility.GetCardInfoBySN(drawCards[0]));
+                        game.MyInfo.HandCardCount++;
+                        game.MyInfo.RemainCardDeckCount--;
+                    }
+                    else
+                    {
+                        game.YourInfo.HandCardCount++;
+                        game.YourInfo.RemainCardDeckCount--;
+                    }
+                    break;
                 case ActionCode.ActionType.UseMinion:
                     int Pos = int.Parse(actField[2]);
                     var minion = (Card.MinionCard)Card.CardUtility.GetCardInfoBySN(actField[1]);
@@ -64,20 +78,6 @@ namespace Card.Client
                 case ActionCode.ActionType.Control:
                     game.YourInfo.BattleField.AppendToBattle(game.MyInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1].深拷贝());
                     game.MyInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1] = null;
-                    break;
-                case ActionCode.ActionType.Card:
-                    if (actField[1] == CardUtility.strYou)
-                    {
-                        var drawCards = Card.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
-                        game.MySelfInfo.handCards.Add(Card.CardUtility.GetCardInfoBySN(drawCards[0]));
-                        game.MyInfo.HandCardCount++;
-                        game.MyInfo.RemainCardDeckCount--;
-                    }
-                    else
-                    {
-                        game.YourInfo.HandCardCount++;
-                        game.YourInfo.RemainCardDeckCount--;
-                    }
                     break;
                 case ActionCode.ActionType.Summon:
                     //不会出现溢出的问题，溢出在Effect里面处理过了

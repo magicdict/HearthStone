@@ -30,7 +30,7 @@ namespace Card.Client
             switch (card.CardType)
             {
                 case CardBasicInfo.CardTypeEnum.法术:
-                    ActionCodeLst.Add(UseAbility(CardSn));
+                    ActionCodeLst.Add(ActionCode.strAbility + CardUtility.strSplitMark + CardSn);
                     //初始化 Buff效果等等
                     Card.AbilityCard ablity = (Card.AbilityCard)CardUtility.GetCardInfoBySN(CardSn);
                     //连击效果的法术修改
@@ -45,7 +45,12 @@ namespace Card.Client
                         ActionCodeLst.AddRange(ResultArg);
                         //英雄技能等的时候，不算[本方施法] 
                         if (CardSn.Substring(1, 1) == Card.AbilityCard.原生法术)
-                            game.事件池.Add(new Card.CardUtility.全局事件() { 事件类型 = CardUtility.事件类型列表.施法, 触发方向 = CardUtility.TargetSelectDirectEnum.本方 });
+                            game.事件池.Add(new Card.CardUtility.全局事件()
+                            {
+                                事件类型 = CardUtility.事件类型列表.施法,
+                                触发方向 = CardUtility.TargetSelectDirectEnum.本方,
+                                触发位置 = Card.Client.BattleFieldInfo.HeroPos
+                            });
                     }
                     else
                     {
@@ -57,12 +62,17 @@ namespace Card.Client
                     if (game.MyInfo.BattleField.MinionCount != 0) MinionPos = GetPutPos(game);
                     if (MinionPos != -1)
                     {
-                        ActionCodeLst.Add(UseMinion(CardSn, MinionPos));
+                        ActionCodeLst.Add(ActionCode.strMinion + CardUtility.strSplitMark + CardSn + CardUtility.strSplitMark + MinionPos.ToString("D1"));
                         var minion = (Card.MinionCard)card;
                         //初始化
                         minion.Init();
                         //必须在放入之前做得原因是，被放入的随从不能被触发这个事件
-                        game.事件池.Add(new Card.CardUtility.全局事件() { 事件类型 = CardUtility.事件类型列表.召唤, 附加信息 = minion.种族.ToString(), 触发位置 = MinionPos });
+                        game.事件池.Add(new Card.CardUtility.全局事件()
+                        {
+                            事件类型 = CardUtility.事件类型列表.召唤,
+                            附加信息 = minion.种族.ToString(),
+                            触发位置 = MinionPos
+                        });
                         switch (minion.战吼类型)
                         {
                             case MinionCard.战吼类型列表.默认:
@@ -102,11 +112,11 @@ namespace Card.Client
                     }
                     break;
                 case CardBasicInfo.CardTypeEnum.武器:
-                    ActionCodeLst.Add(UseWeapon(CardSn));
+                    ActionCodeLst.Add(ActionCode.strWeapon + CardUtility.strSplitMark + CardSn);
                     game.MyInfo.Weapon = (Card.WeaponCard)card;
                     break;
                 case CardBasicInfo.CardTypeEnum.奥秘:
-                    ActionCodeLst.Add(UseSecret(CardSn));
+                    ActionCodeLst.Add(ActionCode.strSecret + CardUtility.strSplitMark + CardSn);
                     game.MySelfInfo.奥秘列表.Add((Card.SecretCard)card);
                     game.MyInfo.SecretCount = game.MySelfInfo.奥秘列表.Count;
                     break;
@@ -127,7 +137,12 @@ namespace Card.Client
                         ActionCodeLst.AddRange(ResultArg);
                         //英雄技能等的时候，不算[本方施法] 
                         if (CardSn.Substring(1, 1) == Card.AbilityCard.原生法术)
-                            game.事件池.Add(new Card.CardUtility.全局事件() { 事件类型 = CardUtility.事件类型列表.施法, 触发方向 = CardUtility.TargetSelectDirectEnum.本方 });
+                            game.事件池.Add(new Card.CardUtility.全局事件()
+                            {
+                                事件类型 = CardUtility.事件类型列表.施法,
+                                触发方向 = CardUtility.TargetSelectDirectEnum.本方,
+                                触发位置 = Card.Client.BattleFieldInfo.HeroPos
+                            });
                     }
                 }
             }
@@ -138,52 +153,7 @@ namespace Card.Client
             }
             return ActionCodeLst;
         }
-        /// <summary>
-        /// 使用武器
-        /// </summary>
-        /// <param name="CardSn">卡牌号码</param>
-        /// <returns></returns>
-        public static String UseWeapon(String CardSn)
-        {
-            String actionCode = String.Empty;
-            actionCode = ActionCode.strWeapon + CardUtility.strSplitMark + CardSn;
-            return actionCode;
-        }
-        /// <summary>
-        /// 使用奥秘
-        /// </summary>
-        /// <param name="CardSn"></param>
-        /// <returns></returns>
-        public static String UseSecret(String CardSn)
-        {
-            String actionCode = String.Empty;
-            actionCode = ActionCode.strSecret + CardUtility.strSplitMark + CardSn;
-            return actionCode;
-        }
-        /// <summary>
-        /// 使用随从
-        /// </summary>
-        /// <param name="CardSn">卡牌号码</param>
-        /// <param name="Position"></param>
-        /// <returns></returns>
-        public static String UseMinion(String CardSn, int Position)
-        {
-            String actionCode = String.Empty;
-            //MINION#M000001#1
-            actionCode = ActionCode.strMinion + CardUtility.strSplitMark + CardSn + CardUtility.strSplitMark + Position.ToString("D1");
-            return actionCode;
-        }
-        /// <summary>
-        /// 使用魔法
-        /// </summary>
-        /// <param name="CardSn">卡牌号码</param>
-        /// <returns></returns>
-        public static String UseAbility(String CardSn)
-        {
-            String actionCode = String.Empty;
-            actionCode = ActionCode.strAbility + CardUtility.strSplitMark + CardSn;
-            return actionCode;
-        }
+
         /// <summary>
         /// 战斗
         /// </summary>
@@ -193,12 +163,13 @@ namespace Card.Client
         /// <returns></returns>
         public static List<String> Fight(GameManager game, int MyPos, int YourPos)
         {
-            String actionCode = String.Empty;
+            game.事件池.Clear();
             //FIGHT#1#2
-            actionCode = ActionCode.strFight + CardUtility.strSplitMark + MyPos + CardUtility.strSplitMark + YourPos;
+            String actionCode = ActionCode.strFight + CardUtility.strSplitMark + MyPos + CardUtility.strSplitMark + YourPos;
             List<String> ActionCodeLst = new List<string>();
             ActionCodeLst.Add(actionCode);
             ActionCodeLst.AddRange(game.Fight(MyPos, YourPos, false));
+            ActionCodeLst.AddRange(game.事件处理());
             return ActionCodeLst;
         }
         #endregion

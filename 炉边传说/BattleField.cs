@@ -382,6 +382,7 @@ namespace 炉边传说
             {
                 if ((sender.GetType()) == typeof(Button))
                 {
+                    actionlst.Insert(0, ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strMe);
                     game.MyInfo.crystal.CurrentRemainPoint -= card.ActualCostPoint;
                     game.RemoveUsedCard(card.SN);
                 }

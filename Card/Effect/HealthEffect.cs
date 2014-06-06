@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace Card.Effect
 {
+    /// <summary>
+    /// 治疗效果
+    /// </summary>
     public class HealthEffect : IEffectHandler
     {
         /// <summary>
@@ -18,10 +21,22 @@ namespace Card.Effect
             if (MeOrYou)
             {
                 game.MyInfo.AfterBeHealth(HealthPoint);
+                game.事件池.Add(new Card.CardUtility.全局事件()
+                {
+                    事件类型 = CardUtility.事件类型列表.治疗,
+                    触发方向 = CardUtility.TargetSelectDirectEnum.本方,
+                    触发位置 = Card.Client.BattleFieldInfo.HeroPos
+                });
             }
             else
             {
                 game.YourInfo.AfterBeHealth(HealthPoint);
+                game.事件池.Add(new Card.CardUtility.全局事件()
+                {
+                    事件类型 = CardUtility.事件类型列表.治疗,
+                    触发方向 = CardUtility.TargetSelectDirectEnum.对方,
+                    触发位置 = Card.Client.BattleFieldInfo.HeroPos
+                });
             }
         }
         /// <summary>
@@ -37,10 +52,22 @@ namespace Card.Effect
             if (MeOrYou)
             {
                 game.MyInfo.BattleField.BattleMinions[PosIndex].AfterBeHealth(HealthPoint);
+                game.事件池.Add(new Card.CardUtility.全局事件()
+                {
+                    事件类型 = CardUtility.事件类型列表.治疗,
+                    触发方向 = CardUtility.TargetSelectDirectEnum.本方,
+                    触发位置 = PosIndex + 1
+                });
             }
             else
             {
                 game.YourInfo.BattleField.BattleMinions[PosIndex].AfterBeHealth(HealthPoint);
+                game.事件池.Add(new Card.CardUtility.全局事件()
+                {
+                    事件类型 = CardUtility.事件类型列表.治疗,
+                    触发方向 = CardUtility.TargetSelectDirectEnum.对方,
+                    触发位置 = PosIndex + 1
+                });
             }
         }
     }
