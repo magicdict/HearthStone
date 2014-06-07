@@ -33,6 +33,10 @@ namespace Card.Effect
         /// </summary>
         public const String strCharge = "CHARGE";
         /// <summary>
+        /// 回合结束死亡
+        /// </summary>
+        public const String strTurnEndDead = "TURNENDDEAD";
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="myMinion"></param>
@@ -60,6 +64,9 @@ namespace Card.Effect
                 case strTaunt:
                     myMinion.Actual嘲讽 = true;
                     break;
+                case strTurnEndDead:
+                    myMinion.特殊效果 = MinionCard.特殊效果列表.回合结束死亡;
+                    break;
                 default:
                     break;
             }
@@ -86,11 +93,11 @@ namespace Card.Effect
             int HealthPoint = singleEffect.ActualEffectPoint;
             if (MeOrYou)
             {
-                RunStatusEffect(game.MyInfo.BattleField.BattleMinions[PosIndex], singleEffect.AddtionInfo);
+                RunStatusEffect(game.MyInfo.BattleField.BattleMinions[PosIndex], singleEffect.AdditionInfo);
             }
             else
             {
-                RunStatusEffect(game.YourInfo.BattleField.BattleMinions[PosIndex], singleEffect.AddtionInfo);
+                RunStatusEffect(game.YourInfo.BattleField.BattleMinions[PosIndex], singleEffect.AdditionInfo);
             }
         }
     }

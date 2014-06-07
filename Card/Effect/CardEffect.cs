@@ -17,7 +17,7 @@ namespace Card.Effect
             {
                 case CardUtility.TargetSelectDirectEnum.本方:
                     //#CARD#ME#M000001
-                    if (String.IsNullOrEmpty(singleEffect.AddtionInfo))
+                    if (String.IsNullOrEmpty(singleEffect.AdditionInfo))
                     {
                         var drawCards = Card.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
                         if (drawCards.Count == 1)
@@ -30,13 +30,13 @@ namespace Card.Effect
                     }
                     else
                     {
-                        game.MySelfInfo.handCards.Add((Card.CardUtility.GetCardInfoBySN(singleEffect.AddtionInfo)));
+                        game.MySelfInfo.handCards.Add((Card.CardUtility.GetCardInfoBySN(singleEffect.AdditionInfo)));
                         game.MyInfo.HandCardCount++;
                         Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strMe);
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.对方:
-                    if (String.IsNullOrEmpty(singleEffect.AddtionInfo))
+                    if (String.IsNullOrEmpty(singleEffect.AdditionInfo))
                     {
                         if (game.YourInfo.RemainCardDeckCount > 0)
                         {
@@ -48,11 +48,11 @@ namespace Card.Effect
                     else
                     {
                         game.YourInfo.HandCardCount++;
-                        Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark + singleEffect.AddtionInfo);
+                        Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark + singleEffect.AdditionInfo);
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.双方:
-                    if (String.IsNullOrEmpty(singleEffect.AddtionInfo))
+                    if (String.IsNullOrEmpty(singleEffect.AdditionInfo))
                     {
                         var drawCards = Card.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
                         if (drawCards.Count == 1)
@@ -65,11 +65,11 @@ namespace Card.Effect
                     }
                     else
                     {
-                        game.MySelfInfo.handCards.Add((Card.CardUtility.GetCardInfoBySN(singleEffect.AddtionInfo)));
+                        game.MySelfInfo.handCards.Add((Card.CardUtility.GetCardInfoBySN(singleEffect.AdditionInfo)));
                         game.MyInfo.HandCardCount++;
                         Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strMe);
                     }
-                    if (String.IsNullOrEmpty(singleEffect.AddtionInfo))
+                    if (String.IsNullOrEmpty(singleEffect.AdditionInfo))
                     {
                         if (game.YourInfo.RemainCardDeckCount > 0)
                         {
@@ -81,7 +81,7 @@ namespace Card.Effect
                     else
                     {
                         game.YourInfo.HandCardCount++;
-                        Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark + singleEffect.AddtionInfo);
+                        Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark + singleEffect.AdditionInfo);
                     }
                     break;
                 default:

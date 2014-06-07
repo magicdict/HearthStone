@@ -226,22 +226,22 @@ namespace Card.Effect
                 case Card.Effect.EffectDefine.AbilityEffectEnum.回复:
                     handler = new HealthEffect();
                     strResult = Card.Server.ActionCode.strHealth;
-                    strEffect = singleEffect.ActualEffectPoint.ToString();
+                    strEffect = singleEffect.ActualEffectPoint.ToString() + CardUtility.strSplitMark + singleEffect.AdditionInfo;
                     break;
                 case Card.Effect.EffectDefine.AbilityEffectEnum.状态:
                     handler = new StatusEffect();
                     strResult = Card.Server.ActionCode.strStatus;
-                    strEffect = singleEffect.AddtionInfo;
+                    strEffect = singleEffect.AdditionInfo;
                     break;
                 case Card.Effect.EffectDefine.AbilityEffectEnum.点数:
                     handler = new PointEffect();
                     strResult = Card.Server.ActionCode.strPoint;
-                    strEffect = singleEffect.AddtionInfo + CardUtility.strSplitMark + singleEffect.StandardEffectPoint;
+                    strEffect = singleEffect.AdditionInfo + CardUtility.strSplitMark + singleEffect.StandardEffectPoint;
                     break;
                 case Card.Effect.EffectDefine.AbilityEffectEnum.变形:
                     handler = new TransformEffect();
                     strResult = Card.Server.ActionCode.strTransform;
-                    strEffect = singleEffect.AddtionInfo;
+                    strEffect = singleEffect.AdditionInfo;
                     break;
             }
             strResult += Card.CardUtility.strSplitMark;

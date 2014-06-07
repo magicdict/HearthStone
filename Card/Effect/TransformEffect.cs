@@ -11,7 +11,7 @@ namespace Card.Effect
 
         void IEffectHandler.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
         {
-            var Summon = (Card.MinionCard)CardUtility.GetCardInfoBySN(singleEffect.AddtionInfo);
+            var Summon = (Card.MinionCard)CardUtility.GetCardInfoBySN(singleEffect.AdditionInfo);
             //一定要初始化，不然的话，生命值是-1；
             Summon.Init();
             if (MeOrYou)

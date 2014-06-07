@@ -77,9 +77,6 @@ namespace Card.Effect
         {
             return SelectOpt.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.指定;
         }
-        /// 攻击的时候：99表示消灭一个单位
-        /// 治疗的时候：99表示完全回复一个单位
-        /// 抽牌的时候：表示抽牌的数量
         /// <summary>
         /// 效果点数(标准)
         /// </summary>
@@ -99,7 +96,7 @@ namespace Card.Effect
         /// <summary>
         /// 附加信息
         /// </summary>
-        public String AddtionInfo;
+        public String AdditionInfo;
         /// <summary>
         /// 初始化
         /// </summary>

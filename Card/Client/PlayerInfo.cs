@@ -117,7 +117,7 @@ namespace Card.Client
             }
         }
         /// <summary>
-        /// 遇到攻击
+        /// 遇到治疗
         /// </summary>
         /// <param name="HealthPoint"></param>
         public Boolean AfterBeHealth(int HealthPoint)
@@ -125,6 +125,15 @@ namespace Card.Client
             if (LifePoint == PublicInfo.MaxHealthPoint) return false;
             LifePoint += HealthPoint;
             if (LifePoint > PublicInfo.MaxHealthPoint) LifePoint = PublicInfo.MaxHealthPoint;
+            return true;
+        }
+        /// <summary>
+        /// 遇到护甲
+        /// </summary>
+        /// <param name="PlusShieldPoint"></param>
+        public Boolean AfterBeShield(int PlusShieldPoint)
+        {
+            ShieldPoint += PlusShieldPoint; 
             return true;
         }
     }

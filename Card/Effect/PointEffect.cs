@@ -73,22 +73,22 @@ namespace Card.Effect
             {
                 if (MeOrYou)
                 {
-                    RunPointEffect(game.MyInfo.BattleField.BattleMinions[PosIndex], singleEffect.AddtionInfo, 1);
+                    RunPointEffect(game.MyInfo.BattleField.BattleMinions[PosIndex], singleEffect.AdditionInfo, 1);
                 }
                 else
                 {
-                    RunPointEffect(game.YourInfo.BattleField.BattleMinions[PosIndex], singleEffect.AddtionInfo, 1);
+                    RunPointEffect(game.YourInfo.BattleField.BattleMinions[PosIndex], singleEffect.AdditionInfo, 1);
                 }
             }
             else
             {
                 if (MeOrYou)
                 {
-                    RunPointEffect(game.MyInfo.BattleField.BattleMinions[PosIndex], singleEffect.AddtionInfo);
+                    RunPointEffect(game.MyInfo.BattleField.BattleMinions[PosIndex], singleEffect.AdditionInfo);
                 }
                 else
                 {
-                    RunPointEffect(game.YourInfo.BattleField.BattleMinions[PosIndex], singleEffect.AddtionInfo);
+                    RunPointEffect(game.YourInfo.BattleField.BattleMinions[PosIndex], singleEffect.AdditionInfo);
                 }
             }
         }

@@ -1,6 +1,7 @@
 ﻿using Card.Client;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Card.Effect
 {
@@ -17,26 +18,33 @@ namespace Card.Effect
         /// <param name="MeOrYou"></param>
         void IEffectHandler.DealHero(GameManager game, EffectDefine singleEffect, bool MeOrYou)
         {
-            int HealthPoint = singleEffect.ActualEffectPoint;
+            int ShieldPoint = int.Parse(singleEffect.AdditionInfo.Split("/".ToArray())[0]);
+            int HealthPoint = int.Parse(singleEffect.AdditionInfo.Split("/".ToArray())[1]);
             if (MeOrYou)
             {
-                game.MyInfo.AfterBeHealth(HealthPoint);
-                game.事件池.Add(new Card.CardUtility.全局事件()
+                game.MyInfo.AfterBeShield(ShieldPoint);
+                if (game.MyInfo.AfterBeHealth(HealthPoint))
                 {
-                    事件类型 = CardUtility.事件类型列表.治疗,
-                    触发方向 = CardUtility.TargetSelectDirectEnum.本方,
-                    触发位置 = Card.Client.BattleFieldInfo.HeroPos
-                });
+                    game.事件池.Add(new Card.CardUtility.全局事件()
+                    {
+                        事件类型 = CardUtility.事件类型列表.治疗,
+                        触发方向 = CardUtility.TargetSelectDirectEnum.本方,
+                        触发位置 = Card.Client.BattleFieldInfo.HeroPos
+                    });
+                }
             }
             else
             {
-                game.YourInfo.AfterBeHealth(HealthPoint);
-                game.事件池.Add(new Card.CardUtility.全局事件()
+                game.YourInfo.AfterBeShield(ShieldPoint);
+                if (game.YourInfo.AfterBeHealth(HealthPoint))
                 {
-                    事件类型 = CardUtility.事件类型列表.治疗,
-                    触发方向 = CardUtility.TargetSelectDirectEnum.对方,
-                    触发位置 = Card.Client.BattleFieldInfo.HeroPos
-                });
+                    game.事件池.Add(new Card.CardUtility.全局事件()
+                    {
+                        事件类型 = CardUtility.事件类型列表.治疗,
+                        触发方向 = CardUtility.TargetSelectDirectEnum.对方,
+                        触发位置 = Card.Client.BattleFieldInfo.HeroPos
+                    });
+                }
             }
         }
         /// <summary>

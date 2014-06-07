@@ -239,29 +239,11 @@ namespace 炉边传说
                 effect.SelectOpt.EffictTargetSelectMode = CardUtility.GetEnum<Card.CardUtility.TargetSelectModeEnum>(worksheet.Cells(rowCount, 16).Text, CardUtility.TargetSelectModeEnum.不用选择);
                 effect.SelectOpt.EffectTargetSelectDirect = CardUtility.GetEnum<Card.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 17).Text, CardUtility.TargetSelectDirectEnum.双方);
                 effect.SelectOpt.EffectTargetSelectRole = CardUtility.GetEnum<Card.CardUtility.TargetSelectRoleEnum>(worksheet.Cells(rowCount, 18).Text, CardUtility.TargetSelectRoleEnum.随从);
-
-                String 种族限制 = worksheet.Cells(rowCount, 19).Text;
-                if (!String.IsNullOrEmpty(种族限制))
-                {
-                    if (种族限制.StartsWith("非"))
-                    {
-                        effect.SelectOpt.EffectTargetSelect种族条件 = CardUtility.GetEnum<Card.CardUtility.种族Enum>(种族限制.Substring(1), CardUtility.种族Enum.无);
-                        effect.SelectOpt.EffectTargetSelect种族条件取反 = true;
-                    }
-                    else
-                    {
-                        effect.SelectOpt.EffectTargetSelect种族条件 = CardUtility.GetEnum<Card.CardUtility.种族Enum>(种族限制, CardUtility.种族Enum.无);
-                    }
-                }
-                else
-                {
-                    effect.SelectOpt.EffectTargetSelect种族条件 = CardUtility.种族Enum.无;
-                }
-
+                effect.SelectOpt.EffectTargetSelectCondition = String.IsNullOrEmpty(worksheet.Cells(rowCount, 19).Text)?String.Empty:worksheet.Cells(rowCount, 19).Text;
                 effect.StandardEffectPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 20).Text);
                 effect.StandardEffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 21).Text);
                 if (effect.StandardEffectCount == 0) effect.StandardEffectCount = 1;
-                effect.AddtionInfo = worksheet.Cells(rowCount, 22).Text;
+                effect.AdditionInfo = worksheet.Cells(rowCount, 22).Text;
                 Ability.CardAbility.FirstAbilityDefine = effect;
                 Ability.CardAbility.JoinType = CardUtility.GetEnum<Card.CardUtility.EffectJoinType>(worksheet.Cells(rowCount, 23).Text, Card.CardUtility.EffectJoinType.None);
                 Boolean HasSecond = false;
@@ -281,28 +263,10 @@ namespace 炉边传说
                     effect2.SelectOpt.EffictTargetSelectMode = CardUtility.GetEnum<Card.CardUtility.TargetSelectModeEnum>(worksheet.Cells(rowCount, 26).Text, CardUtility.TargetSelectModeEnum.不用选择);
                     effect2.SelectOpt.EffectTargetSelectDirect = CardUtility.GetEnum<Card.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 27).Text, CardUtility.TargetSelectDirectEnum.双方);
                     effect2.SelectOpt.EffectTargetSelectRole = CardUtility.GetEnum<Card.CardUtility.TargetSelectRoleEnum>(worksheet.Cells(rowCount, 28).Text, CardUtility.TargetSelectRoleEnum.随从);
-
-                    种族限制 = worksheet.Cells(rowCount, 29).Text;
-                    if (!String.IsNullOrEmpty(种族限制))
-                    {
-                        if (种族限制.StartsWith("非"))
-                        {
-                            effect.SelectOpt.EffectTargetSelect种族条件 = CardUtility.GetEnum<Card.CardUtility.种族Enum>(种族限制.Substring(1), CardUtility.种族Enum.无);
-                            effect.SelectOpt.EffectTargetSelect种族条件取反 = true;
-                        }
-                        else
-                        {
-                            effect.SelectOpt.EffectTargetSelect种族条件 = CardUtility.GetEnum<Card.CardUtility.种族Enum>(种族限制, CardUtility.种族Enum.无);
-                        }
-                    }
-                    else
-                    {
-                        effect.SelectOpt.EffectTargetSelect种族条件 = CardUtility.种族Enum.无;
-                    }
-                    
+                    effect2.SelectOpt.EffectTargetSelectCondition = String.IsNullOrEmpty(worksheet.Cells(rowCount, 29).Text) ? String.Empty : worksheet.Cells(rowCount, 29).Text;
                     effect2.StandardEffectPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 30).Text);
                     effect2.StandardEffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 31).Text);
-                    effect2.AddtionInfo = worksheet.Cells(rowCount, 32).Text;
+                    effect2.AdditionInfo = worksheet.Cells(rowCount, 32).Text;
                     Ability.CardAbility.SecondAbilityDefine = effect2;
                 }
                 Ability.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 33).Text);

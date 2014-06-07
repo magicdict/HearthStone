@@ -142,19 +142,20 @@ namespace Card.Client
                 case Card.Server.ActionCode.strHealth:
                     handler = new HealthEffect();
                     SingleEffect.ActualEffectPoint = int.Parse(actField[3]);
+                    if (actField.Length == 5) SingleEffect.AdditionInfo = actField[4];
                     break;
                 case Card.Server.ActionCode.strStatus:
                     handler = new StatusEffect();
-                    SingleEffect.AddtionInfo = actField[3];
+                    SingleEffect.AdditionInfo = actField[3];
                     break;
                 case Card.Server.ActionCode.strPoint:
                     handler = new PointEffect();
-                    SingleEffect.AddtionInfo = actField[3];
+                    SingleEffect.AdditionInfo = actField[3];
                     SingleEffect.StandardEffectPoint = int.Parse(actField[4]);
                     break;
                 case Card.Server.ActionCode.strTransform:
                     handler = new TransformEffect();
-                    SingleEffect.AddtionInfo = actField[3];
+                    SingleEffect.AdditionInfo = actField[3];
                     break;
             }
             if (actField[1] == CardUtility.strYou)

@@ -130,6 +130,10 @@ namespace Card
             /// 帝王眼镜蛇:消灭任何受到该随从伤害的随从。
             /// </summary>
             攻击必死,
+            /// <summary>
+            /// 回合结束时候死亡
+            /// </summary>
+            回合结束死亡
         }
         #region"属性"
 
@@ -385,6 +389,7 @@ namespace Card
         {
             if (冰冻状态 != CardUtility.EffectTurn.无效果) return false;
             if (Actual不能攻击) return false;
+            if (TotalAttack() == 0) return false;
             return RemainAttactTimes > 0 && AttactStatus == 攻击状态.可攻击;
         }
 

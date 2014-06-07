@@ -77,7 +77,8 @@ namespace Card.Client
             MyInfo.crystal.CurrentRemainPoint = 5;
             YourInfo.crystal.CurrentFullPoint = 5;
             YourInfo.crystal.CurrentRemainPoint = 5;
-            HandCard.Add("M000054");
+            HandCard.Add("A000007");
+            HandCard.Add("A000060");
             //DEBUG END
             //英雄技能：奥术飞弹
             MyInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A200001");
@@ -154,14 +155,21 @@ namespace Card.Client
             if (IsMyTurn)
             {
                 //对手回合加成属性的去除
-                for (int i = 0; i < YourInfo.BattleField.MinionCount; i++)
+                int ExistMinionCount = YourInfo.BattleField.MinionCount;
+                for (int i = 0; i < ExistMinionCount; i++)
                 {
                     if (YourInfo.BattleField.BattleMinions[i] != null)
                     {
                         YourInfo.BattleField.BattleMinions[i].本回合生命力加成 = 0;
                         YourInfo.BattleField.BattleMinions[i].本回合攻击力加成 = 0;
+                        if (YourInfo.BattleField.BattleMinions[i].特殊效果 == MinionCard.特殊效果列表.回合结束死亡)
+                        {
+                            YourInfo.BattleField.BattleMinions[i] = null;
+                        }
                     }
                 }
+                YourInfo.BattleField.ClearDead(this, false);
+
                 //魔法水晶的增加
                 MyInfo.crystal.NewTurn();
                 //过载的清算
@@ -248,13 +256,27 @@ namespace Card.Client
             //调用这个方法的时候，IsMyTurn肯定是True
             //回合结束效果
             List<String> ActionLst = new List<string>();
-            for (int i = 0; i < MyInfo.BattleField.MinionCount; i++)
+            int ExistMinionCount = MyInfo.BattleField.MinionCount;
+            //不能直接使用 MinionCount ，这个会在下面的逻辑里面变化的！
+            for (int i = 0; i < ExistMinionCount; i++)
             {
                 if (MyInfo.BattleField.BattleMinions[i] != null)
                 {
                     ActionLst.AddRange(MyInfo.BattleField.BattleMinions[i].回合结束(this));
+                    if (MyInfo.BattleField.BattleMinions[i].特殊效果 == MinionCard.特殊效果列表.回合结束死亡)
+                    {
+                        MyInfo.BattleField.BattleMinions[i] = null;
+                        事件池.Add(new CardUtility.全局事件()
+                        {
+                            事件类型 = CardUtility.事件类型列表.死亡,
+                            触发方向 = CardUtility.TargetSelectDirectEnum.本方,
+                            触发位置 = i + 1
+                        });
+                    }
                 }
             }
+            ActionLst.AddRange(Settle());
+            ActionLst.AddRange(事件处理());
             return ActionLst;
         }
 

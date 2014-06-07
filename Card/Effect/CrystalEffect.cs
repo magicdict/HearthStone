@@ -13,7 +13,7 @@ namespace Card.Effect
         public static List<string> RunEffect(EffectDefine singleEffect, GameManager game)
         {
             List<string> Result = new List<string>();
-            string[] Op = singleEffect.AddtionInfo.Split("/".ToCharArray());
+            string[] Op = singleEffect.AdditionInfo.Split("/".ToCharArray());
             int point = 0;
             //±N/±N	增加减少 可用水晶 / 增加减少 空水晶
             //可用水晶

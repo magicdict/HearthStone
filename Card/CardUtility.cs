@@ -265,14 +265,9 @@ namespace Card
             /// </summary>
             public CardUtility.TargetSelectDirectEnum EffectTargetSelectDirect;
             /// <summary>
-            /// 
+            /// 法术对象选择条件
             /// </summary>
-            public CardUtility.种族Enum EffectTargetSelect种族条件;
-            /// <summary>
-            /// 种族限制 是否要取反
-            /// （为了非某个种族的表达）
-            /// </summary>
-            public Boolean EffectTargetSelect种族条件取反;
+            public String EffectTargetSelectCondition;
         }
         /// <summary>
         /// 符合种族条件
@@ -280,19 +275,30 @@ namespace Card
         /// <param name="minion"></param>
         /// <param name="SelectOpt"></param>
         /// <returns></returns>
-        public static Boolean 符合种族条件(Card.MinionCard minion, SelectOption SelectOpt)
+        public static Boolean 符合选择条件(Card.MinionCard minion, SelectOption SelectOpt)
         {
-            if (SelectOpt.EffectTargetSelect种族条件 == 种族Enum.无) return true;
-            if (SelectOpt.EffectTargetSelect种族条件取反)
+            String strCondition = SelectOpt.EffectTargetSelectCondition;
+            if (String.IsNullOrEmpty(strCondition)) return true;
+            foreach (var 种族名称 in Enum.GetNames(typeof(种族Enum)))
             {
-                return SelectOpt.EffectTargetSelect种族条件 != minion.种族;
+                if (种族名称 == strCondition)
+                {
+                    return strCondition == minion.种族.ToString();
+                }
+                if (("非" + 种族名称) == strCondition)
+                {
+                    return strCondition != minion.种族.ToString();
+                }
             }
-            else
+            switch (strCondition.Substring(1,1))
             {
-                return SelectOpt.EffectTargetSelect种族条件 == minion.种族;
+                case "+":
+                    return minion.实际攻击力 >= int.Parse(strCondition.Substring(0, 1));
+                case "-":
+                    return minion.实际攻击力 <= int.Parse(strCondition.Substring(0, 1));
             }
+            return true;
         }
-
         /// <summary>
         /// 目标选择角色
         /// </summary>
