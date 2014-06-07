@@ -215,7 +215,7 @@ namespace 炉边传说
                 }
             }
             //胜负判定
-            if (game.MyInfo.HealthPoint <= 0 && game.YourInfo.HealthPoint <= 0)
+            if (game.MyInfo.LifePoint <= 0 && game.YourInfo.LifePoint <= 0)
             {
                 MessageBox.Show("Draw Game");
                 WaitTimer.Stop();
@@ -223,13 +223,13 @@ namespace 炉边传说
             }
             else
             {
-                if (game.MyInfo.HealthPoint <= 0)
+                if (game.MyInfo.LifePoint <= 0)
                 {
                     MessageBox.Show("You Lose");
                     WaitTimer.Stop();
                     this.Close();
                 }
-                if (game.YourInfo.HealthPoint <= 0)
+                if (game.YourInfo.LifePoint <= 0)
                 {
                     MessageBox.Show("You Win");
                     WaitTimer.Stop();

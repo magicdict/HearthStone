@@ -51,23 +51,27 @@ namespace Card.Effect
             int AttackPoint = singleEffect.ActualEffectPoint;
             if (MeOrYou)
             {
-                game.MyInfo.BattleField.BattleMinions[PosIndex].AfterBeAttack(AttackPoint);
-                game.事件池.Add(new Card.CardUtility.全局事件()
+                if (game.MyInfo.BattleField.BattleMinions[PosIndex].AfterBeAttack(AttackPoint))
                 {
-                    事件类型 = CardUtility.事件类型列表.受伤,
-                    触发方向 = CardUtility.TargetSelectDirectEnum.本方,
-                    触发位置 = PosIndex + 1
-                });
+                    game.事件池.Add(new Card.CardUtility.全局事件()
+                    {
+                        事件类型 = CardUtility.事件类型列表.受伤,
+                        触发方向 = CardUtility.TargetSelectDirectEnum.本方,
+                        触发位置 = PosIndex + 1
+                    });
+                }
             }
             else
             {
-                game.YourInfo.BattleField.BattleMinions[PosIndex].AfterBeAttack(AttackPoint);
-                game.事件池.Add(new Card.CardUtility.全局事件()
+                if (game.YourInfo.BattleField.BattleMinions[PosIndex].AfterBeAttack(AttackPoint))
                 {
-                    事件类型 = CardUtility.事件类型列表.受伤,
-                    触发方向 = CardUtility.TargetSelectDirectEnum.对方,
-                    触发位置 = PosIndex + 1
-                });
+                    game.事件池.Add(new Card.CardUtility.全局事件()
+                    {
+                        事件类型 = CardUtility.事件类型列表.受伤,
+                        触发方向 = CardUtility.TargetSelectDirectEnum.对方,
+                        触发位置 = PosIndex + 1
+                    });
+                }
             }
         }
     }

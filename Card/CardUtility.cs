@@ -64,7 +64,7 @@ namespace Card
                 switch (info.CardType)
                 {
                     case CardBasicInfo.CardTypeEnum.随从:
-                        Status.AppendLine("标准攻击力：" + ((Card.MinionCard)info).StandardAttackPoint.ToString());
+                        Status.AppendLine("标准攻击力：" + ((Card.MinionCard)info).标准攻击力.ToString());
                         Status.AppendLine("标准生命值：" + ((Card.MinionCard)info).标准生命值上限.ToString());
                         break;
                     case CardBasicInfo.CardTypeEnum.武器:

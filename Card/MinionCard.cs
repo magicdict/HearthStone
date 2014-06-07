@@ -36,8 +36,17 @@ namespace Card
         /// </summary>
         public enum 攻击状态
         {
+            /// <summary>
+            /// 新上场的随从
+            /// </summary>
             准备中,
+            /// <summary>
+            /// 可以攻击
+            /// </summary>
             可攻击,
+            /// <summary>
+            /// 已经攻击完毕
+            /// </summary>
             攻击完毕
         }
         /// <summary>
@@ -107,18 +116,36 @@ namespace Card
             /// </summary>
             自身,
         }
-
+        /// <summary>
+        /// 特殊效果列表
+        /// </summary>
+        public enum 特殊效果列表
+        {
+            无效果,
+            /// <summary>
+            /// 古拉巴什狂暴者:每当该随从受到伤害时，获得+3攻击力。
+            /// </summary>
+            持续激怒,
+            /// <summary>
+            /// 帝王眼镜蛇:消灭任何受到该随从伤害的随从。
+            /// </summary>
+            攻击必死,
+        }
         #region"属性"
 
         #region"设计时状态"
         /// <summary>
         /// 
         /// </summary>
+        public 特殊效果列表 特殊效果 = 特殊效果列表.无效果;
+        /// <summary>
+        /// 种族
+        /// </summary>
         public CardUtility.种族Enum 种族 = CardUtility.种族Enum.无;
         /// <summary>
         /// 攻击力（标准）
         /// </summary>
-        public int StandardAttackPoint = -1;
+        public int 标准攻击力 = -1;
         /// <summary>
         /// 体力（标准）
         /// </summary>
@@ -283,13 +310,25 @@ namespace Card
         [XmlIgnore]
         public List<Buff> 受战地效果 = new List<Buff>();
         #endregion
+
+
+        #region"回合效果"
+        /// <summary>
+        /// 
+        /// </summary>
+        public int 本回合攻击力加成 = 0;
+        /// <summary>
+        /// 
+        /// </summary>
+        public int 本回合生命力加成 = 0;
+        #endregion
         /// <summary>
         /// 设置初始状态
         /// </summary>
         public new void Init()
         {
             //将运行时状态设置为设计时状态
-            this.实际攻击力 = this.StandardAttackPoint;
+            this.实际攻击力 = this.标准攻击力;
             this.ActualCostPoint = this.StandardCostPoint;
             this.实际生命值上限 = this.标准生命值上限;
             this.实际生命值 = this.标准生命值上限;
@@ -365,7 +404,9 @@ namespace Card
             {
                 if (!String.IsNullOrEmpty(激怒效果)) rtnAttack += int.Parse(激怒效果);
             }
-            return 实际攻击力;
+            rtnAttack += 本回合攻击力加成;
+            if (特殊效果 == 特殊效果列表.攻击必死 && !Is沉默Status) rtnAttack = 999;
+            return rtnAttack;
         }
         /// <summary>
         /// 实际生命值上限
@@ -373,12 +414,12 @@ namespace Card
         /// <returns>包含了光环效果</returns>
         public int 合计生命值上限()
         {
-            int BuffAct = 0;
+            int BuffLife = 0;
             foreach (var buff in 受战地效果)
             {
-                BuffAct += int.Parse(buff.BuffInfo.Split("/".ToCharArray())[1]);
+                BuffLife += int.Parse(buff.BuffInfo.Split("/".ToCharArray())[1]);
             }
-            return 标准生命值上限 + BuffAct;
+            return 标准生命值上限 + BuffLife + 本回合生命力加成;
         }
         /// <summary>
         /// 生存状态
@@ -455,11 +496,13 @@ namespace Card
             //回合结束效果
             if (回合结束效果 != String.Empty && !Is沉默Status)
             {
-                var 战吼Result = RunAction.StartAction(game, 回合结束效果);
+                var 回合结束Result = RunAction.StartAction(game, 回合结束效果);
                 //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
-                战吼Result.RemoveAt(0);
-                ActionCodeLst.AddRange(战吼Result);
+                回合结束Result.RemoveAt(0);
+                ActionCodeLst.AddRange(回合结束Result);
             }
+            本回合生命力加成 = 0;
+            本回合攻击力加成 = 0;
             return ActionCodeLst;
         }
         /// <summary>
@@ -476,7 +519,7 @@ namespace Card
         /// <summary>
         /// 攻击后
         /// </summary>
-        public void AfterAttack(Boolean 被动攻击)
+        public void AfterDoAttack(Boolean 被动攻击)
         {
             //失去潜行
             if (!被动攻击)
@@ -487,35 +530,56 @@ namespace Card
             }
         }
         /// <summary>
-        /// 被攻击后
+        /// 被攻击
         /// </summary>
-        public void AfterBeAttack(int AttackPoint)
+        /// <returns>是否产生实际伤害</returns>
+        public Boolean AfterBeAttack(int AttackPoint)
         {
-            if (!Is圣盾Status) 实际生命值 -= AttackPoint;
+            if (Is圣盾Status)
+            {
+                Is圣盾Status = false;
+                return false;
+            }
+            else
+            {
+                实际生命值 -= AttackPoint;
+                Is圣盾Status = false;
+            }
             //失去圣盾
-            Is圣盾Status = false;
             if (AttackPoint > 0)
             {
                 受过伤害 = true;
                 if (!String.IsNullOrEmpty(激怒效果)) Is激怒Status = true;
+                if (特殊效果 == 特殊效果列表.持续激怒 && !Is沉默Status) 实际攻击力 += 3;
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
         /// <summary>
         /// 被治疗
         /// </summary>
         /// <param name="HealthPoint"></param>
-        public void AfterBeHealth(int HealthPoint)
+        /// <returns>是否产生实际治疗作用</returns>
+        public Boolean AfterBeHealth(int HealthPoint)
         {
+            if (实际生命值 == 实际生命值上限) return false;
             实际生命值 += HealthPoint;
             if (实际生命值 > 实际生命值上限) 实际生命值 = 实际生命值上限;
             //取消风怒
             if (实际生命值 == 实际生命值上限) Is激怒Status = false;
+            return true;
         }
         /// <summary>
-        /// 
+        /// 事件处理方法
         /// </summary>
         /// <param name="事件"></param>
-        public List<String> 事件处理方法(Card.CardUtility.全局事件 事件, GameManager game)
+        /// <param name="game"></param>
+        /// <param name="MyPos"></param>
+        /// <returns></returns>
+        public List<String> 事件处理方法(Card.CardUtility.全局事件 事件, GameManager game, String MyPos)
         {
             List<String> ActionLst = new List<string>();
             if (!Is沉默Status && 事件.事件类型 == 自身事件.事件类型)
@@ -533,6 +597,7 @@ namespace Card
                 else
                 {
                     Card.Effect.PointEffect.RunPointEffect(this, 自身事件.事件效果);
+                    ActionLst.Add(Card.Server.ActionCode.strPoint + CardUtility.strSplitMark + MyPos + CardUtility.strSplitMark + 自身事件.事件效果);
                 }
             }
             return ActionLst;

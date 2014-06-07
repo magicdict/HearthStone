@@ -145,7 +145,7 @@ namespace 炉边传说
                 Minion.种族 = CardUtility.GetEnum<Card.CardUtility.种族Enum>(worksheet.Cells(rowCount, 6).Text, Card.CardUtility.种族Enum.无);
                 Minion.StandardCostPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
 
-                Minion.StandardAttackPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 8).Text);
+                Minion.标准攻击力 = CardUtility.GetInt(worksheet.Cells(rowCount, 8).Text);
                 Minion.标准生命值上限 = CardUtility.GetInt(worksheet.Cells(rowCount, 9).Text);
                 Minion.Rare = CardUtility.GetEnum<Card.CardBasicInfo.稀有程度>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度.白色);
                 Minion.IsCardReady = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
@@ -188,6 +188,7 @@ namespace 炉边传说
                 Minion.自身事件.事件效果 = worksheet.Cells(rowCount, 34).Text;
                 Minion.自身事件.触发方向 = CardUtility.GetEnum<Card.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 35).Text, Card.CardUtility.TargetSelectDirectEnum.本方);
                 Minion.自身事件.附加信息 = worksheet.Cells(rowCount, 36).Text;
+                Minion.特殊效果 = CardUtility.GetEnum<Card.MinionCard.特殊效果列表>(worksheet.Cells(rowCount, 37).Text, Card.MinionCard.特殊效果列表.无效果);
 
                 switch (target)
                 {

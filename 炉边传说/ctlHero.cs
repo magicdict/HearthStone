@@ -10,7 +10,7 @@ namespace 炉边传说
         {
             set
             {
-                lblHealthPoint.Text = value.HealthPoint.ToString();
+                lblHealthPoint.Text = value.LifePoint.ToString();
                 if (value.ShieldPoint == 0)
                 {
                     lblShieldPoint.Visible = false;

@@ -24,7 +24,7 @@ namespace Card.Client
         /// <summary>
         /// 生命力
         /// </summary>
-        public int HealthPoint = 30;
+        public int LifePoint = 30;
         /// <summary>
         /// 护盾
         /// </summary>
@@ -86,7 +86,7 @@ namespace Card.Client
             StringBuilder Status = new StringBuilder();
             Status.AppendLine("Hero Info:");
             Status.AppendLine("Crystal：" + crystal.CurrentRemainPoint + "/" + crystal.CurrentFullPoint);
-            Status.AppendLine("HealthPoint：" + HealthPoint);
+            Status.AppendLine("HealthPoint：" + LifePoint);
             Status.AppendLine("RemainCardDeckCount：" + RemainCardDeckCount);
             return Status.ToString();
         }
@@ -94,33 +94,38 @@ namespace Card.Client
         /// 遇到攻击
         /// </summary>
         /// <param name="AttackPoint"></param>
-        public void AfterBeAttack(int AttackPoint)
+        public Boolean AfterBeAttack(int AttackPoint)
         {
             if (ShieldPoint > 0)
             {
                 if (ShieldPoint >= AttackPoint)
                 {
                     ShieldPoint -= AttackPoint;
+                    return false;
                 }
                 else
                 {
-                    HealthPoint -= (AttackPoint - ShieldPoint);
+                    LifePoint -= (AttackPoint - ShieldPoint);
                     ShieldPoint = 0;
+                    return true;
                 }
             }
             else
             {
-                HealthPoint -= AttackPoint;
+                LifePoint -= AttackPoint;
+                return true;
             }
         }
         /// <summary>
         /// 遇到攻击
         /// </summary>
         /// <param name="HealthPoint"></param>
-        public void AfterBeHealth(int HealthPoint)
+        public Boolean AfterBeHealth(int HealthPoint)
         {
-            HealthPoint += HealthPoint;
-            if (HealthPoint > PublicInfo.MaxHealthPoint) HealthPoint = PublicInfo.MaxHealthPoint;
+            if (LifePoint == PublicInfo.MaxHealthPoint) return false;
+            LifePoint += HealthPoint;
+            if (LifePoint > PublicInfo.MaxHealthPoint) LifePoint = PublicInfo.MaxHealthPoint;
+            return true;
         }
     }
     /// <summary>

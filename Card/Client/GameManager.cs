@@ -77,10 +77,7 @@ namespace Card.Client
             MyInfo.crystal.CurrentRemainPoint = 5;
             YourInfo.crystal.CurrentFullPoint = 5;
             YourInfo.crystal.CurrentRemainPoint = 5;
-
-            HandCard.Add("M000024");
-            HandCard.Add("M000115");
-
+            HandCard.Add("M000054");
             //DEBUG END
             //英雄技能：奥术飞弹
             MyInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A200001");
@@ -156,6 +153,15 @@ namespace Card.Client
         {
             if (IsMyTurn)
             {
+                //对手回合加成属性的去除
+                for (int i = 0; i < YourInfo.BattleField.MinionCount; i++)
+                {
+                    if (YourInfo.BattleField.BattleMinions[i] != null)
+                    {
+                        YourInfo.BattleField.BattleMinions[i].本回合生命力加成 = 0;
+                        YourInfo.BattleField.BattleMinions[i].本回合攻击力加成 = 0;
+                    }
+                }
                 //魔法水晶的增加
                 MyInfo.crystal.NewTurn();
                 //过载的清算
@@ -387,7 +393,7 @@ namespace Card.Client
                 else
                 {
                     //攻击次数的清算,潜行等去除(如果不是被攻击方的处理)
-                    MyInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterAttack(被动攻击);
+                    MyInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterDoAttack(被动攻击);
                 }
             }
             //伤害计算(本方)
@@ -397,32 +403,69 @@ namespace Card.Client
             if (被攻击方Pos != BattleFieldInfo.HeroPos)
             {
                 YourAttackPoint = YourInfo.BattleField.BattleMinions[被攻击方Pos - 1].TotalAttack();
-                MyInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterBeAttack(YourAttackPoint);
-                事件池.Add(new Card.CardUtility.全局事件()
+            }
+            if (攻击方Pos != BattleFieldInfo.HeroPos)
+            {
+                //圣盾不引发伤害事件
+                if (MyInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterBeAttack(YourAttackPoint))
                 {
-                    事件类型 = CardUtility.事件类型列表.受伤,
-                    触发方向 = CardUtility.TargetSelectDirectEnum.本方,
-                    触发位置 = 攻击方Pos
-                });
+                    事件池.Add(new Card.CardUtility.全局事件()
+                    {
+                        事件类型 = CardUtility.事件类型列表.受伤,
+                        触发方向 = CardUtility.TargetSelectDirectEnum.本方,
+                        触发位置 = 攻击方Pos
+                    });
+                }
+            }
+            else
+            {
+                //护甲不引发伤害事件
+                if (MyInfo.AfterBeAttack(YourAttackPoint))
+                {
+                    事件池.Add(new Card.CardUtility.全局事件()
+                    {
+                        事件类型 = CardUtility.事件类型列表.受伤,
+                        触发方向 = CardUtility.TargetSelectDirectEnum.本方,
+                        触发位置 = BattleFieldInfo.HeroPos
+                    });
+                }
             }
             //伤害计算(对方)
             var MyAttackPoint = 0;
             if (攻击方Pos != BattleFieldInfo.HeroPos)
             {
                 MyAttackPoint = MyInfo.BattleField.BattleMinions[攻击方Pos - 1].TotalAttack();
-                YourInfo.BattleField.BattleMinions[被攻击方Pos - 1].AfterBeAttack(MyAttackPoint);
-                事件池.Add(new Card.CardUtility.全局事件()
-                {
-                    事件类型 = CardUtility.事件类型列表.受伤,
-                    触发方向 = CardUtility.TargetSelectDirectEnum.对方,
-                    触发位置 = 被攻击方Pos
-                });
             }
             else
             {
                 if (MyInfo.Weapon != null) MyAttackPoint = MyInfo.Weapon.ActualAttackPoint;
-                YourInfo.AfterBeAttack(MyAttackPoint);
             }
+            if (被攻击方Pos != BattleFieldInfo.HeroPos)
+            {
+                if (YourInfo.BattleField.BattleMinions[被攻击方Pos - 1].AfterBeAttack(MyAttackPoint))
+                {
+                    事件池.Add(new Card.CardUtility.全局事件()
+                    {
+                        事件类型 = CardUtility.事件类型列表.受伤,
+                        触发方向 = CardUtility.TargetSelectDirectEnum.对方,
+                        触发位置 = 被攻击方Pos
+                    });
+                }
+            }
+            else
+            {
+                //护甲不引发伤害事件
+                if (YourInfo.AfterBeAttack(MyAttackPoint))
+                {
+                    事件池.Add(new Card.CardUtility.全局事件()
+                    {
+                        事件类型 = CardUtility.事件类型列表.受伤,
+                        触发方向 = CardUtility.TargetSelectDirectEnum.对方,
+                        触发位置 = BattleFieldInfo.HeroPos
+                    });
+                }
+            }
+
             //每次操作后进行一次清算
             if (!被动攻击)
             {
@@ -514,8 +557,9 @@ namespace Card.Client
         public List<String> 事件处理()
         {
             List<String> Result = new List<string>();
-            foreach (CardUtility.全局事件 事件 in 事件池)
+            for (int j = 0; j < 事件池.Count; j++)
             {
+                CardUtility.全局事件 事件 = 事件池[j];
                 for (int i = 0; i < MyInfo.BattleField.MinionCount; i++)
                 {
                     if (事件.事件类型 == CardUtility.事件类型列表.召唤 &&
@@ -526,12 +570,21 @@ namespace Card.Client
                     }
                     else
                     {
-                        MyInfo.BattleField.BattleMinions[i].事件处理方法(事件, this);
+                        Result.AddRange(MyInfo.BattleField.BattleMinions[i].事件处理方法(事件, this, CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString()));
                     }
+                }
+                //转换触发方向，对方触发事件？结果是否传送？传送时候要改变strMe和strYou！
+                if (事件.触发方向 == CardUtility.TargetSelectDirectEnum.本方)
+                {
+                    事件.触发方向 = CardUtility.TargetSelectDirectEnum.对方;
+                }
+                else
+                {
+                    事件.触发方向 = CardUtility.TargetSelectDirectEnum.本方;
                 }
                 for (int i = 0; i < YourInfo.BattleField.MinionCount; i++)
                 {
-                    YourInfo.BattleField.BattleMinions[i].事件处理方法(事件, this);
+                    YourInfo.BattleField.BattleMinions[i].事件处理方法(事件, this, CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString());
                 }
             }
             return Result;

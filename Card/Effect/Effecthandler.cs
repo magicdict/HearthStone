@@ -236,7 +236,7 @@ namespace Card.Effect
                 case Card.Effect.EffectDefine.AbilityEffectEnum.点数:
                     handler = new PointEffect();
                     strResult = Card.Server.ActionCode.strPoint;
-                    strEffect = singleEffect.AddtionInfo;
+                    strEffect = singleEffect.AddtionInfo + CardUtility.strSplitMark + singleEffect.StandardEffectPoint;
                     break;
                 case Card.Effect.EffectDefine.AbilityEffectEnum.变形:
                     handler = new TransformEffect();

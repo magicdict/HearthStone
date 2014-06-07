@@ -19,10 +19,19 @@ namespace Card.Client
                 case ActionCode.ActionType.Card:
                     if (actField[1] == CardUtility.strYou)
                     {
-                        var drawCards = Card.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
-                        game.MySelfInfo.handCards.Add(Card.CardUtility.GetCardInfoBySN(drawCards[0]));
-                        game.MyInfo.HandCardCount++;
-                        game.MyInfo.RemainCardDeckCount--;
+                        if (actField.Length == 3)
+                        {
+                            //如果有第三参数，则获得指定手牌
+                            game.MySelfInfo.handCards.Add(Card.CardUtility.GetCardInfoBySN(actField[2]));
+                            game.MyInfo.HandCardCount++;
+                        }
+                        else
+                        {
+                            var drawCards = Card.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
+                            game.MySelfInfo.handCards.Add(Card.CardUtility.GetCardInfoBySN(drawCards[0]));
+                            game.MyInfo.HandCardCount++;
+                            game.MyInfo.RemainCardDeckCount--;
+                        }
                     }
                     else
                     {
@@ -113,7 +122,11 @@ namespace Card.Client
             //由法术或者攻击发动放将结果发送给接受方
             game.Settle();
         }
-
+        /// <summary>
+        /// 运行效果
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="actField"></param>
         private static void RunNormalEffect(GameManager game, string[] actField)
         {
             //ATTACK#ME#POS#AP
@@ -137,6 +150,7 @@ namespace Card.Client
                 case Card.Server.ActionCode.strPoint:
                     handler = new PointEffect();
                     SingleEffect.AddtionInfo = actField[3];
+                    SingleEffect.StandardEffectPoint = int.Parse(actField[4]);
                     break;
                 case Card.Server.ActionCode.strTransform:
                     handler = new TransformEffect();

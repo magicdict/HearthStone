@@ -31,7 +31,7 @@ namespace 炉边传说
                         lblHealthPoint.Visible = true;
                         lblHealthPoint.Text = ((Card.MinionCard)value).标准生命值上限.ToString();
                         lblAttackPoint.Visible = true;
-                        lblAttackPoint.Text = ((Card.MinionCard)value).StandardAttackPoint.ToString();
+                        lblAttackPoint.Text = ((Card.MinionCard)value).标准攻击力.ToString();
                         break;
                     case Card.CardBasicInfo.CardTypeEnum.法术:
                         lblHealthPoint.Visible = false;
