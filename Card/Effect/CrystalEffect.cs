@@ -10,7 +10,7 @@ namespace Card.Effect
         /// </summary>
         /// <param name="role"></param>
         /// <param name="Ability"></param>
-        public static List<string> RunEffect(EffectDefine singleEffect, GameManager game)
+        public static List<string> RunEffect(AtomicEffectDefine singleEffect, GameManager game)
         {
             List<string> Result = new List<string>();
             string[] Op = singleEffect.AdditionInfo.Split("/".ToCharArray());
@@ -73,11 +73,13 @@ namespace Card.Effect
             //Crystal#ME#4#4
             if (singleEffect.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
             {
-                Result.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark + game.MyInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MyInfo.crystal.CurrentFullPoint);
+                Result.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark + 
+                    game.MyInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MyInfo.crystal.CurrentFullPoint);
             }
             else
             {
-                Result.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark + game.YourInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.YourInfo.crystal.CurrentFullPoint);
+                Result.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark + 
+                    game.YourInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.YourInfo.crystal.CurrentFullPoint);
             }
             return Result;
         }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Reflection;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -172,6 +171,10 @@ namespace Card
         /// 分隔符号(数组)
         /// </summary>
         public const String strSplitArrayMark = "|";
+        /// <summary>
+        /// 最大值
+        /// </summary>
+        public const int Max = 999;
         #endregion
         #region"枚举值"
         /// <summary>
@@ -227,6 +230,10 @@ namespace Card
             /// 指定
             /// </summary>
             指定,
+            /// <summary>
+            /// 单个目标 + 全体的模式
+            /// </summary>
+            横扫
         }
         /// <summary>
         /// 目标选择方向
@@ -247,7 +254,7 @@ namespace Card
             双方
         }
         /// <summary>
-        /// 
+        /// 选择器
         /// </summary>
         [Serializable]
         public struct SelectOption
@@ -320,26 +327,6 @@ namespace Card
             /// 武器，例如：潜行者，对武器喂毒
             /// </summary>
             武器
-        }
-        /// <summary>
-        /// 多个效果的连接方式
-        /// </summary>
-        public enum EffectJoinType
-        {
-            /// <summary>
-            /// 两个效果是并且的关系：副作用
-            /// 例如：造成4点伤害，随机弃一张牌。
-            /// </summary>
-            AND,
-            /// <summary>
-            /// 两个效果是或者的关系：抉择
-            /// 例如：抉择: 对一个随从造成3点伤害；或者造成1点伤害并抽一张牌。
-            /// </summary>
-            OR,
-            /// <summary>
-            /// 无需
-            /// </summary>
-            None
         }
         /// <summary>
         /// 返回值

@@ -39,7 +39,7 @@ namespace 炉边传说
                     case Card.CardBasicInfo.CardTypeEnum.武器:
                         lblHealthPoint.Visible = true;
                         lblAttackPoint.Visible = true;
-                        lblAttackPoint.Text = ((Card.WeaponCard)value).ActualAttackPoint.ToString();
+                        lblAttackPoint.Text = ((Card.WeaponCard)value).实际攻击力.ToString();
                         lblHealthPoint.Text = ((Card.WeaponCard)value).实际耐久度.ToString();
                         break;
                     default:

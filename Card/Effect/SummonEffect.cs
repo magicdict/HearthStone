@@ -15,7 +15,7 @@ namespace Card.Effect
         /// <param name="game"></param>
         /// <param name="Seed"></param>
         /// <returns></returns>
-        public static List<string> RunEffect(EffectDefine singleEffect, Client.GameManager game)
+        public static List<string> RunEffect(AtomicEffectDefine singleEffect, Client.GameManager game)
         {
             List<String> Result = new List<string>();
             var MinionLst = singleEffect.AdditionInfo.Split(Card.CardUtility.strSplitMark.ToCharArray());

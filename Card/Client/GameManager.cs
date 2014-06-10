@@ -77,8 +77,8 @@ namespace Card.Client
             MyInfo.crystal.CurrentRemainPoint = 5;
             YourInfo.crystal.CurrentFullPoint = 5;
             YourInfo.crystal.CurrentRemainPoint = 5;
-            HandCard.Add("A000007");
-            HandCard.Add("A000060");
+            HandCard.Add("A000106");
+            HandCard.Add("W000002");
             //DEBUG END
             //英雄技能：奥术飞弹
             MyInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A200001");
@@ -300,7 +300,7 @@ namespace Card.Client
             Card.CardUtility.PickEffect PickEffectResult = CardUtility.PickEffect.第一效果;
             if (card.CardAbility.IsNeedSelect())
             {
-                PickEffectResult = PickEffect(card.CardAbility.FirstAbilityDefine.Description, card.CardAbility.SecondAbilityDefine.Description);
+                PickEffectResult = PickEffect(card.CardAbility.FirstAbilityDefine.MainAbilityDefine.Description, card.CardAbility.SecondAbilityDefine.MainAbilityDefine.Description);
                 if (PickEffectResult == CardUtility.PickEffect.取消) return new List<string>();
             }
             var SingleEffectList = card.CardAbility.GetSingleEffectList(PickEffectResult == CardUtility.PickEffect.第一效果);
@@ -460,7 +460,7 @@ namespace Card.Client
             }
             else
             {
-                if (MyInfo.Weapon != null) MyAttackPoint = MyInfo.Weapon.ActualAttackPoint;
+                if (MyInfo.Weapon != null) MyAttackPoint = MyInfo.Weapon.实际攻击力;
             }
             if (被攻击方Pos != BattleFieldInfo.HeroPos)
             {

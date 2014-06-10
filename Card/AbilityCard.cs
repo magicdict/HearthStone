@@ -32,38 +32,38 @@ namespace Card
         public void JustfyEffectPoint(int AbilityEffect)
         {
             //法术强度本意是增加法术卡的总伤。以奥术飞弹为例，法术强度+1会令奥术飞弹多1发伤害，而非单发伤害+1。法术强度不影响治疗效果。
-            switch (CardAbility.FirstAbilityDefine.AbilityEffectType)
+            switch (CardAbility.FirstAbilityDefine.MainAbilityDefine.AbilityEffectType)
             {
-                case EffectDefine.AbilityEffectEnum.攻击:
-                    if (CardAbility.FirstAbilityDefine.StandardEffectCount == 1)
+                case AtomicEffectDefine.AbilityEffectEnum.攻击:
+                    if (CardAbility.FirstAbilityDefine.MainAbilityDefine.StandardEffectCount == 1)
                     {
-                        CardAbility.FirstAbilityDefine.ActualEffectPoint = CardAbility.FirstAbilityDefine.StandardEffectPoint + AbilityEffect;
+                        CardAbility.FirstAbilityDefine.MainAbilityDefine.ActualEffectPoint = CardAbility.FirstAbilityDefine.MainAbilityDefine.StandardEffectPoint + AbilityEffect;
                     }
                     else
                     {
-                        CardAbility.FirstAbilityDefine.ActualEffectCount = CardAbility.FirstAbilityDefine.StandardEffectCount + AbilityEffect;
+                        CardAbility.FirstAbilityDefine.MainAbilityDefine.ActualEffectCount = CardAbility.FirstAbilityDefine.MainAbilityDefine.StandardEffectCount + AbilityEffect;
                     }
                     break;
-                case EffectDefine.AbilityEffectEnum.回复:
-                    CardAbility.FirstAbilityDefine.ActualEffectPoint = CardAbility.FirstAbilityDefine.StandardEffectPoint + AbilityEffect;
+                case AtomicEffectDefine.AbilityEffectEnum.回复:
+                    CardAbility.FirstAbilityDefine.MainAbilityDefine.ActualEffectPoint = CardAbility.FirstAbilityDefine.MainAbilityDefine.StandardEffectPoint + AbilityEffect;
                     break;
             }
-            if (CardAbility.SecondAbilityDefine.AbilityEffectType != EffectDefine.AbilityEffectEnum.未定义)
+            if (CardAbility.SecondAbilityDefine.MainAbilityDefine.AbilityEffectType != AtomicEffectDefine.AbilityEffectEnum.未定义)
             {
-                switch (CardAbility.SecondAbilityDefine.AbilityEffectType)
+                switch (CardAbility.SecondAbilityDefine.MainAbilityDefine.AbilityEffectType)
                 {
-                    case EffectDefine.AbilityEffectEnum.攻击:
-                        if (CardAbility.SecondAbilityDefine.StandardEffectCount == 1)
+                    case AtomicEffectDefine.AbilityEffectEnum.攻击:
+                        if (CardAbility.SecondAbilityDefine.MainAbilityDefine.StandardEffectCount == 1)
                         {
-                            CardAbility.SecondAbilityDefine.ActualEffectPoint = CardAbility.SecondAbilityDefine.StandardEffectPoint + AbilityEffect;
+                            CardAbility.SecondAbilityDefine.MainAbilityDefine.ActualEffectPoint = CardAbility.SecondAbilityDefine.MainAbilityDefine.StandardEffectPoint + AbilityEffect;
                         }
                         else
                         {
-                            CardAbility.SecondAbilityDefine.ActualEffectCount = CardAbility.SecondAbilityDefine.StandardEffectCount + AbilityEffect;
+                            CardAbility.SecondAbilityDefine.MainAbilityDefine.ActualEffectCount = CardAbility.SecondAbilityDefine.MainAbilityDefine.StandardEffectCount + AbilityEffect;
                         }
                         break;
-                    case EffectDefine.AbilityEffectEnum.回复:
-                        CardAbility.SecondAbilityDefine.ActualEffectPoint = CardAbility.SecondAbilityDefine.StandardEffectPoint + AbilityEffect;
+                    case AtomicEffectDefine.AbilityEffectEnum.回复:
+                        CardAbility.SecondAbilityDefine.MainAbilityDefine.ActualEffectPoint = CardAbility.SecondAbilityDefine.MainAbilityDefine.StandardEffectPoint + AbilityEffect;
                         break;
                 }
             }
@@ -75,36 +75,36 @@ namespace Card
         /// <returns></returns>
         public bool CheckCondition(Client.GameManager gameManager)
         {
-            if (CardAbility.SecondAbilityDefine.AbilityEffectType != EffectDefine.AbilityEffectEnum.未定义) return true;
+            if (CardAbility.SecondAbilityDefine.MainAbilityDefine.AbilityEffectType != AtomicEffectDefine.AbilityEffectEnum.未定义) return true;
 
-            switch (CardAbility.FirstAbilityDefine.AbilityEffectType)
+            switch (CardAbility.FirstAbilityDefine.MainAbilityDefine.AbilityEffectType)
             {
-                case EffectDefine.AbilityEffectEnum.点数:
-                case EffectDefine.AbilityEffectEnum.变形:
-                    if (CardAbility.FirstAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
+                case AtomicEffectDefine.AbilityEffectEnum.增益:
+                case AtomicEffectDefine.AbilityEffectEnum.变形:
+                    if (CardAbility.FirstAbilityDefine.MainAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
                     {
                         return gameManager.MyInfo.BattleField.MinionCount > 0;
                     }
-                    if (CardAbility.FirstAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.对方)
+                    if (CardAbility.FirstAbilityDefine.MainAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.对方)
                     {
                         return gameManager.YourInfo.BattleField.MinionCount > 0;
                     }
-                    if (CardAbility.FirstAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.双方)
+                    if (CardAbility.FirstAbilityDefine.MainAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.双方)
                     {
                         return (gameManager.YourInfo.BattleField.MinionCount +
                                 gameManager.MyInfo.BattleField.MinionCount) > 0;
                     }
                     break;
-                case EffectDefine.AbilityEffectEnum.召唤:
-                    if (CardAbility.FirstAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
+                case AtomicEffectDefine.AbilityEffectEnum.召唤:
+                    if (CardAbility.FirstAbilityDefine.MainAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
                     {
                         return gameManager.MyInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount;
                     }
-                    if (CardAbility.FirstAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.对方)
+                    if (CardAbility.FirstAbilityDefine.MainAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.对方)
                     {
                         return gameManager.YourInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount;
                     }
-                    if (CardAbility.FirstAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.双方)
+                    if (CardAbility.FirstAbilityDefine.MainAbilityDefine.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.双方)
                     {
                         return (gameManager.YourInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount) &&
                                (gameManager.MyInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount);

@@ -16,7 +16,7 @@ namespace Card.Effect
         /// <param name="game"></param>
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
-        void IEffectHandler.DealHero(GameManager game, EffectDefine singleEffect, bool MeOrYou)
+        void IEffectHandler.DealHero(GameManager game, AtomicEffectDefine singleEffect, bool MeOrYou)
         {
             int ShieldPoint = int.Parse(singleEffect.AdditionInfo.Split("/".ToArray())[0]);
             int HealthPoint = int.Parse(singleEffect.AdditionInfo.Split("/".ToArray())[1]);
@@ -54,9 +54,9 @@ namespace Card.Effect
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
         /// <param name="PosIndex"></param>
-        void IEffectHandler.DealMinion(GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
+        void IEffectHandler.DealMinion(GameManager game, AtomicEffectDefine singleEffect, bool MeOrYou, int PosIndex)
         {
-            int HealthPoint = singleEffect.ActualEffectPoint;
+            int HealthPoint = Effecthandler.GetEffectPoint(game,singleEffect.ActualEffectPoint);
             if (MeOrYou)
             {
                 if (game.MyInfo.BattleField.BattleMinions[PosIndex].AfterBeHealth(HealthPoint))

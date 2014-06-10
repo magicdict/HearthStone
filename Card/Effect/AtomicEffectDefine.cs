@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Card.Effect
 {
     [Serializable]
-    public class EffectDefine
+    public class AtomicEffectDefine
     {
         /// <summary>
         /// 描述
@@ -36,9 +36,9 @@ namespace Card.Effect
             /// </summary>
             召唤,
             /// <summary>
-            /// 改变卡牌点数
+            /// 增益（点数）
             /// </summary>
-            点数,
+            增益,
             /// <summary>
             /// 抽牌/弃牌
             /// </summary>
@@ -60,6 +60,10 @@ namespace Card.Effect
             /// 奥秘
             /// </summary>
             奥秘,
+            /// <summary>
+            /// 武器
+            /// </summary>
+            武器,
         }
         /// <summary>
         /// 法术类型
@@ -79,16 +83,18 @@ namespace Card.Effect
         }
         /// <summary>
         /// 效果点数(标准)
+        /// 允许表达式
         /// </summary>
-        public int StandardEffectPoint;
-        /// <summary>
-        /// 效果点数(实际)
-        /// </summary>
-        public int ActualEffectPoint;
+        public String StandardEffectPoint;
         /// <summary>
         /// 效果回数
         /// </summary>
         public int StandardEffectCount;
+        /// <summary>
+        /// 效果点数(实际)
+        /// 允许表达式
+        /// </summary>
+        public String ActualEffectPoint;
         /// <summary>
         /// 效果回数(实际)
         /// </summary>

@@ -8,9 +8,9 @@ namespace Card.Effect
     /// <summary>
     /// 运行效果
     /// </summary>
-    public class CardEffect : EffectDefine
+    public class CardEffect : AtomicEffectDefine
     {
-        public static List<string> RunEffect(EffectDefine singleEffect, GameManager game)
+        public static List<string> RunEffect(AtomicEffectDefine singleEffect, GameManager game)
         {
             List<string> Result = new List<string>();
             switch (singleEffect.SelectOpt.EffectTargetSelectDirect)

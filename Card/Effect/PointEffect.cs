@@ -61,14 +61,14 @@ namespace Card.Effect
             return newPoint;
         }
 
-        void IEffectHandler.DealHero(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou)
+        void IEffectHandler.DealHero(Client.GameManager game, AtomicEffectDefine singleEffect, bool MeOrYou)
         {
             throw new NotImplementedException();
         }
-        void IEffectHandler.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
+        void IEffectHandler.DealMinion(Client.GameManager game, AtomicEffectDefine singleEffect, bool MeOrYou, int PosIndex)
         {
             ///防止加成的干扰！
-            int TurnCount = singleEffect.StandardEffectPoint;
+            int TurnCount = Effecthandler.GetEffectPoint(game,singleEffect.ActualEffectPoint); 
             if (TurnCount == 1)
             {
                 if (MeOrYou)

@@ -49,13 +49,14 @@
     <Compile Include="Effect\PointEffect.cs" />
     <Compile Include="Effect\StatusEffect.cs" />
     <Compile Include="Effect\SummonEffect.cs" />
+    <Compile Include="Effect\WeaponPointEffect.cs" />
     <Compile Include="logger.cs" />
     <Compile Include="Client\BattleFieldInfo.cs" />
     <Compile Include="Client\Crystal.cs" />
     <Compile Include="MinionCard.cs" />
     <Compile Include="Effect\CardEffect.cs" />
     <Compile Include="Effect\CrystalEffect.cs" />
-    <Compile Include="Effect\EffectDefine.cs" />
+    <Compile Include="Effect\AtomicEffectDefine.cs" />
     <Compile Include="Effect\TransformEffect.cs" />
     <Compile Include="Client\GameManager.cs" />
     <Compile Include="Client\PlayerInfo.cs" />

@@ -45,6 +45,10 @@ namespace Card.Server
             /// </summary>
             Status,
             /// <summary>
+            /// 武器点数
+            /// </summary>
+            WeaponPoint,
+            /// <summary>
             /// 改变数值
             /// </summary>
             Point,
@@ -129,8 +133,13 @@ namespace Card.Server
         /// 法术
         /// </summary>
         public const string strAbility = "ABILITY";
-
-
+        /// <summary>
+        /// 武器
+        /// </summary>
+        public const string strWeaponPoint = "WEAPONPOINT";
+        /// <summary>
+        /// 控制
+        /// </summary>
         public const string strControl = "CONTROL";
         /// <summary>
         /// 奥秘(埋伏)
@@ -184,7 +193,8 @@ namespace Card.Server
             if (ActionWord.StartsWith(strCard + CardUtility.strSplitMark)) t = ActionType.Card;
             if (ActionWord.StartsWith(strPoint + CardUtility.strSplitMark)) t = ActionType.Point;
             if (ActionWord.StartsWith(strControl + CardUtility.strSplitMark)) t = ActionType.Control;
-
+            if (ActionWord.StartsWith(strWeaponPoint + CardUtility.strSplitMark)) t = ActionType.WeaponPoint;
+            
             return t;
         }
 

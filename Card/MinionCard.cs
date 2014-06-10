@@ -1,10 +1,8 @@
 ﻿using Card.Client;
-using Card.Effect;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
-using Card;
 namespace Card
 {
     /// <summary>
@@ -257,8 +255,9 @@ namespace Card
         [XmlIgnore]
         public Boolean Actual风怒 = false;
         /// <summary>
-        /// 
+        /// 不能攻击
         /// </summary>
+        [XmlIgnore]
         public Boolean Actual不能攻击 = false;
         /// <summary>
         /// 是否为潜行状态
@@ -307,6 +306,7 @@ namespace Card
         /// <summary>
         /// 攻击状态
         /// </summary>
+        [XmlIgnore]
         public 攻击状态 AttactStatus = 攻击状态.准备中;
         /// <summary>
         /// 该单位受到战地的效果

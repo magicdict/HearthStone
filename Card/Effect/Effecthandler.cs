@@ -6,6 +6,34 @@ namespace Card.Effect
     public class Effecthandler
     {
         /// <summary>
+        /// 效果点数的表达式计算
+        /// </summary>
+        /// <param name="strEffectPoint"></param>
+        /// <returns></returns>
+        public static int GetEffectPoint(Client.GameManager game,String strEffectPoint)
+        {
+            int point = 0;
+            if (!String.IsNullOrEmpty(strEffectPoint))
+            {
+                if (strEffectPoint.StartsWith("="))
+                {
+                    switch (strEffectPoint.Substring(1))
+                    {
+                        case "MyWeaponAP":
+                            if (game.MyInfo.Weapon != null) point = game.MyInfo.Weapon.实际攻击力;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else
+                {
+                    point = int.Parse(strEffectPoint);
+                }
+            }
+            return point;
+        }
+        /// <summary>
         /// 施法对象列表
         /// </summary>
         /// <param name="singleEffect"></param>
@@ -13,7 +41,7 @@ namespace Card.Effect
         /// <param name="PosInfo"></param>
         /// <param name="Seed"></param>
         /// <returns></returns>
-        public static List<string> GetTargetList(EffectDefine singleEffect, Client.GameManager game, CardUtility.TargetPosition PosInfo, int Seed)
+        public static List<string> GetTargetList(AtomicEffectDefine singleEffect, Client.GameManager game, CardUtility.TargetPosition PosInfo, int Seed)
         {
             //切记，这里的EffectCount都是1
             List<string> Result = new List<string>();
@@ -170,33 +198,34 @@ namespace Card.Effect
         /// <param name="Field"></param>
         /// <param name="Pos">指定对象</param>
         /// <returns></returns>
-        public static List<String> RunSingleEffect(EffectDefine singleEffect, Card.Client.GameManager game, Card.CardUtility.TargetPosition Pos, int Seed)
+        public static List<String> RunSingleEffect(AtomicEffectDefine singleEffect, Card.Client.GameManager game, Card.CardUtility.TargetPosition Pos, int Seed)
         {
             List<String> Result = new List<string>();
             List<String> PosList = GetTargetList(singleEffect, game, Pos, Seed);
             //切记，这里的EffectCount都是1
             switch (singleEffect.AbilityEffectType)
             {
-                case Card.Effect.EffectDefine.AbilityEffectEnum.攻击:
-                case Card.Effect.EffectDefine.AbilityEffectEnum.回复:
-                case Card.Effect.EffectDefine.AbilityEffectEnum.状态:
-                case Card.Effect.EffectDefine.AbilityEffectEnum.点数:
-                case Card.Effect.EffectDefine.AbilityEffectEnum.变形:
+                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.攻击:
+                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.回复:
+                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.状态:
+                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.增益:
+                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.变形:
                     Result.AddRange(RunNormalSingleEffect(singleEffect, game, PosList));
                     break;
-                case Card.Effect.EffectDefine.AbilityEffectEnum.召唤:
+                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.召唤:
                     Result.AddRange(SummonEffect.RunEffect(singleEffect, game));
                     break;
-                case Card.Effect.EffectDefine.AbilityEffectEnum.卡牌:
+                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.卡牌:
                     Result.AddRange(CardEffect.RunEffect(singleEffect, game));
                     break;
-                case Card.Effect.EffectDefine.AbilityEffectEnum.水晶:
+                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.水晶:
                     Result.AddRange(CrystalEffect.RunEffect(singleEffect, game));
                     break;
-                case Card.Effect.EffectDefine.AbilityEffectEnum.控制:
+                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.控制:
                     Result.AddRange(ControlEffect.RunEffect(singleEffect, game, PosList));
                     break;
-                case Card.Effect.EffectDefine.AbilityEffectEnum.奥秘:
+                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.武器:
+                    Result.AddRange(WeaponPointEffect.RunEffect(singleEffect, game));
                     break;
                 default:
                     break;
@@ -210,7 +239,7 @@ namespace Card.Effect
         /// <param name="game"></param>
         /// <param name="PosList"></param>
         /// <returns></returns>
-        public static List<String> RunNormalSingleEffect(EffectDefine singleEffect, Client.GameManager game, List<String> PosList)
+        public static List<String> RunNormalSingleEffect(AtomicEffectDefine singleEffect, Client.GameManager game, List<String> PosList)
         {
             List<String> Result = new List<string>();
             String strResult = String.Empty;
@@ -218,27 +247,27 @@ namespace Card.Effect
             IEffectHandler handler = new AttackEffect();
             switch (singleEffect.AbilityEffectType)
             {
-                case Card.Effect.EffectDefine.AbilityEffectEnum.攻击:
+                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.攻击:
                     handler = new AttackEffect();
                     strResult = Card.Server.ActionCode.strAttack;
                     strEffect = singleEffect.ActualEffectPoint.ToString();
                     break;
-                case Card.Effect.EffectDefine.AbilityEffectEnum.回复:
+                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.回复:
                     handler = new HealthEffect();
                     strResult = Card.Server.ActionCode.strHealth;
                     strEffect = singleEffect.ActualEffectPoint.ToString() + CardUtility.strSplitMark + singleEffect.AdditionInfo;
                     break;
-                case Card.Effect.EffectDefine.AbilityEffectEnum.状态:
+                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.状态:
                     handler = new StatusEffect();
                     strResult = Card.Server.ActionCode.strStatus;
                     strEffect = singleEffect.AdditionInfo;
                     break;
-                case Card.Effect.EffectDefine.AbilityEffectEnum.点数:
+                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.增益:
                     handler = new PointEffect();
                     strResult = Card.Server.ActionCode.strPoint;
                     strEffect = singleEffect.AdditionInfo + CardUtility.strSplitMark + singleEffect.StandardEffectPoint;
                     break;
-                case Card.Effect.EffectDefine.AbilityEffectEnum.变形:
+                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.变形:
                     handler = new TransformEffect();
                     strResult = Card.Server.ActionCode.strTransform;
                     strEffect = singleEffect.AdditionInfo;

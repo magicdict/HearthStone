@@ -77,7 +77,7 @@ namespace Card.Effect
         /// <param name="game"></param>
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
-        void IEffectHandler.DealHero(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou)
+        void IEffectHandler.DealHero(Client.GameManager game, AtomicEffectDefine singleEffect, bool MeOrYou)
         {
             throw new NotImplementedException();
         }
@@ -88,9 +88,8 @@ namespace Card.Effect
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
         /// <param name="PosIndex"></param>
-        void IEffectHandler.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
+        void IEffectHandler.DealMinion(Client.GameManager game, AtomicEffectDefine singleEffect, bool MeOrYou, int PosIndex)
         {
-            int HealthPoint = singleEffect.ActualEffectPoint;
             if (MeOrYou)
             {
                 RunStatusEffect(game.MyInfo.BattleField.BattleMinions[PosIndex], singleEffect.AdditionInfo);

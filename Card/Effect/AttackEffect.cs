@@ -15,9 +15,9 @@ namespace Card.Effect
         /// <param name="game"></param>
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
-        void IEffectHandler.DealHero(Client.GameManager game, EffectDefine singleEffect, Boolean MeOrYou)
+        void IEffectHandler.DealHero(Client.GameManager game, AtomicEffectDefine singleEffect, Boolean MeOrYou)
         {
-            int AttackPoint = singleEffect.ActualEffectPoint;
+            int AttackPoint = Effecthandler.GetEffectPoint(game,singleEffect.ActualEffectPoint);
             if (MeOrYou)
             {
                 game.MyInfo.AfterBeAttack(AttackPoint);
@@ -46,9 +46,9 @@ namespace Card.Effect
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
         /// <param name="PosIndex"></param>
-        void IEffectHandler.DealMinion(Client.GameManager game, EffectDefine singleEffect, Boolean MeOrYou, int PosIndex)
+        void IEffectHandler.DealMinion(Client.GameManager game, AtomicEffectDefine singleEffect, Boolean MeOrYou, int PosIndex)
         {
-            int AttackPoint = singleEffect.ActualEffectPoint;
+            int AttackPoint = Effecthandler.GetEffectPoint(game,singleEffect.ActualEffectPoint);
             if (MeOrYou)
             {
                 if (game.MyInfo.BattleField.BattleMinions[PosIndex].AfterBeAttack(AttackPoint))

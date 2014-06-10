@@ -1,6 +1,5 @@
 ﻿using Card;
 using Card.Client;
-using Card.Effect;
 using System;
 using System.Windows.Forms;
 

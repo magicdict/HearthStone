@@ -115,6 +115,21 @@ namespace Card.Client
                         game.MyInfo.crystal.CurrentFullPoint = int.Parse(actField[3]);
                     }
                     break;
+                case ActionCode.ActionType.WeaponPoint:
+                    //WeaponPoint#ME#+0/+0
+                    //Me代表对方 YOU代表自己，必须反过来
+                    string[] Op = actField[2].Split("/".ToCharArray());
+                    if (actField[1] == CardUtility.strMe)
+                    {
+                        game.MyInfo.Weapon.实际攻击力 += int.Parse(Op[0]);
+                        game.MyInfo.Weapon.实际耐久度 += int.Parse(Op[1]);
+                    }
+                    else
+                    {
+                        game.YourInfo.Weapon.实际攻击力 += int.Parse(Op[0]);
+                        game.YourInfo.Weapon.实际耐久度 += int.Parse(Op[1]);
+                    }
+                    break;
                 case ActionCode.ActionType.UnKnown:
                     break;
             }
@@ -132,16 +147,16 @@ namespace Card.Client
             //ATTACK#ME#POS#AP
             //Me代表对方 YOU代表自己，必须反过来
             IEffectHandler handler = new AttackEffect();
-            EffectDefine SingleEffect = new EffectDefine();
+            AtomicEffectDefine SingleEffect = new AtomicEffectDefine();
             switch (actField[0])
             {
                 case Card.Server.ActionCode.strAttack:
                     handler = new AttackEffect();
-                    SingleEffect.ActualEffectPoint = int.Parse(actField[3]);
+                    SingleEffect.ActualEffectPoint = actField[3];
                     break;
                 case Card.Server.ActionCode.strHealth:
                     handler = new HealthEffect();
-                    SingleEffect.ActualEffectPoint = int.Parse(actField[3]);
+                    SingleEffect.ActualEffectPoint = actField[3];
                     if (actField.Length == 5) SingleEffect.AdditionInfo = actField[4];
                     break;
                 case Card.Server.ActionCode.strStatus:
@@ -151,7 +166,7 @@ namespace Card.Client
                 case Card.Server.ActionCode.strPoint:
                     handler = new PointEffect();
                     SingleEffect.AdditionInfo = actField[3];
-                    SingleEffect.StandardEffectPoint = int.Parse(actField[4]);
+                    SingleEffect.StandardEffectPoint = actField[4];
                     break;
                 case Card.Server.ActionCode.strTransform:
                     handler = new TransformEffect();

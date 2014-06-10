@@ -1,4 +1,5 @@
 ﻿using Card;
+using Card.Effect;
 using Microsoft.VisualBasic;
 //using MongoDB.Driver;
 using System;
@@ -67,10 +68,11 @@ namespace 炉边传说
             excelObj.Visible = true;
             dynamic workbook;
             workbook = excelObj.Workbooks.Open(ExcelPicker.SelectedPathOrFileName);
-            Minion(target, workbook);
-            Ability(target, workbook);
-            Weapon(target, workbook);
-            Secret(target, workbook);
+            //Minion(target, workbook);
+            //Ability(target, workbook);
+            AbilityNewFormat(target, workbook);
+            //Weapon(target, workbook);
+            //Secret(target, workbook);
             workbook.Close();
             excelObj.Quit();
             excelObj = null;
@@ -233,19 +235,19 @@ namespace 炉边传说
                 Ability.Rare = CardUtility.GetEnum<Card.CardBasicInfo.稀有程度>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度.白色);
                 Ability.IsCardReady = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
 
-                Card.Effect.EffectDefine effect = new Card.Effect.EffectDefine();
+                Card.Effect.AtomicEffectDefine effect = new Card.Effect.AtomicEffectDefine();
                 effect.Description = String.IsNullOrEmpty(worksheet.Cells(rowCount, 14).Text) ? String.Empty : worksheet.Cells(rowCount, 14).Text;
                 effect.AbilityEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(worksheet.Cells(rowCount, 15).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
                 effect.SelectOpt.EffictTargetSelectMode = CardUtility.GetEnum<Card.CardUtility.TargetSelectModeEnum>(worksheet.Cells(rowCount, 16).Text, CardUtility.TargetSelectModeEnum.不用选择);
                 effect.SelectOpt.EffectTargetSelectDirect = CardUtility.GetEnum<Card.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 17).Text, CardUtility.TargetSelectDirectEnum.双方);
                 effect.SelectOpt.EffectTargetSelectRole = CardUtility.GetEnum<Card.CardUtility.TargetSelectRoleEnum>(worksheet.Cells(rowCount, 18).Text, CardUtility.TargetSelectRoleEnum.随从);
-                effect.SelectOpt.EffectTargetSelectCondition = String.IsNullOrEmpty(worksheet.Cells(rowCount, 19).Text)?String.Empty:worksheet.Cells(rowCount, 19).Text;
-                effect.StandardEffectPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 20).Text);
+                effect.SelectOpt.EffectTargetSelectCondition = String.IsNullOrEmpty(worksheet.Cells(rowCount, 19).Text) ? String.Empty : worksheet.Cells(rowCount, 19).Text;
+                effect.StandardEffectPoint = worksheet.Cells(rowCount, 20).Text;
                 effect.StandardEffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 21).Text);
                 if (effect.StandardEffectCount == 0) effect.StandardEffectCount = 1;
                 effect.AdditionInfo = worksheet.Cells(rowCount, 22).Text;
-                Ability.CardAbility.FirstAbilityDefine = effect;
-                Ability.CardAbility.JoinType = CardUtility.GetEnum<Card.CardUtility.EffectJoinType>(worksheet.Cells(rowCount, 23).Text, Card.CardUtility.EffectJoinType.None);
+                Ability.CardAbility.FirstAbilityDefine.MainAbilityDefine = effect;
+                Ability.CardAbility.效果选择类型 = CardUtility.GetEnum<Card.Effect.Ability.效果选择类型枚举>(worksheet.Cells(rowCount, 23).Text, Card.Effect.Ability.效果选择类型枚举.无需选择);
                 Boolean HasSecond = false;
                 for (int i = 24; i < 32; i++)
                 {
@@ -257,17 +259,18 @@ namespace 炉边传说
                 }
                 if (HasSecond)
                 {
-                    Card.Effect.EffectDefine effect2 = new Card.Effect.EffectDefine();
+                    Card.Effect.AtomicEffectDefine effect2 = new Card.Effect.AtomicEffectDefine();
                     effect2.Description = String.IsNullOrEmpty(worksheet.Cells(rowCount, 24).Text) ? String.Empty : worksheet.Cells(rowCount, 24).Text;
                     effect2.AbilityEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(worksheet.Cells(rowCount, 25).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
                     effect2.SelectOpt.EffictTargetSelectMode = CardUtility.GetEnum<Card.CardUtility.TargetSelectModeEnum>(worksheet.Cells(rowCount, 26).Text, CardUtility.TargetSelectModeEnum.不用选择);
                     effect2.SelectOpt.EffectTargetSelectDirect = CardUtility.GetEnum<Card.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 27).Text, CardUtility.TargetSelectDirectEnum.双方);
                     effect2.SelectOpt.EffectTargetSelectRole = CardUtility.GetEnum<Card.CardUtility.TargetSelectRoleEnum>(worksheet.Cells(rowCount, 28).Text, CardUtility.TargetSelectRoleEnum.随从);
                     effect2.SelectOpt.EffectTargetSelectCondition = String.IsNullOrEmpty(worksheet.Cells(rowCount, 29).Text) ? String.Empty : worksheet.Cells(rowCount, 29).Text;
-                    effect2.StandardEffectPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 30).Text);
+                    effect2.StandardEffectPoint = worksheet.Cells(rowCount, 30).Text;
                     effect2.StandardEffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 31).Text);
+                    if (effect2.StandardEffectCount == 0) effect2.StandardEffectCount = 1;
                     effect2.AdditionInfo = worksheet.Cells(rowCount, 32).Text;
-                    Ability.CardAbility.SecondAbilityDefine = effect2;
+                    Ability.CardAbility.SecondAbilityDefine.MainAbilityDefine = effect2;
                 }
                 Ability.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 33).Text);
                 Ability.连击效果 = worksheet.Cells(rowCount, 34).Text;
@@ -287,6 +290,83 @@ namespace 炉边传说
                 rowCount++;
             }
         }
+
+
+        /// <summary>
+        /// 法术的导入
+        /// </summary>
+        /// <param name="target"></param>
+        /// <param name="workbook"></param>
+        private void AbilityNewFormat(TargetType target, dynamic workbook)
+        {
+            if (Directory.Exists(XmlFolderPicker.SelectedPathOrFileName + "\\Ability\\"))
+            {
+                Directory.Delete(XmlFolderPicker.SelectedPathOrFileName + "\\Ability\\", true);
+            }
+            Directory.CreateDirectory(XmlFolderPicker.SelectedPathOrFileName + "\\Ability\\");
+            //法术的导入
+            dynamic worksheet = workbook.Sheets(7);
+            int rowCount = 4;
+            Card.AbilityCard Ability;
+            while (!String.IsNullOrEmpty(worksheet.Cells(rowCount, 2).Text))
+            {
+                //这行肯定是卡牌基本情报
+                Ability = new AbilityCard();
+                Ability.SN = worksheet.Cells(rowCount, 2).Text;
+                Ability.Name = worksheet.Cells(rowCount, 3).Text;
+                Ability.Description = worksheet.Cells(rowCount, 4).Text;
+                Ability.Class = CardUtility.GetEnum<Card.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 5).Text, Card.CardUtility.ClassEnum.中立);
+                Ability.StandardCostPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 6).Text);
+                Ability.Rare = CardUtility.GetEnum<Card.CardBasicInfo.稀有程度>(worksheet.Cells(rowCount, 9).Text, CardBasicInfo.稀有程度.白色);
+                Ability.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 10).Text);
+                rowCount++;
+                //这行肯定是选择条件
+                Ability.CardAbility.效果选择类型 = CardUtility.GetEnum<Ability.效果选择类型枚举>(worksheet.Cells(rowCount, 3).Text,
+                    Card.Effect.Ability.效果选择类型枚举.无需选择);
+                rowCount++;
+                GetEffectDifine(worksheet, ref rowCount);
+                if (Ability.CardAbility.效果选择类型 != Card.Effect.Ability.效果选择类型枚举.无需选择)
+                {
+                    GetEffectDifine(worksheet, ref rowCount);
+                }
+                XmlSerializer xml = new XmlSerializer(typeof(Card.AbilityCard));
+                String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Ability\\" + Ability.SN + ".xml";
+                xml.Serialize(new StreamWriter(XmlFilename), Ability);
+                rowCount++;
+            }
+        }
+
+        private static void GetEffectDifine(dynamic worksheet, ref int rowCount)
+        {
+            //这行是选择1的标题
+            rowCount++;
+            //这行是选择1的内容
+            //TODO:根据效果读入
+            rowCount++;
+            //这行可能是[连击状态]或者是[追加条件]或者是下一张卡牌
+            String LineType = worksheet.Cells(rowCount, 2).Text;
+            if (LineType.StartsWith("A"))
+            {
+                rowCount--;
+            }
+            else
+            {
+                if (LineType == "连击状态")
+                {
+                    //TODO:根据效果读入
+                }
+                if (LineType == "追加条件")
+                {
+                    //TODO:追加条件的读入
+                    rowCount++;
+                    //这行是选择追加的标题
+                    rowCount++;
+                    //这行是选择追加的内容
+                    //TODO:根据效果读入
+                }
+            }
+        }
+
         /// <summary>
         /// 武器的导入
         /// </summary>

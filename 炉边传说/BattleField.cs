@@ -122,11 +122,11 @@ namespace 炉边传说
             //没有使用过，有武器，武器耐久度不为零
             if (game.IsWeaponEnable())
             {
-                btnMyWeapon.Enabled = true;
+                btnMyWeapon.Visible = true;
             }
             else
             {
-                btnMyWeapon.Enabled = false;
+                btnMyWeapon.Visible = false;
             }
 
             btnMyHero.Hero = game.MyInfo;

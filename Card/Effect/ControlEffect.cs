@@ -5,7 +5,7 @@ namespace Card.Effect
 {
     public static class ControlEffect
     {
-        public static List<string> RunEffect(EffectDefine singleEffect, Client.GameManager game, List<String> PosList)
+        public static List<string> RunEffect(AtomicEffectDefine singleEffect, Client.GameManager game, List<String> PosList)
         {
             List<String> Result = new List<string>();
             var PosField = PosList[0].Split(CardUtility.strSplitMark.ToCharArray());

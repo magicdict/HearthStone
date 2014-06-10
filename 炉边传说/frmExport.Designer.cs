@@ -28,10 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ExcelPicker = new ctlFilePicker();
+            this.ExcelPicker = new 炉边传说.ctlFilePicker();
             this.btnExportMongoDB = new System.Windows.Forms.Button();
             this.btnExportXml = new System.Windows.Forms.Button();
-            this.XmlFolderPicker = new ctlFilePicker();
+            this.XmlFolderPicker = new 炉边传说.ctlFilePicker();
             this.btnImportXML = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -42,7 +42,7 @@
             this.ExcelPicker.FileName = "";
             this.ExcelPicker.Location = new System.Drawing.Point(28, 12);
             this.ExcelPicker.Name = "ExcelPicker";
-            this.ExcelPicker.PickerType = ctlFilePicker.DialogType.OpenFile;
+            this.ExcelPicker.PickerType = 炉边传说.ctlFilePicker.DialogType.OpenFile;
             this.ExcelPicker.SelectedPathOrFileName = "";
             this.ExcelPicker.Size = new System.Drawing.Size(629, 31);
             this.ExcelPicker.TabIndex = 0;
@@ -56,6 +56,7 @@
             this.btnExportMongoDB.TabIndex = 1;
             this.btnExportMongoDB.Text = "导出到MongoDB";
             this.btnExportMongoDB.UseVisualStyleBackColor = true;
+            this.btnExportMongoDB.Visible = false;
             this.btnExportMongoDB.Click += new System.EventHandler(this.btnExportMongoDB_Click);
             // 
             // btnExportXml
@@ -75,7 +76,7 @@
             this.XmlFolderPicker.FileName = "";
             this.XmlFolderPicker.Location = new System.Drawing.Point(28, 78);
             this.XmlFolderPicker.Name = "XmlFolderPicker";
-            this.XmlFolderPicker.PickerType = ctlFilePicker.DialogType.Directory;
+            this.XmlFolderPicker.PickerType = 炉边传说.ctlFilePicker.DialogType.Directory;
             this.XmlFolderPicker.SelectedPathOrFileName = "";
             this.XmlFolderPicker.Size = new System.Drawing.Size(629, 31);
             this.XmlFolderPicker.TabIndex = 3;

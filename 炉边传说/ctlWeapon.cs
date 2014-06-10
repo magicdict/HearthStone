@@ -14,7 +14,7 @@ namespace 炉边传说
                 lblHealthPoint.Visible = true;
                 lblAttackPoint.Visible = true;
                 lblHealthPoint.Text = value.实际耐久度.ToString();
-                lblAttackPoint.Text = value.ActualAttackPoint.ToString();
+                lblAttackPoint.Text = value.实际攻击力.ToString();
             }
         }
         public ctlWeapon()

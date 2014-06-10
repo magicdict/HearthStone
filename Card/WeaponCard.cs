@@ -15,7 +15,7 @@ namespace Card
         /// <summary>
         /// 攻击力（实际）
         /// </summary>
-        public int ActualAttackPoint = -1;
+        public int 实际攻击力 = -1;
         /// <summary>
         /// 耐久（标准）
         /// </summary>
@@ -28,14 +28,14 @@ namespace Card
         /// 武器的附加效果
         /// 真银圣剑：每当你的英雄进攻时，为其恢复2点生命值。
         /// </summary>
-        public EffectDefine AdditionEffect = new EffectDefine();
+        public AtomicEffectDefine AdditionEffect = new AtomicEffectDefine();
         /// <summary>
         /// 设置初始状态
         /// </summary>
         public new void Init()
         {
             实际耐久度 = 标准耐久度;
-            ActualAttackPoint = StandardAttackPoint;
+            实际攻击力 = StandardAttackPoint;
         }
         /// <summary>
         /// 
@@ -43,7 +43,7 @@ namespace Card
         /// <returns></returns>
         public new string GetInfo()
         {
-            return Name + "：" + ActualAttackPoint + "/" + 实际耐久度;
+            return Name + "：" + 实际攻击力 + "/" + 实际耐久度;
         }
     }
 }
