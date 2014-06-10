@@ -8,7 +8,7 @@ namespace Card.Effect
     /// <summary>
     /// 治疗效果
     /// </summary>
-    public class HealthEffect : IEffectHandler
+    public class HealthEffect : AtomicEffectDefine, IEffectHandler
     {
         /// <summary>
         /// 

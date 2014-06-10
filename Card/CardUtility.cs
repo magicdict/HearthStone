@@ -172,6 +172,10 @@ namespace Card
         /// </summary>
         public const String strSplitArrayMark = "|";
         /// <summary>
+        /// 忽略
+        /// </summary>
+        public const String strIgnore = "X";
+        /// <summary>
         /// 最大值
         /// </summary>
         public const int Max = 999;
@@ -420,6 +424,35 @@ namespace Card
             public String 附加信息;
         }
         #endregion
+        /// <summary>
+        /// PointProcess
+        /// </summary>
+        /// <param name="oldPoint"></param>
+        /// <param name="ModifyPoint"></param>
+        /// <returns></returns>
+        public static int PointProcess(int oldPoint, String ModifyPoint)
+        {
+            int newPoint = oldPoint;
+            if (ModifyPoint != CardUtility.strIgnore)
+            {
+                if (ModifyPoint.Length != 1)
+                {
+                    switch (ModifyPoint.Substring(0, 1))
+                    {
+                        case "+":
+                        case "-":
+                            newPoint += int.Parse(ModifyPoint);
+                            break;
+                        case "*":
+                            newPoint *= int.Parse(ModifyPoint.Substring(1, 1));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+            return newPoint;
+        }
         /// <summary>
         /// 随机打算数组
         /// </summary>

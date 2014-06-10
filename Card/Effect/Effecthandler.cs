@@ -214,19 +214,19 @@ namespace Card.Effect
                     Result.AddRange(RunNormalSingleEffect(singleEffect, game, PosList));
                     break;
                 case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.召唤:
-                    Result.AddRange(singleEffect.RunEffect(game));
+                    Result.AddRange(((SummonEffect)singleEffect).RunEffect(game));
                     break;
                 case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.卡牌:
-                    Result.AddRange(singleEffect.RunEffect(game));
+                    Result.AddRange(((CardEffect)singleEffect).RunEffect(game));
                     break;
                 case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.水晶:
-                    Result.AddRange(singleEffect.RunEffect(game));
+                    Result.AddRange(((CrystalEffect)singleEffect).RunEffect(game));
                     break;
                 case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.控制:
-                    Result.AddRange(singleEffect.RunEffect(game));
+                    Result.AddRange(((ControlEffect)singleEffect).RunEffect(game, PosList[0]));
                     break;
                 case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.武器:
-                    Result.AddRange(singleEffect.RunEffect(game));
+                    Result.AddRange(((WeaponPointEffect)singleEffect).RunEffect(game));
                     break;
                 default:
                     break;

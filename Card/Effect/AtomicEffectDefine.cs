@@ -71,6 +71,10 @@ namespace Card.Effect
         /// </summary>
         public AbilityEffectEnum AbilityEffectType;
         /// <summary>
+        /// 信息组
+        /// </summary>
+        public List<String> InfoArray = new List<string>();
+        /// <summary>
         /// 效果点数(标准)
         /// 允许表达式
         /// </summary>
@@ -92,16 +96,5 @@ namespace Card.Effect
         /// 附加信息
         /// </summary>
         public String AdditionInfo;
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        public void Init()
-        {
-
-        }
-        public List<string> RunEffect(GameManager game)
-        {
-            return null;
-        }
     }
 }

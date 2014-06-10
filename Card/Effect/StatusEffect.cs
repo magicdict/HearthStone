@@ -6,7 +6,7 @@ namespace Card.Effect
     /// <summary>
     /// 状态改变效果
     /// </summary>
-    public class StatusEffect : IEffectHandler
+    public class StatusEffect : AtomicEffectDefine, IEffectHandler
     {
         /// <summary>
         /// 冰冻状态
@@ -99,5 +99,6 @@ namespace Card.Effect
                 RunStatusEffect(game.YourInfo.BattleField.BattleMinions[PosIndex], singleEffect.AdditionInfo);
             }
         }
+
     }
 }

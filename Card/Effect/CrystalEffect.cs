@@ -3,7 +3,7 @@ using Card.Server;
 using System.Collections.Generic;
 namespace Card.Effect
 {
-    public class CrystalEffect:AtomicEffectDefine
+    public class CrystalEffect : AtomicEffectDefine
     {
         /// <summary>
         /// 法术方向
@@ -14,7 +14,7 @@ namespace Card.Effect
         /// </summary>
         /// <param name="role"></param>
         /// <param name="Ability"></param>
-        public new List<string> RunEffect(GameManager game)
+        public List<string> RunEffect(GameManager game)
         {
             List<string> Result = new List<string>();
             string[] Op = AdditionInfo.Split("/".ToCharArray());
@@ -77,12 +77,12 @@ namespace Card.Effect
             //Crystal#ME#4#4
             if (法术方向 == CardUtility.TargetSelectDirectEnum.本方)
             {
-                Result.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark + 
+                Result.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +
                     game.MyInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MyInfo.crystal.CurrentFullPoint);
             }
             else
             {
-                Result.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark + 
+                Result.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark +
                     game.YourInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.YourInfo.crystal.CurrentFullPoint);
             }
             return Result;

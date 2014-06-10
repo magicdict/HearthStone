@@ -23,7 +23,7 @@ namespace Card.Effect
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public new List<string> RunEffect(GameManager game)
+        public List<string> RunEffect(GameManager game)
         {
             List<string> Result = new List<string>();
             switch (法术方向)

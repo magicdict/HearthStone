@@ -265,7 +265,19 @@ namespace 炉边传说
             rowCount++;
             //这行是选择1的内容
             //根据效果读入
-            effect.MainAbilityDefine = GetEffectDetail(worksheet, rowCount);
+            effect.MainAbilityDefine.AbilityEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(
+                    worksheet.Cells(rowCount, 3).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
+            for (int i = 4; i < 12; i++)
+            {
+                if (!String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text))
+                {
+                    effect.MainAbilityDefine.InfoArray.Add(worksheet.Cells(rowCount, i).Text);
+                }
+                else
+                {
+                    break;
+                }
+            }
             rowCount++;
             //这行可能是[连击状态]或者是[追加条件]或者是下一张卡牌
             String LineType = worksheet.Cells(rowCount, 2).Text;
@@ -277,7 +289,19 @@ namespace 炉边传说
             {
                 if (LineType == "连击状态")
                 {
-                    effect.MainAbilityDefineCombit = GetEffectDetail(worksheet, rowCount);
+                    effect.MainAbilityDefineCombit.AbilityEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(
+                            worksheet.Cells(rowCount, 3).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
+                    for (int i = 4; i < 12; i++)
+                    {
+                        if (!String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text))
+                        {
+                            effect.MainAbilityDefineCombit.InfoArray.Add(worksheet.Cells(rowCount, i).Text);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
                 }
                 if (LineType == "追加条件")
                 {
@@ -286,49 +310,22 @@ namespace 炉边传说
                     //这行是选择追加的标题
                     rowCount++;
                     //这行是选择追加的内容
-                    effect.AppendAbilityDefine = GetEffectDetail(worksheet, rowCount);
+                    effect.AppendAbilityDefine.AbilityEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(
+                            worksheet.Cells(rowCount, 3).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
+                    for (int i = 4; i < 12; i++)
+                    {
+                        if (!String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text))
+                        {
+                            effect.MainAbilityDefineCombit.InfoArray.Add(worksheet.Cells(rowCount, i).Text);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
                 }
             }
             return effect;
-        }
-
-        private static AtomicEffectDefine GetEffectDetail(dynamic worksheet, int rowCount)
-        {
-            AtomicEffectDefine.AbilityEffectEnum effectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(
-                worksheet.Cells(rowCount, 3).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
-            var atomic = new CardEffect();
-            switch (effectType)
-            {
-                case AtomicEffectDefine.AbilityEffectEnum.未定义:
-                    break;
-                case AtomicEffectDefine.AbilityEffectEnum.攻击:
-                    break;
-                case AtomicEffectDefine.AbilityEffectEnum.回复:
-                    break;
-                case AtomicEffectDefine.AbilityEffectEnum.状态:
-                    break;
-                case AtomicEffectDefine.AbilityEffectEnum.召唤:
-                    break;
-                case AtomicEffectDefine.AbilityEffectEnum.增益:
-                    break;
-                case AtomicEffectDefine.AbilityEffectEnum.卡牌:
-                    atomic.指定卡牌编号 = "指定卡牌编号";
-                    atomic.ActualEffectPoint = "ActualEffectCount";
-                    break;
-                case AtomicEffectDefine.AbilityEffectEnum.变形:
-                    break;
-                case AtomicEffectDefine.AbilityEffectEnum.水晶:
-                    break;
-                case AtomicEffectDefine.AbilityEffectEnum.控制:
-                    break;
-                case AtomicEffectDefine.AbilityEffectEnum.奥秘:
-                    break;
-                case AtomicEffectDefine.AbilityEffectEnum.武器:
-                    break;
-                default:
-                    break;
-            }
-            return atomic;
         }
 
         /// <summary>

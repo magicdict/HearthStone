@@ -15,7 +15,7 @@ namespace Card.Effect
         /// </summary>
         /// <param name="role"></param>
         /// <param name="Ability"></param>
-        public new List<string> RunEffect(GameManager game)
+        public List<string> RunEffect(GameManager game)
         {
             List<string> Result = new List<string>();
             string[] Op = AdditionInfo.Split("/".ToCharArray());

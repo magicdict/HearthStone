@@ -2,7 +2,7 @@
 
 namespace Card.Effect
 {
-    public class TransformEffect : IEffectHandler
+    public class TransformEffect : AtomicEffectDefine, IEffectHandler
     {
         void IEffectHandler.DealHero(Client.GameManager game, AtomicEffectDefine singleEffect, bool MeOrYou)
         {

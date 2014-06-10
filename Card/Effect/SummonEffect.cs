@@ -6,7 +6,7 @@ namespace Card.Effect
     /// <summary>
     /// 召唤效果
     /// </summary>
-    public class SummonEffect:AtomicEffectDefine
+    public class SummonEffect : AtomicEffectDefine
     {
         /// <summary>
         /// 法术方向
@@ -19,7 +19,7 @@ namespace Card.Effect
         /// <param name="game"></param>
         /// <param name="Seed"></param>
         /// <returns></returns>
-        public new List<string> RunEffect(Client.GameManager game)
+        public List<string> RunEffect(Client.GameManager game)
         {
             List<String> Result = new List<string>();
             var MinionLst = AdditionInfo.Split(Card.CardUtility.strSplitMark.ToCharArray());
