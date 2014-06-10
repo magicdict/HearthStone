@@ -10,14 +10,27 @@ namespace Card.Effect
     /// </summary>
     public class CardEffect : AtomicEffectDefine
     {
-        public static List<string> RunEffect(AtomicEffectDefine singleEffect, GameManager game)
+        /// <summary>
+        /// 法术方向
+        /// </summary>
+        public CardUtility.TargetSelectDirectEnum 法术方向 = CardUtility.TargetSelectDirectEnum.双方;
+        /// <summary>
+        /// 指定卡牌编号
+        /// </summary>
+        public String 指定卡牌编号 = String.Empty;
+        /// <summary>
+        /// 法术执行
+        /// </summary>
+        /// <param name="game"></param>
+        /// <returns></returns>
+        public new List<string> RunEffect(GameManager game)
         {
             List<string> Result = new List<string>();
-            switch (singleEffect.SelectOpt.EffectTargetSelectDirect)
+            switch (法术方向)
             {
                 case CardUtility.TargetSelectDirectEnum.本方:
                     //#CARD#ME#M000001
-                    if (String.IsNullOrEmpty(singleEffect.AdditionInfo))
+                    if (String.IsNullOrEmpty(指定卡牌编号))
                     {
                         var drawCards = Card.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
                         if (drawCards.Count == 1)
@@ -30,13 +43,13 @@ namespace Card.Effect
                     }
                     else
                     {
-                        game.MySelfInfo.handCards.Add((Card.CardUtility.GetCardInfoBySN(singleEffect.AdditionInfo)));
+                        game.MySelfInfo.handCards.Add((Card.CardUtility.GetCardInfoBySN(指定卡牌编号)));
                         game.MyInfo.HandCardCount++;
                         Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strMe);
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.对方:
-                    if (String.IsNullOrEmpty(singleEffect.AdditionInfo))
+                    if (String.IsNullOrEmpty(指定卡牌编号))
                     {
                         if (game.YourInfo.RemainCardDeckCount > 0)
                         {
@@ -48,11 +61,11 @@ namespace Card.Effect
                     else
                     {
                         game.YourInfo.HandCardCount++;
-                        Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark + singleEffect.AdditionInfo);
+                        Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark + 指定卡牌编号);
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.双方:
-                    if (String.IsNullOrEmpty(singleEffect.AdditionInfo))
+                    if (String.IsNullOrEmpty(指定卡牌编号))
                     {
                         var drawCards = Card.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
                         if (drawCards.Count == 1)
@@ -65,11 +78,11 @@ namespace Card.Effect
                     }
                     else
                     {
-                        game.MySelfInfo.handCards.Add((Card.CardUtility.GetCardInfoBySN(singleEffect.AdditionInfo)));
+                        game.MySelfInfo.handCards.Add((Card.CardUtility.GetCardInfoBySN(指定卡牌编号)));
                         game.MyInfo.HandCardCount++;
                         Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strMe);
                     }
-                    if (String.IsNullOrEmpty(singleEffect.AdditionInfo))
+                    if (String.IsNullOrEmpty(指定卡牌编号))
                     {
                         if (game.YourInfo.RemainCardDeckCount > 0)
                         {
@@ -81,7 +94,7 @@ namespace Card.Effect
                     else
                     {
                         game.YourInfo.HandCardCount++;
-                        Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark + singleEffect.AdditionInfo);
+                        Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark + 指定卡牌编号);
                     }
                     break;
                 default:

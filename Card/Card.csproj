@@ -41,7 +41,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Effect\Effecthandler.cs" />
-    <Compile Include="Effect\Ability.cs" />
     <Compile Include="Effect\AttackEffect.cs" />
     <Compile Include="Effect\ControlEffect.cs" />
     <Compile Include="Effect\HealthEffect.cs" />

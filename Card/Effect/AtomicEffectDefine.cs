@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Card.Client;
+using System;
 using System.Collections.Generic;
 
 namespace Card.Effect
@@ -70,18 +71,6 @@ namespace Card.Effect
         /// </summary>
         public AbilityEffectEnum AbilityEffectType;
         /// <summary>
-        /// 选择
-        /// </summary>
-        public CardUtility.SelectOption SelectOpt = new CardUtility.SelectOption();
-        /// <summary>
-        /// 是否需要选择目标
-        /// </summary>
-        /// <returns></returns>
-        public Boolean IsNeedSelectTarget()
-        {
-            return SelectOpt.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.指定;
-        }
-        /// <summary>
         /// 效果点数(标准)
         /// 允许表达式
         /// </summary>
@@ -108,8 +97,11 @@ namespace Card.Effect
         /// </summary>
         public void Init()
         {
-            ActualEffectPoint = StandardEffectPoint;
-            ActualEffectCount = StandardEffectCount;
+
+        }
+        public List<string> RunEffect(GameManager game)
+        {
+            return null;
         }
     }
 }

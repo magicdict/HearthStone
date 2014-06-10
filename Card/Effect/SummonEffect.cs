@@ -6,8 +6,12 @@ namespace Card.Effect
     /// <summary>
     /// 召唤效果
     /// </summary>
-    public static class SummonEffect
+    public class SummonEffect:AtomicEffectDefine
     {
+        /// <summary>
+        /// 法术方向
+        /// </summary>
+        public CardUtility.TargetSelectDirectEnum 法术方向 = CardUtility.TargetSelectDirectEnum.双方;
         /// <summary>
         /// 运行效果
         /// </summary>
@@ -15,14 +19,14 @@ namespace Card.Effect
         /// <param name="game"></param>
         /// <param name="Seed"></param>
         /// <returns></returns>
-        public static List<string> RunEffect(AtomicEffectDefine singleEffect, Client.GameManager game)
+        public new List<string> RunEffect(Client.GameManager game)
         {
             List<String> Result = new List<string>();
-            var MinionLst = singleEffect.AdditionInfo.Split(Card.CardUtility.strSplitMark.ToCharArray());
+            var MinionLst = AdditionInfo.Split(Card.CardUtility.strSplitMark.ToCharArray());
             Random random = new Random(DateTime.Now.Millisecond);
             var CardSN = MinionLst[random.Next(0, MinionLst.Length)];
             var Minion = (Card.MinionCard)Card.CardUtility.GetCardInfoBySN(CardSN);
-            switch (singleEffect.SelectOpt.EffectTargetSelectDirect)
+            switch (法术方向)
             {
                 case CardUtility.TargetSelectDirectEnum.本方:
                     if (game.MyInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount)

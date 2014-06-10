@@ -144,30 +144,30 @@ namespace Card.Client
 
                 foreach (int PosInfo in PosList)
                 {
-                    switch (战吼.CardAbility.FirstAbilityDefine.MainAbilityDefine.AbilityEffectType)
+                    switch (战吼.FirstAbilityDefine.MainAbilityDefine.AbilityEffectType)
                     {
                         case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.增益:
-                            Card.Effect.PointEffect.RunPointEffect(BattleMinions[PosInfo - 1], 战吼.CardAbility.FirstAbilityDefine.MainAbilityDefine.AdditionInfo);
+                            Card.Effect.PointEffect.RunPointEffect(BattleMinions[PosInfo - 1], 战吼.FirstAbilityDefine.MainAbilityDefine.AdditionInfo);
                             ActionCodeLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + Card.CardUtility.strMe + Card.CardUtility.strSplitMark +
-                            PosInfo + Card.CardUtility.strSplitMark + 战吼.CardAbility.FirstAbilityDefine.MainAbilityDefine.AdditionInfo);
+                            PosInfo + Card.CardUtility.strSplitMark + 战吼.FirstAbilityDefine.MainAbilityDefine.AdditionInfo);
                             break;
                         case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.状态:
-                            Card.Effect.StatusEffect.RunStatusEffect(BattleMinions[PosInfo - 1], 战吼.CardAbility.FirstAbilityDefine.MainAbilityDefine.AdditionInfo);
+                            Card.Effect.StatusEffect.RunStatusEffect(BattleMinions[PosInfo - 1], 战吼.FirstAbilityDefine.MainAbilityDefine.AdditionInfo);
                             ActionCodeLst.Add(Card.Server.ActionCode.strStatus + Card.CardUtility.strSplitMark + Card.CardUtility.strMe + Card.CardUtility.strSplitMark +
-                            PosInfo + Card.CardUtility.strSplitMark + 战吼.CardAbility.FirstAbilityDefine.MainAbilityDefine.AdditionInfo);
+                            PosInfo + Card.CardUtility.strSplitMark + 战吼.FirstAbilityDefine.MainAbilityDefine.AdditionInfo);
                             break;
                     }
-                    switch (战吼.CardAbility.SecondAbilityDefine.MainAbilityDefine.AbilityEffectType)
+                    switch (战吼.SecondAbilityDefine.MainAbilityDefine.AbilityEffectType)
                     {
                         case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.增益:
-                            Card.Effect.PointEffect.RunPointEffect(BattleMinions[PosInfo - 1], 战吼.CardAbility.SecondAbilityDefine.MainAbilityDefine.AdditionInfo);
+                            Card.Effect.PointEffect.RunPointEffect(BattleMinions[PosInfo - 1], 战吼.SecondAbilityDefine.MainAbilityDefine.AdditionInfo);
                             ActionCodeLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + Card.CardUtility.strMe + Card.CardUtility.strSplitMark +
-                            PosInfo + Card.CardUtility.strSplitMark + 战吼.CardAbility.SecondAbilityDefine.MainAbilityDefine.AdditionInfo);
+                            PosInfo + Card.CardUtility.strSplitMark + 战吼.SecondAbilityDefine.MainAbilityDefine.AdditionInfo);
                             break;
                         case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.状态:
-                            Card.Effect.StatusEffect.RunStatusEffect(BattleMinions[PosInfo - 1], 战吼.CardAbility.SecondAbilityDefine.MainAbilityDefine.AdditionInfo);
+                            Card.Effect.StatusEffect.RunStatusEffect(BattleMinions[PosInfo - 1], 战吼.SecondAbilityDefine.MainAbilityDefine.AdditionInfo);
                             ActionCodeLst.Add(Card.Server.ActionCode.strStatus + Card.CardUtility.strSplitMark + Card.CardUtility.strMe + Card.CardUtility.strSplitMark +
-                            PosInfo + Card.CardUtility.strSplitMark + 战吼.CardAbility.SecondAbilityDefine.MainAbilityDefine.AdditionInfo);
+                            PosInfo + Card.CardUtility.strSplitMark + 战吼.SecondAbilityDefine.MainAbilityDefine.AdditionInfo);
                             break;
                     }
                 }

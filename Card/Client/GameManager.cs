@@ -292,55 +292,55 @@ namespace Card.Client
         public List<String> UseAbility(Card.AbilityCard card, Boolean ConvertPosDirect)
         {
             List<String> Result = new List<string>();
-            //法术伤害
-            if (MyInfo.BattleField.AbilityEffect != 0)
-            {
-                card.JustfyEffectPoint(MyInfo.BattleField.AbilityEffect);
-            }
-            Card.CardUtility.PickEffect PickEffectResult = CardUtility.PickEffect.第一效果;
-            if (card.CardAbility.IsNeedSelect())
-            {
-                PickEffectResult = PickEffect(card.CardAbility.FirstAbilityDefine.MainAbilityDefine.Description, card.CardAbility.SecondAbilityDefine.MainAbilityDefine.Description);
-                if (PickEffectResult == CardUtility.PickEffect.取消) return new List<string>();
-            }
-            var SingleEffectList = card.CardAbility.GetSingleEffectList(PickEffectResult == CardUtility.PickEffect.第一效果);
-            //Pos放在循环外部，这样的话，达到继承的效果
-            Card.CardUtility.TargetPosition TargetPosInfo = new CardUtility.TargetPosition();
-            for (int i = 0; i < SingleEffectList.Count; i++)
-            {
-                var singleEffect = SingleEffectList[i];
-                singleEffect.StandardEffectCount = 1;
-                if (singleEffect.IsNeedSelectTarget())
-                {
-                    TargetPosInfo = GetSelectTarget(singleEffect.SelectOpt, false);
-                    //取消处理
-                    if (TargetPosInfo.Postion == -1) return new List<string>();
-                }
-                else
-                {
-                    if (ConvertPosDirect)
-                    {
-                        switch (singleEffect.SelectOpt.EffectTargetSelectDirect)
-                        {
-                            case CardUtility.TargetSelectDirectEnum.本方:
-                                singleEffect.SelectOpt.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
-                                break;
-                            case CardUtility.TargetSelectDirectEnum.对方:
-                                singleEffect.SelectOpt.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.本方;
-                                break;
-                            case CardUtility.TargetSelectDirectEnum.双方:
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-                Result.AddRange(Effecthandler.RunSingleEffect(singleEffect, this, TargetPosInfo, Seed));
-                Seed++;
-                //每次原子操作后进行一次清算
-                //将亡语效果也发送给对方
-                Result.AddRange(Settle());
-            }
+            ////法术伤害
+            //if (MyInfo.BattleField.AbilityEffect != 0)
+            //{
+            //    card.JustfyEffectPoint(MyInfo.BattleField.AbilityEffect);
+            //}
+            //Card.CardUtility.PickEffect PickEffectResult = CardUtility.PickEffect.第一效果;
+            //if (card.CardAbility.IsNeedSelect())
+            //{
+            //    PickEffectResult = PickEffect(card.CardAbility.FirstAbilityDefine.MainAbilityDefine.Description, card.CardAbility.SecondAbilityDefine.MainAbilityDefine.Description);
+            //    if (PickEffectResult == CardUtility.PickEffect.取消) return new List<string>();
+            //}
+            //var SingleEffectList = card.CardAbility.GetSingleEffectList(PickEffectResult == CardUtility.PickEffect.第一效果);
+            ////Pos放在循环外部，这样的话，达到继承的效果
+            //Card.CardUtility.TargetPosition TargetPosInfo = new CardUtility.TargetPosition();
+            //for (int i = 0; i < SingleEffectList.Count; i++)
+            //{
+            //    var singleEffect = SingleEffectList[i];
+            //    singleEffect.StandardEffectCount = 1;
+            //    if (singleEffect.IsNeedSelectTarget())
+            //    {
+            //        TargetPosInfo = GetSelectTarget(singleEffect.SelectOpt, false);
+            //        //取消处理
+            //        if (TargetPosInfo.Postion == -1) return new List<string>();
+            //    }
+            //    else
+            //    {
+            //        if (ConvertPosDirect)
+            //        {
+            //            switch (singleEffect.SelectOpt.EffectTargetSelectDirect)
+            //            {
+            //                case CardUtility.TargetSelectDirectEnum.本方:
+            //                    singleEffect.SelectOpt.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
+            //                    break;
+            //                case CardUtility.TargetSelectDirectEnum.对方:
+            //                    singleEffect.SelectOpt.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.本方;
+            //                    break;
+            //                case CardUtility.TargetSelectDirectEnum.双方:
+            //                    break;
+            //                default:
+            //                    break;
+            //            }
+            //        }
+            //    }
+            //    Result.AddRange(Effecthandler.RunSingleEffect(singleEffect, this, TargetPosInfo, Seed));
+            //    Seed++;
+            //    //每次原子操作后进行一次清算
+            //    //将亡语效果也发送给对方
+            //    Result.AddRange(Settle());
+            //}
             return Result;
         }
         /// <summary>

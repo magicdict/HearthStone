@@ -38,7 +38,7 @@ namespace Card.Client
                     {
                         ablity = (Card.AbilityCard)CardUtility.GetCardInfoBySN(card.连击效果);
                     }
-                    ablity.CardAbility.Init();
+                    ablity.Init();
                     var ResultArg = game.UseAbility(ablity, ConvertPosDirect);
                     if (ResultArg.Count != 0)
                     {
@@ -130,7 +130,7 @@ namespace Card.Client
                 {
                     //初始化 Buff效果等等
                     Card.AbilityCard ablity = (Card.AbilityCard)CardUtility.GetCardInfoBySN(card.连击效果);
-                    ablity.CardAbility.Init();
+                    ablity.Init();
                     var ResultArg = game.UseAbility(ablity, ConvertPosDirect);
                     if (ResultArg.Count != 0)
                     {

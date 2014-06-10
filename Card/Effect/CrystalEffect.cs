@@ -3,17 +3,21 @@ using Card.Server;
 using System.Collections.Generic;
 namespace Card.Effect
 {
-    public static class CrystalEffect
+    public class CrystalEffect:AtomicEffectDefine
     {
+        /// <summary>
+        /// 法术方向
+        /// </summary>
+        public CardUtility.TargetSelectDirectEnum 法术方向 = CardUtility.TargetSelectDirectEnum.双方;
         /// <summary>
         /// 对法力水晶的法术实施
         /// </summary>
         /// <param name="role"></param>
         /// <param name="Ability"></param>
-        public static List<string> RunEffect(AtomicEffectDefine singleEffect, GameManager game)
+        public new List<string> RunEffect(GameManager game)
         {
             List<string> Result = new List<string>();
-            string[] Op = singleEffect.AdditionInfo.Split("/".ToCharArray());
+            string[] Op = AdditionInfo.Split("/".ToCharArray());
             int point = 0;
             //±N/±N	增加减少 可用水晶 / 增加减少 空水晶
             //可用水晶
@@ -22,7 +26,7 @@ namespace Card.Effect
                 point = int.Parse(Op[0].Substring(1, 1));
                 if (Op[0].Substring(0, 1) == "+")
                 {
-                    if (singleEffect.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
+                    if (法术方向 == CardUtility.TargetSelectDirectEnum.本方)
                     {
                         game.MyInfo.crystal.AddCurrentPoint(point);
                     }
@@ -33,7 +37,7 @@ namespace Card.Effect
                 }
                 else
                 {
-                    if (singleEffect.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
+                    if (法术方向 == CardUtility.TargetSelectDirectEnum.本方)
                     {
                         game.MyInfo.crystal.ReduceCurrentPoint(point);
                     }
@@ -49,7 +53,7 @@ namespace Card.Effect
                 point = int.Parse(Op[1].Substring(1, 1));
                 if (Op[1].Substring(0, 1) == "+")
                 {
-                    if (singleEffect.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
+                    if (法术方向 == CardUtility.TargetSelectDirectEnum.本方)
                     {
                         game.MyInfo.crystal.AddFullPoint(point);
                     }
@@ -60,7 +64,7 @@ namespace Card.Effect
                 }
                 else
                 {
-                    if (singleEffect.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
+                    if (法术方向 == CardUtility.TargetSelectDirectEnum.本方)
                     {
                         game.MyInfo.crystal.ReduceFullPoint(point);
                     }
@@ -71,7 +75,7 @@ namespace Card.Effect
                 }
             }
             //Crystal#ME#4#4
-            if (singleEffect.SelectOpt.EffectTargetSelectDirect == CardUtility.TargetSelectDirectEnum.本方)
+            if (法术方向 == CardUtility.TargetSelectDirectEnum.本方)
             {
                 Result.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark + 
                     game.MyInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MyInfo.crystal.CurrentFullPoint);
