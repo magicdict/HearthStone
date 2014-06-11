@@ -34,8 +34,10 @@ namespace Card.Client
         public int MinionCost = 0;
         /// <summary>
         /// 法术效果
+        /// 多次伤害法术，则施法次数 + 1
+        /// 单次伤害法术，则施法强度 + 1
         /// </summary>
-        public int AbilityEffect = 0;
+        public int AttackEffectPlus = 0;
         /// <summary>
         /// 当前随从数量
         /// </summary>
@@ -147,27 +149,27 @@ namespace Card.Client
                     switch (战吼.FirstAbilityDefine.MainAbilityDefine.AbilityEffectType)
                     {
                         case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.增益:
-                            Card.Effect.PointEffect.RunPointEffect(BattleMinions[PosInfo - 1], 战吼.FirstAbilityDefine.MainAbilityDefine.AdditionInfo);
+                            ((Card.Effect.PointEffect)战吼.FirstAbilityDefine.MainAbilityDefine).RunPointEffect(BattleMinions[PosInfo - 1]);
                             ActionCodeLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + Card.CardUtility.strMe + Card.CardUtility.strSplitMark +
-                            PosInfo + Card.CardUtility.strSplitMark + 战吼.FirstAbilityDefine.MainAbilityDefine.AdditionInfo);
+                            PosInfo + Card.CardUtility.strSplitMark + 战吼.FirstAbilityDefine.MainAbilityDefine);
                             break;
                         case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.状态:
-                            Card.Effect.StatusEffect.RunStatusEffect(BattleMinions[PosInfo - 1], 战吼.FirstAbilityDefine.MainAbilityDefine.AdditionInfo);
+                            ((Card.Effect.StatusEffect)战吼.FirstAbilityDefine.MainAbilityDefine).RunStatusEffect(BattleMinions[PosInfo - 1]);
                             ActionCodeLst.Add(Card.Server.ActionCode.strStatus + Card.CardUtility.strSplitMark + Card.CardUtility.strMe + Card.CardUtility.strSplitMark +
-                            PosInfo + Card.CardUtility.strSplitMark + 战吼.FirstAbilityDefine.MainAbilityDefine.AdditionInfo);
+                            PosInfo + Card.CardUtility.strSplitMark + 战吼.FirstAbilityDefine.MainAbilityDefine);
                             break;
                     }
                     switch (战吼.SecondAbilityDefine.MainAbilityDefine.AbilityEffectType)
                     {
                         case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.增益:
-                            Card.Effect.PointEffect.RunPointEffect(BattleMinions[PosInfo - 1], 战吼.SecondAbilityDefine.MainAbilityDefine.AdditionInfo);
+                            ((Card.Effect.PointEffect)战吼.SecondAbilityDefine.MainAbilityDefine).RunPointEffect(BattleMinions[PosInfo - 1]);
                             ActionCodeLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + Card.CardUtility.strMe + Card.CardUtility.strSplitMark +
-                            PosInfo + Card.CardUtility.strSplitMark + 战吼.SecondAbilityDefine.MainAbilityDefine.AdditionInfo);
+                            PosInfo + Card.CardUtility.strSplitMark + 战吼.SecondAbilityDefine.MainAbilityDefine);
                             break;
                         case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.状态:
-                            Card.Effect.StatusEffect.RunStatusEffect(BattleMinions[PosInfo - 1], 战吼.SecondAbilityDefine.MainAbilityDefine.AdditionInfo);
+                            ((Card.Effect.StatusEffect)战吼.SecondAbilityDefine.MainAbilityDefine).RunStatusEffect(BattleMinions[PosInfo - 1]);
                             ActionCodeLst.Add(Card.Server.ActionCode.strStatus + Card.CardUtility.strSplitMark + Card.CardUtility.strMe + Card.CardUtility.strSplitMark +
-                            PosInfo + Card.CardUtility.strSplitMark + 战吼.SecondAbilityDefine.MainAbilityDefine.AdditionInfo);
+                            PosInfo + Card.CardUtility.strSplitMark + 战吼.SecondAbilityDefine.MainAbilityDefine);
                             break;
                     }
                 }
@@ -199,7 +201,7 @@ namespace Card.Client
                 if (BattleMinions[i] != null) BattleMinions[i].受战地效果.Clear();
             }
             AbilityCost = 0;
-            AbilityEffect = 0;
+            AttackEffectPlus = 0;
             MinionCost = 0;
             //设置光环效果
             for (int i = 0; i < BattleMinions.Length; i++)
@@ -228,7 +230,7 @@ namespace Card.Client
                                 AbilityCost += int.Parse(minion.光环效果.BuffInfo);
                                 break;
                             case MinionCard.光环类型.法术效果:
-                                AbilityEffect += int.Parse(minion.光环效果.BuffInfo);
+                                AttackEffectPlus += int.Parse(minion.光环效果.BuffInfo);
                                 break;
                             case MinionCard.光环类型.随从成本:
                                 MinionCost += int.Parse(minion.光环效果.BuffInfo);

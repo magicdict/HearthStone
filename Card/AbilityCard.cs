@@ -1,4 +1,5 @@
-﻿using Card.Effect;
+﻿using Card.Client;
+using Card.Effect;
 using System;
 using System.Collections.Generic;
 
@@ -82,38 +83,51 @@ namespace Card
                 AppendAbilityDefine = new AtomicEffectDefine();
                 MainAbilityDefineCombit = new AtomicEffectDefine();
             }
-        }
-        /// <summary>
-        /// 分解获得效果列表
-        /// </summary>
-        /// <param name="IsFirstEffect">需要抉择的时候，是否选择第一项目</param>
-        /// <returns>最小效果列表</returns>
-        public List<Card.Effect.AtomicEffectDefine> GetSingleEffectList(Boolean IsFirstEffect)
-        {
-            //这里都转化为1次效果
-            //例如：奥术飞弹的3次工具这里将转为3次效果
-            //这样做的原因是，每次奥术飞弹攻击之后，必须要进行一次清算，是否有目标已经被摧毁
-            //如果被摧毁的话，无法攻击这个目标了，
-            //同时，如果出现亡语的话，亡语可能召唤出新的可攻击目标
-            List<Card.Effect.AtomicEffectDefine> EffectLst = new List<Card.Effect.AtomicEffectDefine>();
-            return EffectLst;
+            /// <summary>
+            /// 用具体的类替换
+            /// </summary>
+            public void GetField()
+            {
+                MainAbilityDefine.GetField();
+                AppendAbilityDefine.GetField();
+                MainAbilityDefineCombit.GetField();
+            }
         }
         /// <summary>
         /// 初始化
         /// </summary>
         public new void Init()
         {
-            FirstAbilityDefine.Init();
-            if (IsNeedSelect()) SecondAbilityDefine.Init();
+            FirstAbilityDefine.GetField();
+            SecondAbilityDefine.GetField();
         }
         /// <summary>
-        /// 调整法术效果
+        /// 分解获得效果列表
         /// </summary>
-        /// <param name="AbilityEffect"></param>
-        public void JustfyEffectPoint(int AbilityEffect)
+        /// <param name="game"></param>
+        /// <param name="atomic"></param>
+        /// <returns></returns>
+        public List<Card.Effect.AtomicEffectDefine> GetSingleEffectList(GameManager game,AtomicEffectDefine atomic)
         {
-            //法术强度本意是增加法术卡的总伤。以奥术飞弹为例，法术强度+1会令奥术飞弹多1发伤害，而非单发伤害+1。法术强度不影响治疗效果。
-         }
+            //攻击，抽牌，召唤
+            //多次攻击需要考虑法术伤害加成
+            List<Card.Effect.AtomicEffectDefine> EffectLst = new List<Card.Effect.AtomicEffectDefine>();
+            switch (atomic.AbilityEffectType)
+            {
+                case AtomicEffectDefine.AbilityEffectEnum.攻击:
+                    int ActualAttackCount =  Effecthandler.GetEffectPoint(game,((AttackEffect)atomic).标准效果回数表达式);
+                    if (ActualAttackCount > 1) ActualAttackCount += game.MyInfo.BattleField.AttackEffectPlus;
+                    for (int i = 0; i < ActualAttackCount; i++)
+                    {
+                        EffectLst.Add(atomic);
+                    }
+                    break;
+                default:
+                    EffectLst.Add(atomic);
+                    break;
+            }
+            return EffectLst;
+        }
         /// <summary>
         /// 简单检查
         /// </summary>

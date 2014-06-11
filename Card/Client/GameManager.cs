@@ -1,5 +1,4 @@
-﻿using Card;
-using Card.Effect;
+﻿using Card.Effect;
 using Card.Server;
 using System;
 using System.Collections.Generic;
@@ -44,6 +43,10 @@ namespace Card.Client
         /// 上回合过载
         /// </summary>
         public int OverloadPoint = 0;
+        /// <summary>
+        /// 全局随机种子
+        /// </summary>
+        public static int Seed = 1;
         /// <summary>
         /// 游戏信息
         /// </summary>
@@ -112,6 +115,10 @@ namespace Card.Client
         /// 对方情报
         /// </summary>
         public PublicInfo YourInfo = new PublicInfo();
+        /// <summary>
+        /// 对方私有情报（单机版有效）
+        /// </summary>
+        public PrivateInfo YourSelfInfo = new PrivateInfo();
         /// <summary>
         /// 检查是否可以使用
         /// </summary>
@@ -279,72 +286,69 @@ namespace Card.Client
             ActionLst.AddRange(事件处理());
             return ActionLst;
         }
-
-        /// <summary>
-        /// 全局随机种子
-        /// </summary>
-        public static int Seed = 1;
         /// <summary>
         /// 使用法术
         /// </summary>
-        /// <param name="card"></param>
+        /// <param name="ability"></param>
         /// <param name="ConvertPosDirect">对象方向转换</param>
-        public List<String> UseAbility(Card.AbilityCard card, Boolean ConvertPosDirect)
+        public List<String> UseAbility(Card.AbilityCard ability, Boolean ConvertPosDirect)
         {
             List<String> Result = new List<string>();
-            ////法术伤害
-            //if (MyInfo.BattleField.AbilityEffect != 0)
-            //{
-            //    card.JustfyEffectPoint(MyInfo.BattleField.AbilityEffect);
-            //}
-            //Card.CardUtility.PickEffect PickEffectResult = CardUtility.PickEffect.第一效果;
-            //if (card.CardAbility.IsNeedSelect())
-            //{
-            //    PickEffectResult = PickEffect(card.CardAbility.FirstAbilityDefine.MainAbilityDefine.Description, card.CardAbility.SecondAbilityDefine.MainAbilityDefine.Description);
-            //    if (PickEffectResult == CardUtility.PickEffect.取消) return new List<string>();
-            //}
-            //var SingleEffectList = card.CardAbility.GetSingleEffectList(PickEffectResult == CardUtility.PickEffect.第一效果);
-            ////Pos放在循环外部，这样的话，达到继承的效果
-            //Card.CardUtility.TargetPosition TargetPosInfo = new CardUtility.TargetPosition();
-            //for (int i = 0; i < SingleEffectList.Count; i++)
-            //{
-            //    var singleEffect = SingleEffectList[i];
-            //    singleEffect.StandardEffectCount = 1;
-            //    if (singleEffect.IsNeedSelectTarget())
-            //    {
-            //        TargetPosInfo = GetSelectTarget(singleEffect.SelectOpt, false);
-            //        //取消处理
-            //        if (TargetPosInfo.Postion == -1) return new List<string>();
-            //    }
-            //    else
-            //    {
-            //        if (ConvertPosDirect)
-            //        {
-            //            switch (singleEffect.SelectOpt.EffectTargetSelectDirect)
-            //            {
-            //                case CardUtility.TargetSelectDirectEnum.本方:
-            //                    singleEffect.SelectOpt.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
-            //                    break;
-            //                case CardUtility.TargetSelectDirectEnum.对方:
-            //                    singleEffect.SelectOpt.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.本方;
-            //                    break;
-            //                case CardUtility.TargetSelectDirectEnum.双方:
-            //                    break;
-            //                default:
-            //                    break;
-            //            }
-            //        }
-            //    }
-            //    Result.AddRange(Effecthandler.RunSingleEffect(singleEffect, this, TargetPosInfo, Seed));
-            //    Seed++;
-            //    //每次原子操作后进行一次清算
-            //    //将亡语效果也发送给对方
-            //    Result.AddRange(Settle());
-            //}
+            Card.CardUtility.PickEffect PickEffectResult = CardUtility.PickEffect.第一效果;
+            if (ability.IsNeedSelect())
+            {
+                PickEffectResult = PickEffect(ability.FirstAbilityDefine.MainAbilityDefine.Description, ability.SecondAbilityDefine.MainAbilityDefine.Description);
+                if (PickEffectResult == CardUtility.PickEffect.取消) return new List<string>();
+            }
+            List<AtomicEffectDefine> SingleEffectList = new List<AtomicEffectDefine>();
+            AtomicEffectDefine atomiceffect;
+            AbilityCard.EffectDefine effect;
+            if (PickEffectResult == CardUtility.PickEffect.第一效果)
+            {
+                effect = ability.FirstAbilityDefine;
+            }
+            else
+            {
+                effect = ability.SecondAbilityDefine;
+            }
+            if (MyInfo.连击状态)
+            {
+                atomiceffect = effect.MainAbilityDefineCombit;
+            }
+            else
+            {
+                atomiceffect = effect.MainAbilityDefine;
+            }
+            SingleEffectList = ability.GetSingleEffectList(this,atomiceffect);
+            //Pos放在循环外部，这样的话，达到继承的效果
+            Card.CardUtility.TargetPosition TargetPosInfo = new CardUtility.TargetPosition();
+            for (int i = 0; i < SingleEffectList.Count; i++)
+            {
+                Seed++;
+                //每次原子操作后进行一次清算
+                //将亡语效果也发送给对方
+                Result.AddRange(Settle());
+            }
+            //追加效果的处理
+            if (!String.IsNullOrEmpty(effect.AppendEffectCondition))
+            {
+                //条件处理
+                if (TargetPosInfo.MeOrYou  != null)
+                {
+                    SingleEffectList = ability.GetSingleEffectList(this,atomiceffect);
+                    for (int i = 0; i < SingleEffectList.Count; i++)
+                    {
+                        Seed++;
+                        //每次原子操作后进行一次清算
+                        //将亡语效果也发送给对方
+                        Result.AddRange(Settle());
+                    }
+                }
+            }
             return Result;
         }
         /// <summary>
-        /// 
+        /// 奥秘计算
         /// </summary>
         /// <param name="actionlst"></param>
         /// <returns></returns>

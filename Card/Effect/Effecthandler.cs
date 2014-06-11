@@ -10,7 +10,7 @@ namespace Card.Effect
         /// </summary>
         /// <param name="strEffectPoint"></param>
         /// <returns></returns>
-        public static int GetEffectPoint(Client.GameManager game,String strEffectPoint)
+        public static int GetEffectPoint(Client.GameManager game, String strEffectPoint)
         {
             int point = 0;
             if (!String.IsNullOrEmpty(strEffectPoint))
@@ -207,6 +207,18 @@ namespace Card.Effect
             switch (singleEffect.AbilityEffectType)
             {
                 case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.攻击:
+                    //伤害点数的实时计算
+                    var tempAttactEffect = ((AttackEffect)singleEffect);
+                    if (GetEffectPoint(game, tempAttactEffect.标准效果回数表达式) > 1)
+                    {
+                        tempAttactEffect.实际伤害点数 = GetEffectPoint(game, tempAttactEffect.标准效果表达式);
+                    }
+                    else
+                    {
+                        tempAttactEffect.实际伤害点数 = GetEffectPoint(game, tempAttactEffect.标准效果表达式) + game.MyInfo.BattleField.AttackEffectPlus;
+                    }
+                    Result.AddRange(RunNormalSingleEffect(singleEffect, game, PosList));
+                    break;
                 case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.回复:
                 case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.状态:
                 case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.增益:
@@ -251,27 +263,27 @@ namespace Card.Effect
                 case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.攻击:
                     handler = new AttackEffect();
                     strResult = Card.Server.ActionCode.strAttack;
-                    strEffect = singleEffect.ActualEffectPoint.ToString();
+                    strEffect = ((AttackEffect)singleEffect).实际伤害点数.ToString();
                     break;
                 case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.回复:
                     handler = new HealthEffect();
                     strResult = Card.Server.ActionCode.strHealth;
-                    strEffect = singleEffect.ActualEffectPoint.ToString() + CardUtility.strSplitMark + singleEffect.AdditionInfo;
+                    //strEffect = singleEffect.ActualEffectPoint.ToString() + CardUtility.strSplitMark + singleEffect.AdditionInfo;
                     break;
                 case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.状态:
                     handler = new StatusEffect();
                     strResult = Card.Server.ActionCode.strStatus;
-                    strEffect = singleEffect.AdditionInfo;
+                    //strEffect = singleEffect.AdditionInfo;
                     break;
                 case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.增益:
                     handler = new PointEffect();
                     strResult = Card.Server.ActionCode.strPoint;
-                    strEffect = singleEffect.AdditionInfo + CardUtility.strSplitMark + singleEffect.StandardEffectPoint;
+                    //strEffect = singleEffect.AdditionInfo + CardUtility.strSplitMark + singleEffect.StandardEffectPoint;
                     break;
                 case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.变形:
                     handler = new TransformEffect();
                     strResult = Card.Server.ActionCode.strTransform;
-                    strEffect = singleEffect.AdditionInfo;
+                    //strEffect = singleEffect.AdditionInfo;
                     break;
             }
             strResult += Card.CardUtility.strSplitMark;

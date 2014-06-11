@@ -306,13 +306,9 @@ namespace 炉边传说
             var ActionList = Actions.Split(Card.CardUtility.strSplitArrayMark.ToCharArray());
             foreach (var item in ActionList)
             {
-                //lstAction.Items.Add("Received:[" + item + "]");
                 if (ActionCode.GetActionType(item) != ActionCode.ActionType.EndTurn)
                 {
-                    //lstAction.Items.Clear();
-                    //ShowMinionInfo("Before:");
                     ProcessAction.Process(item, game);
-                    //ShowMinionInfo("After ：");
                 }
                 else
                 {
@@ -324,21 +320,6 @@ namespace 炉边传说
                 }
             }
             DisplayMyInfo();
-        }
-        /// <summary>
-        /// LOG用
-        /// </summary>
-        /// <param name="title"></param>
-        private void ShowMinionInfo(string title)
-        {
-            foreach (var item in game.MyInfo.BattleField.ShowMinions())
-            {
-                //lstAction.Items.Add(title + "My:" + item);
-            }
-            foreach (var item in game.YourInfo.BattleField.ShowMinions())
-            {
-                //lstAction.Items.Add(title + "You:" + item);
-            }
         }
         /// <summary>
         /// 

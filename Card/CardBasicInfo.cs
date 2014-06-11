@@ -133,7 +133,7 @@ namespace Card
             return "[" + CardType.ToString() + "]" + Name + "[" + ActualCostPoint + "]";
         }
         /// <summary>
-        /// 
+        /// 初始化
         /// </summary>
         public void Init()
         {

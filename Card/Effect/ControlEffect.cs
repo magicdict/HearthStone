@@ -17,5 +17,10 @@ namespace Card.Effect
             }
             return Result;
         }
+
+        public new void GetField()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

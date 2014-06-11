@@ -19,6 +19,10 @@ namespace Card.Effect
         /// </summary>
         public String 指定卡牌编号 = String.Empty;
         /// <summary>
+        /// 抽牌次数
+        /// </summary>
+        public String 抽牌次数表达式 = String.Empty;
+        /// <summary>
         /// 法术执行
         /// </summary>
         /// <param name="game"></param>
@@ -101,6 +105,15 @@ namespace Card.Effect
                     break;
             }
             return Result;
+        }
+        /// <summary>
+        /// 初始化值
+        /// </summary>
+        public new void GetField()
+        {
+            法术方向 = CardUtility.GetEnum<CardUtility.TargetSelectDirectEnum>(InfoArray[1], CardUtility.TargetSelectDirectEnum.双方);
+            抽牌次数表达式 = InfoArray[2];
+            指定卡牌编号 = InfoArray[3];
         }
     }
 }

@@ -75,26 +75,10 @@ namespace Card.Effect
         /// </summary>
         public List<String> InfoArray = new List<string>();
         /// <summary>
-        /// 效果点数(标准)
-        /// 允许表达式
+        /// 
         /// </summary>
-        public String StandardEffectPoint;
-        /// <summary>
-        /// 效果回数
-        /// </summary>
-        public int StandardEffectCount;
-        /// <summary>
-        /// 效果点数(实际)
-        /// 允许表达式
-        /// </summary>
-        public String ActualEffectPoint;
-        /// <summary>
-        /// 效果回数(实际)
-        /// </summary>
-        public int ActualEffectCount;
-        /// <summary>
-        /// 附加信息
-        /// </summary>
-        public String AdditionInfo;
+        public void GetField(){
+        
+        }
     }
 }

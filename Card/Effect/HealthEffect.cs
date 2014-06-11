@@ -11,6 +11,14 @@ namespace Card.Effect
     public class HealthEffect : AtomicEffectDefine, IEffectHandler
     {
         /// <summary>
+        /// 生命值回复表达式
+        /// </summary>
+        public String 生命值回复表达式 = String.Empty;
+        /// <summary>
+        /// 护甲回复表达式
+        /// </summary>
+        public String 护甲回复表达式 = String.Empty;
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="game"></param>
@@ -18,8 +26,8 @@ namespace Card.Effect
         /// <param name="MeOrYou"></param>
         void IEffectHandler.DealHero(GameManager game, AtomicEffectDefine singleEffect, bool MeOrYou)
         {
-            int ShieldPoint = int.Parse(singleEffect.AdditionInfo.Split("/".ToArray())[0]);
-            int HealthPoint = int.Parse(singleEffect.AdditionInfo.Split("/".ToArray())[1]);
+            int ShieldPoint = Effect.Effecthandler.GetEffectPoint(game,护甲回复表达式);
+            int HealthPoint = Effect.Effecthandler.GetEffectPoint(game,生命值回复表达式);
             if (MeOrYou)
             {
                 game.MyInfo.AfterBeShield(ShieldPoint);
@@ -56,7 +64,7 @@ namespace Card.Effect
         /// <param name="PosIndex"></param>
         void IEffectHandler.DealMinion(GameManager game, AtomicEffectDefine singleEffect, bool MeOrYou, int PosIndex)
         {
-            int HealthPoint = Effecthandler.GetEffectPoint(game,singleEffect.ActualEffectPoint);
+            int HealthPoint = Effect.Effecthandler.GetEffectPoint(game, 生命值回复表达式);
             if (MeOrYou)
             {
                 if (game.MyInfo.BattleField.BattleMinions[PosIndex].AfterBeHealth(HealthPoint))
@@ -81,6 +89,11 @@ namespace Card.Effect
                     });
                 }
             }
+        }
+
+        public new void GetField()
+        {
+            throw new NotImplementedException();
         }
     }
 }

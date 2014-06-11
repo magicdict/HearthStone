@@ -10,6 +10,14 @@ namespace Card.Effect
         /// </summary>
         public CardUtility.TargetSelectDirectEnum 法术方向 = CardUtility.TargetSelectDirectEnum.双方;
         /// <summary>
+        /// 获得法力水晶
+        /// </summary>
+        public int 获得法力水晶 = 0;
+        /// <summary>
+        /// 获得空法力水晶
+        /// </summary>
+        public int 获得空法力水晶 = 0;
+        /// <summary>
         /// 对法力水晶的法术实施
         /// </summary>
         /// <param name="role"></param>
@@ -17,62 +25,25 @@ namespace Card.Effect
         public List<string> RunEffect(GameManager game)
         {
             List<string> Result = new List<string>();
-            string[] Op = AdditionInfo.Split("/".ToCharArray());
-            int point = 0;
-            //±N/±N	增加减少 可用水晶 / 增加减少 空水晶
-            //可用水晶
-            if (Op[0].Substring(1, 1) != "0")
+
+            switch (法术方向)
             {
-                point = int.Parse(Op[0].Substring(1, 1));
-                if (Op[0].Substring(0, 1) == "+")
-                {
-                    if (法术方向 == CardUtility.TargetSelectDirectEnum.本方)
-                    {
-                        game.MyInfo.crystal.AddCurrentPoint(point);
-                    }
-                    else
-                    {
-                        game.YourInfo.crystal.AddCurrentPoint(point);
-                    }
-                }
-                else
-                {
-                    if (法术方向 == CardUtility.TargetSelectDirectEnum.本方)
-                    {
-                        game.MyInfo.crystal.ReduceCurrentPoint(point);
-                    }
-                    else
-                    {
-                        game.YourInfo.crystal.ReduceCurrentPoint(point);
-                    }
-                }
-            }
-            //空水晶
-            if (Op[1].Substring(1, 1) != "0")
-            {
-                point = int.Parse(Op[1].Substring(1, 1));
-                if (Op[1].Substring(0, 1) == "+")
-                {
-                    if (法术方向 == CardUtility.TargetSelectDirectEnum.本方)
-                    {
-                        game.MyInfo.crystal.AddFullPoint(point);
-                    }
-                    else
-                    {
-                        game.YourInfo.crystal.AddFullPoint(point);
-                    }
-                }
-                else
-                {
-                    if (法术方向 == CardUtility.TargetSelectDirectEnum.本方)
-                    {
-                        game.MyInfo.crystal.ReduceFullPoint(point);
-                    }
-                    else
-                    {
-                        game.YourInfo.crystal.ReduceFullPoint(point);
-                    }
-                }
+                case CardUtility.TargetSelectDirectEnum.本方:
+                    game.MyInfo.crystal.AddCurrentPoint(获得法力水晶);
+                    game.MyInfo.crystal.AddFullPoint(获得空法力水晶);
+                    break;
+                case CardUtility.TargetSelectDirectEnum.对方:
+                    game.YourInfo.crystal.AddCurrentPoint(获得法力水晶);
+                    game.YourInfo.crystal.AddFullPoint(获得空法力水晶);
+                    break;
+                case CardUtility.TargetSelectDirectEnum.双方:
+                    game.MyInfo.crystal.AddCurrentPoint(获得法力水晶);
+                    game.MyInfo.crystal.AddFullPoint(获得空法力水晶);
+                    game.YourInfo.crystal.AddCurrentPoint(获得法力水晶);
+                    game.YourInfo.crystal.AddFullPoint(获得空法力水晶);
+                    break;
+                default:
+                    break;
             }
             //Crystal#ME#4#4
             if (法术方向 == CardUtility.TargetSelectDirectEnum.本方)
@@ -86,6 +57,11 @@ namespace Card.Effect
                     game.YourInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.YourInfo.crystal.CurrentFullPoint);
             }
             return Result;
+        }
+
+        public new void GetField()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

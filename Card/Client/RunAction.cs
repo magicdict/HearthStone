@@ -33,11 +33,6 @@ namespace Card.Client
                     ActionCodeLst.Add(ActionCode.strAbility + CardUtility.strSplitMark + CardSn);
                     //初始化 Buff效果等等
                     Card.AbilityCard ablity = (Card.AbilityCard)CardUtility.GetCardInfoBySN(CardSn);
-                    //连击效果的法术修改
-                    if (game.MyInfo.连击状态 && (!String.IsNullOrEmpty(card.连击效果)))
-                    {
-                        ablity = (Card.AbilityCard)CardUtility.GetCardInfoBySN(card.连击效果);
-                    }
                     ablity.Init();
                     var ResultArg = game.UseAbility(ablity, ConvertPosDirect);
                     if (ResultArg.Count != 0)
@@ -91,7 +86,7 @@ namespace Card.Client
                                     else
                                     {
                                         ActionCodeLst.Add(resultArray[0] + CardUtility.strSplitMark + resultArray[1] + CardUtility.strSplitMark +
-                                                           (int.Parse(resultArray[2]) + 1).ToString() + CardUtility.strSplitMark + resultArray[3]);
+                                        (int.Parse(resultArray[2]) + 1).ToString() + CardUtility.strSplitMark + resultArray[3]);
                                     }
                                 }
                                 game.MyInfo.BattleField.PutToBattle(MinionPos, minion);

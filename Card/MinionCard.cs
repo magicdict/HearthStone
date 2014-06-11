@@ -601,7 +601,7 @@ namespace Card
                 }
                 else
                 {
-                    Card.Effect.PointEffect.RunPointEffect(this, 自身事件.事件效果);
+                    //Card.Effect.PointEffect.RunPointEffect(this, 自身事件.事件效果);
                     ActionLst.Add(Card.Server.ActionCode.strPoint + CardUtility.strSplitMark + MyPos + CardUtility.strSplitMark + 自身事件.事件效果);
                 }
             }

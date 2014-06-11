@@ -36,14 +36,17 @@ namespace Card.Effect
         /// 回合结束死亡
         /// </summary>
         public const String strTurnEndDead = "TURNENDDEAD";
+
+        public String 施加状态;
+
         /// <summary>
-        /// 
+        /// 施法
         /// </summary>
         /// <param name="myMinion"></param>
         /// <param name="AddtionInfo"></param>
-        public static void RunStatusEffect(MinionCard myMinion, String AddtionInfo)
+        public void RunStatusEffect(MinionCard myMinion)
         {
-            switch (AddtionInfo)
+            switch (施加状态)
             {
                 case strFreeze:
                     myMinion.冰冻状态 = CardUtility.EffectTurn.效果命中;
@@ -92,13 +95,18 @@ namespace Card.Effect
         {
             if (MeOrYou)
             {
-                RunStatusEffect(game.MyInfo.BattleField.BattleMinions[PosIndex], singleEffect.AdditionInfo);
+                RunStatusEffect(game.MyInfo.BattleField.BattleMinions[PosIndex]);
             }
             else
             {
-                RunStatusEffect(game.YourInfo.BattleField.BattleMinions[PosIndex], singleEffect.AdditionInfo);
+                RunStatusEffect(game.YourInfo.BattleField.BattleMinions[PosIndex]);
             }
         }
 
+
+        public new void GetField()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

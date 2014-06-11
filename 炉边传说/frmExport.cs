@@ -261,6 +261,7 @@ namespace 炉边传说
         {
             AbilityCard.EffectDefine effect = new AbilityCard.EffectDefine();
             effect.Init();
+            //effect.Init();
             //这行是选择1的标题
             rowCount++;
             //这行是选择1的内容

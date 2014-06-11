@@ -13,6 +13,10 @@ namespace Card.Effect
         /// </summary>
         public CardUtility.TargetSelectDirectEnum 法术方向 = CardUtility.TargetSelectDirectEnum.双方;
         /// <summary>
+        /// 
+        /// </summary>
+        public String 指定卡牌编号数组 = String.Empty;
+        /// <summary>
         /// 运行效果
         /// </summary>
         /// <param name="singleEffect"></param>
@@ -22,7 +26,7 @@ namespace Card.Effect
         public List<string> RunEffect(Client.GameManager game)
         {
             List<String> Result = new List<string>();
-            var MinionLst = AdditionInfo.Split(Card.CardUtility.strSplitMark.ToCharArray());
+            var MinionLst = 指定卡牌编号数组.Split(Card.CardUtility.strSplitMark.ToCharArray());
             Random random = new Random(DateTime.Now.Millisecond);
             var CardSN = MinionLst[random.Next(0, MinionLst.Length)];
             var Minion = (Card.MinionCard)Card.CardUtility.GetCardInfoBySN(CardSN);
@@ -92,6 +96,11 @@ namespace Card.Effect
                     break;
             }
             return Result;
+        }
+
+        public new void GetField()
+        {
+            throw new NotImplementedException();
         }
     }
 }

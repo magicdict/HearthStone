@@ -90,7 +90,7 @@ namespace Card
                         //在自己的回合运行自己的奥秘
                         //SUMMON#YOU#M000001#POS
                         //例如：亡语的时候可能召唤一个新的随从
-                        PointEffect.RunPointEffect(game.YourInfo.BattleField.BattleMinions[int.Parse(actionField[3]) - 1],card.AdditionInfo);
+                        //PointEffect.RunPointEffect(game.YourInfo.BattleField.BattleMinions[int.Parse(actionField[3]) - 1],card.AdditionInfo);
                         ActionLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + CardUtility.strYou + Card.CardUtility.strSplitMark +
                                     actionField[3] + Card.CardUtility.strSplitMark + card.AdditionInfo);
                     }
@@ -100,14 +100,14 @@ namespace Card
                         if (actiontype == Server.ActionCode.ActionType.Summon)
                         {
                             //SUMMON#YOU#M000001#POS
-                            PointEffect.RunPointEffect(game.MyInfo.BattleField.BattleMinions[int.Parse(actionField[3]) - 1], card.AdditionInfo);
+                            //PointEffect.RunPointEffect(game.MyInfo.BattleField.BattleMinions[int.Parse(actionField[3]) - 1], card.AdditionInfo);
                             ActionLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + CardUtility.strMe + Card.CardUtility.strSplitMark +
                                     actionField[3] + Card.CardUtility.strSplitMark + card.AdditionInfo);
                         }
                         else
                         {
                             //MINION#M000001#1
-                            PointEffect.RunPointEffect(game.MyInfo.BattleField.BattleMinions[int.Parse(actionField[2]) - 1], card.AdditionInfo);
+                            //PointEffect.RunPointEffect(game.MyInfo.BattleField.BattleMinions[int.Parse(actionField[2]) - 1], card.AdditionInfo);
                             ActionLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + CardUtility.strMe + Card.CardUtility.strSplitMark +
                                     actionField[2] + Card.CardUtility.strSplitMark + card.AdditionInfo);
                         }
