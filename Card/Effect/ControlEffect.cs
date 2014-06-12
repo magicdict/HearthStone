@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Card.Effect
 {
-    public class ControlEffect : AtomicEffectDefine
+    public class ControlEffect : EffectDefine
     {
         public List<string> RunEffect(Client.GameManager game, String PosField)
         {
@@ -18,9 +18,5 @@ namespace Card.Effect
             return Result;
         }
 
-        public new void GetField()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -295,14 +295,14 @@ namespace Card.Client
         {
             List<String> Result = new List<string>();
             Card.CardUtility.PickEffect PickEffectResult = CardUtility.PickEffect.第一效果;
-            if (ability.IsNeedSelect())
+            if (ability.效果选择类型 == Card.AbilityCard.效果选择类型枚举.主动选择)
             {
-                PickEffectResult = PickEffect(ability.FirstAbilityDefine.MainAbilityDefine.Description, ability.SecondAbilityDefine.MainAbilityDefine.Description);
+                PickEffectResult = PickEffect(ability.FirstAbilityDefine.MainAbilityDefine.描述, ability.SecondAbilityDefine.MainAbilityDefine.描述);
                 if (PickEffectResult == CardUtility.PickEffect.取消) return new List<string>();
             }
-            List<AtomicEffectDefine> SingleEffectList = new List<AtomicEffectDefine>();
-            AtomicEffectDefine atomiceffect;
-            AbilityCard.EffectDefine effect;
+            List<EffectDefine> SingleEffectList = new List<EffectDefine>();
+            EffectDefine atomiceffect;
+            AbilityCard.AbilityDefine effect;
             if (PickEffectResult == CardUtility.PickEffect.第一效果)
             {
                 effect = ability.FirstAbilityDefine;
@@ -313,36 +313,76 @@ namespace Card.Client
             }
             if (MyInfo.连击状态)
             {
-                atomiceffect = effect.MainAbilityDefineCombit;
+                atomiceffect = effect.AppendAbilityDefine;
             }
             else
             {
                 atomiceffect = effect.MainAbilityDefine;
             }
-            SingleEffectList = ability.GetSingleEffectList(this,atomiceffect);
             //Pos放在循环外部，这样的话，达到继承的效果
             Card.CardUtility.TargetPosition TargetPosInfo = new CardUtility.TargetPosition();
-            for (int i = 0; i < SingleEffectList.Count; i++)
-            {
-                Seed++;
-                //每次原子操作后进行一次清算
-                //将亡语效果也发送给对方
-                Result.AddRange(Settle());
-            }
+            Result.AddRange(RunAbilityEffect(ability, ConvertPosDirect, atomiceffect, ref TargetPosInfo));
             //追加效果的处理
             if (!String.IsNullOrEmpty(effect.AppendEffectCondition))
             {
                 //条件处理
-                if (TargetPosInfo.MeOrYou  != null)
+                //if (TargetPosInfo.MeOrYou != null)
+                //{
+                //    Result.AddRange(RunAbilityEffect(ability, ConvertPosDirect, atomiceffect, ref TargetPosInfo));
+                //}
+            }
+            return Result;
+        }
+        /// <summary>
+        /// 运行法术
+        /// </summary>
+        /// <param name="ability"></param>
+        /// <param name="ConvertPosDirect"></param>
+        /// <param name="atomiceffect"></param>
+        /// <param name="TargetPosInfo"></param>
+        /// <returns></returns>
+        private List<String> RunAbilityEffect(Card.AbilityCard ability, Boolean ConvertPosDirect,
+                                              EffectDefine atomiceffect, ref Card.CardUtility.TargetPosition TargetPosInfo)
+        {
+            List<String> Result = new List<string>();
+            var SingleEffectList = ability.GetSingleEffectList(this, atomiceffect);
+            for (int i = 0; i < SingleEffectList.Count; i++)
+            {
+                var singleEffect = SingleEffectList[i];
+                if (ability.对象选择器.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.指定 ||
+                    ability.对象选择器.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.横扫)
                 {
-                    SingleEffectList = ability.GetSingleEffectList(this,atomiceffect);
-                    for (int i = 0; i < SingleEffectList.Count; i++)
+                    TargetPosInfo = GetSelectTarget(ability.对象选择器, false);
+                    //取消处理
+                }
+                else
+                {
+                    if (ConvertPosDirect)
                     {
-                        Seed++;
-                        //每次原子操作后进行一次清算
-                        //将亡语效果也发送给对方
-                        Result.AddRange(Settle());
+                        switch (ability.对象选择器.EffectTargetSelectDirect)
+                        {
+                            case CardUtility.TargetSelectDirectEnum.本方:
+                                ability.对象选择器.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
+                                break;
+                            case CardUtility.TargetSelectDirectEnum.对方:
+                                ability.对象选择器.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.本方;
+                                break;
+                            case CardUtility.TargetSelectDirectEnum.双方:
+                                break;
+                            default:
+                                break;
+                        }
                     }
+                }
+                if (TargetPosInfo.Postion != -1)
+                {
+                    Result.AddRange(Effecthandler.RunSingleEffect(singleEffect, this, TargetPosInfo, Seed));
+                    Seed++;
+                    Result.AddRange(Settle());
+                }
+                else
+                {
+                    Result.Clear();
                 }
             }
             return Result;
@@ -511,6 +551,8 @@ namespace Card.Client
         /// <returns></returns>
         public List<String> Settle()
         {
+            //每次原子操作后进行一次清算
+            //将亡语效果也发送给对方
             List<String> actionlst = new List<string>();
             //1.检查需要移除的对象
             var MyDeadMinion = MyInfo.BattleField.ClearDead(this, true);

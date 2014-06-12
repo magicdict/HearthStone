@@ -7,7 +7,7 @@ namespace Card.Effect
     /// <summary>
     /// 增益效果
     /// </summary>
-    public class PointEffect : AtomicEffectDefine, IEffectHandler
+    public class PointEffect : EffectDefine, IEffectHandler
     {
         /// <summary>
         /// 
@@ -42,11 +42,11 @@ namespace Card.Effect
                 Minion.本回合生命力加成 = CardUtility.PointProcess(Minion.实际生命值上限, 生命值) - Minion.实际生命值上限;
             }
         }
-        void IEffectHandler.DealHero(Client.GameManager game, AtomicEffectDefine singleEffect, bool MeOrYou)
+        void IEffectHandler.DealHero(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou)
         {
             throw new NotImplementedException();
         }
-        void IEffectHandler.DealMinion(Client.GameManager game, AtomicEffectDefine singleEffect, bool MeOrYou, int PosIndex)
+        void IEffectHandler.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
         {
             ///防止加成的干扰！
             int TurnCount = Effecthandler.GetEffectPoint(game, 持续回合);
@@ -74,9 +74,5 @@ namespace Card.Effect
             }
         }
 
-        public new void GetField()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

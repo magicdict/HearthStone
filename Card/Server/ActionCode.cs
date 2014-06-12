@@ -57,14 +57,6 @@ namespace Card.Server
             /// </summary>
             Health,
             /// <summary>
-            /// 直接攻击
-            /// </summary>
-            Fight,
-            /// <summary>
-            /// 结束TURN
-            /// </summary>
-            EndTurn,
-            /// <summary>
             /// 变形（效果）
             /// </summary>
             Transform,
@@ -84,6 +76,18 @@ namespace Card.Server
             /// 卡牌
             /// </summary>
             Card,
+            /// <summary>
+            /// 结算
+            /// </summary>
+            Settle,
+            /// <summary>
+            /// 直接攻击
+            /// </summary>
+            Fight,
+            /// <summary>
+            /// 结束TURN
+            /// </summary>
+            EndTurn,
             /// <summary>
             /// 未知
             /// </summary>

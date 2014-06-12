@@ -8,7 +8,7 @@ namespace Card.Effect
     /// <summary>
     /// 治疗效果
     /// </summary>
-    public class HealthEffect : AtomicEffectDefine, IEffectHandler
+    public class HealthEffect : EffectDefine, IEffectHandler
     {
         /// <summary>
         /// 生命值回复表达式
@@ -24,7 +24,7 @@ namespace Card.Effect
         /// <param name="game"></param>
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
-        void IEffectHandler.DealHero(GameManager game, AtomicEffectDefine singleEffect, bool MeOrYou)
+        void IEffectHandler.DealHero(GameManager game, EffectDefine singleEffect, bool MeOrYou)
         {
             int ShieldPoint = Effect.Effecthandler.GetEffectPoint(game,护甲回复表达式);
             int HealthPoint = Effect.Effecthandler.GetEffectPoint(game,生命值回复表达式);
@@ -62,7 +62,7 @@ namespace Card.Effect
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
         /// <param name="PosIndex"></param>
-        void IEffectHandler.DealMinion(GameManager game, AtomicEffectDefine singleEffect, bool MeOrYou, int PosIndex)
+        void IEffectHandler.DealMinion(GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
         {
             int HealthPoint = Effect.Effecthandler.GetEffectPoint(game, 生命值回复表达式);
             if (MeOrYou)
@@ -89,11 +89,6 @@ namespace Card.Effect
                     });
                 }
             }
-        }
-
-        public new void GetField()
-        {
-            throw new NotImplementedException();
         }
     }
 }

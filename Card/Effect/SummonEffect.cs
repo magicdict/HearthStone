@@ -6,7 +6,7 @@ namespace Card.Effect
     /// <summary>
     /// 召唤效果
     /// </summary>
-    public class SummonEffect : AtomicEffectDefine
+    public class SummonEffect : EffectDefine
     {
         /// <summary>
         /// 法术方向
@@ -98,9 +98,5 @@ namespace Card.Effect
             return Result;
         }
 
-        public new void GetField()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

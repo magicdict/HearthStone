@@ -7,20 +7,16 @@ namespace Card.Effect
     /// <summary>
     /// 攻击效果
     /// </summary>
-    public class AttackEffect : AtomicEffectDefine, IEffectHandler
+    public class AttackEffect : EffectDefine, IEffectHandler
     {
-        /// <summary>
-        /// 法术方向
-        /// </summary>
-        public CardUtility.TargetSelectDirectEnum 法术方向 = CardUtility.TargetSelectDirectEnum.双方;
         /// <summary>
         /// 标准效果表达式
         /// </summary>
-        public String 标准效果表达式 = String.Empty;
+        public String 标准伤害效果表达式 = String.Empty;
         /// <summary>
-        /// 标准效果回数表达式
+        /// 标准强化伤害效果表达式
         /// </summary>
-        public String 标准效果回数表达式 = String.Empty;
+        public String 标准强化伤害效果表达式 = String.Empty;
         /// <summary>
         /// 实际伤害点数
         /// </summary>
@@ -28,12 +24,16 @@ namespace Card.Effect
         /// <returns></returns>
         public int 实际伤害点数 = 0;
         /// <summary>
+        /// 实际强化伤害点数
+        /// </summary>
+        public int 实际强化伤害点数 = 0;
+        /// <summary>
         /// 对英雄
         /// </summary>
         /// <param name="game"></param>
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
-        void IEffectHandler.DealHero(Client.GameManager game, AtomicEffectDefine singleEffect, Boolean MeOrYou)
+        void IEffectHandler.DealHero(Client.GameManager game, EffectDefine singleEffect, Boolean MeOrYou)
         {
             //调整伤害值
             int AttackPoint = 实际伤害点数;
@@ -65,7 +65,7 @@ namespace Card.Effect
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
         /// <param name="PosIndex"></param>
-        void IEffectHandler.DealMinion(Client.GameManager game, AtomicEffectDefine singleEffect, Boolean MeOrYou, int PosIndex)
+        void IEffectHandler.DealMinion(Client.GameManager game, EffectDefine singleEffect, Boolean MeOrYou, int PosIndex)
         {
             //调整伤害值
             int AttackPoint = 实际伤害点数;
@@ -94,12 +94,6 @@ namespace Card.Effect
                 }
             }
         }
-        /// <summary>
-        /// 初始化值
-        /// </summary>
-        public new void GetField()
-        {
-            法术方向 = CardUtility.GetEnum<CardUtility.TargetSelectDirectEnum>(InfoArray[1], CardUtility.TargetSelectDirectEnum.双方);
-        }
+
     }
 }

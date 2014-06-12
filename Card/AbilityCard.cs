@@ -34,42 +34,38 @@ namespace Card
             自动判定
         }
         /// <summary>
+        /// 对象选择器
+        /// </summary>
+        public CardUtility.SelectOption 对象选择器 = new CardUtility.SelectOption();
+        /// <summary>
         /// 效果选择类型枚举
         /// </summary>
         public 效果选择类型枚举 效果选择类型 = 效果选择类型枚举.无需选择;
         /// <summary>
-        /// 是否需要抉择
+        /// 标准效果回数表达式
         /// </summary>
-        /// <returns></returns>
-        public Boolean IsNeedSelect()
-        {
-            return 效果选择类型 != 效果选择类型枚举.无需选择;
-        }
+        public String 标准效果回数表达式 = String.Empty;
         /// <summary>
         /// 第一效果
         /// </summary>
-        public EffectDefine FirstAbilityDefine = new EffectDefine();
+        public AbilityDefine FirstAbilityDefine = new AbilityDefine();
         /// <summary>
         /// 第二效果
         /// </summary>
-        public EffectDefine SecondAbilityDefine = new EffectDefine();
+        public AbilityDefine SecondAbilityDefine = new AbilityDefine();
         /// <summary>
         /// 效果定义
         /// </summary>
-        public struct EffectDefine
+        public struct AbilityDefine
         {
             /// <summary>
             /// 主效果定义
             /// </summary>
-            public AtomicEffectDefine MainAbilityDefine;
-            /// <summary>
-            /// 主效果定义(连击)
-            /// </summary>
-            public AtomicEffectDefine MainAbilityDefineCombit;
+            public EffectDefine MainAbilityDefine;
             /// <summary>
             /// 追加效果定义
             /// </summary>
-            public AtomicEffectDefine AppendAbilityDefine;
+            public EffectDefine AppendAbilityDefine;
             /// <summary>
             /// 追加效果启动条件
             /// </summary>
@@ -79,18 +75,18 @@ namespace Card
             /// </summary>
             public void Init()
             {
-                MainAbilityDefine = new AtomicEffectDefine();
-                AppendAbilityDefine = new AtomicEffectDefine();
-                MainAbilityDefineCombit = new AtomicEffectDefine();
+                MainAbilityDefine = new EffectDefine();
+                AppendAbilityDefine = new EffectDefine();
             }
             /// <summary>
             /// 用具体的类替换
             /// </summary>
             public void GetField()
             {
-                MainAbilityDefine.GetField();
-                AppendAbilityDefine.GetField();
-                MainAbilityDefineCombit.GetField();
+                MainAbilityDefine.TrueAtomicEffect.GetField();
+                MainAbilityDefine.FalseAtomicEffect.GetField();
+                AppendAbilityDefine.TrueAtomicEffect.GetField();
+                AppendAbilityDefine.FalseAtomicEffect.GetField();
             }
         }
         /// <summary>
@@ -107,25 +103,12 @@ namespace Card
         /// <param name="game"></param>
         /// <param name="atomic"></param>
         /// <returns></returns>
-        public List<Card.Effect.AtomicEffectDefine> GetSingleEffectList(GameManager game,AtomicEffectDefine atomic)
+        public List<Card.Effect.EffectDefine> GetSingleEffectList(GameManager game,EffectDefine atomic)
         {
             //攻击，抽牌，召唤
             //多次攻击需要考虑法术伤害加成
-            List<Card.Effect.AtomicEffectDefine> EffectLst = new List<Card.Effect.AtomicEffectDefine>();
-            switch (atomic.AbilityEffectType)
-            {
-                case AtomicEffectDefine.AbilityEffectEnum.攻击:
-                    int ActualAttackCount =  Effecthandler.GetEffectPoint(game,((AttackEffect)atomic).标准效果回数表达式);
-                    if (ActualAttackCount > 1) ActualAttackCount += game.MyInfo.BattleField.AttackEffectPlus;
-                    for (int i = 0; i < ActualAttackCount; i++)
-                    {
-                        EffectLst.Add(atomic);
-                    }
-                    break;
-                default:
-                    EffectLst.Add(atomic);
-                    break;
-            }
+            List<Card.Effect.EffectDefine> EffectLst = new List<Card.Effect.EffectDefine>();
+
             return EffectLst;
         }
         /// <summary>

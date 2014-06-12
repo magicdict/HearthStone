@@ -3,12 +3,8 @@ using Card.Server;
 using System.Collections.Generic;
 namespace Card.Effect
 {
-    public class CrystalEffect : AtomicEffectDefine
+    public class CrystalEffect : EffectDefine
     {
-        /// <summary>
-        /// 法术方向
-        /// </summary>
-        public CardUtility.TargetSelectDirectEnum 法术方向 = CardUtility.TargetSelectDirectEnum.双方;
         /// <summary>
         /// 获得法力水晶
         /// </summary>
@@ -22,11 +18,11 @@ namespace Card.Effect
         /// </summary>
         /// <param name="role"></param>
         /// <param name="Ability"></param>
-        public List<string> RunEffect(GameManager game)
+        public List<string> RunEffect(GameManager game, CardUtility.TargetSelectDirectEnum Direct)
         {
             List<string> Result = new List<string>();
 
-            switch (法术方向)
+            switch (Direct)
             {
                 case CardUtility.TargetSelectDirectEnum.本方:
                     game.MyInfo.crystal.AddCurrentPoint(获得法力水晶);
@@ -46,7 +42,7 @@ namespace Card.Effect
                     break;
             }
             //Crystal#ME#4#4
-            if (法术方向 == CardUtility.TargetSelectDirectEnum.本方)
+            if (Direct == CardUtility.TargetSelectDirectEnum.本方)
             {
                 Result.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +
                     game.MyInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MyInfo.crystal.CurrentFullPoint);
@@ -57,11 +53,6 @@ namespace Card.Effect
                     game.YourInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.YourInfo.crystal.CurrentFullPoint);
             }
             return Result;
-        }
-
-        public new void GetField()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

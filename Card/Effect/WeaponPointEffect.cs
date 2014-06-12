@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Card.Effect
 {
-    public class WeaponPointEffect : AtomicEffectDefine
+    public class WeaponPointEffect : EffectDefine
     {
         /// <summary>
         /// 法术方向
@@ -45,11 +45,6 @@ namespace Card.Effect
                 }
             }
             return Result;
-        }
-
-        public new void GetField()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

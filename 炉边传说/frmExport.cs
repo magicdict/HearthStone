@@ -257,16 +257,16 @@ namespace 炉边传说
         /// <param name="worksheet"></param>
         /// <param name="rowCount"></param>
         /// <returns></returns>
-        private static AbilityCard.EffectDefine GetEffectDefine(dynamic worksheet, ref int rowCount)
+        private static AbilityCard.AbilityDefine GetEffectDefine(dynamic worksheet, ref int rowCount)
         {
-            AbilityCard.EffectDefine effect = new AbilityCard.EffectDefine();
+            AbilityCard.AbilityDefine effect = new AbilityCard.AbilityDefine();
             effect.Init();
             //effect.Init();
             //这行是选择1的标题
             rowCount++;
             //这行是选择1的内容
             //根据效果读入
-            effect.MainAbilityDefine.AbilityEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(
+            effect.MainAbilityDefine.AtomicEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(
                     worksheet.Cells(rowCount, 3).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
             for (int i = 4; i < 12; i++)
             {
@@ -311,7 +311,7 @@ namespace 炉边传说
                     //这行是选择追加的标题
                     rowCount++;
                     //这行是选择追加的内容
-                    effect.AppendAbilityDefine.AbilityEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(
+                    effect.AppendAbilityDefine.AtomicEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(
                             worksheet.Cells(rowCount, 3).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
                     for (int i = 4; i < 12; i++)
                     {

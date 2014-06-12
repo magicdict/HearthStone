@@ -309,6 +309,11 @@ namespace Card
         [XmlIgnore]
         public 攻击状态 AttactStatus = 攻击状态.准备中;
         /// <summary>
+        /// 战场位置
+        /// </summary>
+        [XmlIgnore]
+        public int Position = 1;
+        /// <summary>
         /// 该单位受到战地的效果
         /// </summary>
         [XmlIgnore]

@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Effect\AtomicEffectDefine.cs" />
     <Compile Include="Effect\Effecthandler.cs" />
     <Compile Include="Effect\AttackEffect.cs" />
     <Compile Include="Effect\ControlEffect.cs" />
@@ -55,7 +56,7 @@
     <Compile Include="MinionCard.cs" />
     <Compile Include="Effect\CardEffect.cs" />
     <Compile Include="Effect\CrystalEffect.cs" />
-    <Compile Include="Effect\AtomicEffectDefine.cs" />
+    <Compile Include="Effect\EffectDefine.cs" />
     <Compile Include="Effect\TransformEffect.cs" />
     <Compile Include="Client\GameManager.cs" />
     <Compile Include="Client\PlayerInfo.cs" />

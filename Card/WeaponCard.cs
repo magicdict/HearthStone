@@ -28,7 +28,7 @@ namespace Card
         /// 武器的附加效果
         /// 真银圣剑：每当你的英雄进攻时，为其恢复2点生命值。
         /// </summary>
-        public AtomicEffectDefine AdditionEffect = new AtomicEffectDefine();
+        public EffectDefine AdditionEffect = new EffectDefine();
         /// <summary>
         /// 设置初始状态
         /// </summary>

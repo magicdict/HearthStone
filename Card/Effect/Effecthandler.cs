@@ -117,13 +117,13 @@ namespace Card.Effect
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
-                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.AllPos.ToString("D1"));
+                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.AllMinionPos.ToString("D1"));
                                     break;
                                 case CardUtility.TargetSelectRoleEnum.英雄:
                                     Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                     break;
                                 case CardUtility.TargetSelectRoleEnum.所有角色:
-                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.AllPos.ToString("D1"));
+                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.AllMinionPos.ToString("D1"));
                                     Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                     break;
                             }
@@ -132,13 +132,13 @@ namespace Card.Effect
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
-                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.AllPos.ToString("D1"));
+                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.AllMinionPos.ToString("D1"));
                                     break;
                                 case CardUtility.TargetSelectRoleEnum.英雄:
                                     Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                     break;
                                 case CardUtility.TargetSelectRoleEnum.所有角色:
-                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.AllPos.ToString("D1"));
+                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.AllMinionPos.ToString("D1"));
                                     Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                     break;
                             }
@@ -147,16 +147,16 @@ namespace Card.Effect
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
-                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.AllPos.ToString("D1"));
-                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.AllPos.ToString("D1"));
+                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.AllMinionPos.ToString("D1"));
+                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.AllMinionPos.ToString("D1"));
                                     break;
                                 case CardUtility.TargetSelectRoleEnum.英雄:
                                     Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                     Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                     break;
                                 case CardUtility.TargetSelectRoleEnum.所有角色:
-                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.AllPos.ToString("D1"));
-                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.AllPos.ToString("D1"));
+                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.AllMinionPos.ToString("D1"));
+                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.AllMinionPos.ToString("D1"));
                                     Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                     Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                     break;
@@ -166,6 +166,7 @@ namespace Card.Effect
                     break;
                 case CardUtility.TargetSelectModeEnum.指定:
                 case CardUtility.TargetSelectModeEnum.继承:
+                case CardUtility.TargetSelectModeEnum.横扫:
                     Result.Add((PosInfo.MeOrYou ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + PosInfo.Postion.ToString("D1"));
                     break;
                 case CardUtility.TargetSelectModeEnum.不用选择:
@@ -198,51 +199,52 @@ namespace Card.Effect
         /// <param name="Field"></param>
         /// <param name="Pos">指定对象</param>
         /// <returns></returns>
-        public static List<String> RunSingleEffect(AtomicEffectDefine singleEffect, Card.Client.GameManager game, Card.CardUtility.TargetPosition Pos, int Seed)
+        public static List<String> RunSingleEffect(EffectDefine singleEffect, Card.Client.GameManager game, Card.CardUtility.TargetPosition Pos, int Seed)
         {
             List<String> Result = new List<string>();
-            //List<String> PosList = GetTargetList(singleEffect, game, Pos, Seed);
-            List<String> PosList = new List<string>();
-            //切记，这里的EffectCount都是1
-            switch (singleEffect.AbilityEffectType)
-            {
-                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.攻击:
-                    //伤害点数的实时计算
-                    var tempAttactEffect = ((AttackEffect)singleEffect);
-                    if (GetEffectPoint(game, tempAttactEffect.标准效果回数表达式) > 1)
-                    {
-                        tempAttactEffect.实际伤害点数 = GetEffectPoint(game, tempAttactEffect.标准效果表达式);
-                    }
-                    else
-                    {
-                        tempAttactEffect.实际伤害点数 = GetEffectPoint(game, tempAttactEffect.标准效果表达式) + game.MyInfo.BattleField.AttackEffectPlus;
-                    }
-                    Result.AddRange(RunNormalSingleEffect(singleEffect, game, PosList));
-                    break;
-                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.回复:
-                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.状态:
-                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.增益:
-                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.变形:
-                    Result.AddRange(RunNormalSingleEffect(singleEffect, game, PosList));
-                    break;
-                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.召唤:
-                    Result.AddRange(((SummonEffect)singleEffect).RunEffect(game));
-                    break;
-                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.卡牌:
-                    Result.AddRange(((CardEffect)singleEffect).RunEffect(game));
-                    break;
-                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.水晶:
-                    Result.AddRange(((CrystalEffect)singleEffect).RunEffect(game));
-                    break;
-                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.控制:
-                    Result.AddRange(((ControlEffect)singleEffect).RunEffect(game, PosList[0]));
-                    break;
-                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.武器:
-                    Result.AddRange(((WeaponPointEffect)singleEffect).RunEffect(game));
-                    break;
-                default:
-                    break;
-            }
+            //// List<String> PosList = GetTargetList(singleEffect.对象选择器, game, Pos, Seed);
+            // //切记，这里的EffectCount都是1
+            // switch (singleEffect.TrueAtomicEffect.AtomicEffectType)
+            // {
+            //     case Card.Effect.EffectDefine.AbilityEffectEnum.攻击:
+            //         //伤害点数的实时计算
+            //         var tempAttactEffect = ((AttackEffect)singleEffect);
+            //         if (GetEffectPoint(game, tempAttactEffect.标准效果回数表达式) > 1)
+            //         {
+            //             tempAttactEffect.实际伤害点数 = GetEffectPoint(game, tempAttactEffect.标准伤害效果表达式);
+            //             tempAttactEffect.实际强化伤害点数 = GetEffectPoint(game, tempAttactEffect.标准强化伤害效果表达式);
+            //         }
+            //         else
+            //         {
+            //             tempAttactEffect.实际伤害点数 = GetEffectPoint(game, tempAttactEffect.标准伤害效果表达式) + game.MyInfo.BattleField.AttackEffectPlus;
+            //             tempAttactEffect.实际强化伤害点数 = GetEffectPoint(game, tempAttactEffect.标准强化伤害效果表达式) + game.MyInfo.BattleField.AttackEffectPlus;
+            //         }
+            //         //Result.AddRange(RunNormalSingleEffect(singleEffect, game, PosList));
+            //         break;
+            //     case Card.Effect.EffectDefine.AbilityEffectEnum.回复:
+            //     case Card.Effect.EffectDefine.AbilityEffectEnum.状态:
+            //     case Card.Effect.EffectDefine.AbilityEffectEnum.增益:
+            //     case Card.Effect.EffectDefine.AbilityEffectEnum.变形:
+            //         //Result.AddRange(RunNormalSingleEffect(singleEffect, game, PosList));
+            //         break;
+            //     case Card.Effect.EffectDefine.AbilityEffectEnum.召唤:
+            //         Result.AddRange(((SummonEffect)singleEffect).RunEffect(game));
+            //         break;
+            //     case Card.Effect.EffectDefine.AbilityEffectEnum.卡牌:
+            //         //Result.AddRange(((CardEffect)singleEffect).RunEffect(game));
+            //         break;
+            //     case Card.Effect.EffectDefine.AbilityEffectEnum.水晶:
+            //         //Result.AddRange(((CrystalEffect)singleEffect).RunEffect(game));
+            //         break;
+            //     case Card.Effect.EffectDefine.AbilityEffectEnum.控制:
+            //         //Result.AddRange(((ControlEffect)singleEffect).RunEffect(game, PosList[0]));
+            //         break;
+            //     case Card.Effect.EffectDefine.AbilityEffectEnum.武器:
+            //         Result.AddRange(((WeaponPointEffect)singleEffect).RunEffect(game));
+            //         break;
+            //     default:
+            //         break;
+            // }
             return Result;
         }
         /// <summary>
@@ -252,35 +254,35 @@ namespace Card.Effect
         /// <param name="game"></param>
         /// <param name="PosList"></param>
         /// <returns></returns>
-        public static List<String> RunNormalSingleEffect(AtomicEffectDefine singleEffect, Client.GameManager game, List<String> PosList)
+        public static List<String> RunNormalSingleEffect(EffectDefine singleEffect, Client.GameManager game, List<String> PosList)
         {
             List<String> Result = new List<string>();
             String strResult = String.Empty;
             String strEffect = String.Empty;
             IEffectHandler handler = new AttackEffect();
-            switch (singleEffect.AbilityEffectType)
+            switch (singleEffect.TrueAtomicEffect.AtomicEffectType)
             {
-                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.攻击:
+                case Card.Effect.AtomicEffectDefine.AtomicEffectEnum.攻击:
                     handler = new AttackEffect();
                     strResult = Card.Server.ActionCode.strAttack;
                     strEffect = ((AttackEffect)singleEffect).实际伤害点数.ToString();
                     break;
-                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.回复:
+                case Card.Effect.AtomicEffectDefine.AtomicEffectEnum.回复:
                     handler = new HealthEffect();
                     strResult = Card.Server.ActionCode.strHealth;
                     //strEffect = singleEffect.ActualEffectPoint.ToString() + CardUtility.strSplitMark + singleEffect.AdditionInfo;
                     break;
-                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.状态:
+                case Card.Effect.AtomicEffectDefine.AtomicEffectEnum.状态:
                     handler = new StatusEffect();
                     strResult = Card.Server.ActionCode.strStatus;
                     //strEffect = singleEffect.AdditionInfo;
                     break;
-                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.增益:
+                case Card.Effect.AtomicEffectDefine.AtomicEffectEnum.增益:
                     handler = new PointEffect();
                     strResult = Card.Server.ActionCode.strPoint;
                     //strEffect = singleEffect.AdditionInfo + CardUtility.strSplitMark + singleEffect.StandardEffectPoint;
                     break;
-                case Card.Effect.AtomicEffectDefine.AbilityEffectEnum.变形:
+                case Card.Effect.AtomicEffectDefine.AtomicEffectEnum.变形:
                     handler = new TransformEffect();
                     strResult = Card.Server.ActionCode.strTransform;
                     //strEffect = singleEffect.AdditionInfo;
@@ -299,12 +301,12 @@ namespace Card.Effect
                             handler.DealHero(game, singleEffect, true);
                             strResult += Card.Client.BattleFieldInfo.HeroPos.ToString();
                             break;
-                        case Card.Client.BattleFieldInfo.AllPos:
+                        case Card.Client.BattleFieldInfo.AllMinionPos:
                             for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
                             {
                                 handler.DealMinion(game, singleEffect, true, i);
                             }
-                            strResult += Card.Client.BattleFieldInfo.AllPos.ToString();
+                            strResult += Card.Client.BattleFieldInfo.AllMinionPos.ToString();
                             break;
                         default:
                             handler.DealMinion(game, singleEffect, true, int.Parse(PosField[1]) - 1);
@@ -321,12 +323,12 @@ namespace Card.Effect
                             handler.DealHero(game, singleEffect, false);
                             strResult += Card.Client.BattleFieldInfo.HeroPos.ToString();
                             break;
-                        case Card.Client.BattleFieldInfo.AllPos:
+                        case Card.Client.BattleFieldInfo.AllMinionPos:
                             for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                             {
                                 handler.DealMinion(game, singleEffect, false, i);
                             }
-                            strResult += Card.Client.BattleFieldInfo.AllPos.ToString();
+                            strResult += Card.Client.BattleFieldInfo.AllMinionPos.ToString();
                             break;
                         default:
                             handler.DealMinion(game, singleEffect, false, int.Parse(PosField[1]) - 1);

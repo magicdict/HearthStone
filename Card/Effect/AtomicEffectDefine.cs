@@ -1,5 +1,4 @@
-﻿using Card.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Card.Effect
@@ -8,13 +7,9 @@ namespace Card.Effect
     public class AtomicEffectDefine
     {
         /// <summary>
-        /// 描述
-        /// </summary>
-        public String Description = String.Empty;
-        /// <summary>
         /// 魔法效果
         /// </summary>
-        public enum AbilityEffectEnum
+        public enum AtomicEffectEnum
         {
             /// <summary>
             /// 未定义
@@ -67,18 +62,16 @@ namespace Card.Effect
             武器,
         }
         /// <summary>
-        /// 法术类型
+        /// 
         /// </summary>
-        public AbilityEffectEnum AbilityEffectType;
+        public AtomicEffectEnum AtomicEffectType = AtomicEffectEnum.未定义;
         /// <summary>
         /// 信息组
         /// </summary>
         public List<String> InfoArray = new List<string>();
         /// <summary>
-        /// 
+        /// 初始化值
         /// </summary>
-        public void GetField(){
-        
-        }
+        public virtual void GetField() { }
     }
 }

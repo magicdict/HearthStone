@@ -6,7 +6,7 @@ namespace Card.Effect
     /// <summary>
     /// 状态改变效果
     /// </summary>
-    public class StatusEffect : AtomicEffectDefine, IEffectHandler
+    public class StatusEffect : EffectDefine, IEffectHandler
     {
         /// <summary>
         /// 冰冻状态
@@ -80,7 +80,7 @@ namespace Card.Effect
         /// <param name="game"></param>
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
-        void IEffectHandler.DealHero(Client.GameManager game, AtomicEffectDefine singleEffect, bool MeOrYou)
+        void IEffectHandler.DealHero(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou)
         {
             throw new NotImplementedException();
         }
@@ -91,7 +91,7 @@ namespace Card.Effect
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
         /// <param name="PosIndex"></param>
-        void IEffectHandler.DealMinion(Client.GameManager game, AtomicEffectDefine singleEffect, bool MeOrYou, int PosIndex)
+        void IEffectHandler.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
         {
             if (MeOrYou)
             {
@@ -101,12 +101,6 @@ namespace Card.Effect
             {
                 RunStatusEffect(game.YourInfo.BattleField.BattleMinions[PosIndex]);
             }
-        }
-
-
-        public new void GetField()
-        {
-            throw new NotImplementedException();
         }
     }
 }

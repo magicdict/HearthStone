@@ -8,12 +8,8 @@ namespace Card.Effect
     /// <summary>
     /// 运行效果
     /// </summary>
-    public class CardEffect : AtomicEffectDefine
+    public class CardEffect : EffectDefine
     {
-        /// <summary>
-        /// 法术方向
-        /// </summary>
-        public CardUtility.TargetSelectDirectEnum 法术方向 = CardUtility.TargetSelectDirectEnum.双方;
         /// <summary>
         /// 指定卡牌编号
         /// </summary>
@@ -27,10 +23,10 @@ namespace Card.Effect
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public List<string> RunEffect(GameManager game)
+        public List<string> RunEffect(GameManager game,CardUtility.TargetSelectDirectEnum Direct)
         {
             List<string> Result = new List<string>();
-            switch (法术方向)
+            switch (Direct)
             {
                 case CardUtility.TargetSelectDirectEnum.本方:
                     //#CARD#ME#M000001
@@ -105,15 +101,6 @@ namespace Card.Effect
                     break;
             }
             return Result;
-        }
-        /// <summary>
-        /// 初始化值
-        /// </summary>
-        public new void GetField()
-        {
-            法术方向 = CardUtility.GetEnum<CardUtility.TargetSelectDirectEnum>(InfoArray[1], CardUtility.TargetSelectDirectEnum.双方);
-            抽牌次数表达式 = InfoArray[2];
-            指定卡牌编号 = InfoArray[3];
         }
     }
 }
