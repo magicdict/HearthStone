@@ -602,7 +602,7 @@ namespace Card
                 ActionLst.Add(Card.Server.ActionCode.strHitEvent + CardUtility.strSplitMark);
                 if (自身事件.事件效果.StartsWith("A"))
                 {
-                    ActionLst.AddRange(game.UseAbility((Card.AbilityCard)Card.CardUtility.GetCardInfoBySN(自身事件.事件效果), false));
+                    //ActionLst.AddRange(((Card.AbilityCard)Card.CardUtility.GetCardInfoBySN(自身事件.事件效果)).UseAbility(gmae, false));
                 }
                 else
                 {

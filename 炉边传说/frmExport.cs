@@ -260,72 +260,72 @@ namespace 炉边传说
         private static AbilityCard.AbilityDefine GetEffectDefine(dynamic worksheet, ref int rowCount)
         {
             AbilityCard.AbilityDefine effect = new AbilityCard.AbilityDefine();
-            effect.Init();
             //effect.Init();
-            //这行是选择1的标题
-            rowCount++;
-            //这行是选择1的内容
-            //根据效果读入
-            effect.MainAbilityDefine.AtomicEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(
-                    worksheet.Cells(rowCount, 3).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
-            for (int i = 4; i < 12; i++)
-            {
-                if (!String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text))
-                {
-                    effect.MainAbilityDefine.InfoArray.Add(worksheet.Cells(rowCount, i).Text);
-                }
-                else
-                {
-                    break;
-                }
-            }
-            rowCount++;
-            //这行可能是[连击状态]或者是[追加条件]或者是下一张卡牌
-            String LineType = worksheet.Cells(rowCount, 2).Text;
-            if (LineType.StartsWith("A"))
-            {
-                rowCount--;
-            }
-            else
-            {
-                if (LineType == "连击状态")
-                {
-                    effect.MainAbilityDefineCombit.AbilityEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(
-                            worksheet.Cells(rowCount, 3).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
-                    for (int i = 4; i < 12; i++)
-                    {
-                        if (!String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text))
-                        {
-                            effect.MainAbilityDefineCombit.InfoArray.Add(worksheet.Cells(rowCount, i).Text);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-                if (LineType == "追加条件")
-                {
-                    effect.AppendEffectCondition = worksheet.Cells(rowCount, 3).Text;
-                    rowCount++;
-                    //这行是选择追加的标题
-                    rowCount++;
-                    //这行是选择追加的内容
-                    effect.AppendAbilityDefine.AtomicEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(
-                            worksheet.Cells(rowCount, 3).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
-                    for (int i = 4; i < 12; i++)
-                    {
-                        if (!String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text))
-                        {
-                            effect.MainAbilityDefineCombit.InfoArray.Add(worksheet.Cells(rowCount, i).Text);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                }
-            }
+            ////effect.Init();
+            ////这行是选择1的标题
+            //rowCount++;
+            ////这行是选择1的内容
+            ////根据效果读入
+            //effect.MainAbilityDefine.AtomicEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(
+            //        worksheet.Cells(rowCount, 3).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
+            //for (int i = 4; i < 12; i++)
+            //{
+            //    if (!String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text))
+            //    {
+            //        effect.MainAbilityDefine.InfoArray.Add(worksheet.Cells(rowCount, i).Text);
+            //    }
+            //    else
+            //    {
+            //        break;
+            //    }
+            //}
+            //rowCount++;
+            ////这行可能是[连击状态]或者是[追加条件]或者是下一张卡牌
+            //String LineType = worksheet.Cells(rowCount, 2).Text;
+            //if (LineType.StartsWith("A"))
+            //{
+            //    rowCount--;
+            //}
+            //else
+            //{
+            //    if (LineType == "连击状态")
+            //    {
+            //        effect.MainAbilityDefineCombit.AbilityEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(
+            //                worksheet.Cells(rowCount, 3).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
+            //        for (int i = 4; i < 12; i++)
+            //        {
+            //            if (!String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text))
+            //            {
+            //                effect.MainAbilityDefineCombit.InfoArray.Add(worksheet.Cells(rowCount, i).Text);
+            //            }
+            //            else
+            //            {
+            //                break;
+            //            }
+            //        }
+            //    }
+            //    if (LineType == "追加条件")
+            //    {
+            //        effect.AppendEffectCondition = worksheet.Cells(rowCount, 3).Text;
+            //        rowCount++;
+            //        //这行是选择追加的标题
+            //        rowCount++;
+            //        //这行是选择追加的内容
+            //        effect.AppendAbilityDefine.AtomicEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(
+            //                worksheet.Cells(rowCount, 3).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
+            //        for (int i = 4; i < 12; i++)
+            //        {
+            //            if (!String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text))
+            //            {
+            //                effect.MainAbilityDefineCombit.InfoArray.Add(worksheet.Cells(rowCount, i).Text);
+            //            }
+            //            else
+            //            {
+            //                break;
+            //            }
+            //        }
+            //    }
+            //}
             return effect;
         }
 

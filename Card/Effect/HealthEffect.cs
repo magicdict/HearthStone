@@ -26,8 +26,8 @@ namespace Card.Effect
         /// <param name="MeOrYou"></param>
         void IEffectHandler.DealHero(GameManager game, EffectDefine singleEffect, bool MeOrYou)
         {
-            int ShieldPoint = Effect.Effecthandler.GetEffectPoint(game,护甲回复表达式);
-            int HealthPoint = Effect.Effecthandler.GetEffectPoint(game,生命值回复表达式);
+            int ShieldPoint = ExpressHandler.GetEffectPoint(game, 护甲回复表达式);
+            int HealthPoint = ExpressHandler.GetEffectPoint(game, 生命值回复表达式);
             if (MeOrYou)
             {
                 game.MyInfo.AfterBeShield(ShieldPoint);
@@ -64,7 +64,7 @@ namespace Card.Effect
         /// <param name="PosIndex"></param>
         void IEffectHandler.DealMinion(GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
         {
-            int HealthPoint = Effect.Effecthandler.GetEffectPoint(game, 生命值回复表达式);
+            int HealthPoint = ExpressHandler.GetEffectPoint(game, 生命值回复表达式);
             if (MeOrYou)
             {
                 if (game.MyInfo.BattleField.BattleMinions[PosIndex].AfterBeHealth(HealthPoint))

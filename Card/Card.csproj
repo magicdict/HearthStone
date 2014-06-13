@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Client\ExpressHandler.cs" />
     <Compile Include="Effect\AtomicEffectDefine.cs" />
     <Compile Include="Effect\Effecthandler.cs" />
     <Compile Include="Effect\AttackEffect.cs" />

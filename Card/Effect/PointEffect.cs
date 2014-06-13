@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Card.Client;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -49,7 +50,7 @@ namespace Card.Effect
         void IEffectHandler.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
         {
             ///防止加成的干扰！
-            int TurnCount = Effecthandler.GetEffectPoint(game, 持续回合);
+            int TurnCount = ExpressHandler.GetEffectPoint(game, 持续回合);
             if (TurnCount == 1)
             {
                 if (MeOrYou)

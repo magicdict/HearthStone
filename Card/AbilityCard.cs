@@ -42,6 +42,10 @@ namespace Card
         /// </summary>
         public 效果选择类型枚举 效果选择类型 = 效果选择类型枚举.无需选择;
         /// <summary>
+        /// 效果选择条件
+        /// </summary>
+        public String 效果选择条件 = String.Empty;
+        /// <summary>
         /// 标准效果回数表达式
         /// </summary>
         public String 标准效果回数表达式 = String.Empty;
@@ -98,12 +102,105 @@ namespace Card
             SecondAbilityDefine.GetField();
         }
         /// <summary>
+        /// 使用法术
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="ConvertPosDirect">对象方向转换</param>
+        public List<String> UseAbility(GameManager game,
+                                       Boolean ConvertPosDirect)
+        {
+            List<String> Result = new List<string>();
+            Card.CardUtility.PickEffect PickEffectResult = CardUtility.PickEffect.第一效果;
+
+            switch (效果选择类型)
+            {
+                case 效果选择类型枚举.无需选择:
+                    break;
+                case 效果选择类型枚举.主动选择:
+                    PickEffectResult = game.PickEffect(FirstAbilityDefine.MainAbilityDefine.描述, SecondAbilityDefine.MainAbilityDefine.描述);
+                    if (PickEffectResult == CardUtility.PickEffect.取消) return new List<string>();
+                    break;
+                case 效果选择类型枚举.自动判定:
+                    if (!ExpressHandler.BattleFieldCondition(game, 效果选择条件)) PickEffectResult = CardUtility.PickEffect.第二效果;
+                    break;
+                default:
+                    break;
+            }
+            List<EffectDefine> SingleEffectList = new List<EffectDefine>();
+            AbilityCard.AbilityDefine ability;
+            if (PickEffectResult == CardUtility.PickEffect.第一效果)
+            {
+                ability = FirstAbilityDefine;
+            }
+            else
+            {
+                ability = SecondAbilityDefine;
+            }
+            return Result;
+        }
+        /// <summary>
+        /// 运行法术
+        /// </summary>
+        /// <param name="ability"></param>
+        /// <param name="ConvertPosDirect"></param>
+        /// <param name="atomiceffect"></param>
+        /// <param name="TargetPosInfo"></param>
+        /// <returns></returns>
+        private List<String> RunAbilityEffect(GameManager game,
+                                              Boolean ConvertPosDirect,
+                                              EffectDefine atomiceffect,
+                                              ref Card.CardUtility.TargetPosition TargetPosInfo)
+        {
+            List<String> Result = new List<string>();
+            var SingleEffectList = GetSingleEffectList(game, atomiceffect);
+            for (int i = 0; i < SingleEffectList.Count; i++)
+            {
+                var singleEffect = SingleEffectList[i];
+                if (对象选择器.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.指定 ||
+                    对象选择器.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.横扫)
+                {
+                    TargetPosInfo = game.GetSelectTarget(对象选择器, false);
+                    //取消处理
+                }
+                else
+                {
+                    if (ConvertPosDirect)
+                    {
+                        switch (对象选择器.EffectTargetSelectDirect)
+                        {
+                            case CardUtility.TargetSelectDirectEnum.本方:
+                                对象选择器.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
+                                break;
+                            case CardUtility.TargetSelectDirectEnum.对方:
+                                对象选择器.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.本方;
+                                break;
+                            case CardUtility.TargetSelectDirectEnum.双方:
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+                if (TargetPosInfo.Postion != -1)
+                {
+                    Result.AddRange(Effecthandler.RunSingleEffect(singleEffect, game, TargetPosInfo, GameManager.Seed));
+                    GameManager.Seed++;
+                    Result.AddRange(game.Settle());
+                }
+                else
+                {
+                    Result.Clear();
+                }
+            }
+            return Result;
+        }
+        /// <summary>
         /// 分解获得效果列表
         /// </summary>
         /// <param name="game"></param>
         /// <param name="atomic"></param>
         /// <returns></returns>
-        public List<Card.Effect.EffectDefine> GetSingleEffectList(GameManager game,EffectDefine atomic)
+        public List<Card.Effect.EffectDefine> GetSingleEffectList(GameManager game, EffectDefine atomic)
         {
             //攻击，抽牌，召唤
             //多次攻击需要考虑法术伤害加成

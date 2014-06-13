@@ -6,34 +6,6 @@ namespace Card.Effect
     public class Effecthandler
     {
         /// <summary>
-        /// 效果点数的表达式计算
-        /// </summary>
-        /// <param name="strEffectPoint"></param>
-        /// <returns></returns>
-        public static int GetEffectPoint(Client.GameManager game, String strEffectPoint)
-        {
-            int point = 0;
-            if (!String.IsNullOrEmpty(strEffectPoint))
-            {
-                if (strEffectPoint.StartsWith("="))
-                {
-                    switch (strEffectPoint.Substring(1))
-                    {
-                        case "MyWeaponAP":
-                            if (game.MyInfo.Weapon != null) point = game.MyInfo.Weapon.实际攻击力;
-                            break;
-                        default:
-                            break;
-                    }
-                }
-                else
-                {
-                    point = int.Parse(strEffectPoint);
-                }
-            }
-            return point;
-        }
-        /// <summary>
         /// 施法对象列表
         /// </summary>
         /// <param name="singleEffect"></param>
