@@ -279,6 +279,10 @@ namespace Card
             /// 法术对象选择条件
             /// </summary>
             public String EffectTargetSelectCondition;
+            /// <summary>
+            /// 选定位置
+            /// </summary>
+            public TargetPosition SelectedPos;
         }
         /// <summary>
         /// 符合种族条件

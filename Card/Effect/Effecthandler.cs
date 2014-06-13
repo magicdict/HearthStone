@@ -11,72 +11,72 @@ namespace Card.Effect
         /// <param name="singleEffect"></param>
         /// <param name="game"></param>
         /// <param name="PosInfo"></param>
-        /// <param name="Seed"></param>
+        /// <param name="RandSeed"></param>
         /// <returns></returns>
-        public static List<string> GetTargetList(CardUtility.SelectOption SelectOpt, Client.GameManager game, CardUtility.TargetPosition PosInfo, int Seed)
+        public static List<string> GetTargetList(CardUtility.SelectOption SelectOpt, Client.GameManager game, int RandSeed)
         {
             //切记，这里的EffectCount都是1
             List<string> Result = new List<string>();
             switch (SelectOpt.EffictTargetSelectMode)
             {
                 case CardUtility.TargetSelectModeEnum.随机:
-                    Random t = new Random(DateTime.Now.Millisecond + Seed);
+                    Random t = new Random(DateTime.Now.Millisecond + RandSeed);
                     switch (SelectOpt.EffectTargetSelectDirect)
                     {
                         case CardUtility.TargetSelectDirectEnum.本方:
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
-                                    PosInfo.Postion = t.Next(1, game.MyInfo.BattleField.MinionCount + 1);
-                                    PosInfo.MeOrYou = true;
+                                    SelectOpt.SelectedPos.Postion = t.Next(1, game.MyInfo.BattleField.MinionCount + 1);
+                                    SelectOpt.SelectedPos.MeOrYou = true;
                                     break;
                                 case CardUtility.TargetSelectRoleEnum.所有角色:
-                                    PosInfo.Postion = t.Next(Client.BattleFieldInfo.HeroPos, game.MyInfo.BattleField.MinionCount + 1);
-                                    PosInfo.MeOrYou = true;
+                                    SelectOpt.SelectedPos.Postion = t.Next(Client.BattleFieldInfo.HeroPos, game.MyInfo.BattleField.MinionCount + 1);
+                                    SelectOpt.SelectedPos.MeOrYou = true;
                                     break;
                             }
                             //ME#POS
-                            Result.Add(CardUtility.strMe + CardUtility.strSplitMark + PosInfo.Postion.ToString("D1"));
+                            Result.Add(CardUtility.strMe + CardUtility.strSplitMark + SelectOpt.SelectedPos.Postion.ToString("D1"));
                             break;
                         case CardUtility.TargetSelectDirectEnum.对方:
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
-                                    PosInfo.Postion = t.Next(1, game.YourInfo.BattleField.MinionCount + 1);
-                                    PosInfo.MeOrYou = false;
+                                    SelectOpt.SelectedPos.Postion = t.Next(1, game.YourInfo.BattleField.MinionCount + 1);
+                                    SelectOpt.SelectedPos.MeOrYou = false;
                                     break;
                                 case CardUtility.TargetSelectRoleEnum.所有角色:
-                                    PosInfo.Postion = t.Next(Client.BattleFieldInfo.HeroPos, game.YourInfo.BattleField.MinionCount + 1);
-                                    PosInfo.MeOrYou = false;
+                                    SelectOpt.SelectedPos.Postion = t.Next(Client.BattleFieldInfo.HeroPos, game.YourInfo.BattleField.MinionCount + 1);
+                                    SelectOpt.SelectedPos.MeOrYou = false;
                                     break;
                             }
                             //ME#POS
-                            Result.Add(CardUtility.strYou + CardUtility.strSplitMark + PosInfo.Postion.ToString("D1"));
+                            Result.Add(CardUtility.strYou + CardUtility.strSplitMark + SelectOpt.SelectedPos.Postion.ToString("D1"));
                             break;
                         case CardUtility.TargetSelectDirectEnum.双方:
                             //本方对方
                             int MinionCount;
                             if (t.Next(1, 3) == 1)
                             {
-                                PosInfo.MeOrYou = true;
+                                SelectOpt.SelectedPos.MeOrYou = true;
                                 MinionCount = game.MyInfo.BattleField.MinionCount;
                             }
                             else
                             {
-                                PosInfo.MeOrYou = false;
+                                SelectOpt.SelectedPos.MeOrYou = false;
                                 MinionCount = game.YourInfo.BattleField.MinionCount;
                             }
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.TargetSelectRoleEnum.随从:
-                                    PosInfo.Postion = t.Next(1, MinionCount + 1);
+                                    SelectOpt.SelectedPos.Postion = t.Next(1, MinionCount + 1);
                                     break;
                                 case CardUtility.TargetSelectRoleEnum.所有角色:
-                                    PosInfo.Postion = t.Next(Client.BattleFieldInfo.HeroPos, MinionCount + 1);
+                                    SelectOpt.SelectedPos.Postion = t.Next(Client.BattleFieldInfo.HeroPos, MinionCount + 1);
                                     break;
                             }
                             //ME#POS
-                            Result.Add((PosInfo.MeOrYou ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + PosInfo.Postion.ToString("D1"));
+                            Result.Add((SelectOpt.SelectedPos.MeOrYou ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + SelectOpt.SelectedPos.Postion.ToString("D1"));
                             break;
                         default:
                             break;
@@ -139,7 +139,7 @@ namespace Card.Effect
                 case CardUtility.TargetSelectModeEnum.指定:
                 case CardUtility.TargetSelectModeEnum.继承:
                 case CardUtility.TargetSelectModeEnum.横扫:
-                    Result.Add((PosInfo.MeOrYou ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + PosInfo.Postion.ToString("D1"));
+                    Result.Add((SelectOpt.SelectedPos.MeOrYou ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + SelectOpt.SelectedPos.Postion.ToString("D1"));
                     break;
                 case CardUtility.TargetSelectModeEnum.不用选择:
                     if (SelectOpt.EffectTargetSelectRole == CardUtility.TargetSelectRoleEnum.英雄)
@@ -171,52 +171,31 @@ namespace Card.Effect
         /// <param name="Field"></param>
         /// <param name="Pos">指定对象</param>
         /// <returns></returns>
-        public static List<String> RunSingleEffect(EffectDefine singleEffect, Card.Client.GameManager game, Card.CardUtility.TargetPosition Pos, int Seed)
+        public static List<String> RunSingleEffect(CardUtility.SelectOption AbliltyPosPicker, EffectDefine singleEffect, Card.Client.GameManager game, int RandomSeed)
         {
             List<String> Result = new List<string>();
-            //// List<String> PosList = GetTargetList(singleEffect.对象选择器, game, Pos, Seed);
-            // //切记，这里的EffectCount都是1
-            // switch (singleEffect.TrueAtomicEffect.AtomicEffectType)
-            // {
-            //     case Card.Effect.EffectDefine.AbilityEffectEnum.攻击:
-            //         //伤害点数的实时计算
-            //         var tempAttactEffect = ((AttackEffect)singleEffect);
-            //         if (GetEffectPoint(game, tempAttactEffect.标准效果回数表达式) > 1)
-            //         {
-            //             tempAttactEffect.实际伤害点数 = GetEffectPoint(game, tempAttactEffect.标准伤害效果表达式);
-            //             tempAttactEffect.实际强化伤害点数 = GetEffectPoint(game, tempAttactEffect.标准强化伤害效果表达式);
-            //         }
-            //         else
-            //         {
-            //             tempAttactEffect.实际伤害点数 = GetEffectPoint(game, tempAttactEffect.标准伤害效果表达式) + game.MyInfo.BattleField.AttackEffectPlus;
-            //             tempAttactEffect.实际强化伤害点数 = GetEffectPoint(game, tempAttactEffect.标准强化伤害效果表达式) + game.MyInfo.BattleField.AttackEffectPlus;
-            //         }
-            //         //Result.AddRange(RunNormalSingleEffect(singleEffect, game, PosList));
-            //         break;
-            //     case Card.Effect.EffectDefine.AbilityEffectEnum.回复:
-            //     case Card.Effect.EffectDefine.AbilityEffectEnum.状态:
-            //     case Card.Effect.EffectDefine.AbilityEffectEnum.增益:
-            //     case Card.Effect.EffectDefine.AbilityEffectEnum.变形:
-            //         //Result.AddRange(RunNormalSingleEffect(singleEffect, game, PosList));
-            //         break;
-            //     case Card.Effect.EffectDefine.AbilityEffectEnum.召唤:
-            //         Result.AddRange(((SummonEffect)singleEffect).RunEffect(game));
-            //         break;
-            //     case Card.Effect.EffectDefine.AbilityEffectEnum.卡牌:
-            //         //Result.AddRange(((CardEffect)singleEffect).RunEffect(game));
-            //         break;
-            //     case Card.Effect.EffectDefine.AbilityEffectEnum.水晶:
-            //         //Result.AddRange(((CrystalEffect)singleEffect).RunEffect(game));
-            //         break;
-            //     case Card.Effect.EffectDefine.AbilityEffectEnum.控制:
-            //         //Result.AddRange(((ControlEffect)singleEffect).RunEffect(game, PosList[0]));
-            //         break;
-            //     case Card.Effect.EffectDefine.AbilityEffectEnum.武器:
-            //         Result.AddRange(((WeaponPointEffect)singleEffect).RunEffect(game));
-            //         break;
-            //     default:
-            //         break;
-            // }
+            List<String> PosList = GetTargetList(AbliltyPosPicker, game, RandomSeed);
+            foreach (String PosInfo in PosList)
+            {
+                if (String.IsNullOrEmpty(singleEffect.效果条件))
+                {
+                    //TrueEffect
+
+                }
+                else
+                {
+                    if (Card.Client.ExpressHandler.BattleFieldCondition(game, PosInfo, singleEffect.效果条件))
+                    {
+                        //TrueEffect
+
+                    }
+                    else
+                    {
+                        //FalseEffect
+
+                    }
+                }
+            }
             return Result;
         }
         /// <summary>

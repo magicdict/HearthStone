@@ -7,7 +7,7 @@ namespace Card.Effect
     /// <summary>
     /// 攻击效果
     /// </summary>
-    public class AttackEffect : EffectDefine, IEffectHandler
+    public class AttackEffect : AtomicEffectDefine, IEffectHandler
     {
         /// <summary>
         /// 标准效果表达式

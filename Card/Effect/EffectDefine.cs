@@ -21,6 +21,9 @@ namespace Card.Effect
         /// 效果条件为 伪
         /// </summary>
         public AtomicEffectDefine FalseAtomicEffect;
-
+        /// <summary>
+        /// 效果回数
+        /// </summary>
+        public int EffectCount = 1;
     }
 }

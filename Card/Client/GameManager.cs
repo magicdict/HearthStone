@@ -46,7 +46,7 @@ namespace Card.Client
         /// <summary>
         /// 全局随机种子
         /// </summary>
-        public static int Seed = 1;
+        public static int RandomSeed = 1;
         /// <summary>
         /// 游戏信息
         /// </summary>
@@ -132,14 +132,14 @@ namespace Card.Client
                 Message = "已经使用过载";
                 return Message;
             }
-            if (card.CardType == CardBasicInfo.CardTypeEnum.法术)
-            {
-                if (((Card.AbilityCard)card).CheckCondition(this) == false)
-                {
-                    Message = "没有法术使用对象";
-                    return Message;
-                }
-            }
+            //if (card.CardType == CardBasicInfo.CardTypeEnum.法术)
+            //{
+            //    if (((Card.AbilityCard)card).CheckCondition(this) == false)
+            //    {
+            //        Message = "没有法术使用对象";
+            //        return Message;
+            //    }
+            //}
             if (card.CardType == CardBasicInfo.CardTypeEnum.随从)
             {
                 if (MyInfo.BattleField.MinionCount == Card.Client.BattleFieldInfo.MaxMinionCount)
