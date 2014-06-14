@@ -1,12 +1,10 @@
-﻿using Engine.Effect;
-using System;
-using System.Collections.Generic;
+﻿using Engine.Card;
 using Engine.Client;
 using Engine.Utility;
-using Engine.Card;
-using Engine.Server;
+using System;
+using System.Collections.Generic;
 
-namespace Engine.Effect.Server
+namespace Engine.Server
 {
 
     /// 原本应该是服务器方法，但是为了开始测试，暂时作为客户端方法

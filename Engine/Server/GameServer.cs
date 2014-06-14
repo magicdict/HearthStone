@@ -3,7 +3,7 @@ using Engine.Utility;
 using System;
 using System.Collections.Generic;
 
-namespace Engine.Effect.Server
+namespace Engine.Server
 {
     public static class GameServer
     {

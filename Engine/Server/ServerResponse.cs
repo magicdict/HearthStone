@@ -6,7 +6,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace Engine.Effect.Server
+namespace Engine.Server
 {
     /// <summary>
     /// 服务器 - 客户端 通信协议

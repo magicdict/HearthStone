@@ -1,6 +1,5 @@
 ﻿using Engine.Card;
 using Engine.Effect;
-using Engine.Effect.Server;
 using Engine.Server;
 using Engine.Utility;
 

@@ -1,5 +1,4 @@
-﻿using Engine.Effect.Server;
-using Engine.Server;
+﻿using Engine.Server;
 using Engine.Utility;
 using System;
 using System.Collections.Generic;
@@ -55,7 +54,7 @@ namespace Engine.Client
                 info += card + CardUtility.strSplitArrayMark;
             }
             info = info.TrimEnd(CardUtility.strSplitArrayMark.ToCharArray());
-            String requestInfo = Engine.Effect.Server.ServerResponse.RequestType.传送套牌.GetHashCode().ToString("D3") + GameId.ToString(GameServer.GameIdFormat) +
+            String requestInfo = Engine.Server.ServerResponse.RequestType.传送套牌.GetHashCode().ToString("D3") + GameId.ToString(GameServer.GameIdFormat) +
                 (IsHost ? CardUtility.strTrue : CardUtility.strFalse) + info;
             return Request(requestInfo, strIP) == CardUtility.strTrue;
         }
@@ -65,7 +64,7 @@ namespace Engine.Client
         /// <param name="NickName"></param>
         public static String CreateGame(String NickName)
         {
-            String requestInfo = Engine.Effect.Server.ServerResponse.RequestType.新建游戏.GetHashCode().ToString("D3") + NickName;
+            String requestInfo = Engine.Server.ServerResponse.RequestType.新建游戏.GetHashCode().ToString("D3") + NickName;
             return Request(requestInfo, strIP);
         }
         /// <summary>
@@ -76,7 +75,7 @@ namespace Engine.Client
         /// <returns></returns>
         public static String JoinGame(int GameId, String NickName)
         {
-            String requestInfo = Engine.Effect.Server.ServerResponse.RequestType.加入游戏.GetHashCode().ToString("D3") + GameId.ToString(GameServer.GameIdFormat) + NickName;
+            String requestInfo = Engine.Server.ServerResponse.RequestType.加入游戏.GetHashCode().ToString("D3") + GameId.ToString(GameServer.GameIdFormat) + NickName;
             return Request(requestInfo, strIP);
         }
         /// <summary>
@@ -85,7 +84,7 @@ namespace Engine.Client
         /// <param name="NickName"></param>
         public static String GetWatiGameList()
         {
-            String requestInfo = Engine.Effect.Server.ServerResponse.RequestType.等待游戏列表.GetHashCode().ToString("D3");
+            String requestInfo = Engine.Server.ServerResponse.RequestType.等待游戏列表.GetHashCode().ToString("D3");
             return Request(requestInfo, strIP);
         }
         /// <summary>
@@ -94,7 +93,7 @@ namespace Engine.Client
         /// <param name="NickName"></param>
         public static Boolean IsGameStart(String GameId)
         {
-            String requestInfo = Engine.Effect.Server.ServerResponse.RequestType.游戏启动状态.GetHashCode().ToString("D3") + GameId;
+            String requestInfo = Engine.Server.ServerResponse.RequestType.游戏启动状态.GetHashCode().ToString("D3") + GameId;
             return Request(requestInfo, strIP) == CardUtility.strTrue;
         }
         /// <summary>
@@ -103,7 +102,7 @@ namespace Engine.Client
         /// <param name="NickName"></param>
         public static Boolean IsFirst(String GameId, Boolean IsHost)
         {
-            String requestInfo = Engine.Effect.Server.ServerResponse.RequestType.先后手状态.GetHashCode().ToString("D3") + GameId + 
+            String requestInfo = Engine.Server.ServerResponse.RequestType.先后手状态.GetHashCode().ToString("D3") + GameId + 
                 (IsHost ? CardUtility.strTrue : CardUtility.strFalse);
             return Request(requestInfo, strIP) == CardUtility.strTrue;
         }
@@ -116,7 +115,7 @@ namespace Engine.Client
         /// <returns></returns>
         public static List<String> DrawCard(String GameId, bool IsFirst, int CardCount)
         {
-            String requestInfo = Engine.Effect.Server.ServerResponse.RequestType.抽牌.GetHashCode().ToString("D3") + GameId + 
+            String requestInfo = Engine.Server.ServerResponse.RequestType.抽牌.GetHashCode().ToString("D3") + GameId + 
                 (IsFirst ? CardUtility.strTrue : CardUtility.strFalse) + CardCount.ToString("D1");
             List<String> CardList = new List<string>();
             foreach (var card in Request(requestInfo, strIP).Split(Engine.Utility.CardUtility.strSplitArrayMark.ToArray()))
@@ -147,7 +146,7 @@ namespace Engine.Client
                 Transform += item + Engine.Utility.CardUtility.strSplitArrayMark;
             }
             Transform = Transform.TrimEnd(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
-            String requestInfo = Engine.Effect.Server.ServerResponse.RequestType.写入行动.GetHashCode().ToString("D3") + GameId + Transform;
+            String requestInfo = Engine.Server.ServerResponse.RequestType.写入行动.GetHashCode().ToString("D3") + GameId + Transform;
             Request(requestInfo, strIP);
         }
         /// <summary>
@@ -157,7 +156,7 @@ namespace Engine.Client
         /// <returns></returns>
         public static String ReadAction(String GameId)
         {
-            String requestInfo = Engine.Effect.Server.ServerResponse.RequestType.读取行动.GetHashCode().ToString("D3") + GameId;
+            String requestInfo = Engine.Server.ServerResponse.RequestType.读取行动.GetHashCode().ToString("D3") + GameId;
             return Request(requestInfo, strIP);
         }
         /// <summary>
@@ -172,7 +171,7 @@ namespace Engine.Client
                 Transform += item + Engine.Utility.CardUtility.strSplitArrayMark;
             }
             Transform = Transform.TrimEnd(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
-            String requestInfo = Engine.Effect.Server.ServerResponse.RequestType.奥秘判定.GetHashCode().ToString("D3") + GameId +
+            String requestInfo = Engine.Server.ServerResponse.RequestType.奥秘判定.GetHashCode().ToString("D3") + GameId +
                 (IsFirst ? CardUtility.strTrue : CardUtility.strFalse) + Transform;
             return Request(requestInfo, strIP);
         }

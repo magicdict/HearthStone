@@ -59,52 +59,52 @@
     <Compile Include="CardDeck.Designer.cs">
       <DependentUpon>CardDeck.cs</DependentUpon>
     </Compile>
-    <Compile Include="ctlCardList.cs">
+    <Compile Include="UserControl\ctlCardList.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ctlCardList.Designer.cs">
+    <Compile Include="UserControl\ctlCardList.Designer.cs">
       <DependentUpon>ctlCardList.cs</DependentUpon>
     </Compile>
-    <Compile Include="ctlCrystalBar.cs">
+    <Compile Include="UserControl\ctlCrystalBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ctlCrystalBar.Designer.cs">
+    <Compile Include="UserControl\ctlCrystalBar.Designer.cs">
       <DependentUpon>ctlCrystalBar.cs</DependentUpon>
     </Compile>
-    <Compile Include="ctlHandCard.cs">
+    <Compile Include="UserControl\ctlHandCard.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ctlHandCard.Designer.cs">
+    <Compile Include="UserControl\ctlHandCard.Designer.cs">
       <DependentUpon>ctlHandCard.cs</DependentUpon>
     </Compile>
-    <Compile Include="ctlHero.cs">
+    <Compile Include="UserControl\ctlHero.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ctlHero.Designer.cs">
+    <Compile Include="UserControl\ctlHero.Designer.cs">
       <DependentUpon>ctlHero.cs</DependentUpon>
     </Compile>
-    <Compile Include="ctlCard.cs">
+    <Compile Include="UserControl\ctlCard.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ctlCard.Designer.cs">
+    <Compile Include="UserControl\ctlCard.Designer.cs">
       <DependentUpon>ctlCard.cs</DependentUpon>
     </Compile>
-    <Compile Include="ctlFilePicker.cs">
+    <Compile Include="UserControl\ctlFilePicker.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ctlFilePicker.Designer.cs">
+    <Compile Include="UserControl\ctlFilePicker.Designer.cs">
       <DependentUpon>ctlFilePicker.cs</DependentUpon>
     </Compile>
-    <Compile Include="ctlHeroAbility.cs">
+    <Compile Include="UserControl\ctlHeroAbility.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ctlHeroAbility.Designer.cs">
+    <Compile Include="UserControl\ctlHeroAbility.Designer.cs">
       <DependentUpon>ctlHeroAbility.cs</DependentUpon>
     </Compile>
-    <Compile Include="ctlWeapon.cs">
+    <Compile Include="UserControl\ctlWeapon.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ctlWeapon.Designer.cs">
+    <Compile Include="UserControl\ctlWeapon.Designer.cs">
       <DependentUpon>ctlWeapon.cs</DependentUpon>
     </Compile>
     <Compile Include="EffectSelect.cs">
@@ -145,28 +145,28 @@
     <EmbeddedResource Include="CardDeck.resx">
       <DependentUpon>CardDeck.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ctlCardList.resx">
+    <EmbeddedResource Include="UserControl\ctlCardList.resx">
       <DependentUpon>ctlCardList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ctlCrystalBar.resx">
+    <EmbeddedResource Include="UserControl\ctlCrystalBar.resx">
       <DependentUpon>ctlCrystalBar.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ctlCard.resx">
+    <EmbeddedResource Include="UserControl\ctlCard.resx">
       <DependentUpon>ctlCard.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ctlFilePicker.resx">
+    <EmbeddedResource Include="UserControl\ctlFilePicker.resx">
       <DependentUpon>ctlFilePicker.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ctlHandCard.resx">
+    <EmbeddedResource Include="UserControl\ctlHandCard.resx">
       <DependentUpon>ctlHandCard.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ctlHero.resx">
+    <EmbeddedResource Include="UserControl\ctlHero.resx">
       <DependentUpon>ctlHero.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ctlHeroAbility.resx">
+    <EmbeddedResource Include="UserControl\ctlHeroAbility.resx">
       <DependentUpon>ctlHeroAbility.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ctlWeapon.resx">
+    <EmbeddedResource Include="UserControl\ctlWeapon.resx">
       <DependentUpon>ctlWeapon.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EffectSelect.resx">

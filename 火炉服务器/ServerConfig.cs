@@ -22,7 +22,7 @@ namespace 火炉服务器
             btnStart.Enabled = false;
             btnStop.Enabled = true;
             Engine.Utility.logger.Init();
-            ServerThread = new Thread(Engine.Effect.Server.ServerResponse.StartServer);
+            ServerThread = new Thread(Engine.Server.ServerResponse.StartServer);
             ServerThread.IsBackground = true;
             ServerThread.Start();
         }
