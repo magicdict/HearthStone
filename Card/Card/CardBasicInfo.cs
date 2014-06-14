@@ -1,6 +1,7 @@
-﻿using Card.Client;
+﻿using Engine.Client;
+using Engine.Utility;
 using System;
-namespace Card
+namespace Engine.Card
 {
     /// <summary>
     /// 卡牌共通

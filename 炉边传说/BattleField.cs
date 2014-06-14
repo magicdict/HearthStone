@@ -1,6 +1,9 @@
-﻿using Card;
-using Card.Client;
-using Card.Server;
+﻿using Engine.Card;
+using Engine.Effect;
+using Engine.Client;
+using Engine.Effect.Server;
+using Engine.Server;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
@@ -245,9 +248,9 @@ namespace 炉边传说
         private void btnEndTurn_Click(object sender, System.EventArgs e)
         {
             var ActionLst = game.TurnEnd();
-            if (ActionLst.Count != 0) Card.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), ActionLst);
+            if (ActionLst.Count != 0) Engine.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), ActionLst);
             //结束回合
-            Card.Client.ClientRequest.TurnEnd(game.GameId.ToString(GameServer.GameIdFormat));
+            Engine.Client.ClientRequest.TurnEnd(game.GameId.ToString(GameServer.GameIdFormat));
             game.IsMyTurn = false;
             StartNewTurn();
             WaitTimer.Start();
@@ -269,7 +272,7 @@ namespace 炉边传说
                         ActionLst.AddRange(game.MyInfo.BattleField.BattleMinions[i].回合开始(game));
                     }
                 }
-                if (ActionLst.Count != 0) Card.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), ActionLst);
+                if (ActionLst.Count != 0) Engine.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), ActionLst);
                 //按钮可用性设定
                 btnEndTurn.Enabled = true;
                 for (int i = 0; i < 10; i++)
@@ -301,9 +304,9 @@ namespace 炉边传说
         /// </summary>
         private void WaitFor(object sender, System.EventArgs e)
         {
-            var Actions = Card.Client.ClientRequest.ReadAction(game.GameId.ToString(GameServer.GameIdFormat));
+            var Actions = Engine.Client.ClientRequest.ReadAction(game.GameId.ToString(GameServer.GameIdFormat));
             if (String.IsNullOrEmpty(Actions)) return;
-            var ActionList = Actions.Split(Card.CardUtility.strSplitArrayMark.ToCharArray());
+            var ActionList = Actions.Split(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
             foreach (var item in ActionList)
             {
                 if (ActionCode.GetActionType(item) != ActionCode.ActionType.EndTurn)
@@ -327,7 +330,7 @@ namespace 炉边传说
         /// <param name="FirstEffect"></param>
         /// <param name="SecondEffect"></param>
         /// <returns></returns>
-        private Card.CardUtility.PickEffect PickEffect(String FirstEffect, String SecondEffect)
+        private Engine.Utility.CardUtility.PickEffect PickEffect(String FirstEffect, String SecondEffect)
         {
             EffectSelect frm = new EffectSelect();
             frm.FirstEffect = FirstEffect;
@@ -377,7 +380,7 @@ namespace 炉边传说
                 //奥秘计算
                 actionlst.AddRange(game.奥秘计算(actionlst));
                 game.MySelfInfo.ResetHandCardCost(game);
-                Card.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
+                Engine.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
                 DisplayMyInfo();
             }
 
@@ -388,14 +391,14 @@ namespace 炉边传说
         /// <param name="MyPos"></param>
         private void Fight(int MyPos)
         {
-            var SelectOpt = new Card.CardUtility.SelectOption();
+            var SelectOpt = new Engine.Utility.CardUtility.SelectOption();
             SelectOpt.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
             SelectOpt.EffectTargetSelectRole = CardUtility.TargetSelectRoleEnum.所有角色;
             var YourPos = SelectPanel(SelectOpt, true);
             List<String> actionlst = RunAction.Fight(game, MyPos, YourPos.Postion);
             actionlst.AddRange(game.奥秘计算(actionlst));
             game.MySelfInfo.ResetHandCardCost(game);
-            Card.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
+            Engine.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
             DisplayMyInfo();
         }
     }

@@ -1,8 +1,9 @@
-﻿using Card.Server;
+﻿using Engine.Effect.Server;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 
-namespace Card.Effect
+namespace Engine.Effect
 {
     /// <summary>
     /// 攻击效果
@@ -40,21 +41,21 @@ namespace Card.Effect
             if (MeOrYou)
             {
                 game.MyInfo.AfterBeAttack(AttackPoint);
-                game.事件池.Add(new Card.CardUtility.全局事件()
+                game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
                     事件类型 = CardUtility.事件类型列表.受伤,
                     触发方向 = CardUtility.TargetSelectDirectEnum.本方,
-                    触发位置 = Card.Client.BattleFieldInfo.HeroPos
+                    触发位置 = Engine.Client.BattleFieldInfo.HeroPos
                 });
             }
             else
             {
                 game.YourInfo.AfterBeAttack(AttackPoint);
-                game.事件池.Add(new Card.CardUtility.全局事件()
+                game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
                     事件类型 = CardUtility.事件类型列表.受伤,
                     触发方向 = CardUtility.TargetSelectDirectEnum.对方,
-                    触发位置 = Card.Client.BattleFieldInfo.HeroPos
+                    触发位置 = Engine.Client.BattleFieldInfo.HeroPos
                 });
             }
         }
@@ -73,7 +74,7 @@ namespace Card.Effect
             {
                 if (game.MyInfo.BattleField.BattleMinions[PosIndex].AfterBeAttack(AttackPoint))
                 {
-                    game.事件池.Add(new Card.CardUtility.全局事件()
+                    game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         事件类型 = CardUtility.事件类型列表.受伤,
                         触发方向 = CardUtility.TargetSelectDirectEnum.本方,
@@ -85,7 +86,7 @@ namespace Card.Effect
             {
                 if (game.YourInfo.BattleField.BattleMinions[PosIndex].AfterBeAttack(AttackPoint))
                 {
-                    game.事件池.Add(new Card.CardUtility.全局事件()
+                    game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         事件类型 = CardUtility.事件类型列表.受伤,
                         触发方向 = CardUtility.TargetSelectDirectEnum.对方,

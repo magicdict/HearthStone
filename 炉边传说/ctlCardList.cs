@@ -92,7 +92,7 @@ namespace 炉边传说
                 {
                     Controls.Find("btnHandCard" + (i - (CurrentPage - 1) * 10).ToString(), true)[0].Visible = true;
                     ((ctlHandCard)Controls.Find("btnHandCard" + (i - (CurrentPage - 1) * 10).ToString(), true)[0]).HandCard =
-                        Card.CardUtility.GetCardInfoBySN(mCardList[i - 1]);
+                        Engine.Utility.CardUtility.GetCardInfoBySN(mCardList[i - 1]);
                 }
             }
         }

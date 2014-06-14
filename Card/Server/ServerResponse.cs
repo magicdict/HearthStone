@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Engine.Utility;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
-namespace Card.Server
+namespace Engine.Effect.Server
 {
     /// <summary>
     /// 服务器 - 客户端 通信协议
@@ -94,7 +95,7 @@ namespace Card.Server
                     break;
                 case RequestType.抽牌:
                     var Cardlist = GameServer.DrawCard(int.Parse(Request.Substring(3, 5)), Request.Substring(8, 1) == CardUtility.strTrue,int.Parse(Request.Substring(9, 1) ));
-                    Response = String.Join(Card.CardUtility.strSplitArrayMark,Cardlist.ToArray());
+                    Response = String.Join(Engine.Utility.CardUtility.strSplitArrayMark,Cardlist.ToArray());
                     break;
                 case RequestType.回合结束:
                 case RequestType.写入行动:

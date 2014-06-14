@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Engine.Card;
+using Engine.Utility;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Card.Client
+namespace Engine.Client
 {
     /// <summary>
     /// 共通情报
@@ -20,7 +22,7 @@ namespace Card.Client
         /// <summary>
         /// 是否为冰冻状态
         /// </summary>
-        public Card.CardUtility.EffectTurn 冰冻状态 = CardUtility.EffectTurn.无效果;
+        public Engine.Utility.CardUtility.EffectTurn 冰冻状态 = CardUtility.EffectTurn.无效果;
         /// <summary>
         /// 生命力
         /// </summary>
@@ -36,7 +38,7 @@ namespace Card.Client
         /// <summary>
         /// 武器
         /// </summary>
-        public Card.WeaponCard Weapon;
+        public Engine.Card.WeaponCard Weapon;
         /// <summary>
         /// 战场信息
         /// </summary>
@@ -145,7 +147,7 @@ namespace Card.Client
         /// <summary>
         /// 手牌
         /// </summary>
-        public List<Card.CardBasicInfo> handCards = new List<Card.CardBasicInfo>();
+        public List<Engine.Card.CardBasicInfo> handCards = new List<Engine.Card.CardBasicInfo>();
         /// <summary>
         /// 奥秘
         /// </summary>

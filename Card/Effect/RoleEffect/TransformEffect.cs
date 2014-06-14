@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Engine.Utility;
+using System;
 
-namespace Card.Effect
+namespace Engine.Effect
 {
     /// <summary>
     /// 变形法术
@@ -14,7 +15,7 @@ namespace Card.Effect
         public String 变形目标卡牌编号;
         void IEffectHandler.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
         {
-            var Summon = (Card.MinionCard)CardUtility.GetCardInfoBySN(变形目标卡牌编号);
+            var Summon = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(变形目标卡牌编号);
             //一定要初始化，不然的话，生命值是-1；
             Summon.Init();
             if (MeOrYou)

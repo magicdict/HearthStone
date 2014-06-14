@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Engine.Card;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Card
+namespace Engine.Utility
 {
     /// <summary>
     /// 系统管理
@@ -53,9 +54,9 @@ namespace Card
         public static String GetCardInfo(String CardSn)
         {
             StringBuilder Status = new StringBuilder();
-            if (Card.CardUtility.GetCardInfoBySN(CardSn) != null)
+            if (Engine.Utility.CardUtility.GetCardInfoBySN(CardSn) != null)
             {
-                Card.CardBasicInfo info = Card.CardUtility.GetCardInfoBySN(CardSn);
+                Engine.Card.CardBasicInfo info = Engine.Utility.CardUtility.GetCardInfoBySN(CardSn);
                 Status.AppendLine("==============");
                 Status.AppendLine("Description" + info.Description);
                 Status.AppendLine("StandardCostPoint" + info.StandardCostPoint);
@@ -63,12 +64,12 @@ namespace Card
                 switch (info.CardType)
                 {
                     case CardBasicInfo.CardTypeEnum.随从:
-                        Status.AppendLine("标准攻击力：" + ((Card.MinionCard)info).标准攻击力.ToString());
-                        Status.AppendLine("标准生命值：" + ((Card.MinionCard)info).标准生命值上限.ToString());
+                        Status.AppendLine("标准攻击力：" + ((Engine.Card.MinionCard)info).标准攻击力.ToString());
+                        Status.AppendLine("标准生命值：" + ((Engine.Card.MinionCard)info).标准生命值上限.ToString());
                         break;
                     case CardBasicInfo.CardTypeEnum.武器:
-                        Status.AppendLine("标准攻击力：" + ((Card.WeaponCard)info).StandardAttackPoint.ToString());
-                        Status.AppendLine("标准耐久度：" + ((Card.WeaponCard)info).标准耐久度.ToString());
+                        Status.AppendLine("标准攻击力：" + ((Engine.Card.WeaponCard)info).StandardAttackPoint.ToString());
+                        Status.AppendLine("标准耐久度：" + ((Engine.Card.WeaponCard)info).标准耐久度.ToString());
                         break;
                 }
                 Status.AppendLine("==============");
@@ -91,9 +92,9 @@ namespace Card
             {
                 var c = CardCollections[SN].深拷贝();
                 c.Init();
-                if (c.CardType == CardBasicInfo.CardTypeEnum.随从) ((Card.MinionCard)c).Init();
-                if (c.CardType == CardBasicInfo.CardTypeEnum.法术) ((Card.AbilityCard)c).Init();
-                if (c.CardType == CardBasicInfo.CardTypeEnum.武器) ((Card.WeaponCard)c).Init();
+                if (c.CardType == CardBasicInfo.CardTypeEnum.随从) ((Engine.Card.MinionCard)c).Init();
+                if (c.CardType == CardBasicInfo.CardTypeEnum.法术) ((Engine.Card.AbilityCard)c).Init();
+                if (c.CardType == CardBasicInfo.CardTypeEnum.武器) ((Engine.Card.WeaponCard)c).Init();
                 return c;
             }
             return null;
@@ -108,31 +109,31 @@ namespace Card
             //法术
             foreach (var AbilityXml in Directory.GetFiles(CardXmlFolder + "\\Ability\\"))
             {
-                XmlSerializer xml = new XmlSerializer(typeof(Card.AbilityCard));
-                Card.AbilityCard ability = (AbilityCard)xml.Deserialize(new StreamReader(AbilityXml));
+                XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.AbilityCard));
+                Engine.Card.AbilityCard ability = (AbilityCard)xml.Deserialize(new StreamReader(AbilityXml));
                 CardCollections.Add(ability.SN, ability);
             }
             //随从
             foreach (var MinionXml in Directory.GetFiles(CardXmlFolder + "\\Minion\\"))
             {
-                XmlSerializer xml = new XmlSerializer(typeof(Card.MinionCard));
-                Card.MinionCard Minio = (MinionCard)xml.Deserialize(new StreamReader(MinionXml));
+                XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.MinionCard));
+                Engine.Card.MinionCard Minio = (MinionCard)xml.Deserialize(new StreamReader(MinionXml));
                 Minio.ActualCostPoint = Minio.StandardCostPoint;
                 CardCollections.Add(Minio.SN, Minio);
             }
             //武器
             foreach (var WeaponXml in Directory.GetFiles(CardXmlFolder + "\\Weapon\\"))
             {
-                XmlSerializer xml = new XmlSerializer(typeof(Card.WeaponCard));
-                Card.WeaponCard Weapon = (WeaponCard)xml.Deserialize(new StreamReader(WeaponXml));
+                XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.WeaponCard));
+                Engine.Card.WeaponCard Weapon = (WeaponCard)xml.Deserialize(new StreamReader(WeaponXml));
                 Weapon.ActualCostPoint = Weapon.StandardCostPoint;
                 CardCollections.Add(Weapon.SN, Weapon);
             }
             //奥秘
             foreach (var SecretXml in Directory.GetFiles(CardXmlFolder + "\\Secret\\"))
             {
-                XmlSerializer xml = new XmlSerializer(typeof(Card.SecretCard));
-                Card.SecretCard Secret = (SecretCard)xml.Deserialize(new StreamReader(SecretXml));
+                XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.SecretCard));
+                Engine.Card.SecretCard Secret = (SecretCard)xml.Deserialize(new StreamReader(SecretXml));
                 Secret.ActualCostPoint = Secret.StandardCostPoint;
                 CardCollections.Add(Secret.SN, Secret);
             }
@@ -290,7 +291,7 @@ namespace Card
         /// <param name="minion"></param>
         /// <param name="SelectOpt"></param>
         /// <returns></returns>
-        public static Boolean 符合选择条件(Card.MinionCard minion, SelectOption SelectOpt)
+        public static Boolean 符合选择条件(Engine.Card.MinionCard minion, SelectOption SelectOpt)
         {
             String strCondition = SelectOpt.EffectTargetSelectCondition;
             if (String.IsNullOrEmpty(strCondition)) return true;
@@ -429,35 +430,6 @@ namespace Card
         }
         #endregion
         /// <summary>
-        /// PointProcess
-        /// </summary>
-        /// <param name="oldPoint"></param>
-        /// <param name="ModifyPoint"></param>
-        /// <returns></returns>
-        public static int PointProcess(int oldPoint, String ModifyPoint)
-        {
-            int newPoint = oldPoint;
-            if (ModifyPoint != CardUtility.strIgnore)
-            {
-                if (ModifyPoint.Length != 1)
-                {
-                    switch (ModifyPoint.Substring(0, 1))
-                    {
-                        case "+":
-                        case "-":
-                            newPoint += int.Parse(ModifyPoint);
-                            break;
-                        case "*":
-                            newPoint *= int.Parse(ModifyPoint.Substring(1, 1));
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-            return newPoint;
-        }
-        /// <summary>
         /// 随机打算数组
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -549,13 +521,13 @@ namespace Card
         /// 获得位置
         /// </summary>
         /// <returns></returns>
-        public delegate TargetPosition deleteGetTargetPosition(Card.CardUtility.SelectOption 选择参数, Boolean 嘲讽限制);
+        public delegate TargetPosition deleteGetTargetPosition(SelectOption 选择参数, Boolean 嘲讽限制);
         /// <summary>
         /// 随从进场位置
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public delegate int delegateGetPutPos(Card.Client.GameManager game);
+        public delegate int delegateGetPutPos(Engine.Client.GameManager game);
         #endregion
         #region"扩展方法"
 

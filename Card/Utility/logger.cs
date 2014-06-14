@@ -1,18 +1,27 @@
 ﻿using System;
 using System.IO;
 
-namespace Card
+namespace Engine.Utility
 {
     /// <summary>
     /// 日志
     /// </summary>
     public static class logger
     {
+        /// <summary>
+        /// 日志
+        /// </summary>
         public static StreamWriter logfile;
+        /// <summary>
+        /// 初始化
+        /// </summary>
         public static void Init()
         {
             logfile = new StreamWriter("C:\\mlog.txt", true, System.Text.UnicodeEncoding.Unicode);
         }
+        /// <summary>
+        /// 终结化
+        /// </summary>
         public static void Terminate()
         {
             logfile.Close();

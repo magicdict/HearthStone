@@ -1,5 +1,5 @@
-﻿using Card.Client;
-using Card.Server;
+﻿using Engine.Client;
+using Engine.Effect.Server;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -32,11 +32,11 @@ namespace 炉边传说
             }
             String GameId;
             game.IsHost = true;
-            GameId = Card.Client.ClientRequest.CreateGame(game.PlayerNickName);
-            Card.CardUtility.Init(txtCardPath.Text);
+            GameId = Engine.Client.ClientRequest.CreateGame(game.PlayerNickName);
+            Engine.Utility.CardUtility.Init(txtCardPath.Text);
             game.GameId = int.Parse(GameId);
             var CardList = GetCardDeckList();
-            Card.Client.ClientRequest.SendDeck(int.Parse(GameId), game.IsHost, CardList);
+            Engine.Client.ClientRequest.SendDeck(int.Parse(GameId), game.IsHost, CardList);
             btnJoinGame.Enabled = false;
             btnRefresh.Enabled = false;
             btnCreateGame.Enabled = false;
@@ -59,11 +59,11 @@ namespace 炉边传说
         }
         private static void Wait()
         {
-            while (!Card.Client.ClientRequest.IsGameStart(game.GameId.ToString(GameServer.GameIdFormat)))
+            while (!Engine.Client.ClientRequest.IsGameStart(game.GameId.ToString(GameServer.GameIdFormat)))
             {
                 Thread.Sleep(3000);
             }
-            game.IsFirst = Card.Client.ClientRequest.IsFirst(game.GameId.ToString(GameServer.GameIdFormat), game.IsHost);
+            game.IsFirst = Engine.Client.ClientRequest.IsFirst(game.GameId.ToString(GameServer.GameIdFormat), game.IsHost);
             game.Init();
             var t = new BattleField();
             t.game = game;
@@ -77,8 +77,8 @@ namespace 炉边传说
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             lstWaitGuest.Items.Clear();
-            String WaitGame = Card.Client.ClientRequest.GetWatiGameList();
-            String[] WaitGameArray = WaitGame.Split(Card.CardUtility.strSplitArrayMark.ToCharArray());
+            String WaitGame = Engine.Client.ClientRequest.GetWatiGameList();
+            String[] WaitGameArray = WaitGame.Split(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
             for (int i = 0; i < WaitGameArray.Length; i++)
             {
                 lstWaitGuest.Items.Add(WaitGameArray[i]);
@@ -101,12 +101,12 @@ namespace 炉边传说
             game.IsHost = false;
             if (lstWaitGuest.SelectedItems.Count != 1) return;
             var strWait = lstWaitGuest.SelectedItem.ToString();
-            Card.CardUtility.Init(txtCardPath.Text);
-            String GameId = Card.Client.ClientRequest.JoinGame(int.Parse(strWait.Substring(0, strWait.IndexOf("("))), game.PlayerNickName);
+            Engine.Utility.CardUtility.Init(txtCardPath.Text);
+            String GameId = Engine.Client.ClientRequest.JoinGame(int.Parse(strWait.Substring(0, strWait.IndexOf("("))), game.PlayerNickName);
             var CardList = GetCardDeckList();
-            Card.Client.ClientRequest.SendDeck(int.Parse(GameId), game.IsHost, CardList);
+            Engine.Client.ClientRequest.SendDeck(int.Parse(GameId), game.IsHost, CardList);
             game.GameId = int.Parse(GameId);
-            game.IsFirst = Card.Client.ClientRequest.IsFirst(game.GameId.ToString(GameServer.GameIdFormat), game.IsHost);
+            game.IsFirst = Engine.Client.ClientRequest.IsFirst(game.GameId.ToString(GameServer.GameIdFormat), game.IsHost);
             game.Init();
             var t = new BattleField();
             t.game = game;
@@ -148,7 +148,7 @@ namespace 炉边传说
 
         private void btnCreateCardDeck_Click(object sender, EventArgs e)
         {
-            Card.CardUtility.Init(txtCardPath.Text);
+            Engine.Utility.CardUtility.Init(txtCardPath.Text);
             (new CardDeck()).ShowDialog();
             cmbCardDeck.Items.Clear();
             if (Directory.Exists(DeckDir))

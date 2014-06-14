@@ -1,10 +1,12 @@
-﻿using Card.Effect;
-using Card.Server;
+﻿using Engine.Card;
+using Engine.Effect;
+using Engine.Effect.Server;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Card.Client
+namespace Engine.Client
 {
     /// <summary>
     /// 游戏管理
@@ -34,11 +36,11 @@ namespace Card.Client
         /// <summary>
         /// 获得目标对象
         /// </summary>
-        public Card.CardUtility.deleteGetTargetPosition GetSelectTarget;
+        public Engine.Utility.CardUtility.deleteGetTargetPosition GetSelectTarget;
         /// <summary>
         /// 抉择卡牌
         /// </summary>
-        public Card.CardUtility.delegatePickEffect PickEffect;
+        public Engine.Utility.CardUtility.delegatePickEffect PickEffect;
         /// <summary>
         /// 上回合过载
         /// </summary>
@@ -69,7 +71,7 @@ namespace Card.Client
         public void Init()
         {
             //手牌设定
-            var HandCard = Card.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst,
+            var HandCard = Engine.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst,
                            IsFirst ? PublicInfo.BasicHandCardCount : (PublicInfo.BasicHandCardCount + 1));
             MyInfo.crystal.CurrentFullPoint = 0;
             MyInfo.crystal.CurrentRemainPoint = 0;
@@ -84,9 +86,9 @@ namespace Card.Client
             HandCard.Add("W000002");
             //DEBUG END
             //英雄技能：奥术飞弹
-            MyInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A200001");
-            YourInfo.HeroAbility = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN("A200001");
-            if (!IsFirst) HandCard.Add(Card.CardUtility.SN幸运币);
+            MyInfo.HeroAbility = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN("A200001");
+            YourInfo.HeroAbility = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN("A200001");
+            if (!IsFirst) HandCard.Add(Engine.Utility.CardUtility.SN幸运币);
             foreach (var card in HandCard)
             {
                 MySelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(card));
@@ -94,13 +96,13 @@ namespace Card.Client
             MyInfo.HandCardCount = HandCard.Count;
             if (IsFirst)
             {
-                MyInfo.RemainCardDeckCount = Card.Client.CardDeck.MaxCards - 3;
-                YourInfo.RemainCardDeckCount = Card.Client.CardDeck.MaxCards - 4;
+                MyInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 3;
+                YourInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 4;
             }
             else
             {
-                MyInfo.RemainCardDeckCount = Card.Client.CardDeck.MaxCards - 4;
-                YourInfo.RemainCardDeckCount = Card.Client.CardDeck.MaxCards - 3;
+                MyInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 4;
+                YourInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 3;
             }
         }
         /// <summary>
@@ -123,7 +125,7 @@ namespace Card.Client
         /// 检查是否可以使用
         /// </summary>
         /// <returns></returns>
-        public String CheckCondition(Card.CardBasicInfo card)
+        public String CheckCondition(Engine.Card.CardBasicInfo card)
         {
             //剩余的法力是否足够实际召唤的法力
             String Message = String.Empty;
@@ -142,7 +144,7 @@ namespace Card.Client
             //}
             if (card.CardType == CardBasicInfo.CardTypeEnum.随从)
             {
-                if (MyInfo.BattleField.MinionCount == Card.Client.BattleFieldInfo.MaxMinionCount)
+                if (MyInfo.BattleField.MinionCount == Engine.Client.BattleFieldInfo.MaxMinionCount)
                 {
                     Message = "随从已经满员";
                     return Message;
@@ -188,7 +190,7 @@ namespace Card.Client
                 //连击的重置
                 MyInfo.连击状态 = false;
                 //手牌
-                var NewCardList = Card.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, 1);
+                var NewCardList = Engine.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, 1);
                 foreach (var card in NewCardList)
                 {
                     if (MySelfInfo.handCards.Count < PublicInfo.MaxHandCardCount) MySelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(card));
@@ -303,10 +305,10 @@ namespace Card.Client
                 {
                     foreach (var secret in MySelfInfo.奥秘列表)
                     {
-                        if ((!secret.IsHitted) && Card.SecretCard.IsSecretHit(secret.SN, actionlst[i], true))
+                        if ((!secret.IsHitted) && Engine.Card.SecretCard.IsSecretHit(secret.SN, actionlst[i], true))
                         {
                             //奥秘执行
-                            Result.AddRange(Card.SecretCard.RunSecretHit(secret.SN, actionlst[i], true, this));
+                            Result.AddRange(Engine.Card.SecretCard.RunSecretHit(secret.SN, actionlst[i], true, this));
                             secret.IsHitted = true;
                         }
                     }
@@ -317,14 +319,14 @@ namespace Card.Client
             //对方（Fight也需要）
             if (YourInfo.SecretCount != 0)
             {
-                var HitCard = Card.Client.ClientRequest.IsSecretHit(GameId.ToString(GameServer.GameIdFormat), IsFirst, actionlst);
+                var HitCard = Engine.Client.ClientRequest.IsSecretHit(GameId.ToString(GameServer.GameIdFormat), IsFirst, actionlst);
                 if (!String.IsNullOrEmpty(HitCard))
                 {
-                    var HitCardList = HitCard.Split(Card.CardUtility.strSplitArrayMark.ToCharArray());
+                    var HitCardList = HitCard.Split(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
                     foreach (var hitCard in HitCardList)
                     {
-                        Result.AddRange(Card.SecretCard.RunSecretHit(hitCard.Split(Card.CardUtility.strSplitDiffMark.ToCharArray())[0],
-                                                                     hitCard.Split(Card.CardUtility.strSplitDiffMark.ToCharArray())[1], false, this));
+                        Result.AddRange(Engine.Card.SecretCard.RunSecretHit(hitCard.Split(Engine.Utility.CardUtility.strSplitDiffMark.ToCharArray())[0],
+                                                                     hitCard.Split(Engine.Utility.CardUtility.strSplitDiffMark.ToCharArray())[1], false, this));
                         YourInfo.SecretCount--;
                     }
                 }
@@ -374,7 +376,7 @@ namespace Card.Client
                 //圣盾不引发伤害事件
                 if (MyInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterBeAttack(YourAttackPoint))
                 {
-                    事件池.Add(new Card.CardUtility.全局事件()
+                    事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         事件类型 = CardUtility.事件类型列表.受伤,
                         触发方向 = CardUtility.TargetSelectDirectEnum.本方,
@@ -387,7 +389,7 @@ namespace Card.Client
                 //护甲不引发伤害事件
                 if (MyInfo.AfterBeAttack(YourAttackPoint))
                 {
-                    事件池.Add(new Card.CardUtility.全局事件()
+                    事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         事件类型 = CardUtility.事件类型列表.受伤,
                         触发方向 = CardUtility.TargetSelectDirectEnum.本方,
@@ -409,7 +411,7 @@ namespace Card.Client
             {
                 if (YourInfo.BattleField.BattleMinions[被攻击方Pos - 1].AfterBeAttack(MyAttackPoint))
                 {
-                    事件池.Add(new Card.CardUtility.全局事件()
+                    事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         事件类型 = CardUtility.事件类型列表.受伤,
                         触发方向 = CardUtility.TargetSelectDirectEnum.对方,
@@ -422,7 +424,7 @@ namespace Card.Client
                 //护甲不引发伤害事件
                 if (YourInfo.AfterBeAttack(MyAttackPoint))
                 {
-                    事件池.Add(new Card.CardUtility.全局事件()
+                    事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         事件类型 = CardUtility.事件类型列表.受伤,
                         触发方向 = CardUtility.TargetSelectDirectEnum.对方,
@@ -480,7 +482,7 @@ namespace Card.Client
         /// <param name="CardSn"></param>
         public void RemoveUsedCard(String CardSn)
         {
-            Card.CardBasicInfo removeCard = new CardBasicInfo();
+            Engine.Card.CardBasicInfo removeCard = new CardBasicInfo();
             foreach (var Seekcard in MySelfInfo.handCards)
             {
                 if (Seekcard.SN == CardSn)

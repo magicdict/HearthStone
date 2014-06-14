@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Card.Effect
+namespace Engine.Effect
 {
     [Serializable]
     public class AtomicEffectDefine

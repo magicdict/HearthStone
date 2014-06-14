@@ -18,11 +18,11 @@ namespace 火炉服务器
         /// <param name="e"></param>
         private void btnStart_Click(object sender, EventArgs e)
         {
-            Card.CardUtility.Init(txtCardPath.Text);
+            Engine.Utility.CardUtility.Init(txtCardPath.Text);
             btnStart.Enabled = false;
             btnStop.Enabled = true;
-            Card.logger.Init();
-            ServerThread = new Thread(Card.Server.ServerResponse.StartServer);
+            Engine.Utility.logger.Init();
+            ServerThread = new Thread(Engine.Effect.Server.ServerResponse.StartServer);
             ServerThread.IsBackground = true;
             ServerThread.Start();
         }
@@ -35,7 +35,7 @@ namespace 火炉服务器
         {
             ServerThread.Abort();
             ServerThread = null;
-            Card.logger.Terminate();
+            Engine.Utility.logger.Terminate();
             GC.Collect();
         }
         /// <summary>

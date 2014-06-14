@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Express 2013 for Windows Desktop
 VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Card", "..\Card\Card.csproj", "{0BDCFDFE-8032-4C1A-839C-AFB8801910BE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "..\Card\Engine.csproj", "{0BDCFDFE-8032-4C1A-839C-AFB8801910BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "炉边传说", "炉边传说.csproj", "{822FDF6A-C684-4093-9F63-F0276CB175FB}"
 EndProject

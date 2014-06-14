@@ -1,9 +1,10 @@
-﻿using Card.Client;
+﻿using Engine.Client;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Serialization;
-namespace Card
+namespace Engine.Card
 {
     /// <summary>
     /// 随从卡牌
@@ -11,6 +12,7 @@ namespace Card
     [Serializable]
     public class MinionCard : CardBasicInfo
     {
+        #region"结构枚举"
         /// <summary>
         /// 光环范围
         /// </summary>
@@ -133,8 +135,9 @@ namespace Card
             /// </summary>
             回合结束死亡
         }
-        #region"属性"
+        #endregion
 
+        #region"属性"
         #region"设计时状态"
         /// <summary>
         /// 
@@ -215,9 +218,8 @@ namespace Card
         /// <summary>
         /// 自身事件
         /// </summary>
-        public Card.CardUtility.全局事件 自身事件 = new CardUtility.全局事件();
+        public Engine.Utility.CardUtility.全局事件 自身事件 = new CardUtility.全局事件();
         #endregion
-
         #region"运行时状态"
         /// <summary>
         /// 攻击力（实际、不包含光环效果）
@@ -293,7 +295,7 @@ namespace Card
         /// 是否为冰冻状态
         /// </summary>
         [XmlIgnore]
-        public Card.CardUtility.EffectTurn 冰冻状态 = CardUtility.EffectTurn.无效果;
+        public Engine.Utility.CardUtility.EffectTurn 冰冻状态 = CardUtility.EffectTurn.无效果;
         /// <summary>
         /// 剩余攻击次数
         /// </summary>
@@ -319,8 +321,6 @@ namespace Card
         [XmlIgnore]
         public List<Buff> 受战地效果 = new List<Buff>();
         #endregion
-
-
         #region"回合效果"
         /// <summary>
         /// 
@@ -331,6 +331,9 @@ namespace Card
         /// </summary>
         public int 本回合生命力加成 = 0;
         #endregion
+        #endregion
+
+        #region"方法"
         /// <summary>
         /// 设置初始状态
         /// </summary>
@@ -397,7 +400,6 @@ namespace Card
             if (TotalAttack() == 0) return false;
             return RemainAttactTimes > 0 && AttactStatus == 攻击状态.可攻击;
         }
-
         /// <summary>
         /// 实际输出效果
         /// </summary>
@@ -430,14 +432,6 @@ namespace Card
                 BuffLife += int.Parse(buff.BuffInfo.Split("/".ToCharArray())[1]);
             }
             return 标准生命值上限 + BuffLife + 本回合生命力加成;
-        }
-        /// <summary>
-        /// 生存状态
-        /// </summary>
-        /// <returns></returns>
-        public bool IsLive()
-        {
-            return 实际生命值 > 0;
         }
         /// <summary>
         /// 发动战吼(默认)
@@ -516,17 +510,6 @@ namespace Card
             return ActionCodeLst;
         }
         /// <summary>
-        /// 沉默
-        /// </summary>
-        public void 被沉默()
-        {
-            Is沉默Status = true;
-            Actual嘲讽 = false;
-            Actual冲锋 = false;
-            Actual风怒 = false;
-            Actual不能攻击 = false;
-        }
-        /// <summary>
         /// 攻击后
         /// </summary>
         public void AfterDoAttack(Boolean 被动攻击)
@@ -589,7 +572,7 @@ namespace Card
         /// <param name="game"></param>
         /// <param name="MyPos"></param>
         /// <returns></returns>
-        public List<String> 事件处理方法(Card.CardUtility.全局事件 事件, GameManager game, String MyPos)
+        public List<String> 事件处理方法(Engine.Utility.CardUtility.全局事件 事件, GameManager game, String MyPos)
         {
             List<String> ActionLst = new List<string>();
             if (!Is沉默Status && 事件.事件类型 == 自身事件.事件类型)
@@ -599,7 +582,7 @@ namespace Card
                     if (自身事件.触发方向 != 事件.触发方向) return ActionLst;
                 }
                 if (!String.IsNullOrEmpty(自身事件.附加信息) && (事件.附加信息 != 自身事件.附加信息)) return ActionLst;
-                ActionLst.Add(Card.Server.ActionCode.strHitEvent + CardUtility.strSplitMark);
+                ActionLst.Add(Engine.Server.ActionCode.strHitEvent + CardUtility.strSplitMark);
                 if (自身事件.事件效果.StartsWith("A"))
                 {
                     //ActionLst.AddRange(((Card.AbilityCard)Card.CardUtility.GetCardInfoBySN(自身事件.事件效果)).UseAbility(gmae, false));
@@ -607,7 +590,7 @@ namespace Card
                 else
                 {
                     //Card.Effect.PointEffect.RunPointEffect(this, 自身事件.事件效果);
-                    ActionLst.Add(Card.Server.ActionCode.strPoint + CardUtility.strSplitMark + MyPos + CardUtility.strSplitMark + 自身事件.事件效果);
+                    ActionLst.Add(Engine.Server.ActionCode.strPoint + CardUtility.strSplitMark + MyPos + CardUtility.strSplitMark + 自身事件.事件效果);
                 }
             }
             return ActionLst;
@@ -630,7 +613,5 @@ namespace Card
             return Status.ToString();
         }
         #endregion
-
-
     }
 }

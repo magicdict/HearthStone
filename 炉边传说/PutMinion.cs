@@ -1,4 +1,4 @@
-﻿using Card.Client;
+﻿using Engine.Client;
 using System;
 using System.Windows.Forms;
 
@@ -30,7 +30,7 @@ namespace 炉边传说
             int LeftPos = (this.Width - (game.MyInfo.BattleField.MinionCount * btnMe1.Width +
             (game.MyInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
 
-            for (int i = 0; i < Card.Client.BattleFieldInfo.MaxMinionCount - 1; i++)
+            for (int i = 0; i < Engine.Client.BattleFieldInfo.MaxMinionCount - 1; i++)
             {
                 Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = false;
             }
@@ -45,7 +45,7 @@ namespace 炉边传说
 
             LeftPos = (this.Width - ((game.MyInfo.BattleField.MinionCount + 1) * btnPos1.Width +
             (game.MyInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
-            for (int i = 0; i < Card.Client.BattleFieldInfo.MaxMinionCount; i++)
+            for (int i = 0; i < Engine.Client.BattleFieldInfo.MaxMinionCount; i++)
             {
                 Controls.Find("btnPos" + (i + 1).ToString(), true)[0].Visible = false;
             }

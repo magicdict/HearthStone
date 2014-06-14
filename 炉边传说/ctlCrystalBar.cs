@@ -5,7 +5,7 @@ namespace 炉边传说
 {
     public partial class ctlCrystalBar : UserControl
     {
-        public Card.Client.Crystal CrystalInfo
+        public Engine.Client.Crystal CrystalInfo
         {
             set
             {

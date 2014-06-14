@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Engine.Utility;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Card.Client
+namespace Engine.Client
 {
     public class CardDeck
     {

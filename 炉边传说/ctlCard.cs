@@ -1,4 +1,5 @@
-﻿using Card;
+﻿using Engine.Effect;
+using Engine.Utility;
 using System;
 using System.Windows.Forms;
 
@@ -9,7 +10,7 @@ namespace 炉边传说
         /// <summary>
         /// 随从
         /// </summary>
-        public Card.CardBasicInfo CardInfo
+        public Engine.Card.CardBasicInfo CardInfo
         {
             set
             {
@@ -17,10 +18,10 @@ namespace 炉边传说
                 lblDescription.Text = value.Description;
                 switch (value.CardType)
                 {
-                    case Card.CardBasicInfo.CardTypeEnum.随从:
+                    case Engine.Card.CardBasicInfo.CardTypeEnum.随从:
                         lblHealthPoint.Visible = true;
                         lblAttackPoint.Visible = true;
-                        var minion = ((Card.MinionCard)value);
+                        var minion = ((Engine.Card.MinionCard)value);
                         lblAttackPoint.Text = minion.TotalAttack().ToString();
                         lblHealthPoint.Text = minion.实际生命值.ToString();
                         lblStatus.Text = "[状]" + (minion.Is圣盾Status ? "圣" : String.Empty) +
@@ -29,18 +30,18 @@ namespace 炉边传说
                            (minion.Actual冲锋 ? "|冲" : String.Empty) +
                            (minion.冰冻状态 != CardUtility.EffectTurn.无效果 ? "冻" : String.Empty);
                         break;
-                    case Card.CardBasicInfo.CardTypeEnum.法术:
+                    case Engine.Card.CardBasicInfo.CardTypeEnum.法术:
                         lblHealthPoint.Visible = false;
                         lblAttackPoint.Visible = true;
-                        lblAttackPoint.Text = ((Card.AbilityCard)value).StandardCostPoint.ToString();
+                        lblAttackPoint.Text = ((Engine.Card.AbilityCard)value).StandardCostPoint.ToString();
                         break;
-                    case Card.CardBasicInfo.CardTypeEnum.奥秘:
+                    case Engine.Card.CardBasicInfo.CardTypeEnum.奥秘:
                         break;
-                    case Card.CardBasicInfo.CardTypeEnum.武器:
+                    case Engine.Card.CardBasicInfo.CardTypeEnum.武器:
                         lblHealthPoint.Visible = true;
                         lblAttackPoint.Visible = true;
-                        lblAttackPoint.Text = ((Card.WeaponCard)value).实际攻击力.ToString();
-                        lblHealthPoint.Text = ((Card.WeaponCard)value).实际耐久度.ToString();
+                        lblAttackPoint.Text = ((Engine.Card.WeaponCard)value).实际攻击力.ToString();
+                        lblHealthPoint.Text = ((Engine.Card.WeaponCard)value).实际耐久度.ToString();
                         break;
                     default:
                         break;

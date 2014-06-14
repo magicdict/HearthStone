@@ -1,7 +1,9 @@
-﻿using Card.Client;
-using Card.Server;
+﻿using Engine.Client;
+using Engine.Effect.Server;
+using Engine.Server;
+using Engine.Utility;
 using System.Collections.Generic;
-namespace Card.Effect
+namespace Engine.Effect
 {
     public class CrystalEffect : EffectDefine
     {
@@ -18,7 +20,7 @@ namespace Card.Effect
         /// </summary>
         /// <param name="role"></param>
         /// <param name="Ability"></param>
-        public List<string> RunEffect(GameManager game, CardUtility.TargetSelectDirectEnum Direct)
+        public List<string> RunEffect(GameManager game, Utility.CardUtility.TargetSelectDirectEnum Direct)
         {
             List<string> Result = new List<string>();
 

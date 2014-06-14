@@ -6,7 +6,7 @@ namespace 炉边传说
     public partial class ctlHero : UserControl
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
-        public Card.Client.PublicInfo Hero
+        public Engine.Client.PublicInfo Hero
         {
             set
             {

@@ -1,8 +1,9 @@
-﻿using Card.Client;
+﻿using Engine.Client;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 
-namespace Card.Server
+namespace Engine.Effect.Server
 {
     public static class GameServer
     {
@@ -67,7 +68,7 @@ namespace Card.Server
             {
                 WaitGame += item.Key + "(" + item.Value.HostNickName + ")|";
             }
-            WaitGame = WaitGame.TrimEnd(Card.CardUtility.strSplitArrayMark.ToCharArray());
+            WaitGame = WaitGame.TrimEnd(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
             return WaitGame;
         }
         /// <summary>

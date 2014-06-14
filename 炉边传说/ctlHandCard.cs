@@ -11,13 +11,13 @@ namespace 炉边传说
 {
     public partial class ctlHandCard : UserControl
     {
-        Card.CardBasicInfo mHandCard = new Card.CardBasicInfo();
+        Engine.Card.CardBasicInfo mHandCard = new Engine.Card.CardBasicInfo();
         /// <summary>
         /// 
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
-        public Card.CardBasicInfo HandCard
+        public Engine.Card.CardBasicInfo HandCard
         {
             set
             {
@@ -27,27 +27,27 @@ namespace 炉边传说
                 mHandCard = value;
                 switch (value.CardType)
                 {
-                    case Card.CardBasicInfo.CardTypeEnum.随从:
+                    case Engine.Card.CardBasicInfo.CardTypeEnum.随从:
                         lblHealthPoint.Visible = true;
-                        lblHealthPoint.Text = ((Card.MinionCard)value).标准生命值上限.ToString();
+                        lblHealthPoint.Text = ((Engine.Card.MinionCard)value).标准生命值上限.ToString();
                         lblAttackPoint.Visible = true;
-                        lblAttackPoint.Text = ((Card.MinionCard)value).标准攻击力.ToString();
+                        lblAttackPoint.Text = ((Engine.Card.MinionCard)value).标准攻击力.ToString();
                         break;
-                    case Card.CardBasicInfo.CardTypeEnum.法术:
+                    case Engine.Card.CardBasicInfo.CardTypeEnum.法术:
                         lblHealthPoint.Visible = false;
                         lblAttackPoint.Visible = false;
                         break;
-                    case Card.CardBasicInfo.CardTypeEnum.武器:
+                    case Engine.Card.CardBasicInfo.CardTypeEnum.武器:
                         lblHealthPoint.Visible = true;
-                        lblHealthPoint.Text = ((Card.WeaponCard)value).标准耐久度.ToString();
+                        lblHealthPoint.Text = ((Engine.Card.WeaponCard)value).标准耐久度.ToString();
                         lblAttackPoint.Visible = true;
-                        lblAttackPoint.Text = ((Card.WeaponCard)value).StandardAttackPoint.ToString();
+                        lblAttackPoint.Text = ((Engine.Card.WeaponCard)value).StandardAttackPoint.ToString();
                         break;
-                    case Card.CardBasicInfo.CardTypeEnum.奥秘:
+                    case Engine.Card.CardBasicInfo.CardTypeEnum.奥秘:
                         lblHealthPoint.Visible = false;
                         lblAttackPoint.Visible = false;
                         break;
-                    case Card.CardBasicInfo.CardTypeEnum.其他:
+                    case Engine.Card.CardBasicInfo.CardTypeEnum.其他:
                         break;
                     default:
                         break;

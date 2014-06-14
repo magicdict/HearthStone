@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Engine.Card;
+using Engine.Utility;
+using System;
 using System.Collections.Generic;
 
-namespace Card.Effect
+namespace Engine.Effect
 {
     /// <summary>
     /// 状态改变效果
@@ -52,7 +54,7 @@ namespace Card.Effect
                     myMinion.冰冻状态 = CardUtility.EffectTurn.效果命中;
                     break;
                 case strSlience:
-                    myMinion.被沉默();
+                    myMinion.Is沉默Status = true;
                     break;
                 case strAngry:
                     myMinion.Actual风怒 = true;

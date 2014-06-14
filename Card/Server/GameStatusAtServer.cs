@@ -1,9 +1,12 @@
-﻿using Card;
+﻿using Engine.Effect;
 using System;
 using System.Collections.Generic;
-using Card.Client;
+using Engine.Client;
+using Engine.Utility;
+using Engine.Card;
+using Engine.Server;
 
-namespace Card.Server
+namespace Engine.Effect.Server
 {
 
     /// 原本应该是服务器方法，但是为了开始测试，暂时作为客户端方法
@@ -128,12 +131,12 @@ namespace Card.Server
         /// <param name="Action"></param>
         public void WriteAction(String Action)
         {
-            foreach (var actionDetail in Action.Split(Card.CardUtility.strSplitArrayMark.ToCharArray()))
+            foreach (var actionDetail in Action.Split(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray()))
             {
                 if (actionDetail.StartsWith(ActionCode.strSecret + CardUtility.strSplitMark))
                 {
                     //使用奥秘
-                    String SecretCardSN = actionDetail.Substring(ActionCode.strSecret.Length + Card.CardUtility.strSplitMark.Length);
+                    String SecretCardSN = actionDetail.Substring(ActionCode.strSecret.Length + Engine.Utility.CardUtility.strSplitMark.Length);
                     if (IsFirstNowTurn)
                     {
                         FirstSecret.Add(SecretCardSN);
@@ -192,9 +195,9 @@ namespace Card.Server
             String lstAction = String.Empty;
             foreach (var item in ActionInfo)
             {
-                lstAction += item + Card.CardUtility.strSplitArrayMark;
+                lstAction += item + Engine.Utility.CardUtility.strSplitArrayMark;
             }
-            if (!String.IsNullOrEmpty(lstAction)) lstAction = lstAction.TrimEnd(Card.CardUtility.strSplitArrayMark.ToCharArray());
+            if (!String.IsNullOrEmpty(lstAction)) lstAction = lstAction.TrimEnd(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
             ActionInfo.Clear();
             return lstAction;
         }
@@ -211,7 +214,7 @@ namespace Card.Server
             //<本方奥秘在客户端判断>注意方向
             //2.服务器端只做判断，并且返回命中奥秘的列表，不做任何其他操作！
             List<String> HITCardList = new List<string>();
-            foreach (var actionDetail in Action.Split(Card.CardUtility.strSplitArrayMark.ToCharArray()))
+            foreach (var actionDetail in Action.Split(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray()))
             {
                 //检查Second
                 if (IsFirst && SecondSecret.Count != 0)
@@ -220,7 +223,7 @@ namespace Card.Server
                     {
                         if (SecretCard.IsSecretHit(SecondSecret[i], actionDetail, false))
                         {
-                            HITCardList.Add(SecondSecret[i] + Card.CardUtility.strSplitDiffMark + actionDetail);
+                            HITCardList.Add(SecondSecret[i] + Engine.Utility.CardUtility.strSplitDiffMark + actionDetail);
                         }
                     }
                 }
@@ -231,7 +234,7 @@ namespace Card.Server
                     {
                         if (SecretCard.IsSecretHit(FirstSecret[i], actionDetail, false))
                         {
-                            HITCardList.Add(FirstSecret[i] + Card.CardUtility.strSplitDiffMark + actionDetail);
+                            HITCardList.Add(FirstSecret[i] + Engine.Utility.CardUtility.strSplitDiffMark + actionDetail);
                         }
                     }
                 }
@@ -241,9 +244,9 @@ namespace Card.Server
             {
                 foreach (var card in HITCardList)
                 {
-                    strRtn += card + Card.CardUtility.strSplitArrayMark;
+                    strRtn += card + Engine.Utility.CardUtility.strSplitArrayMark;
                 }
-                strRtn = strRtn.TrimEnd(Card.CardUtility.strSplitArrayMark.ToCharArray());
+                strRtn = strRtn.TrimEnd(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
             }
             return strRtn;
         }

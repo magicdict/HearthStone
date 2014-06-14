@@ -1,6 +1,6 @@
-﻿using Card.Effect;
+﻿using Engine.Effect;
 using System;
-namespace Card
+namespace Engine.Card
 {
     /// <summary>
     /// 武器卡牌

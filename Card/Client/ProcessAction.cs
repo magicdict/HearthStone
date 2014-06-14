@@ -1,7 +1,10 @@
-﻿using Card.Effect;
-using Card.Server;
+﻿using Engine.Card;
+using Engine.Effect;
+using Engine.Effect.Server;
+using Engine.Server;
+using Engine.Utility;
 
-namespace Card.Client
+namespace Engine.Client
 {
     public static class ProcessAction
     {
@@ -14,7 +17,7 @@ namespace Card.Client
         public static void Process(string item, GameManager game)
         {
             var actField = item.Split(CardUtility.strSplitMark.ToCharArray());
-            switch (Card.Server.ActionCode.GetActionType(item))
+            switch (Engine.Server.ActionCode.GetActionType(item))
             {
                 case ActionCode.ActionType.Card:
                     if (actField[1] == CardUtility.strYou)
@@ -22,13 +25,13 @@ namespace Card.Client
                         if (actField.Length == 3)
                         {
                             //如果有第三参数，则获得指定手牌
-                            game.MySelfInfo.handCards.Add(Card.CardUtility.GetCardInfoBySN(actField[2]));
+                            game.MySelfInfo.handCards.Add(Engine.Utility.CardUtility.GetCardInfoBySN(actField[2]));
                             game.MyInfo.HandCardCount++;
                         }
                         else
                         {
-                            var drawCards = Card.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
-                            game.MySelfInfo.handCards.Add(Card.CardUtility.GetCardInfoBySN(drawCards[0]));
+                            var drawCards = Engine.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
+                            game.MySelfInfo.handCards.Add(Engine.Utility.CardUtility.GetCardInfoBySN(drawCards[0]));
                             game.MyInfo.HandCardCount++;
                             game.MyInfo.RemainCardDeckCount--;
                         }
@@ -41,13 +44,13 @@ namespace Card.Client
                     break;
                 case ActionCode.ActionType.UseMinion:
                     int Pos = int.Parse(actField[2]);
-                    var minion = (Card.MinionCard)Card.CardUtility.GetCardInfoBySN(actField[1]);
+                    var minion = (Engine.Card.MinionCard)Engine.Utility.CardUtility.GetCardInfoBySN(actField[1]);
                     minion.Init();
                     game.YourInfo.BattleField.PutToBattle(Pos, minion);
                     game.YourInfo.BattleField.ResetBuff();
                     break;
                 case ActionCode.ActionType.UseWeapon:
-                    game.YourInfo.Weapon = (Card.WeaponCard)Card.CardUtility.GetCardInfoBySN(actField[1]);
+                    game.YourInfo.Weapon = (Engine.Card.WeaponCard)Engine.Utility.CardUtility.GetCardInfoBySN(actField[1]);
                     break;
                 case ActionCode.ActionType.UseSecret:
                     game.YourInfo.SecretCount++; ;
@@ -68,7 +71,7 @@ namespace Card.Client
                 case ActionCode.ActionType.HitSecret:
                     if (actField[1] == CardUtility.strYou)
                     {
-                        Card.SecretCard Hit = new SecretCard();
+                        Engine.Card.SecretCard Hit = new SecretCard();
                         foreach (var secret in game.MySelfInfo.奥秘列表)
                         {
                             if (secret.SN == actField[2])

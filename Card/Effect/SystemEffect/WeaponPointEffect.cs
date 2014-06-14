@@ -1,8 +1,10 @@
-﻿using Card.Client;
-using Card.Server;
+﻿using Engine.Client;
+using Engine.Effect.Server;
+using Engine.Server;
+using Engine.Utility;
 using System.Collections.Generic;
 
-namespace Card.Effect
+namespace Engine.Effect
 {
     public class WeaponPointEffect : EffectDefine
     {

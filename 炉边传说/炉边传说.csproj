@@ -208,9 +208,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Card\Card.csproj">
+    <ProjectReference Include="..\Card\Engine.csproj">
       <Project>{0BDCFDFE-8032-4C1A-839C-AFB8801910BE}</Project>
-      <Name>Card</Name>
+      <Name>Engine</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

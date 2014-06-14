@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Engine.Utility;
+using System;
 using System.Collections.Generic;
 
-namespace Card.Effect
+namespace Engine.Effect
 {
     /// <summary>
     /// 召唤效果
@@ -26,20 +27,20 @@ namespace Card.Effect
         public List<string> RunEffect(Client.GameManager game)
         {
             List<String> Result = new List<string>();
-            var MinionLst = 指定卡牌编号数组.Split(Card.CardUtility.strSplitMark.ToCharArray());
+            var MinionLst = 指定卡牌编号数组.Split(Engine.Utility.CardUtility.strSplitMark.ToCharArray());
             Random random = new Random(DateTime.Now.Millisecond);
             var CardSN = MinionLst[random.Next(0, MinionLst.Length)];
-            var Minion = (Card.MinionCard)Card.CardUtility.GetCardInfoBySN(CardSN);
+            var Minion = (Engine.Card.MinionCard)Engine.Utility.CardUtility.GetCardInfoBySN(CardSN);
             switch (法术方向)
             {
                 case CardUtility.TargetSelectDirectEnum.本方:
-                    if (game.MyInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount)
+                    if (game.MyInfo.BattleField.MinionCount < Engine.Client.BattleFieldInfo.MaxMinionCount)
                     {
                         game.MyInfo.BattleField.AppendToBattle(Minion);
                         //SUMMON#YOU#M000001#POS
-                        Result.Add(Card.Server.ActionCode.strSummon + Card.CardUtility.strSplitMark + Card.CardUtility.strMe +
-                                   Card.CardUtility.strSplitMark + CardSN + Card.CardUtility.strSplitMark + game.MyInfo.BattleField.MinionCount);
-                        game.事件池.Add(new Card.CardUtility.全局事件()
+                        Result.Add(Engine.Server.ActionCode.strSummon + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe +
+                                   Engine.Utility.CardUtility.strSplitMark + CardSN + Engine.Utility.CardUtility.strSplitMark + game.MyInfo.BattleField.MinionCount);
+                        game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                         {
                             事件类型 = CardUtility.事件类型列表.召唤,
                             触发方向 = CardUtility.TargetSelectDirectEnum.本方,
@@ -49,12 +50,12 @@ namespace Card.Effect
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.对方:
-                    if (game.YourInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount)
+                    if (game.YourInfo.BattleField.MinionCount < Engine.Client.BattleFieldInfo.MaxMinionCount)
                     {
                         game.YourInfo.BattleField.AppendToBattle(Minion);
-                        Result.Add(Card.Server.ActionCode.strSummon + Card.CardUtility.strSplitMark + Card.CardUtility.strYou +
-                            Card.CardUtility.strSplitMark + CardSN + Card.CardUtility.strSplitMark + game.YourInfo.BattleField.MinionCount);
-                        game.事件池.Add(new Card.CardUtility.全局事件()
+                        Result.Add(Engine.Server.ActionCode.strSummon + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strYou +
+                            Engine.Utility.CardUtility.strSplitMark + CardSN + Engine.Utility.CardUtility.strSplitMark + game.YourInfo.BattleField.MinionCount);
+                        game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                         {
                             事件类型 = CardUtility.事件类型列表.召唤,
                             触发方向 = CardUtility.TargetSelectDirectEnum.对方,
@@ -64,13 +65,13 @@ namespace Card.Effect
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.双方:
-                    if (game.MyInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount)
+                    if (game.MyInfo.BattleField.MinionCount < Engine.Client.BattleFieldInfo.MaxMinionCount)
                     {
                         game.MyInfo.BattleField.AppendToBattle(Minion);
                         //SUMMON#YOU#M000001#POS
-                        Result.Add(Card.Server.ActionCode.strSummon + Card.CardUtility.strSplitMark + Card.CardUtility.strMe +
-                                   Card.CardUtility.strSplitMark + CardSN + Card.CardUtility.strSplitMark + game.MyInfo.BattleField.MinionCount);
-                        game.事件池.Add(new Card.CardUtility.全局事件()
+                        Result.Add(Engine.Server.ActionCode.strSummon + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe +
+                                   Engine.Utility.CardUtility.strSplitMark + CardSN + Engine.Utility.CardUtility.strSplitMark + game.MyInfo.BattleField.MinionCount);
+                        game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                         {
                             事件类型 = CardUtility.事件类型列表.召唤,
                             触发方向 = CardUtility.TargetSelectDirectEnum.本方,
@@ -78,12 +79,12 @@ namespace Card.Effect
                             触发位置 = game.MyInfo.BattleField.MinionCount
                         });
                     }
-                    if (game.YourInfo.BattleField.MinionCount < Card.Client.BattleFieldInfo.MaxMinionCount)
+                    if (game.YourInfo.BattleField.MinionCount < Engine.Client.BattleFieldInfo.MaxMinionCount)
                     {
                         game.YourInfo.BattleField.AppendToBattle(Minion);
-                        Result.Add(Card.Server.ActionCode.strSummon + Card.CardUtility.strSplitMark + Card.CardUtility.strYou +
-                            Card.CardUtility.strSplitMark + CardSN + Card.CardUtility.strSplitMark + game.YourInfo.BattleField.MinionCount);
-                        game.事件池.Add(new Card.CardUtility.全局事件()
+                        Result.Add(Engine.Server.ActionCode.strSummon + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strYou +
+                            Engine.Utility.CardUtility.strSplitMark + CardSN + Engine.Utility.CardUtility.strSplitMark + game.YourInfo.BattleField.MinionCount);
+                        game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                         {
                             事件类型 = CardUtility.事件类型列表.召唤,
                             触发方向 = CardUtility.TargetSelectDirectEnum.对方,

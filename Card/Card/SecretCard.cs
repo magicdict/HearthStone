@@ -1,10 +1,11 @@
-﻿using Card.Effect;
+﻿using Engine.Effect;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Card
+namespace Engine.Card
 {
     /// <summary>
     /// 奥秘卡牌
@@ -40,8 +41,8 @@ namespace Card
             //HitMySelf 
             //这里需要关注方向性问题
             SecretCard card = (SecretCard)CardUtility.GetCardInfoBySN(SecretCardSN);
-            var actiontype = Card.Server.ActionCode.GetActionType(ActionCode);
-            var actionField = ActionCode.Split(Card.CardUtility.strSplitMark.ToCharArray());
+            var actiontype = Engine.Server.ActionCode.GetActionType(ActionCode);
+            var actionField = ActionCode.Split(Engine.Utility.CardUtility.strSplitMark.ToCharArray());
             Boolean IsHit = false;
             switch (card.Condition)
             {
@@ -72,13 +73,13 @@ namespace Card
         /// <param name="ActionCode"></param>
         /// <param name="HitMySelf"></param>
         /// <returns></returns>
-        public static List<String> RunSecretHit(String SecretCardSN, String ActionCode, Boolean HitMySelf, Card.Client.GameManager game)
+        public static List<String> RunSecretHit(String SecretCardSN, String ActionCode, Boolean HitMySelf, Engine.Client.GameManager game)
         {
             List<String> ActionLst = new List<string>();
             SecretCard card = (SecretCard)CardUtility.GetCardInfoBySN(SecretCardSN);
-            var actiontype = Card.Server.ActionCode.GetActionType(ActionCode);
-            var actionField = ActionCode.Split(Card.CardUtility.strSplitMark.ToCharArray());
-            ActionLst.Add(Card.Server.ActionCode.strHitSecret + CardUtility.strSplitMark + (HitMySelf ? CardUtility.strMe : CardUtility.strYou) +
+            var actiontype = Engine.Server.ActionCode.GetActionType(ActionCode);
+            var actionField = ActionCode.Split(Engine.Utility.CardUtility.strSplitMark.ToCharArray());
+            ActionLst.Add(Engine.Server.ActionCode.strHitSecret + CardUtility.strSplitMark + (HitMySelf ? CardUtility.strMe : CardUtility.strYou) +
                                                                 CardUtility.strSplitMark + SecretCardSN);
             //HitMySelf 在自己的回合运行自己的奥秘
             switch (card.Condition)
@@ -91,8 +92,8 @@ namespace Card
                         //SUMMON#YOU#M000001#POS
                         //例如：亡语的时候可能召唤一个新的随从
                         //PointEffect.RunPointEffect(game.YourInfo.BattleField.BattleMinions[int.Parse(actionField[3]) - 1],card.AdditionInfo);
-                        ActionLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + CardUtility.strYou + Card.CardUtility.strSplitMark +
-                                    actionField[3] + Card.CardUtility.strSplitMark + card.AdditionInfo);
+                        ActionLst.Add(Engine.Server.ActionCode.strPoint + Engine.Utility.CardUtility.strSplitMark + CardUtility.strYou + Engine.Utility.CardUtility.strSplitMark +
+                                    actionField[3] + Engine.Utility.CardUtility.strSplitMark + card.AdditionInfo);
                     }
                     else
                     {
@@ -101,15 +102,15 @@ namespace Card
                         {
                             //SUMMON#YOU#M000001#POS
                             //PointEffect.RunPointEffect(game.MyInfo.BattleField.BattleMinions[int.Parse(actionField[3]) - 1], card.AdditionInfo);
-                            ActionLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + CardUtility.strMe + Card.CardUtility.strSplitMark +
-                                    actionField[3] + Card.CardUtility.strSplitMark + card.AdditionInfo);
+                            ActionLst.Add(Engine.Server.ActionCode.strPoint + Engine.Utility.CardUtility.strSplitMark + CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
+                                    actionField[3] + Engine.Utility.CardUtility.strSplitMark + card.AdditionInfo);
                         }
                         else
                         {
                             //MINION#M000001#1
                             //PointEffect.RunPointEffect(game.MyInfo.BattleField.BattleMinions[int.Parse(actionField[2]) - 1], card.AdditionInfo);
-                            ActionLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + CardUtility.strMe + Card.CardUtility.strSplitMark +
-                                    actionField[2] + Card.CardUtility.strSplitMark + card.AdditionInfo);
+                            ActionLst.Add(Engine.Server.ActionCode.strPoint + Engine.Utility.CardUtility.strSplitMark + CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
+                                    actionField[2] + Engine.Utility.CardUtility.strSplitMark + card.AdditionInfo);
                         }
                     }
                     break;

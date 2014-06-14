@@ -1,8 +1,11 @@
-﻿using Card.Server;
+﻿using Engine.Card;
+using Engine.Effect.Server;
+using Engine.Server;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 
-namespace Card.Client
+namespace Engine.Client
 {
     /// <summary>
     /// 执行
@@ -25,26 +28,26 @@ namespace Card.Client
         {
             //清除事件池，注意，事件将在动作结束后整体结算
             game.事件池.Clear();
-            Card.CardBasicInfo card = Card.CardUtility.GetCardInfoBySN(CardSn);
+            Engine.Card.CardBasicInfo card = Engine.Utility.CardUtility.GetCardInfoBySN(CardSn);
             List<String> ActionCodeLst = new List<string>();
             switch (card.CardType)
             {
                 case CardBasicInfo.CardTypeEnum.法术:
                     ActionCodeLst.Add(ActionCode.strAbility + CardUtility.strSplitMark + CardSn);
                     //初始化 Buff效果等等
-                    Card.AbilityCard ablity = (Card.AbilityCard)CardUtility.GetCardInfoBySN(CardSn);
+                    Engine.Card.AbilityCard ablity = (Engine.Card.AbilityCard)CardUtility.GetCardInfoBySN(CardSn);
                     ablity.Init();
                     var ResultArg = ablity.UseAbility(game, ConvertPosDirect);
                     if (ResultArg.Count != 0)
                     {
                         ActionCodeLst.AddRange(ResultArg);
                         //英雄技能等的时候，不算[本方施法] 
-                        if (CardSn.Substring(1, 1) == Card.AbilityCard.原生法术)
-                            game.事件池.Add(new Card.CardUtility.全局事件()
+                        if (CardSn.Substring(1, 1) == Engine.Card.AbilityCard.原生法术)
+                            game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                             {
                                 事件类型 = CardUtility.事件类型列表.施法,
                                 触发方向 = CardUtility.TargetSelectDirectEnum.本方,
-                                触发位置 = Card.Client.BattleFieldInfo.HeroPos
+                                触发位置 = Engine.Client.BattleFieldInfo.HeroPos
                             });
                     }
                     else
@@ -58,11 +61,11 @@ namespace Card.Client
                     if (MinionPos != -1)
                     {
                         ActionCodeLst.Add(ActionCode.strMinion + CardUtility.strSplitMark + CardSn + CardUtility.strSplitMark + MinionPos.ToString("D1"));
-                        var minion = (Card.MinionCard)card;
+                        var minion = (Engine.Card.MinionCard)card;
                         //初始化
                         minion.Init();
                         //必须在放入之前做得原因是，被放入的随从不能被触发这个事件
-                        game.事件池.Add(new Card.CardUtility.全局事件()
+                        game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                         {
                             事件类型 = CardUtility.事件类型列表.召唤,
                             附加信息 = minion.种族.ToString(),
@@ -108,11 +111,11 @@ namespace Card.Client
                     break;
                 case CardBasicInfo.CardTypeEnum.武器:
                     ActionCodeLst.Add(ActionCode.strWeapon + CardUtility.strSplitMark + CardSn);
-                    game.MyInfo.Weapon = (Card.WeaponCard)card;
+                    game.MyInfo.Weapon = (Engine.Card.WeaponCard)card;
                     break;
                 case CardBasicInfo.CardTypeEnum.奥秘:
                     ActionCodeLst.Add(ActionCode.strSecret + CardUtility.strSplitMark + CardSn);
-                    game.MySelfInfo.奥秘列表.Add((Card.SecretCard)card);
+                    game.MySelfInfo.奥秘列表.Add((Engine.Card.SecretCard)card);
                     game.MyInfo.SecretCount = game.MySelfInfo.奥秘列表.Count;
                     break;
                 default:
@@ -124,19 +127,19 @@ namespace Card.Client
                 if (!String.IsNullOrEmpty(card.连击效果))
                 {
                     //初始化 Buff效果等等
-                    Card.AbilityCard ablity = (Card.AbilityCard)CardUtility.GetCardInfoBySN(card.连击效果);
+                    Engine.Card.AbilityCard ablity = (Engine.Card.AbilityCard)CardUtility.GetCardInfoBySN(card.连击效果);
                     ablity.Init();
                     var ResultArg = ablity.UseAbility(game, ConvertPosDirect);
                     if (ResultArg.Count != 0)
                     {
                         ActionCodeLst.AddRange(ResultArg);
                         //英雄技能等的时候，不算[本方施法] 
-                        if (CardSn.Substring(1, 1) == Card.AbilityCard.原生法术)
-                            game.事件池.Add(new Card.CardUtility.全局事件()
+                        if (CardSn.Substring(1, 1) == Engine.Card.AbilityCard.原生法术)
+                            game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                             {
                                 事件类型 = CardUtility.事件类型列表.施法,
                                 触发方向 = CardUtility.TargetSelectDirectEnum.本方,
-                                触发位置 = Card.Client.BattleFieldInfo.HeroPos
+                                触发位置 = Engine.Client.BattleFieldInfo.HeroPos
                             });
                     }
                 }

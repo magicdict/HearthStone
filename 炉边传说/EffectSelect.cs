@@ -26,7 +26,7 @@ namespace 炉边传说
         /// <summary>
         /// 是否第一效果
         /// </summary>
-        public Card.CardUtility.PickEffect IsFirstEffect =  Card.CardUtility.PickEffect.取消;
+        public Engine.Utility.CardUtility.PickEffect IsFirstEffect =  Engine.Utility.CardUtility.PickEffect.取消;
         /// <summary>
         /// 第一效果
         /// </summary>
@@ -34,7 +34,7 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnEffect1_Click(object sender, EventArgs e)
         {
-            IsFirstEffect =  Card.CardUtility.PickEffect.第一效果;
+            IsFirstEffect =  Engine.Utility.CardUtility.PickEffect.第一效果;
             this.Close();
         }
         /// <summary>
@@ -44,7 +44,7 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnEffect2_Click(object sender, EventArgs e)
         {
-            IsFirstEffect =  Card.CardUtility.PickEffect.第二效果;
+            IsFirstEffect =  Engine.Utility.CardUtility.PickEffect.第二效果;
             this.Close();
         }
         /// <summary>
@@ -54,7 +54,7 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            IsFirstEffect = Card.CardUtility.PickEffect.取消;
+            IsFirstEffect = Engine.Utility.CardUtility.PickEffect.取消;
             this.Close();
         }
     }

@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Engine.Utility;
+using System;
 
-namespace Card.Effect
+namespace Engine.Effect
 {
     [Serializable]
     public class EffectDefine

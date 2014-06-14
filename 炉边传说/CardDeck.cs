@@ -26,7 +26,7 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void CardDeck_Load(object sender, EventArgs e)
         {
-            foreach (var CardSn in Card.CardUtility.ReadyCardDic.Keys)
+            foreach (var CardSn in Engine.Utility.CardUtility.ReadyCardDic.Keys)
             {
                 //AX00001 - X等于0的是可以使用的卡牌
                 if (CardSn.StartsWith("A0") || CardSn.StartsWith("S0")) CardAblitiy.Add(CardSn);
@@ -43,7 +43,7 @@ namespace 炉边传说
         /// <param name="CardSN"></param>
         private void CardPicked(String CardSN)
         {
-            lstSelectCardDeck.Items.Add(CardSN + ":" + Card.CardUtility.GetCardNameBySN(CardSN));
+            lstSelectCardDeck.Items.Add(CardSN + ":" + Engine.Utility.CardUtility.GetCardNameBySN(CardSN));
             lblCardCount.Text = "套牌数量：" + lstSelectCardDeck.Items.Count + "/30";
         }
         /// <summary>

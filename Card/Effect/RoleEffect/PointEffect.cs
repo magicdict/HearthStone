@@ -1,9 +1,11 @@
-﻿using Card.Client;
+﻿using Engine.Card;
+using Engine.Client;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Card.Effect
+namespace Engine.Effect
 {
     /// <summary>
     /// 增益效果
@@ -32,15 +34,15 @@ namespace Card.Effect
         {
             if (TurnCount == CardUtility.Max)
             {
-                Minion.实际攻击力 = CardUtility.PointProcess(Minion.实际攻击力, 攻击力);
-                Minion.实际生命值 = CardUtility.PointProcess(Minion.实际生命值, 生命值);
-                Minion.实际生命值上限 = CardUtility.PointProcess(Minion.实际生命值上限, 生命值);
+                Minion.实际攻击力 = ExpressHandler.PointProcess(Minion.实际攻击力, 攻击力);
+                Minion.实际生命值 = ExpressHandler.PointProcess(Minion.实际生命值, 生命值);
+                Minion.实际生命值上限 = ExpressHandler.PointProcess(Minion.实际生命值上限, 生命值);
             }
             else
             {
                 //本回合攻击力翻倍的对应
-                Minion.本回合攻击力加成 = CardUtility.PointProcess(Minion.实际攻击力, 攻击力) - Minion.实际攻击力;
-                Minion.本回合生命力加成 = CardUtility.PointProcess(Minion.实际生命值上限, 生命值) - Minion.实际生命值上限;
+                Minion.本回合攻击力加成 = ExpressHandler.PointProcess(Minion.实际攻击力, 攻击力) - Minion.实际攻击力;
+                Minion.本回合生命力加成 = ExpressHandler.PointProcess(Minion.实际生命值上限, 生命值) - Minion.实际生命值上限;
             }
         }
         void IEffectHandler.DealHero(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou)

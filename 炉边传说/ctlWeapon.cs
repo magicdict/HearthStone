@@ -6,7 +6,7 @@ namespace 炉边传说
     public partial class ctlWeapon : UserControl
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
-        public Card.WeaponCard Weapon
+        public Engine.Card.WeaponCard Weapon
         {
             set
             {

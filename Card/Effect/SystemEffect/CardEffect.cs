@@ -1,9 +1,11 @@
-﻿using Card.Client;
-using Card.Server;
+﻿using Engine.Client;
+using Engine.Effect.Server;
+using Engine.Server;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 
-namespace Card.Effect
+namespace Engine.Effect
 {
     /// <summary>
     /// 运行效果
@@ -32,10 +34,10 @@ namespace Card.Effect
                     //#CARD#ME#M000001
                     if (String.IsNullOrEmpty(指定卡牌编号))
                     {
-                        var drawCards = Card.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
+                        var drawCards = Engine.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
                         if (drawCards.Count == 1)
                         {
-                            game.MySelfInfo.handCards.Add(Card.CardUtility.GetCardInfoBySN(drawCards[0]));
+                            game.MySelfInfo.handCards.Add(Engine.Utility.CardUtility.GetCardInfoBySN(drawCards[0]));
                             game.MyInfo.HandCardCount++;
                             game.MyInfo.RemainCardDeckCount--;
                             Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strMe);
@@ -43,7 +45,7 @@ namespace Card.Effect
                     }
                     else
                     {
-                        game.MySelfInfo.handCards.Add((Card.CardUtility.GetCardInfoBySN(指定卡牌编号)));
+                        game.MySelfInfo.handCards.Add((Engine.Utility.CardUtility.GetCardInfoBySN(指定卡牌编号)));
                         game.MyInfo.HandCardCount++;
                         Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strMe);
                     }
@@ -67,10 +69,10 @@ namespace Card.Effect
                 case CardUtility.TargetSelectDirectEnum.双方:
                     if (String.IsNullOrEmpty(指定卡牌编号))
                     {
-                        var drawCards = Card.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
+                        var drawCards = Engine.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
                         if (drawCards.Count == 1)
                         {
-                            game.MySelfInfo.handCards.Add(Card.CardUtility.GetCardInfoBySN(drawCards[0]));
+                            game.MySelfInfo.handCards.Add(Engine.Utility.CardUtility.GetCardInfoBySN(drawCards[0]));
                             game.MyInfo.HandCardCount++;
                             game.MyInfo.RemainCardDeckCount--;
                             Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strMe);
@@ -78,7 +80,7 @@ namespace Card.Effect
                     }
                     else
                     {
-                        game.MySelfInfo.handCards.Add((Card.CardUtility.GetCardInfoBySN(指定卡牌编号)));
+                        game.MySelfInfo.handCards.Add((Engine.Utility.CardUtility.GetCardInfoBySN(指定卡牌编号)));
                         game.MyInfo.HandCardCount++;
                         Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strMe);
                     }

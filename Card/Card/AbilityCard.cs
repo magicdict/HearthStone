@@ -1,9 +1,10 @@
-﻿using Card.Client;
-using Card.Effect;
+﻿using Engine.Effect;
+using Engine.Client;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 
-namespace Card
+namespace Engine.Card
 {
     /// <summary>
     /// 法术卡牌
@@ -106,7 +107,7 @@ namespace Card
                                        Boolean ConvertPosDirect)
         {
             List<String> Result = new List<string>();
-            Card.CardUtility.PickEffect PickEffectResult = CardUtility.PickEffect.第一效果;
+            Engine.Utility.CardUtility.PickEffect PickEffectResult = CardUtility.PickEffect.第一效果;
             switch (效果选择类型)
             {
                 case 效果选择类型枚举.无需选择:

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Engine.Card;
+using Engine.Utility;
+using System;
 using System.Collections.Generic;
 
-namespace Card.Client
+namespace Engine.Client
 {
     /// <summary>
     /// 战场信息（炉石专用）
@@ -91,7 +93,7 @@ namespace Card.Client
         /// <param name="CardSn"></param>
         public void PutToBattle(int Position, String CardSn)
         {
-            Card.CardBasicInfo card = Card.CardUtility.GetCardInfoBySN(CardSn);
+            Engine.Card.CardBasicInfo card = Engine.Utility.CardUtility.GetCardInfoBySN(CardSn);
             PutToBattle(Position, (MinionCard)card);
         }
         /// <summary>
@@ -150,34 +152,34 @@ namespace Card.Client
                     PosList.Add(MinionPos);
                 }
                 //处理状态和数值变化
-                var 战吼 = (Card.AbilityCard)Card.CardUtility.GetCardInfoBySN(BattleMinions[MinionPos - 1].战吼效果);
+                var 战吼 = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN(BattleMinions[MinionPos - 1].战吼效果);
 
                 foreach (int PosInfo in PosList)
                 {
                     switch (战吼.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.AtomicEffectType)
                     {
-                        case Card.Effect.AtomicEffectDefine.AtomicEffectEnum.增益:
-                            ((Card.Effect.PointEffect)战吼.FirstAbilityDefine.MainAbilityDefine).RunPointEffect(BattleMinions[PosInfo - 1]);
-                            ActionCodeLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + Card.CardUtility.strMe + Card.CardUtility.strSplitMark +
-                            PosInfo + Card.CardUtility.strSplitMark + 战吼.FirstAbilityDefine.MainAbilityDefine);
+                        case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.增益:
+                            ((Engine.Effect.PointEffect)战吼.FirstAbilityDefine.MainAbilityDefine).RunPointEffect(BattleMinions[PosInfo - 1]);
+                            ActionCodeLst.Add(Engine.Server.ActionCode.strPoint + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
+                            PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼.FirstAbilityDefine.MainAbilityDefine);
                             break;
-                        case Card.Effect.AtomicEffectDefine.AtomicEffectEnum.状态:
-                            ((Card.Effect.StatusEffect)战吼.FirstAbilityDefine.MainAbilityDefine).RunStatusEffect(BattleMinions[PosInfo - 1]);
-                            ActionCodeLst.Add(Card.Server.ActionCode.strStatus + Card.CardUtility.strSplitMark + Card.CardUtility.strMe + Card.CardUtility.strSplitMark +
-                            PosInfo + Card.CardUtility.strSplitMark + 战吼.FirstAbilityDefine.MainAbilityDefine);
+                        case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.状态:
+                            ((Engine.Effect.StatusEffect)战吼.FirstAbilityDefine.MainAbilityDefine).RunStatusEffect(BattleMinions[PosInfo - 1]);
+                            ActionCodeLst.Add(Engine.Server.ActionCode.strStatus + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
+                            PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼.FirstAbilityDefine.MainAbilityDefine);
                             break;
                     }
                     switch (战吼.SecondAbilityDefine.MainAbilityDefine.TrueAtomicEffect.AtomicEffectType)
                     {
-                        case Card.Effect.AtomicEffectDefine.AtomicEffectEnum.增益:
-                            ((Card.Effect.PointEffect)战吼.SecondAbilityDefine.MainAbilityDefine).RunPointEffect(BattleMinions[PosInfo - 1]);
-                            ActionCodeLst.Add(Card.Server.ActionCode.strPoint + Card.CardUtility.strSplitMark + Card.CardUtility.strMe + Card.CardUtility.strSplitMark +
-                            PosInfo + Card.CardUtility.strSplitMark + 战吼.SecondAbilityDefine.MainAbilityDefine);
+                        case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.增益:
+                            ((Engine.Effect.PointEffect)战吼.SecondAbilityDefine.MainAbilityDefine).RunPointEffect(BattleMinions[PosInfo - 1]);
+                            ActionCodeLst.Add(Engine.Server.ActionCode.strPoint + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
+                            PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼.SecondAbilityDefine.MainAbilityDefine);
                             break;
-                        case Card.Effect.AtomicEffectDefine.AtomicEffectEnum.状态:
-                            ((Card.Effect.StatusEffect)战吼.SecondAbilityDefine.MainAbilityDefine).RunStatusEffect(BattleMinions[PosInfo - 1]);
-                            ActionCodeLst.Add(Card.Server.ActionCode.strStatus + Card.CardUtility.strSplitMark + Card.CardUtility.strMe + Card.CardUtility.strSplitMark +
-                            PosInfo + Card.CardUtility.strSplitMark + 战吼.SecondAbilityDefine.MainAbilityDefine);
+                        case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.状态:
+                            ((Engine.Effect.StatusEffect)战吼.SecondAbilityDefine.MainAbilityDefine).RunStatusEffect(BattleMinions[PosInfo - 1]);
+                            ActionCodeLst.Add(Engine.Server.ActionCode.strStatus + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
+                            PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼.SecondAbilityDefine.MainAbilityDefine);
                             break;
                     }
                 }
@@ -270,7 +272,7 @@ namespace Card.Client
             {
                 if (BattleMinions[i] != null)
                 {
-                    if (BattleMinions[i].IsLive())
+                    if (BattleMinions[i].实际生命值 > 0)
                     {
                         CloneMinions[ALive] = BattleMinions[i];
                         ALive++;
@@ -278,7 +280,7 @@ namespace Card.Client
                     else
                     {
                         DeadList.Add(BattleMinions[i]);
-                        game.事件池.Add(new Card.CardUtility.全局事件()
+                        game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                         {
                             事件类型 = CardUtility.事件类型列表.死亡,
                             触发位置 = i + 1,

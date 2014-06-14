@@ -1,9 +1,10 @@
-﻿using Card.Client;
+﻿using Engine.Client;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Card.Effect
+namespace Engine.Effect
 {
     /// <summary>
     /// 治疗效果
@@ -33,11 +34,11 @@ namespace Card.Effect
                 game.MyInfo.AfterBeShield(ShieldPoint);
                 if (game.MyInfo.AfterBeHealth(HealthPoint))
                 {
-                    game.事件池.Add(new Card.CardUtility.全局事件()
+                    game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         事件类型 = CardUtility.事件类型列表.治疗,
                         触发方向 = CardUtility.TargetSelectDirectEnum.本方,
-                        触发位置 = Card.Client.BattleFieldInfo.HeroPos
+                        触发位置 = Engine.Client.BattleFieldInfo.HeroPos
                     });
                 }
             }
@@ -46,11 +47,11 @@ namespace Card.Effect
                 game.YourInfo.AfterBeShield(ShieldPoint);
                 if (game.YourInfo.AfterBeHealth(HealthPoint))
                 {
-                    game.事件池.Add(new Card.CardUtility.全局事件()
+                    game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         事件类型 = CardUtility.事件类型列表.治疗,
                         触发方向 = CardUtility.TargetSelectDirectEnum.对方,
-                        触发位置 = Card.Client.BattleFieldInfo.HeroPos
+                        触发位置 = Engine.Client.BattleFieldInfo.HeroPos
                     });
                 }
             }
@@ -69,7 +70,7 @@ namespace Card.Effect
             {
                 if (game.MyInfo.BattleField.BattleMinions[PosIndex].AfterBeHealth(HealthPoint))
                 {
-                    game.事件池.Add(new Card.CardUtility.全局事件()
+                    game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         事件类型 = CardUtility.事件类型列表.治疗,
                         触发方向 = CardUtility.TargetSelectDirectEnum.本方,
@@ -81,7 +82,7 @@ namespace Card.Effect
             {
                 if (game.YourInfo.BattleField.BattleMinions[PosIndex].AfterBeHealth(HealthPoint))
                 {
-                    game.事件池.Add(new Card.CardUtility.全局事件()
+                    game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         事件类型 = CardUtility.事件类型列表.治疗,
                         触发方向 = CardUtility.TargetSelectDirectEnum.对方,
