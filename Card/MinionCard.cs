@@ -488,10 +488,10 @@ namespace Card
             //回合开始效果
             if (回合开始效果 != String.Empty && !Is沉默Status)
             {
-                var 战吼Result = RunAction.StartAction(game, 回合开始效果);
+                var 回合开始Result = RunAction.StartAction(game, 回合开始效果);
                 //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
-                战吼Result.RemoveAt(0);
-                ActionCodeLst.AddRange(战吼Result);
+                回合开始Result.RemoveAt(0);
+                ActionCodeLst.AddRange(回合开始Result);
             }
             return ActionCodeLst;
         }

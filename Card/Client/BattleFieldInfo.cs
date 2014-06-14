@@ -41,7 +41,7 @@ namespace Card.Client
         /// 多次伤害法术，则施法次数 + 1
         /// 单次伤害法术，则施法强度 + 1
         /// </summary>
-        public int AttackEffectPlus = 0;
+        public int AbilityDamagePlus = 0;
         /// <summary>
         /// 当前随从数量
         /// </summary>
@@ -121,6 +121,10 @@ namespace Card.Client
                 }
                 BattleMinions[Position - 1] = Minion;
             }
+            for (int i = 0; i < MinionCount; i++)
+            {
+                BattleMinions[i].Position = i + 1;
+            }
         }
         /// <summary>
         /// 发动战吼
@@ -192,11 +196,14 @@ namespace Card.Client
                 BattleMinions[i] = BattleMinions[i + 1];
             }
             BattleMinions[MaxMinionCount - 1] = null;
+            for (int i = 0; i < MinionCount; i++)
+            {
+                BattleMinions[i].Position = i + 1;
+            }
         }
         /// <summary>
         /// Buff的设置
         /// </summary>
-        /// <param name="game"></param>
         public void ResetBuff()
         {
             //去除所有光环效果
@@ -205,7 +212,7 @@ namespace Card.Client
                 if (BattleMinions[i] != null) BattleMinions[i].受战地效果.Clear();
             }
             AbilityCost = 0;
-            AttackEffectPlus = 0;
+            AbilityDamagePlus = 0;
             MinionCost = 0;
             //设置光环效果
             for (int i = 0; i < BattleMinions.Length; i++)
@@ -234,7 +241,7 @@ namespace Card.Client
                                 AbilityCost += int.Parse(minion.光环效果.BuffInfo);
                                 break;
                             case MinionCard.光环类型.法术效果:
-                                AttackEffectPlus += int.Parse(minion.光环效果.BuffInfo);
+                                AbilityDamagePlus += int.Parse(minion.光环效果.BuffInfo);
                                 break;
                             case MinionCard.光环类型.随从成本:
                                 MinionCost += int.Parse(minion.光环效果.BuffInfo);
@@ -282,20 +289,11 @@ namespace Card.Client
                 }
             }
             BattleMinions = CloneMinions;
-            return DeadList;
-        }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        public List<String> ShowMinions()
-        {
-            List<String> InfoList = new List<string>();
             for (int i = 0; i < MinionCount; i++)
             {
-                InfoList.Add("[" + BattleMinions[i].Name + "]" + BattleMinions[i].实际生命值 + "/" + BattleMinions[i].TotalAttack());
+                BattleMinions[i].Position = i + 1;
             }
-            return InfoList;
+            return DeadList;
         }
     }
 }

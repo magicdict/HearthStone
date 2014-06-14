@@ -221,7 +221,7 @@ namespace 炉边传说
             }
             Directory.CreateDirectory(XmlFolderPicker.SelectedPathOrFileName + "\\Ability\\");
             //法术的导入
-            dynamic worksheet = workbook.Sheets(7);
+            dynamic worksheet = workbook.Sheets(2);
             int rowCount = 4;
             Card.AbilityCard Ability;
             while (!String.IsNullOrEmpty(worksheet.Cells(rowCount, 2).Text))
@@ -231,10 +231,9 @@ namespace 炉边传说
                 Ability.SN = worksheet.Cells(rowCount, 2).Text;
                 Ability.Name = worksheet.Cells(rowCount, 3).Text;
                 Ability.Description = worksheet.Cells(rowCount, 4).Text;
-                Ability.Class = CardUtility.GetEnum<Card.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 5).Text, Card.CardUtility.ClassEnum.中立);
-                Ability.StandardCostPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 6).Text);
-                Ability.Rare = CardUtility.GetEnum<Card.CardBasicInfo.稀有程度>(worksheet.Cells(rowCount, 9).Text, CardBasicInfo.稀有程度.白色);
-                Ability.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 10).Text);
+                Ability.Class = CardUtility.GetEnum<Card.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 9).Text, Card.CardUtility.ClassEnum.中立);
+                Ability.StandardCostPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 10).Text);
+                Ability.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 11).Text);
                 rowCount++;
                 //这行肯定是选择条件
                 Ability.效果选择类型 = CardUtility.GetEnum<AbilityCard.效果选择类型枚举>(worksheet.Cells(rowCount, 3).Text,
@@ -260,72 +259,26 @@ namespace 炉边传说
         private static AbilityCard.AbilityDefine GetEffectDefine(dynamic worksheet, ref int rowCount)
         {
             AbilityCard.AbilityDefine effect = new AbilityCard.AbilityDefine();
-            //effect.Init();
-            ////effect.Init();
-            ////这行是选择1的标题
-            //rowCount++;
-            ////这行是选择1的内容
-            ////根据效果读入
-            //effect.MainAbilityDefine.AtomicEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(
-            //        worksheet.Cells(rowCount, 3).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
-            //for (int i = 4; i < 12; i++)
-            //{
-            //    if (!String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text))
-            //    {
-            //        effect.MainAbilityDefine.InfoArray.Add(worksheet.Cells(rowCount, i).Text);
-            //    }
-            //    else
-            //    {
-            //        break;
-            //    }
-            //}
-            //rowCount++;
-            ////这行可能是[连击状态]或者是[追加条件]或者是下一张卡牌
-            //String LineType = worksheet.Cells(rowCount, 2).Text;
-            //if (LineType.StartsWith("A"))
-            //{
-            //    rowCount--;
-            //}
-            //else
-            //{
-            //    if (LineType == "连击状态")
-            //    {
-            //        effect.MainAbilityDefineCombit.AbilityEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(
-            //                worksheet.Cells(rowCount, 3).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
-            //        for (int i = 4; i < 12; i++)
-            //        {
-            //            if (!String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text))
-            //            {
-            //                effect.MainAbilityDefineCombit.InfoArray.Add(worksheet.Cells(rowCount, i).Text);
-            //            }
-            //            else
-            //            {
-            //                break;
-            //            }
-            //        }
-            //    }
-            //    if (LineType == "追加条件")
-            //    {
-            //        effect.AppendEffectCondition = worksheet.Cells(rowCount, 3).Text;
-            //        rowCount++;
-            //        //这行是选择追加的标题
-            //        rowCount++;
-            //        //这行是选择追加的内容
-            //        effect.AppendAbilityDefine.AtomicEffectType = CardUtility.GetEnum<Card.Effect.CardEffect.AbilityEffectEnum>(
-            //                worksheet.Cells(rowCount, 3).Text, Card.Effect.CardEffect.AbilityEffectEnum.未定义);
-            //        for (int i = 4; i < 12; i++)
-            //        {
-            //            if (!String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text))
-            //            {
-            //                effect.MainAbilityDefineCombit.InfoArray.Add(worksheet.Cells(rowCount, i).Text);
-            //            }
-            //            else
-            //            {
-            //                break;
-            //            }
-            //        }
-            //    }
-            //}
+            effect.Init();
+            //这行是第一效果的标题栏
+            rowCount++;
+            //这行是第一效果的内容栏
+            effect.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode =
+                CardUtility.GetEnum<Card.CardUtility.TargetSelectModeEnum>(worksheet.Cells(rowCount, 3).Text, Card.CardUtility.TargetSelectModeEnum.不用选择);
+            effect.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectDirect =
+                CardUtility.GetEnum<Card.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 4).Text, Card.CardUtility.TargetSelectDirectEnum.双方);
+            effect.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectRole =
+                CardUtility.GetEnum<Card.CardUtility.TargetSelectRoleEnum>(worksheet.Cells(rowCount, 5).Text, Card.CardUtility.TargetSelectRoleEnum.英雄);
+            effect.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectCondition = worksheet.Cells(rowCount, 6).Text;
+            effect.MainAbilityDefine.EffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
+            if (worksheet.Cells(rowCount, 8).Text == CardUtility.strIgnore)
+            {
+
+            }
+            else
+            {
+
+            }
             return effect;
         }
 

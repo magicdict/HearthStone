@@ -6,6 +6,10 @@ namespace Card.Effect
     public class EffectDefine
     {
         /// <summary>
+        /// 对象选择器
+        /// </summary>
+        public CardUtility.SelectOption AbliltyPosPicker = new CardUtility.SelectOption();
+        /// <summary>
         /// 描述
         /// </summary>
         public String 描述 = String.Empty;

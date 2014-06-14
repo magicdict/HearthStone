@@ -56,7 +56,6 @@ namespace Card.Client
         {
             CurrentRemainPoint += Point;
             if (CurrentRemainPoint > MaxPoint) CurrentRemainPoint = MaxPoint;
-
         }
         /// <summary>
         /// 减少一个可用水晶
@@ -68,11 +67,11 @@ namespace Card.Client
         /// <summary>
         /// 减少多个可用水晶
         /// </summary>
+        /// <param name="Point"></param>
         public void ReduceCurrentPoint(int Point)
         {
             CurrentRemainPoint -= Point;
             if (CurrentRemainPoint < 0) CurrentRemainPoint = 0;
-
         }
         /// <summary>
         /// 减少一个空水晶

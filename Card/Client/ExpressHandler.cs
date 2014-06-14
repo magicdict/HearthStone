@@ -44,6 +44,16 @@ namespace Card.Client
         /// <param name="game"></param>
         /// <param name="Condition"></param>
         /// <returns></returns>
+        public static Boolean BattleFieldCondition(Client.GameManager game, String Condition)
+        {
+            return false;
+        }
+        /// <summary>
+        /// 战场条件判断
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="Condition"></param>
+        /// <returns></returns>
         public static Boolean BattleFieldCondition(Client.GameManager game, String PositionInfo, String Condition)
         {
             return false;

@@ -102,6 +102,10 @@ namespace Card
             其他
         }
         /// <summary>
+        /// 运行时的卡牌号码
+        /// </summary>
+        public int RuntimeId;
+        /// <summary>
         /// 过载
         /// </summary>
         public int Overload;

@@ -34,10 +34,6 @@ namespace Card
             自动判定
         }
         /// <summary>
-        /// 对象选择器
-        /// </summary>
-        public CardUtility.SelectOption AbliltyPosPicker = new CardUtility.SelectOption();
-        /// <summary>
         /// 效果选择类型枚举
         /// </summary>
         public 效果选择类型枚举 效果选择类型 = 效果选择类型枚举.无需选择;
@@ -163,22 +159,22 @@ namespace Card
                         return RunGameSystemEffect(game,ConvertPosDirect,Ability);
                 }
             }
-            if (AbliltyPosPicker.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.指定 ||
-                AbliltyPosPicker.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.横扫)
+            if (Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.指定 ||
+                Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.横扫)
             {
-                AbliltyPosPicker.SelectedPos = game.GetSelectTarget(AbliltyPosPicker, false);
+                Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = game.GetSelectTarget(Ability.MainAbilityDefine.AbliltyPosPicker, false);
             }
             else
             {
                 if (ConvertPosDirect)
                 {
-                    switch (AbliltyPosPicker.EffectTargetSelectDirect)
+                    switch (Ability.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectDirect)
                     {
                         case CardUtility.TargetSelectDirectEnum.本方:
-                            AbliltyPosPicker.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
+                            Ability.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
                             break;
                         case CardUtility.TargetSelectDirectEnum.对方:
-                            AbliltyPosPicker.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.本方;
+                            Ability.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.本方;
                             break;
                         case CardUtility.TargetSelectDirectEnum.双方:
                             break;
@@ -187,17 +183,17 @@ namespace Card
                     }
                 }
             }
-            if (AbliltyPosPicker.SelectedPos.Postion != -1)
+            if (Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.Postion != -1)
             {
                 //法术伤害对于攻击型效果的加成
                 if (Ability.MainAbilityDefine.效果条件 == CardUtility.strIgnore && Ability.MainAbilityDefine.EffectCount > 1)
                 {
-                    Ability.MainAbilityDefine.EffectCount += game.MyInfo.BattleField.AttackEffectPlus;
+                    Ability.MainAbilityDefine.EffectCount += game.MyInfo.BattleField.AbilityDamagePlus;
                 }
                 //按照回数执行效果
                 for (int cnt = 0; cnt < Ability.MainAbilityDefine.EffectCount; cnt++)
                 {
-                    Result.AddRange(Effecthandler.RunSingleEffect(AbliltyPosPicker,Ability.MainAbilityDefine, game, GameManager.RandomSeed));
+                    Result.AddRange(Effecthandler.RunSingleEffect(Ability.MainAbilityDefine.AbliltyPosPicker, Ability.MainAbilityDefine, game, GameManager.RandomSeed));
                     GameManager.RandomSeed++;
                     Result.AddRange(game.Settle());
                 }
