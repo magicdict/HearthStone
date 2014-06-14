@@ -208,8 +208,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Card\Engine.csproj">
-      <Project>{0BDCFDFE-8032-4C1A-839C-AFB8801910BE}</Project>
+    <ProjectReference Include="..\Engine\Engine.csproj">
+      <Project>{0bdcfdfe-8032-4c1a-839c-afb8801910be}</Project>
       <Name>Engine</Name>
     </ProjectReference>
   </ItemGroup>
