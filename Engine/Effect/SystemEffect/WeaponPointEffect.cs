@@ -31,8 +31,8 @@ namespace Engine.Effect
             {
                 if (game.MyInfo.Weapon != null)
                 {
-                    game.MyInfo.Weapon.实际攻击力 += int.Parse(攻击力);
-                    game.MyInfo.Weapon.实际耐久度 += int.Parse(耐久度);
+                    game.MyInfo.Weapon.攻击力 += int.Parse(攻击力);
+                    game.MyInfo.Weapon.耐久度 += int.Parse(耐久度);
                     Result.Add(ActionCode.strWeaponPoint + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark);
                 }
             }
@@ -40,8 +40,8 @@ namespace Engine.Effect
             {
                 if (game.YourInfo.Weapon != null)
                 {
-                    game.YourInfo.Weapon.实际攻击力 += int.Parse(攻击力);
-                    game.YourInfo.Weapon.实际耐久度 += int.Parse(耐久度);
+                    game.YourInfo.Weapon.攻击力 += int.Parse(攻击力);
+                    game.YourInfo.Weapon.耐久度 += int.Parse(耐久度);
                     Result.Add(ActionCode.strWeaponPoint + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark);
                 }
             }

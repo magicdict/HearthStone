@@ -101,8 +101,8 @@ namespace 炉边传说
                 Secret.Name = worksheet.Cells(rowCount, 3).Text;
                 Secret.Description = worksheet.Cells(rowCount, 4).Text;
                 Secret.Class = CardUtility.GetEnum<Engine.Utility.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.ClassEnum.中立);
-                Secret.StandardCostPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
-                Secret.ActualCostPoint = Secret.StandardCostPoint;
+                Secret.使用成本 = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
+                Secret.使用成本 = Secret.使用成本;
                 Secret.Rare = CardUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度.白色);
                 Secret.IsCardReady = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
                 Secret.Condition = CardUtility.GetEnum<Engine.Card.SecretCard.SecretCondition>(worksheet.Cells(rowCount, 14).Text, SecretCard.SecretCondition.对方召唤随从);
@@ -146,17 +146,17 @@ namespace 炉边传说
                 Minion.Description = worksheet.Cells(rowCount, 4).Text;
                 Minion.Class = CardUtility.GetEnum<Engine.Utility.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.ClassEnum.中立);
                 Minion.种族 = CardUtility.GetEnum<Engine.Utility.CardUtility.种族Enum>(worksheet.Cells(rowCount, 6).Text, Engine.Utility.CardUtility.种族Enum.无);
-                Minion.StandardCostPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
+                Minion.使用成本 = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
 
-                Minion.标准攻击力 = CardUtility.GetInt(worksheet.Cells(rowCount, 8).Text);
-                Minion.标准生命值上限 = CardUtility.GetInt(worksheet.Cells(rowCount, 9).Text);
+                Minion.攻击力 = CardUtility.GetInt(worksheet.Cells(rowCount, 8).Text);
+                Minion.生命值上限 = CardUtility.GetInt(worksheet.Cells(rowCount, 9).Text);
                 Minion.Rare = CardUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度.白色);
                 Minion.IsCardReady = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
 
-                Minion.Standard嘲讽 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 14).Text);
-                Minion.Standard冲锋 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 15).Text);
-                Minion.Standard不能攻击 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 16).Text);
-                Minion.Standard风怒 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 17).Text);
+                Minion.嘲讽特性 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 14).Text);
+                Minion.冲锋特性 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 15).Text);
+                Minion.无法攻击特性 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 16).Text);
+                Minion.风怒特性 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 17).Text);
                 Minion.潜行特性 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 18).Text);
                 Minion.圣盾特性 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 19).Text);
                 Minion.法术免疫特性 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 20).Text);
@@ -233,7 +233,7 @@ namespace 炉边传说
                 Ability.Name = worksheet.Cells(rowCount, 3).Text;
                 Ability.Description = worksheet.Cells(rowCount, 4).Text;
                 Ability.Class = CardUtility.GetEnum<Engine.Utility.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 9).Text, Engine.Utility.CardUtility.ClassEnum.中立);
-                Ability.StandardCostPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 10).Text);
+                Ability.使用成本 = CardUtility.GetInt(worksheet.Cells(rowCount, 10).Text);
                 Ability.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 11).Text);
                 rowCount++;
                 //这行肯定是选择条件
@@ -305,11 +305,11 @@ namespace 炉边传说
                 Weapon.Name = worksheet.Cells(rowCount, 3).Text;
                 Weapon.Description = worksheet.Cells(rowCount, 4).Text;
                 Weapon.Class = CardUtility.GetEnum<Engine.Utility.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.ClassEnum.中立);
-                Weapon.StandardCostPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
-                Weapon.ActualCostPoint = Weapon.StandardCostPoint;
+                Weapon.使用成本 = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
+                Weapon.使用成本 = Weapon.使用成本;
 
-                Weapon.StandardAttackPoint = CardUtility.GetInt(worksheet.Cells(rowCount, 8).Text);
-                Weapon.标准耐久度 = CardUtility.GetInt(worksheet.Cells(rowCount, 9).Text);
+                Weapon.攻击力 = CardUtility.GetInt(worksheet.Cells(rowCount, 8).Text);
+                Weapon.耐久度 = CardUtility.GetInt(worksheet.Cells(rowCount, 9).Text);
                 Weapon.Rare = CardUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度.白色);
                 Weapon.IsCardReady = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
 

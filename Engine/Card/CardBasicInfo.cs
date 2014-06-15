@@ -119,30 +119,22 @@ namespace Engine.Card
         /// </summary>
         public CardUtility.ClassEnum Class;
         /// <summary>
-        /// 标准的使用成本
+        /// 的使用成本
         /// </summary>
-        public int StandardCostPoint;
-        /// <summary>
-        /// 实际的使用成本
-        /// </summary>
-        ///<remarks>
-        /// 有些技能能减少消耗
-        /// </remarks>
-        public int ActualCostPoint;
+        public int 使用成本;
         /// <summary>
         /// 
         /// </summary>
         /// <returns></returns>
         public String GetInfo()
         {
-            return "[" + CardType.ToString() + "]" + Name + "[" + ActualCostPoint + "]";
+            return "[" + CardType.ToString() + "]" + Name + "[" + 使用成本 + "]";
         }
         /// <summary>
         /// 初始化
         /// </summary>
         public void Init()
         {
-            ActualCostPoint = StandardCostPoint;
         }
         #endregion
 

@@ -148,25 +148,29 @@ namespace Engine.Card
         /// </summary>
         public CardUtility.种族Enum 种族 = CardUtility.种族Enum.无;
         /// <summary>
-        /// 攻击力（标准）
+        /// 攻击力（）
         /// </summary>
-        public int 标准攻击力 = -1;
+        public int 攻击力 = -1;
         /// <summary>
-        /// 体力（标准）
+        /// 生命值（）
         /// </summary>
-        public int 标准生命值上限 = -1;
+        public int 生命值 = -1;
         /// <summary>
-        /// 嘲讽(标准)
+        /// 体力（）
         /// </summary>
-        public Boolean Standard嘲讽 = false;
+        public int 生命值上限 = -1;
         /// <summary>
-        /// 冲锋(标准)
+        /// 嘲讽()
         /// </summary>
-        public Boolean Standard冲锋 = false;
+        public Boolean 嘲讽特性 = false;
         /// <summary>
-        /// 风怒(标准)
+        /// 冲锋()
         /// </summary>
-        public Boolean Standard风怒 = false;
+        public Boolean 冲锋特性 = false;
+        /// <summary>
+        /// 风怒()
+        /// </summary>
+        public Boolean 风怒特性 = false;
         /// <summary>
         /// 是否初始为潜行状态
         /// </summary>
@@ -186,7 +190,7 @@ namespace Engine.Card
         /// <summary>
         /// 不能攻击
         /// </summary>
-        public Boolean Standard不能攻击 = false;
+        public Boolean 无法攻击特性 = false;
         /// <summary>
         /// 战吼(效果号码)
         /// </summary>
@@ -220,77 +224,23 @@ namespace Engine.Card
         /// </summary>
         public Engine.Utility.CardUtility.全局事件 自身事件 = new CardUtility.全局事件();
         #endregion
+
         #region"运行时状态"
-        /// <summary>
-        /// 攻击力（实际、不包含光环效果）
-        /// </summary>
-        [XmlIgnore]
-        public int 实际攻击力 = -1;
-        /// <summary>
-        /// 体力（实际）
-        /// </summary>
-        [XmlIgnore]
-        public int 实际生命值上限 = -1;
-        /// <summary>
-        /// 体力（实际）
-        /// </summary>
-        [XmlIgnore]
-        public int 实际生命值 = -1;
         /// <summary>
         /// 受过伤害
         /// </summary>
         [XmlIgnore]
         public Boolean 受过伤害 = false;
         /// <summary>
-        /// 嘲讽(实际)
+        /// 沉默状态
         /// </summary>
         [XmlIgnore]
-        public Boolean Actual嘲讽 = false;
+        public Boolean 沉默状态 = false;
         /// <summary>
-        /// 冲锋(实际)
+        /// 激怒状态
         /// </summary>
         [XmlIgnore]
-        public Boolean Actual冲锋 = false;
-        /// <summary>
-        /// 风怒(实际)
-        /// </summary>
-        [XmlIgnore]
-        public Boolean Actual风怒 = false;
-        /// <summary>
-        /// 不能攻击
-        /// </summary>
-        [XmlIgnore]
-        public Boolean Actual不能攻击 = false;
-        /// <summary>
-        /// 是否为潜行状态
-        /// </summary>
-        [XmlIgnore]
-        public Boolean Is潜行Status = false;
-        /// <summary>
-        /// 是否为圣盾状态
-        /// </summary>
-        [XmlIgnore]
-        public Boolean Is圣盾Status = false;
-        /// <summary>
-        /// 是否为法术免疫状态
-        /// </summary>
-        [XmlIgnore]
-        public Boolean Is法术免疫Status = false;
-        /// <summary>
-        /// 是否为英雄技能免疫状态
-        /// </summary>
-        [XmlIgnore]
-        public Boolean Is英雄技能免疫Status = false;
-        /// <summary>
-        /// 是否为激怒状态
-        /// </summary>
-        [XmlIgnore]
-        public Boolean Is激怒Status = false;
-        /// <summary>
-        /// 是否为沉默状态
-        /// </summary>
-        [XmlIgnore]
-        public Boolean Is沉默Status = false;
+        public Boolean 激怒状态 = false;
         /// <summary>
         /// 是否为冰冻状态
         /// </summary>
@@ -321,6 +271,7 @@ namespace Engine.Card
         [XmlIgnore]
         public List<Buff> 受战地效果 = new List<Buff>();
         #endregion
+
         #region"回合效果"
         /// <summary>
         /// 
@@ -339,24 +290,9 @@ namespace Engine.Card
         /// </summary>
         public new void Init()
         {
-            //将运行时状态设置为设计时状态
-            this.实际攻击力 = this.标准攻击力;
-            this.ActualCostPoint = this.StandardCostPoint;
-            this.实际生命值上限 = this.标准生命值上限;
-            this.实际生命值 = this.标准生命值上限;
-            this.Actual冲锋 = this.Standard冲锋;
-            this.Actual嘲讽 = this.Standard嘲讽;
-            this.Actual风怒 = this.Standard风怒;
-            this.Actual不能攻击 = this.Standard不能攻击;
-            this.Is潜行Status = this.潜行特性;
-            this.Is圣盾Status = this.圣盾特性;
-            this.Is英雄技能免疫Status = this.英雄技能免疫特性;
-            this.Is法术免疫Status = this.法术免疫特性;
             //初始状态
             this.冰冻状态 = CardUtility.EffectTurn.无效果;
-            this.Is沉默Status = false;
-            this.Is激怒Status = false;
-            if (Actual风怒)
+            if (风怒特性)
             {
                 RemainAttactTimes = 2;
             }
@@ -365,7 +301,7 @@ namespace Engine.Card
                 RemainAttactTimes = 1;
             }
             //攻击次数
-            if (Actual冲锋)
+            if (冲锋特性)
             {
                 this.AttactStatus = 攻击状态.可攻击;
             }
@@ -379,7 +315,7 @@ namespace Engine.Card
         /// </summary>
         public void ResetAttackTimes()
         {
-            if (Actual风怒)
+            if (风怒特性)
             {
                 RemainAttactTimes = 2;
             }
@@ -396,7 +332,7 @@ namespace Engine.Card
         public Boolean CanAttack()
         {
             if (冰冻状态 != CardUtility.EffectTurn.无效果) return false;
-            if (Actual不能攻击) return false;
+            if (无法攻击特性) return false;
             if (TotalAttack() == 0) return false;
             return RemainAttactTimes > 0 && AttactStatus == 攻击状态.可攻击;
         }
@@ -406,22 +342,22 @@ namespace Engine.Card
         /// <returns>包含了光环/激怒效果</returns>
         public int TotalAttack()
         {
-            int rtnAttack = 实际攻击力;
+            int rtnAttack = 攻击力;
             foreach (var buff in 受战地效果)
             {
                 rtnAttack += int.Parse(buff.BuffInfo.Split("/".ToCharArray())[0]);
             }
             //激怒效果
-            if (!Is沉默Status && Is激怒Status)
+            if (!沉默状态 && 激怒状态)
             {
                 if (!String.IsNullOrEmpty(激怒效果)) rtnAttack += int.Parse(激怒效果);
             }
             rtnAttack += 本回合攻击力加成;
-            if (特殊效果 == 特殊效果列表.攻击必死 && !Is沉默Status) rtnAttack = 999;
+            if (特殊效果 == 特殊效果列表.攻击必死 && !沉默状态) rtnAttack = 999;
             return rtnAttack;
         }
         /// <summary>
-        /// 实际生命值上限
+        /// 生命值上限
         /// </summary>
         /// <returns>包含了光环效果</returns>
         public int 合计生命值上限()
@@ -431,7 +367,7 @@ namespace Engine.Card
             {
                 BuffLife += int.Parse(buff.BuffInfo.Split("/".ToCharArray())[1]);
             }
-            return 标准生命值上限 + BuffLife + 本回合生命力加成;
+            return 生命值上限 + BuffLife + 本回合生命力加成;
         }
         /// <summary>
         /// 发动战吼(默认)
@@ -443,7 +379,7 @@ namespace Engine.Card
         {
             List<String> ActionCodeLst = new List<string>();
             //战吼效果
-            if (战吼效果 != String.Empty && !Is沉默Status)
+            if (战吼效果 != String.Empty && !沉默状态)
             {
                 var 战吼Result = RunAction.StartAction(game, 战吼效果);
                 //第一条是使用了战吼卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
@@ -462,7 +398,7 @@ namespace Engine.Card
         {
             List<String> ActionCodeLst = new List<string>();
             //亡语效果
-            if (亡语效果 != String.Empty && !Is沉默Status)
+            if (亡语效果 != String.Empty && !沉默状态)
             {
                 var 战吼Result = RunAction.StartAction(game, 亡语效果, IsNeedConvertPosDirect);
                 //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
@@ -480,7 +416,7 @@ namespace Engine.Card
         {
             List<String> ActionCodeLst = new List<string>();
             //回合开始效果
-            if (回合开始效果 != String.Empty && !Is沉默Status)
+            if (回合开始效果 != String.Empty && !沉默状态)
             {
                 var 回合开始Result = RunAction.StartAction(game, 回合开始效果);
                 //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
@@ -498,7 +434,7 @@ namespace Engine.Card
         {
             List<String> ActionCodeLst = new List<string>();
             //回合结束效果
-            if (回合结束效果 != String.Empty && !Is沉默Status)
+            if (回合结束效果 != String.Empty && !沉默状态)
             {
                 var 回合结束Result = RunAction.StartAction(game, 回合结束效果);
                 //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
@@ -517,7 +453,7 @@ namespace Engine.Card
             //失去潜行
             if (!被动攻击)
             {
-                Is潜行Status = false;
+                潜行特性 = false;
                 RemainAttactTimes--;
                 if (RemainAttactTimes == 0) AttactStatus = MinionCard.攻击状态.攻击完毕;
             }
@@ -528,22 +464,22 @@ namespace Engine.Card
         /// <returns>是否产生实际伤害</returns>
         public Boolean AfterBeAttack(int AttackPoint)
         {
-            if (Is圣盾Status)
+            if (圣盾特性)
             {
-                Is圣盾Status = false;
+                圣盾特性 = false;
                 return false;
             }
             else
             {
-                实际生命值 -= AttackPoint;
-                Is圣盾Status = false;
+                生命值 -= AttackPoint;
+                圣盾特性 = false;
             }
             //失去圣盾
             if (AttackPoint > 0)
             {
                 受过伤害 = true;
-                if (!String.IsNullOrEmpty(激怒效果)) Is激怒Status = true;
-                if (特殊效果 == 特殊效果列表.持续激怒 && !Is沉默Status) 实际攻击力 += 3;
+                if (!String.IsNullOrEmpty(激怒效果)) 激怒状态 = true;
+                if (特殊效果 == 特殊效果列表.持续激怒 && !沉默状态) 攻击力 += 3;
                 return true;
             }
             else
@@ -558,11 +494,11 @@ namespace Engine.Card
         /// <returns>是否产生实际治疗作用</returns>
         public Boolean AfterBeHealth(int HealthPoint)
         {
-            if (实际生命值 == 实际生命值上限) return false;
-            实际生命值 += HealthPoint;
-            if (实际生命值 > 实际生命值上限) 实际生命值 = 实际生命值上限;
+            if (生命值 == 生命值上限) return false;
+            生命值 += HealthPoint;
+            if (生命值 > 生命值上限) 生命值 = 生命值上限;
             //取消风怒
-            if (实际生命值 == 实际生命值上限) Is激怒Status = false;
+            if (生命值 == 生命值上限) 激怒状态 = false;
             return true;
         }
         /// <summary>
@@ -575,7 +511,7 @@ namespace Engine.Card
         public List<String> 事件处理方法(Engine.Utility.CardUtility.全局事件 事件, GameManager game, String MyPos)
         {
             List<String> ActionLst = new List<string>();
-            if (!Is沉默Status && 事件.事件类型 == 自身事件.事件类型)
+            if (!沉默状态 && 事件.事件类型 == 自身事件.事件类型)
             {
                 if (自身事件.触发方向 != CardUtility.TargetSelectDirectEnum.双方)
                 {
@@ -603,13 +539,13 @@ namespace Engine.Card
         {
             StringBuilder Status = new StringBuilder();
             Status.AppendLine(Name);
-            Status.AppendLine("[状]" + (Is圣盾Status ? "圣" : String.Empty) +
-                                       (Actual嘲讽 ? "|嘲" : String.Empty) +
-                                       (Actual风怒 ? "|风" : String.Empty) +
-                                       (Actual冲锋 ? "|冲" : String.Empty) +
+            Status.AppendLine("[状]" + (圣盾特性 ? "圣" : String.Empty) +
+                                       (嘲讽特性 ? "|嘲" : String.Empty) +
+                                       (风怒特性 ? "|风" : String.Empty) +
+                                       (冲锋特性 ? "|冲" : String.Empty) +
                                        (冰冻状态 != CardUtility.EffectTurn.无效果 ? "冻" : String.Empty));
-            Status.AppendLine("[实]" + 实际攻击力.ToString() + "/" + 实际生命值.ToString() +
-                              "[总]" + TotalAttack().ToString() + "/" + 实际生命值.ToString());
+            Status.AppendLine("[实]" + 攻击力.ToString() + "/" + 生命值.ToString() +
+                              "[总]" + TotalAttack().ToString() + "/" + 生命值.ToString());
             return Status.ToString();
         }
         #endregion

@@ -150,7 +150,7 @@ namespace Engine.Client
                     return Message;
                 }
             }
-            if (MyInfo.crystal.CurrentRemainPoint < card.ActualCostPoint)
+            if (MyInfo.crystal.CurrentRemainPoint < card.使用成本)
             {
                 Message = "法力水晶不足";
             }
@@ -353,7 +353,7 @@ namespace Engine.Client
                 {
                     if (MyInfo.Weapon != null)
                     {
-                        MyInfo.Weapon.实际耐久度--;
+                        MyInfo.Weapon.耐久度--;
                         MyInfo.RemainAttactTimes = 0;
                     }
                 }
@@ -405,7 +405,7 @@ namespace Engine.Client
             }
             else
             {
-                if (MyInfo.Weapon != null) MyAttackPoint = MyInfo.Weapon.实际攻击力;
+                if (MyInfo.Weapon != null) MyAttackPoint = MyInfo.Weapon.攻击力;
             }
             if (被攻击方Pos != BattleFieldInfo.HeroPos)
             {
@@ -472,8 +472,8 @@ namespace Engine.Client
             MyInfo.BattleField.ResetBuff();
             YourInfo.BattleField.ResetBuff();
             //3.武器的移除
-            if (MyInfo.Weapon != null && MyInfo.Weapon.实际耐久度 == 0) MyInfo.Weapon = null;
-            if (YourInfo.Weapon != null && YourInfo.Weapon.实际耐久度 == 0) YourInfo.Weapon = null;
+            if (MyInfo.Weapon != null && MyInfo.Weapon.耐久度 == 0) MyInfo.Weapon = null;
+            if (YourInfo.Weapon != null && YourInfo.Weapon.耐久度 == 0) YourInfo.Weapon = null;
             return actionlst;
         }
         /// <summary>
@@ -501,7 +501,7 @@ namespace Engine.Client
         {
             return MyInfo.RemainAttactTimes != 0 &&
                    MyInfo.Weapon != null &&
-                   MyInfo.Weapon.实际耐久度 > 0 &&
+                   MyInfo.Weapon.耐久度 > 0 &&
                    IsMyTurn;
         }
         /// <summary>
@@ -511,7 +511,7 @@ namespace Engine.Client
         public Boolean IsHeroAblityEnable()
         {
             return (!MyInfo.IsUsedHeroAbility) && IsMyTurn &&
-                    MyInfo.crystal.CurrentRemainPoint >= MyInfo.HeroAbility.ActualCostPoint;
+                    MyInfo.crystal.CurrentRemainPoint >= MyInfo.HeroAbility.使用成本;
         }
 
         #region "Event"

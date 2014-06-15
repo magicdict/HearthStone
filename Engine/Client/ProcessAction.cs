@@ -123,13 +123,13 @@ namespace Engine.Client
                     string[] Op = actField[2].Split("/".ToCharArray());
                     if (actField[1] == CardUtility.strMe)
                     {
-                        game.MyInfo.Weapon.实际攻击力 += int.Parse(Op[0]);
-                        game.MyInfo.Weapon.实际耐久度 += int.Parse(Op[1]);
+                        game.MyInfo.Weapon.攻击力 += int.Parse(Op[0]);
+                        game.MyInfo.Weapon.耐久度 += int.Parse(Op[1]);
                     }
                     else
                     {
-                        game.YourInfo.Weapon.实际攻击力 += int.Parse(Op[0]);
-                        game.YourInfo.Weapon.实际耐久度 += int.Parse(Op[1]);
+                        game.YourInfo.Weapon.攻击力 += int.Parse(Op[0]);
+                        game.YourInfo.Weapon.耐久度 += int.Parse(Op[1]);
                     }
                     break;
                 case ActionCode.ActionType.UnKnown:

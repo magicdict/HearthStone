@@ -9,21 +9,13 @@ namespace Engine.Card
     public class WeaponCard : CardBasicInfo
     {
         /// <summary>
-        /// 攻击力（标准）
-        /// </summary>
-        public int StandardAttackPoint = -1;
-        /// <summary>
         /// 攻击力（实际）
         /// </summary>
-        public int 实际攻击力 = -1;
+        public int 攻击力 = -1;
         /// <summary>
-        /// 耐久（标准）
+        /// 耐久（）
         /// </summary>
-        public int 标准耐久度 = -1;
-        /// <summary>
-        /// 耐久（实际）
-        /// </summary>
-        public int 实际耐久度 = -1;
+        public int 耐久度 = -1;
         /// <summary>
         /// 武器的附加效果
         /// 真银圣剑：每当你的英雄进攻时，为其恢复2点生命值。
@@ -34,8 +26,6 @@ namespace Engine.Card
         /// </summary>
         public new void Init()
         {
-            实际耐久度 = 标准耐久度;
-            实际攻击力 = StandardAttackPoint;
         }
         /// <summary>
         /// 
@@ -43,7 +33,7 @@ namespace Engine.Card
         /// <returns></returns>
         public new string GetInfo()
         {
-            return Name + "：" + 实际攻击力 + "/" + 实际耐久度;
+            return Name + "：" + 攻击力 + "/" + 耐久度;
         }
     }
 }

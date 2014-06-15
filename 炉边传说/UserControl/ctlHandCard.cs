@@ -22,16 +22,16 @@ namespace 炉边传说
             set
             {
                 lblName.Text = value.Name;
-                lblCostPoint.Text = value.ActualCostPoint.ToString();
+                lblCostPoint.Text = value.使用成本.ToString();
                 lblDescription.Text = value.Description;
                 mHandCard = value;
                 switch (value.CardType)
                 {
                     case Engine.Card.CardBasicInfo.CardTypeEnum.随从:
                         lblHealthPoint.Visible = true;
-                        lblHealthPoint.Text = ((Engine.Card.MinionCard)value).标准生命值上限.ToString();
+                        lblHealthPoint.Text = ((Engine.Card.MinionCard)value).生命值上限.ToString();
                         lblAttackPoint.Visible = true;
-                        lblAttackPoint.Text = ((Engine.Card.MinionCard)value).标准攻击力.ToString();
+                        lblAttackPoint.Text = ((Engine.Card.MinionCard)value).攻击力.ToString();
                         break;
                     case Engine.Card.CardBasicInfo.CardTypeEnum.法术:
                         lblHealthPoint.Visible = false;
@@ -39,9 +39,9 @@ namespace 炉边传说
                         break;
                     case Engine.Card.CardBasicInfo.CardTypeEnum.武器:
                         lblHealthPoint.Visible = true;
-                        lblHealthPoint.Text = ((Engine.Card.WeaponCard)value).标准耐久度.ToString();
+                        lblHealthPoint.Text = ((Engine.Card.WeaponCard)value).耐久度.ToString();
                         lblAttackPoint.Visible = true;
-                        lblAttackPoint.Text = ((Engine.Card.WeaponCard)value).StandardAttackPoint.ToString();
+                        lblAttackPoint.Text = ((Engine.Card.WeaponCard)value).攻击力.ToString();
                         break;
                     case Engine.Card.CardBasicInfo.CardTypeEnum.奥秘:
                         lblHealthPoint.Visible = false;

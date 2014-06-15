@@ -54,20 +54,20 @@ namespace Engine.Effect
                     myMinion.冰冻状态 = CardUtility.EffectTurn.效果命中;
                     break;
                 case strSlience:
-                    myMinion.Is沉默Status = true;
+                    myMinion.沉默状态 = true;
                     break;
                 case strAngry:
-                    myMinion.Actual风怒 = true;
+                    myMinion.风怒特性 = true;
                     break;
                 case strCharge:
-                    myMinion.Actual冲锋 = true;
+                    myMinion.冲锋特性 = true;
                     if (myMinion.AttactStatus == MinionCard.攻击状态.准备中)
                     {
                         myMinion.AttactStatus = MinionCard.攻击状态.可攻击;
                     }
                     break;
                 case strTaunt:
-                    myMinion.Actual嘲讽 = true;
+                    myMinion.嘲讽特性 = true;
                     break;
                 case strTurnEndDead:
                     myMinion.特殊效果 = MinionCard.特殊效果列表.回合结束死亡;

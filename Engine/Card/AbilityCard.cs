@@ -43,9 +43,9 @@ namespace Engine.Card
         /// </summary>
         public String 效果选择条件 = String.Empty;
         /// <summary>
-        /// 标准效果回数表达式
+        /// 效果回数表达式
         /// </summary>
-        public String 标准效果回数表达式 = String.Empty;
+        public String 效果回数表达式 = String.Empty;
         /// <summary>
         /// 第一效果
         /// </summary>

@@ -11,13 +11,13 @@ namespace Engine.Effect
     public class AttackEffect : AtomicEffectDefine, IEffectHandler
     {
         /// <summary>
-        /// 标准效果表达式
+        /// 效果表达式
         /// </summary>
-        public String 标准伤害效果表达式 = String.Empty;
+        public String 伤害效果表达式 = String.Empty;
         /// <summary>
-        /// 标准强化伤害效果表达式
+        /// 强化伤害效果表达式
         /// </summary>
-        public String 标准强化伤害效果表达式 = String.Empty;
+        public String 强化伤害效果表达式 = String.Empty;
         /// <summary>
         /// 实际伤害点数
         /// </summary>

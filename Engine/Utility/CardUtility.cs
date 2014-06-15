@@ -59,17 +59,17 @@ namespace Engine.Utility
                 Engine.Card.CardBasicInfo info = Engine.Utility.CardUtility.GetCardInfoBySN(CardSn);
                 Status.AppendLine("==============");
                 Status.AppendLine("Description" + info.Description);
-                Status.AppendLine("StandardCostPoint" + info.StandardCostPoint);
+                Status.AppendLine("StandardCostPoint" + info.使用成本);
                 Status.AppendLine("Type：" + info.CardType.ToString());
                 switch (info.CardType)
                 {
                     case CardBasicInfo.CardTypeEnum.随从:
-                        Status.AppendLine("标准攻击力：" + ((Engine.Card.MinionCard)info).标准攻击力.ToString());
-                        Status.AppendLine("标准生命值：" + ((Engine.Card.MinionCard)info).标准生命值上限.ToString());
+                        Status.AppendLine("攻击力：" + ((Engine.Card.MinionCard)info).攻击力.ToString());
+                        Status.AppendLine("生命值：" + ((Engine.Card.MinionCard)info).生命值上限.ToString());
                         break;
                     case CardBasicInfo.CardTypeEnum.武器:
-                        Status.AppendLine("标准攻击力：" + ((Engine.Card.WeaponCard)info).StandardAttackPoint.ToString());
-                        Status.AppendLine("标准耐久度：" + ((Engine.Card.WeaponCard)info).标准耐久度.ToString());
+                        Status.AppendLine("攻击力：" + ((Engine.Card.WeaponCard)info).攻击力.ToString());
+                        Status.AppendLine("耐久度：" + ((Engine.Card.WeaponCard)info).耐久度.ToString());
                         break;
                 }
                 Status.AppendLine("==============");
@@ -118,7 +118,7 @@ namespace Engine.Utility
             {
                 XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.MinionCard));
                 Engine.Card.MinionCard Minio = (MinionCard)xml.Deserialize(new StreamReader(MinionXml));
-                Minio.ActualCostPoint = Minio.StandardCostPoint;
+                Minio.使用成本 = Minio.使用成本;
                 CardCollections.Add(Minio.SN, Minio);
             }
             //武器
@@ -126,7 +126,7 @@ namespace Engine.Utility
             {
                 XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.WeaponCard));
                 Engine.Card.WeaponCard Weapon = (WeaponCard)xml.Deserialize(new StreamReader(WeaponXml));
-                Weapon.ActualCostPoint = Weapon.StandardCostPoint;
+                Weapon.使用成本 = Weapon.使用成本;
                 CardCollections.Add(Weapon.SN, Weapon);
             }
             //奥秘
@@ -134,7 +134,7 @@ namespace Engine.Utility
             {
                 XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.SecretCard));
                 Engine.Card.SecretCard Secret = (SecretCard)xml.Deserialize(new StreamReader(SecretXml));
-                Secret.ActualCostPoint = Secret.StandardCostPoint;
+                Secret.使用成本 = Secret.使用成本;
                 CardCollections.Add(Secret.SN, Secret);
             }
         }
@@ -238,7 +238,11 @@ namespace Engine.Utility
             /// <summary>
             /// 单个目标 + 全体的模式
             /// </summary>
-            横扫
+            横扫,
+            /// <summary>
+            /// 单个目标 + 相邻的模式
+            /// </summary>
+            相邻
         }
         /// <summary>
         /// 目标选择方向
@@ -309,9 +313,9 @@ namespace Engine.Utility
             switch (strCondition.Substring(1,1))
             {
                 case "+":
-                    return minion.实际攻击力 >= int.Parse(strCondition.Substring(0, 1));
+                    return minion.攻击力 >= int.Parse(strCondition.Substring(0, 1));
                 case "-":
-                    return minion.实际攻击力 <= int.Parse(strCondition.Substring(0, 1));
+                    return minion.攻击力 <= int.Parse(strCondition.Substring(0, 1));
             }
             return true;
         }

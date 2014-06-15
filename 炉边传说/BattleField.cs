@@ -365,12 +365,12 @@ namespace 炉边传说
                 if ((sender.GetType()) == typeof(Button))
                 {
                     actionlst.Insert(0, ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strMe);
-                    game.MyInfo.crystal.CurrentRemainPoint -= card.ActualCostPoint;
+                    game.MyInfo.crystal.CurrentRemainPoint -= card.使用成本;
                     game.RemoveUsedCard(card.SN);
                 }
                 else
                 {
-                    game.MyInfo.crystal.CurrentRemainPoint -= card.StandardCostPoint;
+                    game.MyInfo.crystal.CurrentRemainPoint -= card.使用成本;
                     game.MyInfo.IsUsedHeroAbility = true;
                 }
                 actionlst.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +

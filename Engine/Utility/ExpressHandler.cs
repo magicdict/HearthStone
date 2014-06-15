@@ -51,7 +51,7 @@ namespace Engine.Utility
                     switch (strEffectPoint.Substring(1))
                     {
                         case "MyWeaponAP":
-                            if (game.MyInfo.Weapon != null) point = game.MyInfo.Weapon.实际攻击力;
+                            if (game.MyInfo.Weapon != null) point = game.MyInfo.Weapon.攻击力;
                             break;
                         default:
                             break;

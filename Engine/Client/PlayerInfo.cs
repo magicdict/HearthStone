@@ -161,8 +161,8 @@ namespace Engine.Client
             {
                 if (card.CardType == CardBasicInfo.CardTypeEnum.法术)
                 {
-                    card.ActualCostPoint = card.StandardCostPoint + game.MyInfo.BattleField.AbilityCost;
-                    if (card.ActualCostPoint < 0) card.ActualCostPoint = 0;
+                    card.使用成本 = card.使用成本 + game.MyInfo.BattleField.AbilityCost;
+                    if (card.使用成本 < 0) card.使用成本 = 0;
                 }
             }
         }

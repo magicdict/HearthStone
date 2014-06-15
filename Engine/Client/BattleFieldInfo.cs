@@ -272,7 +272,7 @@ namespace Engine.Client
             {
                 if (BattleMinions[i] != null)
                 {
-                    if (BattleMinions[i].实际生命值 > 0)
+                    if (BattleMinions[i].生命值 > 0)
                     {
                         CloneMinions[ALive] = BattleMinions[i];
                         ALive++;

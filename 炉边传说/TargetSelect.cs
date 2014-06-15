@@ -151,7 +151,7 @@ namespace 炉边传说
                             Boolean Has嘲讽 = false;
                             for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                             {
-                                if (game.YourInfo.BattleField.BattleMinions[i].Actual嘲讽)
+                                if (game.YourInfo.BattleField.BattleMinions[i].嘲讽特性)
                                 {
                                     Has嘲讽 = true;
                                     break;
@@ -163,7 +163,7 @@ namespace 炉边传说
                                 for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                                 {
                                     //只能选择嘲讽对象
-                                    if (game.YourInfo.BattleField.BattleMinions[i].Actual嘲讽)
+                                    if (game.YourInfo.BattleField.BattleMinions[i].嘲讽特性)
                                     {
                                         Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Visible = true;
                                         ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CanAttack = true;
