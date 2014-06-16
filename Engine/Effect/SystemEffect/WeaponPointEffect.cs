@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Engine.Effect
 {
-    public class WeaponPointEffect : EffectDefine
+    public class WeaponPointEffect
     {
         /// <summary>
         /// 法术方向

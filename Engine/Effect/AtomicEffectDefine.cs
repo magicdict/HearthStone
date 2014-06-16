@@ -66,7 +66,7 @@ namespace Engine.Effect
         /// </summary>
         public String 描述 = String.Empty;
         /// <summary>
-        /// 
+        /// 效果类型
         /// </summary>
         public AtomicEffectEnum AtomicEffectType = AtomicEffectEnum.未定义;
         /// <summary>
@@ -74,8 +74,14 @@ namespace Engine.Effect
         /// </summary>
         public List<String> InfoArray = new List<string>();
         /// <summary>
-        /// 初始化值
+        /// 
         /// </summary>
-        public virtual void GetField() { }
+        /// <returns></returns>
+        public IAtomicEffect ConvertToIAtomic()
+        {
+            IAtomicEffect atomic = null;
+
+            return atomic;
+        }
     }
 }

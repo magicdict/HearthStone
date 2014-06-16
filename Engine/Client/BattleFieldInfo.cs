@@ -159,12 +159,12 @@ namespace Engine.Client
                     switch (战吼.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.AtomicEffectType)
                     {
                         case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.增益:
-                            ((Engine.Effect.PointEffect)战吼.FirstAbilityDefine.MainAbilityDefine).RunPointEffect(BattleMinions[PosInfo - 1]);
+                            ((Engine.Effect.PointEffect)战吼.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect).RunPointEffect(BattleMinions[PosInfo - 1]);
                             ActionCodeLst.Add(Engine.Server.ActionCode.strPoint + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
                             PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼.FirstAbilityDefine.MainAbilityDefine);
                             break;
                         case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.状态:
-                            ((Engine.Effect.StatusEffect)战吼.FirstAbilityDefine.MainAbilityDefine).RunStatusEffect(BattleMinions[PosInfo - 1]);
+                            ((Engine.Effect.StatusEffect)战吼.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect).RunStatusEffect(BattleMinions[PosInfo - 1]);
                             ActionCodeLst.Add(Engine.Server.ActionCode.strStatus + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
                             PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼.FirstAbilityDefine.MainAbilityDefine);
                             break;
@@ -172,12 +172,12 @@ namespace Engine.Client
                     switch (战吼.SecondAbilityDefine.MainAbilityDefine.TrueAtomicEffect.AtomicEffectType)
                     {
                         case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.增益:
-                            ((Engine.Effect.PointEffect)战吼.SecondAbilityDefine.MainAbilityDefine).RunPointEffect(BattleMinions[PosInfo - 1]);
+                            ((Engine.Effect.PointEffect)战吼.SecondAbilityDefine.MainAbilityDefine.TrueAtomicEffect).RunPointEffect(BattleMinions[PosInfo - 1]);
                             ActionCodeLst.Add(Engine.Server.ActionCode.strPoint + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
                             PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼.SecondAbilityDefine.MainAbilityDefine);
                             break;
                         case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.状态:
-                            ((Engine.Effect.StatusEffect)战吼.SecondAbilityDefine.MainAbilityDefine).RunStatusEffect(BattleMinions[PosInfo - 1]);
+                            ((Engine.Effect.StatusEffect)战吼.SecondAbilityDefine.MainAbilityDefine.TrueAtomicEffect).RunStatusEffect(BattleMinions[PosInfo - 1]);
                             ActionCodeLst.Add(Engine.Server.ActionCode.strStatus + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
                             PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼.SecondAbilityDefine.MainAbilityDefine);
                             break;

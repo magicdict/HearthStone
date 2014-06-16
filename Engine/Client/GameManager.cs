@@ -86,13 +86,11 @@ namespace Engine.Client
             MyInfo.crystal.CurrentRemainPoint = 5;
             YourInfo.crystal.CurrentFullPoint = 5;
             YourInfo.crystal.CurrentRemainPoint = 5;
-            HandCard.Add("A000106");
-            HandCard.Add("W000002");
             //DEBUG END
             //英雄技能：奥术飞弹
-            MyInfo.HeroAbility = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN("A200001");
-            YourInfo.HeroAbility = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN("A200001");
-            if (!IsFirst) HandCard.Add(Engine.Utility.CardUtility.SN幸运币);
+            MyInfo.HeroAbility = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
+            YourInfo.HeroAbility = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
+            if (!IsFirst) HandCard.Add(Engine.Card.AbilityCard.SN幸运币);
             foreach (var card in HandCard)
             {
                 MySelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(card));

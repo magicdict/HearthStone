@@ -48,7 +48,7 @@
     <Compile Include="Effect\RoleEffect\AttackEffect.cs" />
     <Compile Include="Effect\RoleEffect\ControlEffect.cs" />
     <Compile Include="Effect\RoleEffect\HealthEffect.cs" />
-    <Compile Include="Effect\IEffectHandler.cs" />
+    <Compile Include="Effect\IAtomicEffect.cs" />
     <Compile Include="Effect\RoleEffect\PointEffect.cs" />
     <Compile Include="Effect\RoleEffect\StatusEffect.cs" />
     <Compile Include="Effect\RoleEffect\SummonEffect.cs" />

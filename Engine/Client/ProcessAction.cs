@@ -148,7 +148,7 @@ namespace Engine.Client
         {
             //ATTACK#ME#POS#AP
             //Me代表对方 YOU代表自己，必须反过来
-            IEffectHandler handler = new AttackEffect();
+            IAtomicEffect handler = new AttackEffect();
             //AtomicEffectDefine SingleEffect = new AtomicEffectDefine();
             //switch (actField[0])
             //{

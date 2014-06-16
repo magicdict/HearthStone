@@ -9,7 +9,7 @@ namespace Engine.Effect
     /// <summary>
     /// 治疗效果
     /// </summary>
-    public class HealthEffect : EffectDefine, IEffectHandler
+    public class HealthEffect : AtomicEffectDefine, IAtomicEffect
     {
         /// <summary>
         /// 生命值回复表达式
@@ -25,7 +25,7 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
-        void IEffectHandler.DealHero(GameManager game, EffectDefine singleEffect, bool MeOrYou)
+        void IAtomicEffect.DealHero(GameManager game, EffectDefine singleEffect, bool MeOrYou)
         {
             int ShieldPoint = ExpressHandler.GetEffectPoint(game, 护甲回复表达式);
             int HealthPoint = ExpressHandler.GetEffectPoint(game, 生命值回复表达式);
@@ -63,7 +63,7 @@ namespace Engine.Effect
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
         /// <param name="PosIndex"></param>
-        void IEffectHandler.DealMinion(GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
+        void IAtomicEffect.DealMinion(GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
         {
             int HealthPoint = ExpressHandler.GetEffectPoint(game, 生命值回复表达式);
             if (MeOrYou)
@@ -90,6 +90,10 @@ namespace Engine.Effect
                     });
                 }
             }
+        }
+        void IAtomicEffect.GetField(List<string> InfoArray)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -236,16 +236,16 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="PosInfo"></param>
         /// <returns></returns>
-        private static IEffectHandler GetEffectHandler(EffectDefine singleEffect, Engine.Client.GameManager game, String PosInfo)
+        private static IAtomicEffect GetEffectHandler(EffectDefine singleEffect, Engine.Client.GameManager game, String PosInfo)
         {
-            if (String.IsNullOrEmpty(singleEffect.效果条件)) return (IEffectHandler)singleEffect.TrueAtomicEffect;
+            if (String.IsNullOrEmpty(singleEffect.效果条件)) return (IAtomicEffect)singleEffect.TrueAtomicEffect;
             if (ExpressHandler.BattleFieldCondition(game, PosInfo, singleEffect.效果条件))
             {
-                return (IEffectHandler)singleEffect.TrueAtomicEffect;
+                return (IAtomicEffect)singleEffect.TrueAtomicEffect;
             }
             else
             {
-                return (IEffectHandler)singleEffect.FalseAtomicEffect;
+                return (IAtomicEffect)singleEffect.FalseAtomicEffect;
             }
         }
     }

@@ -10,7 +10,7 @@ namespace Engine.Effect
     /// <summary>
     /// 增益效果
     /// </summary>
-    public class PointEffect : EffectDefine, IEffectHandler
+    public class PointEffect : AtomicEffectDefine,IAtomicEffect 
     {
         /// <summary>
         /// 
@@ -45,11 +45,11 @@ namespace Engine.Effect
                 Minion.本回合生命力加成 = ExpressHandler.PointProcess(Minion.生命值上限, 生命值) - Minion.生命值上限;
             }
         }
-        void IEffectHandler.DealHero(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou)
+        void IAtomicEffect.DealHero(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou)
         {
             throw new NotImplementedException();
         }
-        void IEffectHandler.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
+        void IAtomicEffect.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
         {
             ///防止加成的干扰！
             int TurnCount = ExpressHandler.GetEffectPoint(game, 持续回合);
@@ -76,6 +76,9 @@ namespace Engine.Effect
                 }
             }
         }
-
+        void IAtomicEffect.GetField(List<string> InfoArray)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

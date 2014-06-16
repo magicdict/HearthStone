@@ -95,6 +95,7 @@ namespace Engine.Utility
                 if (c.CardType == CardBasicInfo.CardTypeEnum.随从) ((Engine.Card.MinionCard)c).Init();
                 if (c.CardType == CardBasicInfo.CardTypeEnum.法术) ((Engine.Card.AbilityCard)c).Init();
                 if (c.CardType == CardBasicInfo.CardTypeEnum.武器) ((Engine.Card.WeaponCard)c).Init();
+                if (c.CardType == CardBasicInfo.CardTypeEnum.奥秘) ((Engine.Card.SecretCard)c).Init();
                 return c;
             }
             return null;
@@ -148,10 +149,6 @@ namespace Engine.Utility
         /// 假
         /// </summary>
         public const String strFalse = "0";
-        /// <summary>
-        /// 幸运币
-        /// </summary>
-        public const String SN幸运币 = "A900001";
         /// <summary>
         /// 表示本方
         /// </summary>
@@ -263,7 +260,7 @@ namespace Engine.Utility
             双方
         }
         /// <summary>
-        /// 选择器
+        /// 选择器和选择结果
         /// </summary>
         [Serializable]
         public struct PositionSelectOption
@@ -559,7 +556,7 @@ namespace Engine.Utility
             }
             catch (Exception ex)
             {
-                throw new Exception("深拷贝对象实例出错。", ex);
+                throw new Exception("深拷贝对象实例出错", ex);
             }
             finally
             {

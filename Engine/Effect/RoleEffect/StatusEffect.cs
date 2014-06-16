@@ -8,7 +8,7 @@ namespace Engine.Effect
     /// <summary>
     /// 状态改变效果
     /// </summary>
-    public class StatusEffect : EffectDefine, IEffectHandler
+    public class StatusEffect : AtomicEffectDefine, IAtomicEffect 
     {
         /// <summary>
         /// 冰冻状态
@@ -82,7 +82,7 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
-        void IEffectHandler.DealHero(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou)
+        void IAtomicEffect.DealHero(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou)
         {
             throw new NotImplementedException();
         }
@@ -93,7 +93,7 @@ namespace Engine.Effect
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
         /// <param name="PosIndex"></param>
-        void IEffectHandler.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
+        void IAtomicEffect.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
         {
             if (MeOrYou)
             {
@@ -103,6 +103,10 @@ namespace Engine.Effect
             {
                 RunStatusEffect(game.YourInfo.BattleField.BattleMinions[PosIndex]);
             }
+        }
+        void IAtomicEffect.GetField(List<string> InfoArray)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace Engine.Effect
     /// <summary>
     /// 攻击效果
     /// </summary>
-    public class AttackEffect : AtomicEffectDefine, IEffectHandler
+    public class AttackEffect :  IAtomicEffect
     {
         /// <summary>
         /// 效果表达式
@@ -34,7 +34,7 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
-        void IEffectHandler.DealHero(Client.GameManager game, EffectDefine singleEffect, Boolean MeOrYou)
+        void IAtomicEffect.DealHero(Client.GameManager game, EffectDefine singleEffect, Boolean MeOrYou)
         {
             //调整伤害值
             int AttackPoint = 实际伤害点数;
@@ -66,7 +66,7 @@ namespace Engine.Effect
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
         /// <param name="PosIndex"></param>
-        void IEffectHandler.DealMinion(Client.GameManager game, EffectDefine singleEffect, Boolean MeOrYou, int PosIndex)
+        void IAtomicEffect.DealMinion(Client.GameManager game, EffectDefine singleEffect, Boolean MeOrYou, int PosIndex)
         {
             //调整伤害值
             int AttackPoint = 实际伤害点数;
@@ -95,6 +95,9 @@ namespace Engine.Effect
                 }
             }
         }
-
+        void IAtomicEffect.GetField(List<string> InfoArray)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

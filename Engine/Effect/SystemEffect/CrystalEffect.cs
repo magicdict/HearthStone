@@ -1,19 +1,20 @@
 ﻿using Engine.Client;
 using Engine.Server;
 using Engine.Utility;
+using System;
 using System.Collections.Generic;
 namespace Engine.Effect
 {
-    public class CrystalEffect : EffectDefine
+    public class CrystalEffect
     {
         /// <summary>
         /// 获得法力水晶
         /// </summary>
-        public int 获得法力水晶 = 0;
+        public String 获得法力水晶 = String.Empty;
         /// <summary>
         /// 获得空法力水晶
         /// </summary>
-        public int 获得空法力水晶 = 0;
+        public String 获得空法力水晶 = String.Empty;
         /// <summary>
         /// 对法力水晶的法术实施
         /// </summary>
@@ -26,18 +27,18 @@ namespace Engine.Effect
             switch (Direct)
             {
                 case CardUtility.TargetSelectDirectEnum.本方:
-                    game.MyInfo.crystal.AddCurrentPoint(获得法力水晶);
-                    game.MyInfo.crystal.AddFullPoint(获得空法力水晶);
+                    game.MyInfo.crystal.CurrentRemainPoint = ExpressHandler.PointProcess(game.MyInfo.crystal.CurrentRemainPoint, 获得法力水晶);
+                    game.MyInfo.crystal.CurrentFullPoint = ExpressHandler.PointProcess(game.MyInfo.crystal.CurrentFullPoint, 获得空法力水晶);
                     break;
                 case CardUtility.TargetSelectDirectEnum.对方:
-                    game.YourInfo.crystal.AddCurrentPoint(获得法力水晶);
-                    game.YourInfo.crystal.AddFullPoint(获得空法力水晶);
+                    game.YourInfo.crystal.CurrentRemainPoint = ExpressHandler.PointProcess(game.YourInfo.crystal.CurrentRemainPoint, 获得法力水晶);
+                    game.YourInfo.crystal.CurrentFullPoint = ExpressHandler.PointProcess(game.YourInfo.crystal.CurrentFullPoint, 获得空法力水晶);
                     break;
                 case CardUtility.TargetSelectDirectEnum.双方:
-                    game.MyInfo.crystal.AddCurrentPoint(获得法力水晶);
-                    game.MyInfo.crystal.AddFullPoint(获得空法力水晶);
-                    game.YourInfo.crystal.AddCurrentPoint(获得法力水晶);
-                    game.YourInfo.crystal.AddFullPoint(获得空法力水晶);
+                    game.MyInfo.crystal.CurrentRemainPoint = ExpressHandler.PointProcess(game.MyInfo.crystal.CurrentRemainPoint, 获得法力水晶);
+                    game.MyInfo.crystal.CurrentFullPoint = ExpressHandler.PointProcess(game.MyInfo.crystal.CurrentFullPoint, 获得空法力水晶);
+                    game.YourInfo.crystal.CurrentRemainPoint = ExpressHandler.PointProcess(game.YourInfo.crystal.CurrentRemainPoint, 获得法力水晶);
+                    game.YourInfo.crystal.CurrentFullPoint = ExpressHandler.PointProcess(game.YourInfo.crystal.CurrentFullPoint, 获得空法力水晶);
                     break;
                 default:
                     break;
@@ -54,6 +55,11 @@ namespace Engine.Effect
                     game.YourInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.YourInfo.crystal.CurrentFullPoint);
             }
             return Result;
+        }
+        public void GetField(List<string> InfoArray)
+        {
+            获得法力水晶 = InfoArray[0].Split("/".ToCharArray())[0];
+            获得空法力水晶 = InfoArray[0].Split("/".ToCharArray())[1];
         }
     }
 }

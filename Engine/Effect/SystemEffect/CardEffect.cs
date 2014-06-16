@@ -9,7 +9,7 @@ namespace Engine.Effect
     /// <summary>
     /// 运行效果
     /// </summary>
-    public class CardEffect : EffectDefine
+    public class CardEffect
     {
         /// <summary>
         /// 指定卡牌编号

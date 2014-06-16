@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Engine.Utility;
 namespace Engine.Effect
 {
-    public class ControlEffect : EffectDefine
+    public class ControlEffect
     {
         public List<string> RunEffect(Client.GameManager game, String PosField)
         {
@@ -17,6 +17,5 @@ namespace Engine.Effect
             }
             return Result;
         }
-
     }
 }

@@ -17,6 +17,10 @@ namespace Engine.Card
         /// </summary>
         public const String 原生法术 = "0";
         /// <summary>
+        /// 幸运币
+        /// </summary>
+        public const String SN幸运币 = "A900001";
+        /// <summary>
         /// 效果选择类型枚举
         /// </summary>
         public enum 效果选择类型枚举
@@ -84,24 +88,6 @@ namespace Engine.Card
                 MainAbilityDefine = new EffectDefine();
                 AppendAbilityDefine = new EffectDefine();
             }
-            /// <summary>
-            /// 用具体的类替换
-            /// </summary>
-            public void GetField()
-            {
-                MainAbilityDefine.TrueAtomicEffect.GetField();
-                MainAbilityDefine.FalseAtomicEffect.GetField();
-                AppendAbilityDefine.TrueAtomicEffect.GetField();
-                AppendAbilityDefine.FalseAtomicEffect.GetField();
-            }
-        }
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        public new void Init()
-        {
-            FirstAbilityDefine.GetField();
-            if (SecondAbilityDefine.MainAbilityDefine != null) SecondAbilityDefine.GetField();
         }
         /// <summary>
         /// 使用法术
@@ -137,7 +123,7 @@ namespace Engine.Card
             {
                 ability = SecondAbilityDefine;
             }
-            RunAbilityEffect(game, ConvertPosDirect, ability);
+            Result.AddRange(RunAbilityEffect(game, ConvertPosDirect, ability));
             return Result;
         }
         /// <summary>
@@ -153,7 +139,7 @@ namespace Engine.Card
                                               AbilityCard.AbilityDefine Ability)
         {
             List<String> Result = new List<string>();
-            if (String.IsNullOrEmpty(Ability.MainAbilityDefine.效果条件))
+            if (String.IsNullOrEmpty(Ability.MainAbilityDefine.效果条件) || Ability.MainAbilityDefine.效果条件 == CardUtility.strIgnore)
             {
                 //系统法术
                 switch (Ability.MainAbilityDefine.TrueAtomicEffect.AtomicEffectType)
@@ -162,7 +148,7 @@ namespace Engine.Card
                     case AtomicEffectDefine.AtomicEffectEnum.水晶:
                     case AtomicEffectDefine.AtomicEffectEnum.奥秘:
                     case AtomicEffectDefine.AtomicEffectEnum.武器:
-                        return RunGameSystemEffect(game,ConvertPosDirect,Ability);
+                        return RunGameSystemEffect(game, ConvertPosDirect, Ability.MainAbilityDefine.TrueAtomicEffect, Ability.MainAbilityDefine.AbliltyPosPicker);
                 }
             }
             if (Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.指定 ||
@@ -218,9 +204,23 @@ namespace Engine.Card
         /// <param name="ConvertPosDirect"></param>
         /// <param name="Ability"></param>
         /// <returns></returns>
-        private List<string> RunGameSystemEffect(GameManager game, bool ConvertPosDirect, AbilityDefine Ability)
+        private List<string> RunGameSystemEffect(GameManager game, bool ConvertPosDirect, AtomicEffectDefine effect,CardUtility.PositionSelectOption Option)
         {
-            throw new NotImplementedException();
+            List<string> Result = new List<string>();
+            switch (effect.AtomicEffectType)
+            {
+                case AtomicEffectDefine.AtomicEffectEnum.卡牌:
+                    break;
+                case AtomicEffectDefine.AtomicEffectEnum.水晶:
+                    CrystalEffect atomic = new CrystalEffect();
+                    atomic.GetField(effect.InfoArray);
+                    return atomic.RunEffect(game, Option.EffectTargetSelectDirect);
+                case AtomicEffectDefine.AtomicEffectEnum.奥秘:
+                    break;
+                case AtomicEffectDefine.AtomicEffectEnum.武器:
+                    break;
+            }
+            return Result;
         }
     }
 }

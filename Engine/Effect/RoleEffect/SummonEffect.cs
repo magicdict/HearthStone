@@ -7,7 +7,7 @@ namespace Engine.Effect
     /// <summary>
     /// 召唤效果
     /// </summary>
-    public class SummonEffect : EffectDefine
+    public class SummonEffect :  IAtomicEffect
     {
         /// <summary>
         /// 法术方向
@@ -99,5 +99,23 @@ namespace Engine.Effect
             return Result;
         }
 
+
+        void IAtomicEffect.DealHero(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IAtomicEffect.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
+        {
+            throw new NotImplementedException();
+        }
+
+
+
+
+        void IAtomicEffect.GetField(List<string> InfoArray)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

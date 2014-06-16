@@ -291,7 +291,7 @@ namespace Engine.Card
 
         #region"方法"
         /// <summary>
-        /// 设置初始状态
+        /// 设置随从初始状态
         /// </summary>
         public new void Init()
         {
