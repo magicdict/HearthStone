@@ -57,6 +57,7 @@ namespace Engine.Card
         /// <summary>
         /// 效果定义
         /// </summary>
+        [Serializable]
         public struct AbilityDefine
         {
             /// <summary>
@@ -100,7 +101,7 @@ namespace Engine.Card
         public new void Init()
         {
             FirstAbilityDefine.GetField();
-            SecondAbilityDefine.GetField();
+            if (SecondAbilityDefine.MainAbilityDefine != null) SecondAbilityDefine.GetField();
         }
         /// <summary>
         /// 使用法术

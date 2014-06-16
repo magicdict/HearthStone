@@ -2,7 +2,7 @@
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
-namespace 火炉服务器
+namespace 炉边传说
 {
     public partial class ServerConfig : Form
     {

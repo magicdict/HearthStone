@@ -159,5 +159,10 @@ namespace 炉边传说
                 }
             }
         }
+
+        private void btnServer_Click(object sender, EventArgs e)
+        {
+            (new ServerConfig()).ShowDialog();
+        }
     }
 }

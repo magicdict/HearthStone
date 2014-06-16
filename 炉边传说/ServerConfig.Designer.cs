@@ -1,4 +1,4 @@
-﻿namespace 火炉服务器
+﻿namespace 炉边传说
 {
     partial class ServerConfig
     {

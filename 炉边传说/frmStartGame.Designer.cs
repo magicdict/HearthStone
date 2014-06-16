@@ -43,6 +43,7 @@
             this.btnCreateCardDeck = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.cmbCardDeck = new System.Windows.Forms.ComboBox();
+            this.btnServer = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnCreateGame
@@ -112,7 +113,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(18, 110);
+            this.label2.Location = new System.Drawing.Point(18, 105);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(77, 13);
             this.label2.TabIndex = 7;
@@ -120,7 +121,7 @@
             // 
             // txtServerIP
             // 
-            this.txtServerIP.Location = new System.Drawing.Point(101, 107);
+            this.txtServerIP.Location = new System.Drawing.Point(101, 102);
             this.txtServerIP.Name = "txtServerIP";
             this.txtServerIP.Size = new System.Drawing.Size(282, 20);
             this.txtServerIP.TabIndex = 8;
@@ -178,12 +179,23 @@
             this.cmbCardDeck.Size = new System.Drawing.Size(282, 21);
             this.cmbCardDeck.TabIndex = 14;
             // 
+            // btnServer
+            // 
+            this.btnServer.Location = new System.Drawing.Point(398, 100);
+            this.btnServer.Name = "btnServer";
+            this.btnServer.Size = new System.Drawing.Size(108, 23);
+            this.btnServer.TabIndex = 15;
+            this.btnServer.Text = "服务器界面";
+            this.btnServer.UseVisualStyleBackColor = true;
+            this.btnServer.Click += new System.EventHandler(this.btnServer_Click);
+            // 
             // frmStartGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(518, 301);
+            this.Controls.Add(this.btnServer);
             this.Controls.Add(this.cmbCardDeck);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.btnCreateCardDeck);
@@ -224,5 +236,6 @@
         private System.Windows.Forms.Button btnCreateCardDeck;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cmbCardDeck;
+        private System.Windows.Forms.Button btnServer;
     }
 }

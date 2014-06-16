@@ -2,7 +2,6 @@
 using Engine.Effect;
 using Engine.Utility;
 using Microsoft.VisualBasic;
-//using MongoDB.Driver;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -16,25 +15,6 @@ namespace 炉边传说
         {
             InitializeComponent();
         }
-        //private static MongoServer innerServer;
-        //private static MongoDatabase innerDatabase;
-        //private static MongoCollection innerCollection;
-        /// <summary>
-        /// 导出到MongoDB
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void btnExportMongoDB_Click(object sender, EventArgs e)
-        {
-            //innerServer = MongoServer.Create(@"mongodb://localhost:28030");
-            //innerServer.Connect();
-            //innerDatabase = innerServer.GetDatabase("HearthStone");
-            //innerCollection = innerDatabase.GetCollection("Card");
-            if (String.IsNullOrEmpty(ExcelPicker.SelectedPathOrFileName)) return;
-            Export(TargetType.MongoDB);
-            GC.Collect();
-            //innerServer.Disconnect();
-        }
         /// <summary>
         /// 
         /// </summary>
@@ -44,36 +24,22 @@ namespace 炉边传说
         {
             if (String.IsNullOrEmpty(ExcelPicker.SelectedPathOrFileName)) return;
             if (String.IsNullOrEmpty(XmlFolderPicker.SelectedPathOrFileName)) return;
-            Export(TargetType.Xml);
-        }
-        /// <summary>
-        /// 导出类型
-        /// </summary>
-        private enum TargetType
-        {
-            /// <summary>
-            /// MongoDataBase
-            /// </summary>
-            MongoDB,
-            /// <summary>
-            /// XmlFile
-            /// </summary>
-            Xml
+            Export();
+            GC.Collect();
         }
         /// <summary>
         /// 导入
         /// </summary>
-        private void Export(TargetType target)
+        private void Export()
         {
             dynamic excelObj = Interaction.CreateObject("Excel.Application");
             excelObj.Visible = true;
             dynamic workbook;
             workbook = excelObj.Workbooks.Open(ExcelPicker.SelectedPathOrFileName);
-            //Minion(target, workbook);
-            Ability(target, workbook);
-            //AbilityNewFormat(target, workbook);
-            //Weapon(target, workbook);
-            //Secret(target, workbook);
+            Minion(workbook);
+            Ability(workbook);
+            Weapon(workbook);
+            Secret(workbook);
             workbook.Close();
             excelObj.Quit();
             excelObj = null;
@@ -84,7 +50,7 @@ namespace 炉边传说
         /// </summary>
         /// <param name="target"></param>
         /// <param name="workbook"></param>
-        private void Secret(TargetType target, dynamic workbook)
+        private void Secret(dynamic workbook)
         {
             if (Directory.Exists(XmlFolderPicker.SelectedPathOrFileName + "\\Secret\\"))
             {
@@ -107,19 +73,9 @@ namespace 炉边传说
                 Secret.是否启用 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
                 Secret.Condition = CardUtility.GetEnum<Engine.Card.SecretCard.SecretCondition>(worksheet.Cells(rowCount, 14).Text, SecretCard.SecretCondition.对方召唤随从);
                 Secret.AdditionInfo = worksheet.Cells(rowCount, 15).Text;
-                switch (target)
-                {
-                    case TargetType.MongoDB:
-                        //innerCollection.Insert<Card.SecretCard>(Secret);
-                        break;
-                    case TargetType.Xml:
-                        XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.SecretCard));
-                        String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Secret\\" + Secret.序列号 + ".xml";
-                        xml.Serialize(new StreamWriter(XmlFilename), Secret);
-                        break;
-                    default:
-                        break;
-                }
+                XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.SecretCard));
+                String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Secret\\" + Secret.序列号 + ".xml";
+                xml.Serialize(new StreamWriter(XmlFilename), Secret);
                 rowCount++;
             }
         }
@@ -128,7 +84,7 @@ namespace 炉边传说
         /// </summary>
         /// <param name="target"></param>
         /// <param name="workbook"></param>
-        private void Minion(TargetType target, dynamic workbook)
+        private void Minion(dynamic workbook)
         {
             if (Directory.Exists(XmlFolderPicker.SelectedPathOrFileName + "\\Minion\\"))
             {
@@ -193,19 +149,9 @@ namespace 炉边传说
                 Minion.自身事件.附加信息 = worksheet.Cells(rowCount, 36).Text;
                 Minion.特殊效果 = CardUtility.GetEnum<Engine.Card.MinionCard.特殊效果列表>(worksheet.Cells(rowCount, 37).Text, Engine.Card.MinionCard.特殊效果列表.无效果);
 
-                switch (target)
-                {
-                    case TargetType.MongoDB:
-                        //innerCollection.Insert<Card.MinionCard>(Minion);
-                        break;
-                    case TargetType.Xml:
-                        XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.MinionCard));
-                        String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Minion\\" + Minion.序列号 + ".xml";
-                        xml.Serialize(new StreamWriter(XmlFilename), Minion);
-                        break;
-                    default:
-                        break;
-                }
+                XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.MinionCard));
+                String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Minion\\" + Minion.序列号 + ".xml";
+                xml.Serialize(new StreamWriter(XmlFilename), Minion);
                 rowCount++;
             }
         }
@@ -214,7 +160,7 @@ namespace 炉边传说
         /// </summary>
         /// <param name="target"></param>
         /// <param name="workbook"></param>
-        private void Ability(TargetType target, dynamic workbook)
+        private void Ability(dynamic workbook)
         {
             if (Directory.Exists(XmlFolderPicker.SelectedPathOrFileName + "\\Ability\\"))
             {
@@ -235,6 +181,7 @@ namespace 炉边传说
                 Ability.职业 = CardUtility.GetEnum<Engine.Utility.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 9).Text, Engine.Utility.CardUtility.ClassEnum.中立);
                 Ability.使用成本 = CardUtility.GetInt(worksheet.Cells(rowCount, 10).Text);
                 Ability.过载 = CardUtility.GetInt(worksheet.Cells(rowCount, 11).Text);
+                Ability.是否启用 = true;
                 rowCount++;
                 //当前行肯定是选择条件
                 Ability.效果选择类型 = CardUtility.GetEnum<AbilityCard.效果选择类型枚举>(worksheet.Cells(rowCount, 3).Text,
@@ -301,7 +248,9 @@ namespace 炉边传说
             effect.EffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
             effect.效果条件 = worksheet.Cells(rowCount, 8).Text;
             effect.TrueAtomicEffect.描述 = worksheet.Cells(rowCount, 9).Text;
-            for (int i = 10; i < 15; i++)
+            effect.TrueAtomicEffect.AtomicEffectType = CardUtility.GetEnum<Engine.Effect.AtomicEffectDefine.AtomicEffectEnum>(worksheet.Cells(rowCount, 10).Text, Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.未定义);
+
+            for (int i = 11; i < 15; i++)
             {
                 if (String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text)) break;
                 effect.TrueAtomicEffect.InfoArray.Add((worksheet.Cells(rowCount, i).Text));
@@ -313,7 +262,8 @@ namespace 炉边传说
                 rowCount++;
                 //当前行是第二效果的内容栏
                 effect.FalseAtomicEffect.描述 = worksheet.Cells(rowCount, 9).Text;
-                for (int i = 9; i < 15; i++)
+                effect.FalseAtomicEffect.AtomicEffectType = CardUtility.GetEnum<Engine.Effect.AtomicEffectDefine.AtomicEffectEnum>(worksheet.Cells(rowCount, 10).Text, Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.未定义);
+                for (int i = 11; i < 15; i++)
                 {
                     if (String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text)) break;
                     effect.FalseAtomicEffect.InfoArray.Add((worksheet.Cells(rowCount, i).Text));
@@ -327,7 +277,7 @@ namespace 炉边传说
         /// </summary>
         /// <param name="target"></param>
         /// <param name="workbook"></param>
-        private void Weapon(TargetType target, dynamic workbook)
+        private void Weapon(dynamic workbook)
         {
             if (Directory.Exists(XmlFolderPicker.SelectedPathOrFileName + "\\Weapon\\"))
             {
@@ -352,31 +302,17 @@ namespace 炉边传说
                 Weapon.Rare = CardUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度.白色);
                 Weapon.是否启用 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
 
-                switch (target)
-                {
-                    case TargetType.MongoDB:
-                        //innerCollection.Insert<Card.WeaponCard>(Weapon);
-                        break;
-                    case TargetType.Xml:
-                        XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.WeaponCard));
-                        String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Weapon\\" + Weapon.序列号 + ".xml";
-                        xml.Serialize(new StreamWriter(XmlFilename), Weapon);
-                        break;
-                    default:
-                        break;
-                }
+                XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.WeaponCard));
+                String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Weapon\\" + Weapon.序列号 + ".xml";
+                xml.Serialize(new StreamWriter(XmlFilename), Weapon);
                 rowCount++;
             }
         }
         /// <summary>
-        /// 
+        /// 加载窗体
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnImportXML_Click(object sender, EventArgs e)
-        {
-            Engine.Utility.CardUtility.Init(@"C:\炉石Git\CardHelper\CardXML");
-        }
         private void frmExport_Load(object sender, EventArgs e)
         {
             Engine.Utility.CardUtility.CardXmlFolder = @"C:\炉石Git\炉石设计\Card";

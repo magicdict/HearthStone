@@ -28,12 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ExcelPicker = new 炉边传说.ctlFilePicker();
-            this.btnExportMongoDB = new System.Windows.Forms.Button();
             this.btnExportXml = new System.Windows.Forms.Button();
             this.XmlFolderPicker = new 炉边传说.ctlFilePicker();
-            this.btnImportXML = new System.Windows.Forms.Button();
+            this.ExcelPicker = new 炉边传说.ctlFilePicker();
             this.SuspendLayout();
+            // 
+            // btnExportXml
+            // 
+            this.btnExportXml.Location = new System.Drawing.Point(488, 94);
+            this.btnExportXml.Name = "btnExportXml";
+            this.btnExportXml.Size = new System.Drawing.Size(157, 23);
+            this.btnExportXml.TabIndex = 2;
+            this.btnExportXml.Text = "导出到Xml";
+            this.btnExportXml.UseVisualStyleBackColor = true;
+            this.btnExportXml.Click += new System.EventHandler(this.btnExportXml_Click);
+            // 
+            // XmlFolderPicker
+            // 
+            this.XmlFolderPicker.BackColor = System.Drawing.Color.Transparent;
+            this.XmlFolderPicker.FileFilter = "";
+            this.XmlFolderPicker.FileName = "";
+            this.XmlFolderPicker.Location = new System.Drawing.Point(28, 49);
+            this.XmlFolderPicker.Name = "XmlFolderPicker";
+            this.XmlFolderPicker.PickerType = 炉边传说.ctlFilePicker.DialogType.Directory;
+            this.XmlFolderPicker.SelectedPathOrFileName = "";
+            this.XmlFolderPicker.Size = new System.Drawing.Size(629, 31);
+            this.XmlFolderPicker.TabIndex = 3;
+            this.XmlFolderPicker.Title = "XML文件夹";
             // 
             // ExcelPicker
             // 
@@ -48,60 +69,14 @@
             this.ExcelPicker.TabIndex = 0;
             this.ExcelPicker.Title = "炉石资料文件";
             // 
-            // btnExportMongoDB
-            // 
-            this.btnExportMongoDB.Location = new System.Drawing.Point(488, 49);
-            this.btnExportMongoDB.Name = "btnExportMongoDB";
-            this.btnExportMongoDB.Size = new System.Drawing.Size(157, 23);
-            this.btnExportMongoDB.TabIndex = 1;
-            this.btnExportMongoDB.Text = "导出到MongoDB";
-            this.btnExportMongoDB.UseVisualStyleBackColor = true;
-            this.btnExportMongoDB.Visible = false;
-            this.btnExportMongoDB.Click += new System.EventHandler(this.btnExportMongoDB_Click);
-            // 
-            // btnExportXml
-            // 
-            this.btnExportXml.Location = new System.Drawing.Point(488, 115);
-            this.btnExportXml.Name = "btnExportXml";
-            this.btnExportXml.Size = new System.Drawing.Size(157, 23);
-            this.btnExportXml.TabIndex = 2;
-            this.btnExportXml.Text = "导出到Xml";
-            this.btnExportXml.UseVisualStyleBackColor = true;
-            this.btnExportXml.Click += new System.EventHandler(this.btnExportXml_Click);
-            // 
-            // XmlFolderPicker
-            // 
-            this.XmlFolderPicker.BackColor = System.Drawing.Color.Transparent;
-            this.XmlFolderPicker.FileFilter = "";
-            this.XmlFolderPicker.FileName = "";
-            this.XmlFolderPicker.Location = new System.Drawing.Point(28, 78);
-            this.XmlFolderPicker.Name = "XmlFolderPicker";
-            this.XmlFolderPicker.PickerType = 炉边传说.ctlFilePicker.DialogType.Directory;
-            this.XmlFolderPicker.SelectedPathOrFileName = "";
-            this.XmlFolderPicker.Size = new System.Drawing.Size(629, 31);
-            this.XmlFolderPicker.TabIndex = 3;
-            this.XmlFolderPicker.Title = "XML文件夹";
-            // 
-            // btnImportXML
-            // 
-            this.btnImportXML.Location = new System.Drawing.Point(280, 115);
-            this.btnImportXML.Name = "btnImportXML";
-            this.btnImportXML.Size = new System.Drawing.Size(157, 23);
-            this.btnImportXML.TabIndex = 4;
-            this.btnImportXML.Text = "导入XML";
-            this.btnImportXML.UseVisualStyleBackColor = true;
-            this.btnImportXML.Click += new System.EventHandler(this.btnImportXML_Click);
-            // 
             // frmExport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(669, 179);
-            this.Controls.Add(this.btnImportXML);
+            this.ClientSize = new System.Drawing.Size(669, 129);
             this.Controls.Add(this.XmlFolderPicker);
             this.Controls.Add(this.btnExportXml);
-            this.Controls.Add(this.btnExportMongoDB);
             this.Controls.Add(this.ExcelPicker);
             this.Name = "frmExport";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -114,10 +89,8 @@
         #endregion
 
         private ctlFilePicker ExcelPicker;
-        private System.Windows.Forms.Button btnExportMongoDB;
         private System.Windows.Forms.Button btnExportXml;
         private ctlFilePicker XmlFolderPicker;
-        private System.Windows.Forms.Button btnImportXML;
     }
 }
 

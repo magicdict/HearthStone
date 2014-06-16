@@ -495,6 +495,7 @@ namespace Engine.Utility
         /// <summary>
         /// 用户指定位置
         /// </summary>
+        [Serializable]
         public struct TargetPosition
         {
             /// <summary>
