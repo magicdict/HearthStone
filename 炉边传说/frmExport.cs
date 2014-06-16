@@ -227,7 +227,7 @@ namespace 炉边传说
             Engine.Card.AbilityCard Ability;
             while (!String.IsNullOrEmpty(worksheet.Cells(rowCount, 2).Text))
             {
-                //这行肯定是卡牌基本情报
+                //当前行肯定是卡牌基本情报
                 Ability = new AbilityCard();
                 Ability.序列号 = worksheet.Cells(rowCount, 2).Text;
                 Ability.名称 = worksheet.Cells(rowCount, 3).Text;
@@ -236,14 +236,18 @@ namespace 炉边传说
                 Ability.使用成本 = CardUtility.GetInt(worksheet.Cells(rowCount, 10).Text);
                 Ability.过载 = CardUtility.GetInt(worksheet.Cells(rowCount, 11).Text);
                 rowCount++;
-                //这行肯定是选择条件
+                //当前行肯定是选择条件
                 Ability.效果选择类型 = CardUtility.GetEnum<AbilityCard.效果选择类型枚举>(worksheet.Cells(rowCount, 3).Text,
                     Engine.Card.AbilityCard.效果选择类型枚举.无需选择);
+                Ability.FirstAbilityDefine.描述 = worksheet.Cells(rowCount, 4).Text;
+                Ability.SecondAbilityDefine.描述 = worksheet.Cells(rowCount, 5).Text;
                 rowCount++;
-                Ability.FirstAbilityDefine = GetEffectDefine(worksheet, ref rowCount);
+                Ability.FirstAbilityDefine = GetAbilityDefine(worksheet, ref rowCount);
                 if (Ability.效果选择类型 != Engine.Card.AbilityCard.效果选择类型枚举.无需选择)
                 {
-                    Ability.SecondAbilityDefine = GetEffectDefine(worksheet, ref rowCount);
+                    rowCount++;
+                    //当前行是第一效果的标题栏
+                    Ability.SecondAbilityDefine = GetAbilityDefine(worksheet, ref rowCount);
                 }
                 XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.AbilityCard));
                 String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Ability\\" + Ability.序列号 + ".xml";
@@ -252,33 +256,68 @@ namespace 炉边传说
             }
         }
         /// <summary>
-        /// GetEffectDifine
+        /// 获得法术定义
         /// </summary>
         /// <param name="worksheet"></param>
         /// <param name="rowCount"></param>
         /// <returns></returns>
-        private static AbilityCard.AbilityDefine GetEffectDefine(dynamic worksheet, ref int rowCount)
+        private static AbilityCard.AbilityDefine GetAbilityDefine(dynamic worksheet, ref int rowCount)
         {
-            AbilityCard.AbilityDefine effect = new AbilityCard.AbilityDefine();
-            effect.Init();
-            //这行是第一效果的标题栏
-            rowCount++;
-            //这行是第一效果的内容栏
-            effect.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode =
-                CardUtility.GetEnum<Engine.Utility.CardUtility.TargetSelectModeEnum>(worksheet.Cells(rowCount, 3).Text, Engine.Utility.CardUtility.TargetSelectModeEnum.不用选择);
-            effect.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectDirect =
-                CardUtility.GetEnum<Engine.Utility.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 4).Text, Engine.Utility.CardUtility.TargetSelectDirectEnum.双方);
-            effect.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectRole =
-                CardUtility.GetEnum<Engine.Utility.CardUtility.TargetSelectRoleEnum>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.TargetSelectRoleEnum.英雄);
-            effect.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectCondition = worksheet.Cells(rowCount, 6).Text;
-            effect.MainAbilityDefine.EffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
-            if (worksheet.Cells(rowCount, 8).Text == CardUtility.strIgnore)
+            AbilityCard.AbilityDefine Ability = new AbilityCard.AbilityDefine();
+            Ability.Init();
+            Ability.MainAbilityDefine = GetEffectDefine(worksheet, ref rowCount);
+            //追加效果
+            String NextLine = worksheet.Cells(rowCount + 1, 2).Text;
+            if (!String.IsNullOrEmpty(NextLine) && NextLine == "追加条件")
             {
-
+                rowCount++;
+                //当前行是追加条件
+                Ability.AppendEffectCondition = worksheet.Cells(rowCount, 3).Text;
+                rowCount++;
+                //当前行是第一效果的标题栏
+                Ability.AppendAbilityDefine = GetEffectDefine(worksheet, ref rowCount);
             }
-            else
+            return Ability;
+        }
+        /// <summary>
+        /// 获得效果定义
+        /// </summary>
+        /// <param name="worksheet"></param>
+        /// <param name="rowCount"></param>
+        /// <returns></returns>
+        private static EffectDefine GetEffectDefine(dynamic worksheet, ref int rowCount)
+        {
+            EffectDefine effect = new EffectDefine();
+            //当前行是第一效果的标题栏
+            rowCount++;
+            //当前行是第一效果的内容栏
+            effect.AbliltyPosPicker.EffictTargetSelectMode =
+                CardUtility.GetEnum<Engine.Utility.CardUtility.TargetSelectModeEnum>(worksheet.Cells(rowCount, 3).Text, Engine.Utility.CardUtility.TargetSelectModeEnum.不用选择);
+            effect.AbliltyPosPicker.EffectTargetSelectDirect =
+                CardUtility.GetEnum<Engine.Utility.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 4).Text, Engine.Utility.CardUtility.TargetSelectDirectEnum.双方);
+            effect.AbliltyPosPicker.EffectTargetSelectRole =
+                CardUtility.GetEnum<Engine.Utility.CardUtility.TargetSelectRoleEnum>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.TargetSelectRoleEnum.英雄);
+            effect.AbliltyPosPicker.EffectTargetSelectCondition = worksheet.Cells(rowCount, 6).Text;
+            effect.EffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
+            effect.效果条件 = worksheet.Cells(rowCount, 8).Text;
+            effect.TrueAtomicEffect.描述 = worksheet.Cells(rowCount, 9).Text;
+            for (int i = 10; i < 15; i++)
             {
-
+                if (String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text)) break;
+                effect.TrueAtomicEffect.InfoArray.Add((worksheet.Cells(rowCount, i).Text));
+            }
+            if (effect.效果条件 != CardUtility.strIgnore)
+            {
+                rowCount++;
+                //当前行是第二效果的标题栏
+                rowCount++;
+                //当前行是第二效果的内容栏
+                effect.FalseAtomicEffect.描述 = worksheet.Cells(rowCount, 9).Text;
+                for (int i = 9; i < 15; i++)
+                {
+                    if (String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text)) break;
+                    effect.FalseAtomicEffect.InfoArray.Add((worksheet.Cells(rowCount, i).Text));
+                }
             }
             return effect;
         }

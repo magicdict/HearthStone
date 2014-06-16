@@ -11,21 +11,17 @@ namespace Engine.Effect
         /// </summary>
         public CardUtility.PositionSelectOption AbliltyPosPicker = new CardUtility.PositionSelectOption();
         /// <summary>
-        /// 描述
-        /// </summary>
-        public String 描述 = String.Empty;
-        /// <summary>
         /// 效果条件
         /// </summary>
         public String 效果条件 = String.Empty;
         /// <summary>
         /// 效果条件为 真
         /// </summary>
-        public AtomicEffectDefine TrueAtomicEffect;
+        public AtomicEffectDefine TrueAtomicEffect = new AtomicEffectDefine();
         /// <summary>
         /// 效果条件为 伪
         /// </summary>
-        public AtomicEffectDefine FalseAtomicEffect;
+        public AtomicEffectDefine FalseAtomicEffect = new AtomicEffectDefine();
         /// <summary>
         /// 效果回数
         /// </summary>

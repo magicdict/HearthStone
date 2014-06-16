@@ -20,7 +20,7 @@ namespace 炉边传说
         /// </summary>
         CardUtility.PositionSelectOption SelectOption;
         /// <summary>
-        /// 
+        /// 选定位置
         /// </summary>
         public CardUtility.TargetPosition Position = new CardUtility.TargetPosition();
         /// <summary>

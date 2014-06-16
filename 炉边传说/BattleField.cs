@@ -50,7 +50,6 @@ namespace 炉边传说
                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).FightClick += (x, y) =>
                 {
                     //这里千万不能使用 i ,每次 i 都是固定值
-                    //pos.Postion = i + 1;
                     int AttackPostion = int.Parse(((Button)x).Parent.Name.Substring("btnMe".Length));
                     Fight(AttackPostion);
                 };

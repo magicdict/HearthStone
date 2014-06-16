@@ -62,6 +62,10 @@ namespace Engine.Effect
             武器,
         }
         /// <summary>
+        /// 描述
+        /// </summary>
+        public String 描述 = String.Empty;
+        /// <summary>
         /// 
         /// </summary>
         public AtomicEffectEnum AtomicEffectType = AtomicEffectEnum.未定义;

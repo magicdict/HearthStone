@@ -1,5 +1,5 @@
-﻿using Engine.Effect;
-using Engine.Client;
+﻿using Engine.Client;
+using Engine.Effect;
 using Engine.Utility;
 using System;
 using System.Collections.Generic;
@@ -60,6 +60,10 @@ namespace Engine.Card
         public struct AbilityDefine
         {
             /// <summary>
+            /// 描述
+            /// </summary>
+            public String 描述;
+            /// <summary>
             /// 主效果定义
             /// </summary>
             public EffectDefine MainAbilityDefine;
@@ -113,7 +117,7 @@ namespace Engine.Card
                 case 效果选择类型枚举.无需选择:
                     break;
                 case 效果选择类型枚举.主动选择:
-                    PickEffectResult = game.PickEffect(FirstAbilityDefine.MainAbilityDefine.描述, SecondAbilityDefine.MainAbilityDefine.描述);
+                    PickEffectResult = game.PickEffect(FirstAbilityDefine.描述, SecondAbilityDefine.描述);
                     if (PickEffectResult == CardUtility.PickEffect.取消) return new List<string>();
                     break;
                 case 效果选择类型枚举.自动判定:
