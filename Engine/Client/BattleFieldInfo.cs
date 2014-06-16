@@ -125,7 +125,7 @@ namespace Engine.Client
             }
             for (int i = 0; i < MinionCount; i++)
             {
-                BattleMinions[i].Position = i + 1;
+                BattleMinions[i].战场位置 = i + 1;
             }
         }
         /// <summary>
@@ -200,7 +200,7 @@ namespace Engine.Client
             BattleMinions[MaxMinionCount - 1] = null;
             for (int i = 0; i < MinionCount; i++)
             {
-                BattleMinions[i].Position = i + 1;
+                BattleMinions[i].战场位置 = i + 1;
             }
         }
         /// <summary>
@@ -211,7 +211,7 @@ namespace Engine.Client
             //去除所有光环效果
             for (int i = 0; i < BattleMinions.Length; i++)
             {
-                if (BattleMinions[i] != null) BattleMinions[i].受战地效果.Clear();
+                if (BattleMinions[i] != null) BattleMinions[i].受战场效果.Clear();
             }
             AbilityCost = 0;
             AbilityDamagePlus = 0;
@@ -232,7 +232,7 @@ namespace Engine.Client
                                     case MinionCard.光环范围.随从全体:
                                         for (int j = 0; j < BattleMinions.Length; j++)
                                         {
-                                            if (BattleMinions[j] != null) BattleMinions[j].受战地效果.Add(minion.光环效果);
+                                            if (BattleMinions[j] != null) BattleMinions[j].受战场效果.Add(minion.光环效果);
                                         }
                                         break;
                                     case MinionCard.光环范围.相邻随从:
@@ -255,6 +255,132 @@ namespace Engine.Client
                 }
             }
         }
+        /// <summary>
+        /// 设置是否能成为当前动作的对象
+        /// </summary>
+        /// <param name="SelectOption"></param>
+        /// <param name="game"></param>
+        public static void SetTargetSelectEnable(CardUtility.PositionSelectOption SelectOption, GameManager game)
+        {
+            switch (SelectOption.EffectTargetSelectDirect)
+            {
+                case CardUtility.TargetSelectDirectEnum.本方:
+                    switch (SelectOption.EffectTargetSelectRole)
+                    {
+                        case CardUtility.TargetSelectRoleEnum.随从:
+                            for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
+                            {
+                                if (Engine.Utility.CardUtility.符合选择条件(game.MyInfo.BattleField.BattleMinions[i], SelectOption))
+                                    game.MyInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                            }
+                            break;
+                        case CardUtility.TargetSelectRoleEnum.英雄:
+                            game.MyInfo.能否成为动作对象 = true;
+                            break;
+                        case CardUtility.TargetSelectRoleEnum.所有角色:
+                            game.MyInfo.能否成为动作对象 = true;
+                            for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
+                            {
+                                if (Engine.Utility.CardUtility.符合选择条件(game.MyInfo.BattleField.BattleMinions[i], SelectOption))
+                                    game.MyInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case CardUtility.TargetSelectDirectEnum.对方:
+                    switch (SelectOption.EffectTargetSelectRole)
+                    {
+                        case CardUtility.TargetSelectRoleEnum.随从:
+                            for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
+                            {
+                                if (Engine.Utility.CardUtility.符合选择条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption))
+                                    game.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                            }
+                            break;
+                        case CardUtility.TargetSelectRoleEnum.英雄:
+                            game.YourInfo.能否成为动作对象 = true;
+                            break;
+                        case CardUtility.TargetSelectRoleEnum.所有角色:
+
+                            Boolean Has嘲讽 = false;
+                            for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
+                            {
+                                if (game.YourInfo.BattleField.BattleMinions[i].嘲讽特性)
+                                {
+                                    Has嘲讽 = true;
+                                    break;
+                                }
+                            }
+                            if (SelectOption.嘲讽限制 && Has嘲讽)
+                            {
+                                game.YourInfo.能否成为动作对象 = false;
+                                for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
+                                {
+                                    //只能选择嘲讽对象
+                                    if (game.YourInfo.BattleField.BattleMinions[i].嘲讽特性)
+                                    {
+                                        game.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                game.YourInfo.能否成为动作对象 = true;
+                                for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
+                                {
+                                    if (Engine.Utility.CardUtility.符合选择条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption))
+                                        game.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case CardUtility.TargetSelectDirectEnum.双方:
+                    switch (SelectOption.EffectTargetSelectRole)
+                    {
+                        case CardUtility.TargetSelectRoleEnum.随从:
+                            for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
+                            {
+                                if (Engine.Utility.CardUtility.符合选择条件(game.MyInfo.BattleField.BattleMinions[i], SelectOption))
+                                    game.MyInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                            }
+                            for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
+                            {
+                                if (Engine.Utility.CardUtility.符合选择条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption))
+                                    game.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                            }
+                            break;
+                        case CardUtility.TargetSelectRoleEnum.英雄:
+                            game.MyInfo.能否成为动作对象 = true;
+                            game.YourInfo.能否成为动作对象 = true;
+                            break;
+                        case CardUtility.TargetSelectRoleEnum.所有角色:
+                            game.MyInfo.能否成为动作对象 = true;
+                            game.YourInfo.能否成为动作对象 = true;
+                            for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
+                            {
+                                if (Engine.Utility.CardUtility.符合选择条件(game.MyInfo.BattleField.BattleMinions[i], SelectOption))
+                                    game.MyInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                            }
+                            for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
+                            {
+                                if (Engine.Utility.CardUtility.符合选择条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption))
+                                    game.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
         /// <summary>
         /// 去除死去随从
         /// </summary>
@@ -293,7 +419,7 @@ namespace Engine.Client
             BattleMinions = CloneMinions;
             for (int i = 0; i < MinionCount; i++)
             {
-                BattleMinions[i].Position = i + 1;
+                BattleMinions[i].战场位置 = i + 1;
             }
             return DeadList;
         }

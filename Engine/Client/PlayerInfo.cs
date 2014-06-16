@@ -80,6 +80,10 @@ namespace Engine.Client
         /// </summary>
         public Boolean 连击状态 = false;
         /// <summary>
+        /// 能否成为当前动作的对象
+        /// </summary>
+        public Boolean 能否成为动作对象 = false;
+        /// <summary>
         /// 获得信息
         /// </summary>
         /// <returns></returns>

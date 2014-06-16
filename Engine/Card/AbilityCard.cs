@@ -163,7 +163,7 @@ namespace Engine.Card
             if (Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.指定 ||
                 Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.横扫)
             {
-                Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = game.GetSelectTarget(Ability.MainAbilityDefine.AbliltyPosPicker, false);
+                Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = game.GetSelectTarget(Ability.MainAbilityDefine.AbliltyPosPicker);
             }
             else
             {

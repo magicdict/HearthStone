@@ -254,7 +254,7 @@ namespace Engine.Card
         /// 刚放到战场时，冲锋的单位为1次，其余为0次
         /// </remarks>
         [XmlIgnore]
-        public int RemainAttactTimes = 1;
+        public int 剩余攻击次数 = 1;
         /// <summary>
         /// 攻击状态
         /// </summary>
@@ -264,12 +264,17 @@ namespace Engine.Card
         /// 战场位置
         /// </summary>
         [XmlIgnore]
-        public int Position = 1;
+        public int 战场位置 = 1;
         /// <summary>
         /// 该单位受到战地的效果
         /// </summary>
         [XmlIgnore]
-        public List<Buff> 受战地效果 = new List<Buff>();
+        public List<Buff> 受战场效果 = new List<Buff>();
+        /// <summary>
+        /// 能否成为当前动作的对象
+        /// </summary>
+        [XmlIgnore]
+        public Boolean 能否成为动作对象 = false;
         #endregion
 
         #region"回合效果"
@@ -294,11 +299,11 @@ namespace Engine.Card
             this.冰冻状态 = CardUtility.EffectTurn.无效果;
             if (风怒特性)
             {
-                RemainAttactTimes = 2;
+                剩余攻击次数 = 2;
             }
             else
             {
-                RemainAttactTimes = 1;
+                剩余攻击次数 = 1;
             }
             //攻击次数
             if (冲锋特性)
@@ -317,11 +322,11 @@ namespace Engine.Card
         {
             if (风怒特性)
             {
-                RemainAttactTimes = 2;
+                剩余攻击次数 = 2;
             }
             else
             {
-                RemainAttactTimes = 1;
+                剩余攻击次数 = 1;
             }
             AttactStatus = 攻击状态.可攻击;
         }
@@ -334,7 +339,7 @@ namespace Engine.Card
             if (冰冻状态 != CardUtility.EffectTurn.无效果) return false;
             if (无法攻击特性) return false;
             if (TotalAttack() == 0) return false;
-            return RemainAttactTimes > 0 && AttactStatus == 攻击状态.可攻击;
+            return 剩余攻击次数 > 0 && AttactStatus == 攻击状态.可攻击;
         }
         /// <summary>
         /// 实际输出效果
@@ -343,7 +348,7 @@ namespace Engine.Card
         public int TotalAttack()
         {
             int rtnAttack = 攻击力;
-            foreach (var buff in 受战地效果)
+            foreach (var buff in 受战场效果)
             {
                 rtnAttack += int.Parse(buff.BuffInfo.Split("/".ToCharArray())[0]);
             }
@@ -363,7 +368,7 @@ namespace Engine.Card
         public int 合计生命值上限()
         {
             int BuffLife = 0;
-            foreach (var buff in 受战地效果)
+            foreach (var buff in 受战场效果)
             {
                 BuffLife += int.Parse(buff.BuffInfo.Split("/".ToCharArray())[1]);
             }
@@ -454,8 +459,8 @@ namespace Engine.Card
             if (!被动攻击)
             {
                 潜行特性 = false;
-                RemainAttactTimes--;
-                if (RemainAttactTimes == 0) AttactStatus = MinionCard.攻击状态.攻击完毕;
+                剩余攻击次数--;
+                if (剩余攻击次数 == 0) AttactStatus = MinionCard.攻击状态.攻击完毕;
             }
         }
         /// <summary>

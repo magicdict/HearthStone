@@ -14,7 +14,7 @@ namespace Engine.Effect
         /// <param name="PosInfo"></param>
         /// <param name="RandSeed"></param>
         /// <returns></returns>
-        public static List<string> GetTargetList(CardUtility.SelectOption SelectOpt, Client.GameManager game, int RandSeed)
+        public static List<string> GetTargetList(CardUtility.PositionSelectOption SelectOpt, Client.GameManager game, int RandSeed)
         {
             //切记，这里的EffectCount都是1
             List<string> Result = new List<string>();
@@ -172,7 +172,7 @@ namespace Engine.Effect
         /// <param name="Field"></param>
         /// <param name="Pos">指定对象</param>
         /// <returns></returns>
-        public static List<String> RunSingleEffect(CardUtility.SelectOption AbliltyPosPicker, EffectDefine singleEffect, Engine.Client.GameManager game, int RandomSeed)
+        public static List<String> RunSingleEffect(CardUtility.PositionSelectOption AbliltyPosPicker, EffectDefine singleEffect, Engine.Client.GameManager game, int RandomSeed)
         {
             List<String> Result = new List<string>();
             List<String> PosList = GetTargetList(AbliltyPosPicker, game, RandomSeed);

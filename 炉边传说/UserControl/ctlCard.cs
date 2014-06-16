@@ -29,6 +29,7 @@ namespace 炉边传说
                            (minion.风怒特性 ? "|风" : String.Empty) +
                            (minion.冲锋特性 ? "|冲" : String.Empty) +
                            (minion.冰冻状态 != CardUtility.EffectTurn.无效果 ? "冻" : String.Empty);
+                        CanAttack = minion.能否成为动作对象;
                         break;
                     case Engine.Card.CardBasicInfo.CardTypeEnum.法术:
                         lblHealthPoint.Visible = false;

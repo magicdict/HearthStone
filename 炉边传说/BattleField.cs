@@ -87,11 +87,11 @@ namespace 炉边传说
         /// 选择目标
         /// </summary>
         /// <returns></returns>
-        private CardUtility.TargetPosition SelectPanel(CardUtility.SelectOption SelectOpt, Boolean 嘲讽限制)
+        private CardUtility.TargetPosition SelectPanel(CardUtility.PositionSelectOption SelectOpt)
         {
-            var frm = new TargetSelect(SelectOpt, game, 嘲讽限制);
+            var frm = new TargetSelect(SelectOpt, game);
             frm.ShowDialog();
-            var SelectPos = frm.pos;
+            var SelectPos = frm.Position;
             return SelectPos;
         }
         /// <summary>
@@ -388,10 +388,11 @@ namespace 炉边传说
         /// <param name="MyPos"></param>
         private void Fight(int MyPos)
         {
-            var SelectOpt = new Engine.Utility.CardUtility.SelectOption();
+            var SelectOpt = new Engine.Utility.CardUtility.PositionSelectOption();
             SelectOpt.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
             SelectOpt.EffectTargetSelectRole = CardUtility.TargetSelectRoleEnum.所有角色;
-            var YourPos = SelectPanel(SelectOpt, true);
+            SelectOpt.嘲讽限制 = true;
+            var YourPos = SelectPanel(SelectOpt);
             List<String> actionlst = RunAction.Fight(game, MyPos, YourPos.Postion);
             actionlst.AddRange(SecretCard.奥秘计算(actionlst,game));
             game.MySelfInfo.ResetHandCardCost(game);

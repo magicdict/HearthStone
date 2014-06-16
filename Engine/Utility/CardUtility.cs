@@ -266,7 +266,7 @@ namespace Engine.Utility
         /// 选择器
         /// </summary>
         [Serializable]
-        public struct SelectOption
+        public struct PositionSelectOption
         {
             /// <summary>
             /// 法术对象选择模式
@@ -288,6 +288,10 @@ namespace Engine.Utility
             /// 选定位置
             /// </summary>
             public TargetPosition SelectedPos;
+            /// <summary>
+            /// 嘲讽限制
+            /// </summary>
+            public Boolean 嘲讽限制;
         }
         /// <summary>
         /// 符合种族条件
@@ -295,7 +299,7 @@ namespace Engine.Utility
         /// <param name="minion"></param>
         /// <param name="SelectOpt"></param>
         /// <returns></returns>
-        public static Boolean 符合选择条件(Engine.Card.MinionCard minion, SelectOption SelectOpt)
+        public static Boolean 符合选择条件(Engine.Card.MinionCard minion, PositionSelectOption SelectOpt)
         {
             String strCondition = SelectOpt.EffectTargetSelectCondition;
             if (String.IsNullOrEmpty(strCondition)) return true;
@@ -525,7 +529,7 @@ namespace Engine.Utility
         /// 获得位置
         /// </summary>
         /// <returns></returns>
-        public delegate TargetPosition deleteGetTargetPosition(SelectOption 选择参数, Boolean 嘲讽限制);
+        public delegate TargetPosition deleteGetTargetPosition(PositionSelectOption 选择参数);
         /// <summary>
         /// 随从进场位置
         /// </summary>
