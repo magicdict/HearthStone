@@ -14,8 +14,8 @@ namespace 炉边传说
         {
             set
             {
-                lblName.Text = value.Name;
-                lblDescription.Text = value.Description;
+                lblName.Text = value.名称;
+                lblDescription.Text = value.描述;
                 switch (value.CardType)
                 {
                     case Engine.Card.CardBasicInfo.CardTypeEnum.随从:

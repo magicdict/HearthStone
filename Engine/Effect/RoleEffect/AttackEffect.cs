@@ -41,7 +41,7 @@ namespace Engine.Effect
             if (MeOrYou)
             {
                 game.MyInfo.AfterBeAttack(AttackPoint);
-                game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
                     事件类型 = CardUtility.事件类型列表.受伤,
                     触发方向 = CardUtility.TargetSelectDirectEnum.本方,
@@ -51,7 +51,7 @@ namespace Engine.Effect
             else
             {
                 game.YourInfo.AfterBeAttack(AttackPoint);
-                game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
                     事件类型 = CardUtility.事件类型列表.受伤,
                     触发方向 = CardUtility.TargetSelectDirectEnum.对方,
@@ -74,7 +74,7 @@ namespace Engine.Effect
             {
                 if (game.MyInfo.BattleField.BattleMinions[PosIndex].AfterBeAttack(AttackPoint))
                 {
-                    game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         事件类型 = CardUtility.事件类型列表.受伤,
                         触发方向 = CardUtility.TargetSelectDirectEnum.本方,
@@ -86,7 +86,7 @@ namespace Engine.Effect
             {
                 if (game.YourInfo.BattleField.BattleMinions[PosIndex].AfterBeAttack(AttackPoint))
                 {
-                    game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         事件类型 = CardUtility.事件类型列表.受伤,
                         触发方向 = CardUtility.TargetSelectDirectEnum.对方,

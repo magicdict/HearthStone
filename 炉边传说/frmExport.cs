@@ -97,14 +97,14 @@ namespace 炉边传说
             while (!String.IsNullOrEmpty(worksheet.Cells(rowCount, 2).Text))
             {
                 Engine.Card.SecretCard Secret = new Engine.Card.SecretCard();
-                Secret.SN = worksheet.Cells(rowCount, 2).Text;
-                Secret.Name = worksheet.Cells(rowCount, 3).Text;
-                Secret.Description = worksheet.Cells(rowCount, 4).Text;
-                Secret.Class = CardUtility.GetEnum<Engine.Utility.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.ClassEnum.中立);
+                Secret.序列号 = worksheet.Cells(rowCount, 2).Text;
+                Secret.名称 = worksheet.Cells(rowCount, 3).Text;
+                Secret.描述 = worksheet.Cells(rowCount, 4).Text;
+                Secret.职业 = CardUtility.GetEnum<Engine.Utility.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.ClassEnum.中立);
                 Secret.使用成本 = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
                 Secret.使用成本 = Secret.使用成本;
                 Secret.Rare = CardUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度.白色);
-                Secret.IsCardReady = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
+                Secret.是否启用 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
                 Secret.Condition = CardUtility.GetEnum<Engine.Card.SecretCard.SecretCondition>(worksheet.Cells(rowCount, 14).Text, SecretCard.SecretCondition.对方召唤随从);
                 Secret.AdditionInfo = worksheet.Cells(rowCount, 15).Text;
                 switch (target)
@@ -114,7 +114,7 @@ namespace 炉边传说
                         break;
                     case TargetType.Xml:
                         XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.SecretCard));
-                        String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Secret\\" + Secret.SN + ".xml";
+                        String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Secret\\" + Secret.序列号 + ".xml";
                         xml.Serialize(new StreamWriter(XmlFilename), Secret);
                         break;
                     default:
@@ -141,17 +141,17 @@ namespace 炉边传说
             while (!String.IsNullOrEmpty(worksheet.Cells(rowCount, 2).Text))
             {
                 Engine.Card.MinionCard Minion = new Engine.Card.MinionCard();
-                Minion.SN = worksheet.Cells(rowCount, 2).Text;
-                Minion.Name = worksheet.Cells(rowCount, 3).Text;
-                Minion.Description = worksheet.Cells(rowCount, 4).Text;
-                Minion.Class = CardUtility.GetEnum<Engine.Utility.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.ClassEnum.中立);
+                Minion.序列号 = worksheet.Cells(rowCount, 2).Text;
+                Minion.名称 = worksheet.Cells(rowCount, 3).Text;
+                Minion.描述 = worksheet.Cells(rowCount, 4).Text;
+                Minion.职业 = CardUtility.GetEnum<Engine.Utility.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.ClassEnum.中立);
                 Minion.种族 = CardUtility.GetEnum<Engine.Utility.CardUtility.种族Enum>(worksheet.Cells(rowCount, 6).Text, Engine.Utility.CardUtility.种族Enum.无);
                 Minion.使用成本 = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
 
                 Minion.攻击力 = CardUtility.GetInt(worksheet.Cells(rowCount, 8).Text);
                 Minion.生命值上限 = CardUtility.GetInt(worksheet.Cells(rowCount, 9).Text);
                 Minion.Rare = CardUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度.白色);
-                Minion.IsCardReady = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
+                Minion.是否启用 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
 
                 Minion.嘲讽特性 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 14).Text);
                 Minion.冲锋特性 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 15).Text);
@@ -173,7 +173,7 @@ namespace 炉边传说
                 }
                 if (HasBuff)
                 {
-                    Minion.光环效果.Name = Minion.Name;
+                    Minion.光环效果.Name = Minion.名称;
                     Minion.光环效果.Scope = CardUtility.GetEnum<Engine.Card.MinionCard.光环范围>(worksheet.Cells(rowCount, 22).Text, Engine.Card.MinionCard.光环范围.随从全体);
                     Minion.光环效果.EffectType = CardUtility.GetEnum<Engine.Card.MinionCard.光环类型>(worksheet.Cells(rowCount, 23).Text, Engine.Card.MinionCard.光环类型.增加攻防);
                     Minion.光环效果.BuffInfo = worksheet.Cells(rowCount, 24).Text;
@@ -186,7 +186,7 @@ namespace 炉边传说
                 Minion.连击效果 = worksheet.Cells(rowCount, 29).Text;
                 Minion.回合开始效果 = worksheet.Cells(rowCount, 30).Text;
                 Minion.回合结束效果 = worksheet.Cells(rowCount, 31).Text;
-                Minion.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 32).Text);
+                Minion.过载 = CardUtility.GetInt(worksheet.Cells(rowCount, 32).Text);
                 Minion.自身事件.事件类型 = CardUtility.GetEnum<Engine.Utility.CardUtility.事件类型列表>(worksheet.Cells(rowCount, 33).Text, Engine.Utility.CardUtility.事件类型列表.无);
                 Minion.自身事件.事件效果 = worksheet.Cells(rowCount, 34).Text;
                 Minion.自身事件.触发方向 = CardUtility.GetEnum<Engine.Utility.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 35).Text, Engine.Utility.CardUtility.TargetSelectDirectEnum.本方);
@@ -200,7 +200,7 @@ namespace 炉边传说
                         break;
                     case TargetType.Xml:
                         XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.MinionCard));
-                        String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Minion\\" + Minion.SN + ".xml";
+                        String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Minion\\" + Minion.序列号 + ".xml";
                         xml.Serialize(new StreamWriter(XmlFilename), Minion);
                         break;
                     default:
@@ -229,12 +229,12 @@ namespace 炉边传说
             {
                 //这行肯定是卡牌基本情报
                 Ability = new AbilityCard();
-                Ability.SN = worksheet.Cells(rowCount, 2).Text;
-                Ability.Name = worksheet.Cells(rowCount, 3).Text;
-                Ability.Description = worksheet.Cells(rowCount, 4).Text;
-                Ability.Class = CardUtility.GetEnum<Engine.Utility.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 9).Text, Engine.Utility.CardUtility.ClassEnum.中立);
+                Ability.序列号 = worksheet.Cells(rowCount, 2).Text;
+                Ability.名称 = worksheet.Cells(rowCount, 3).Text;
+                Ability.描述 = worksheet.Cells(rowCount, 4).Text;
+                Ability.职业 = CardUtility.GetEnum<Engine.Utility.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 9).Text, Engine.Utility.CardUtility.ClassEnum.中立);
                 Ability.使用成本 = CardUtility.GetInt(worksheet.Cells(rowCount, 10).Text);
-                Ability.Overload = CardUtility.GetInt(worksheet.Cells(rowCount, 11).Text);
+                Ability.过载 = CardUtility.GetInt(worksheet.Cells(rowCount, 11).Text);
                 rowCount++;
                 //这行肯定是选择条件
                 Ability.效果选择类型 = CardUtility.GetEnum<AbilityCard.效果选择类型枚举>(worksheet.Cells(rowCount, 3).Text,
@@ -246,7 +246,7 @@ namespace 炉边传说
                     Ability.SecondAbilityDefine = GetEffectDefine(worksheet, ref rowCount);
                 }
                 XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.AbilityCard));
-                String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Ability\\" + Ability.SN + ".xml";
+                String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Ability\\" + Ability.序列号 + ".xml";
                 xml.Serialize(new StreamWriter(XmlFilename), Ability);
                 rowCount++;
             }
@@ -301,17 +301,17 @@ namespace 炉边传说
             while (!String.IsNullOrEmpty(worksheet.Cells(rowCount, 2).Text))
             {
                 Engine.Card.WeaponCard Weapon = new Engine.Card.WeaponCard();
-                Weapon.SN = worksheet.Cells(rowCount, 2).Text;
-                Weapon.Name = worksheet.Cells(rowCount, 3).Text;
-                Weapon.Description = worksheet.Cells(rowCount, 4).Text;
-                Weapon.Class = CardUtility.GetEnum<Engine.Utility.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.ClassEnum.中立);
+                Weapon.序列号 = worksheet.Cells(rowCount, 2).Text;
+                Weapon.名称 = worksheet.Cells(rowCount, 3).Text;
+                Weapon.描述 = worksheet.Cells(rowCount, 4).Text;
+                Weapon.职业 = CardUtility.GetEnum<Engine.Utility.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.ClassEnum.中立);
                 Weapon.使用成本 = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
                 Weapon.使用成本 = Weapon.使用成本;
 
                 Weapon.攻击力 = CardUtility.GetInt(worksheet.Cells(rowCount, 8).Text);
                 Weapon.耐久度 = CardUtility.GetInt(worksheet.Cells(rowCount, 9).Text);
                 Weapon.Rare = CardUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度.白色);
-                Weapon.IsCardReady = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
+                Weapon.是否启用 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
 
                 switch (target)
                 {
@@ -320,7 +320,7 @@ namespace 炉边传说
                         break;
                     case TargetType.Xml:
                         XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.WeaponCard));
-                        String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Weapon\\" + Weapon.SN + ".xml";
+                        String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Weapon\\" + Weapon.序列号 + ".xml";
                         xml.Serialize(new StreamWriter(XmlFilename), Weapon);
                         break;
                     default:

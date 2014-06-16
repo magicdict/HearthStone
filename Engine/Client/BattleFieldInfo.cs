@@ -280,7 +280,7 @@ namespace Engine.Client
                     else
                     {
                         DeadList.Add(BattleMinions[i]);
-                        game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                        game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                         {
                             事件类型 = CardUtility.事件类型列表.死亡,
                             触发位置 = i + 1,

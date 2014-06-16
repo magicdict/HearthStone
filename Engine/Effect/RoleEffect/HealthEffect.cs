@@ -34,7 +34,7 @@ namespace Engine.Effect
                 game.MyInfo.AfterBeShield(ShieldPoint);
                 if (game.MyInfo.AfterBeHealth(HealthPoint))
                 {
-                    game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         事件类型 = CardUtility.事件类型列表.治疗,
                         触发方向 = CardUtility.TargetSelectDirectEnum.本方,
@@ -47,7 +47,7 @@ namespace Engine.Effect
                 game.YourInfo.AfterBeShield(ShieldPoint);
                 if (game.YourInfo.AfterBeHealth(HealthPoint))
                 {
-                    game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         事件类型 = CardUtility.事件类型列表.治疗,
                         触发方向 = CardUtility.TargetSelectDirectEnum.对方,
@@ -70,7 +70,7 @@ namespace Engine.Effect
             {
                 if (game.MyInfo.BattleField.BattleMinions[PosIndex].AfterBeHealth(HealthPoint))
                 {
-                    game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         事件类型 = CardUtility.事件类型列表.治疗,
                         触发方向 = CardUtility.TargetSelectDirectEnum.本方,
@@ -82,7 +82,7 @@ namespace Engine.Effect
             {
                 if (game.YourInfo.BattleField.BattleMinions[PosIndex].AfterBeHealth(HealthPoint))
                 {
-                    game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         事件类型 = CardUtility.事件类型列表.治疗,
                         触发方向 = CardUtility.TargetSelectDirectEnum.对方,

@@ -29,7 +29,7 @@ namespace Engine.Utility
             ReadyCardDic.Clear();
             foreach (CardBasicInfo card in CardCollections.Values)
             {
-                if (card.IsCardReady) ReadyCardDic.Add(card.SN, card.Name);
+                if (card.是否启用) ReadyCardDic.Add(card.序列号, card.名称);
             }
         }
         /// <summary>
@@ -58,7 +58,7 @@ namespace Engine.Utility
             {
                 Engine.Card.CardBasicInfo info = Engine.Utility.CardUtility.GetCardInfoBySN(CardSn);
                 Status.AppendLine("==============");
-                Status.AppendLine("Description" + info.Description);
+                Status.AppendLine("Description" + info.描述);
                 Status.AppendLine("StandardCostPoint" + info.使用成本);
                 Status.AppendLine("Type：" + info.CardType.ToString());
                 switch (info.CardType)
@@ -111,7 +111,7 @@ namespace Engine.Utility
             {
                 XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.AbilityCard));
                 Engine.Card.AbilityCard ability = (AbilityCard)xml.Deserialize(new StreamReader(AbilityXml));
-                CardCollections.Add(ability.SN, ability);
+                CardCollections.Add(ability.序列号, ability);
             }
             //随从
             foreach (var MinionXml in Directory.GetFiles(CardXmlFolder + "\\Minion\\"))
@@ -119,7 +119,7 @@ namespace Engine.Utility
                 XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.MinionCard));
                 Engine.Card.MinionCard Minio = (MinionCard)xml.Deserialize(new StreamReader(MinionXml));
                 Minio.使用成本 = Minio.使用成本;
-                CardCollections.Add(Minio.SN, Minio);
+                CardCollections.Add(Minio.序列号, Minio);
             }
             //武器
             foreach (var WeaponXml in Directory.GetFiles(CardXmlFolder + "\\Weapon\\"))
@@ -127,7 +127,7 @@ namespace Engine.Utility
                 XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.WeaponCard));
                 Engine.Card.WeaponCard Weapon = (WeaponCard)xml.Deserialize(new StreamReader(WeaponXml));
                 Weapon.使用成本 = Weapon.使用成本;
-                CardCollections.Add(Weapon.SN, Weapon);
+                CardCollections.Add(Weapon.序列号, Weapon);
             }
             //奥秘
             foreach (var SecretXml in Directory.GetFiles(CardXmlFolder + "\\Secret\\"))
@@ -135,7 +135,7 @@ namespace Engine.Utility
                 XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.SecretCard));
                 Engine.Card.SecretCard Secret = (SecretCard)xml.Deserialize(new StreamReader(SecretXml));
                 Secret.使用成本 = Secret.使用成本;
-                CardCollections.Add(Secret.SN, Secret);
+                CardCollections.Add(Secret.序列号, Secret);
             }
         }
 

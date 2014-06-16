@@ -58,7 +58,7 @@ namespace Engine.Client
                     break;
                 case ActionCode.ActionType.Fight:
                     //FIGHT#1#2
-                    game.Fight(int.Parse(actField[2]), int.Parse(actField[1]), true);
+                    FightHandler.Fight(int.Parse(actField[2]), int.Parse(actField[1]),game, true);
                     break;
                 case ActionCode.ActionType.Point:
                 case ActionCode.ActionType.Health:
@@ -73,7 +73,7 @@ namespace Engine.Client
                         Engine.Card.SecretCard Hit = new SecretCard();
                         foreach (var secret in game.MySelfInfo.奥秘列表)
                         {
-                            if (secret.SN == actField[2])
+                            if (secret.序列号 == actField[2])
                             {
                                 Hit = secret;
                                 break;

@@ -93,7 +93,23 @@ namespace Engine.Client
             return Status.ToString();
         }
         /// <summary>
-        /// 遇到攻击
+        /// 武器是否可用
+        /// </summary>
+        /// <returns></returns>
+        public Boolean IsWeaponEnable(Boolean IsMyTurn)
+        {
+            return RemainAttactTimes != 0 && Weapon != null && Weapon.耐久度 > 0 && IsMyTurn;
+        }
+        /// <summary>
+        /// 英雄技能是否可用
+        /// </summary>
+        /// <returns></returns>
+        public Boolean IsHeroAblityEnable(Boolean IsMyTurn)
+        {
+            return (!IsUsedHeroAbility) && crystal.CurrentRemainPoint >= HeroAbility.使用成本 && IsMyTurn;
+        }
+        /// <summary>
+        /// 攻击
         /// </summary>
         /// <param name="AttackPoint"></param>
         public Boolean AfterBeAttack(int AttackPoint)
@@ -119,7 +135,7 @@ namespace Engine.Client
             }
         }
         /// <summary>
-        /// 遇到治疗
+        /// 治疗
         /// </summary>
         /// <param name="HealthPoint"></param>
         public Boolean AfterBeHealth(int HealthPoint)
@@ -130,12 +146,12 @@ namespace Engine.Client
             return true;
         }
         /// <summary>
-        /// 遇到护甲
+        /// 护甲
         /// </summary>
         /// <param name="PlusShieldPoint"></param>
         public Boolean AfterBeShield(int PlusShieldPoint)
         {
-            ShieldPoint += PlusShieldPoint; 
+            ShieldPoint += PlusShieldPoint;
             return true;
         }
     }

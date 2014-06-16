@@ -47,7 +47,7 @@ namespace 炉边传说
             {
                 ((ctlHandCard)Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0]).UseClick += (x, y) =>
                 {
-                    PickCard(((ctlHandCard)((Button)x).Parent).HandCard.SN);
+                    PickCard(((ctlHandCard)((Button)x).Parent).HandCard.序列号);
                 };
             }
             ResetUI();

@@ -1,9 +1,8 @@
-﻿using Engine.Effect;
+﻿using Engine.Client;
+using Engine.Server;
 using Engine.Utility;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Engine.Card
 {
@@ -65,6 +64,53 @@ namespace Engine.Card
                     break;
             }
             return IsHit;
+        }
+        /// <summary>
+        /// 奥秘计算
+        /// </summary>
+        /// <param name="actionlst"></param>
+        /// <returns></returns>
+        public static List<String> 奥秘计算(List<String> actionlst, GameManager game)
+        {
+            List<String> Result = new List<string>();
+            //奥秘计算 START
+            //本方（Fight也需要）
+            if (game.MySelfInfo.奥秘列表.Count != 0)
+            {
+                //本方的行动触发本方奥秘的检查
+                for (int i = 0; i < actionlst.Count; i++)
+                {
+                    foreach (var secret in game.MySelfInfo.奥秘列表)
+                    {
+                        if ((!secret.IsHitted) && Engine.Card.SecretCard.IsSecretHit(secret.序列号, actionlst[i], true))
+                        {
+                            //奥秘执行
+                            Result.AddRange(Engine.Card.SecretCard.RunSecretHit(secret.序列号, actionlst[i], true, game));
+                            secret.IsHitted = true;
+                        }
+                    }
+                }
+                //移除已经触发的奥秘
+                game.MySelfInfo.清除命中奥秘();
+            }
+            //对方（Fight也需要）
+            if (game.YourInfo.SecretCount != 0)
+            {
+                var HitCard = Engine.Client.ClientRequest.IsSecretHit(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, actionlst);
+                if (!String.IsNullOrEmpty(HitCard))
+                {
+                    var HitCardList = HitCard.Split(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
+                    foreach (var hitCard in HitCardList)
+                    {
+                        Result.AddRange(Engine.Card.SecretCard.RunSecretHit(hitCard.Split(Engine.Utility.CardUtility.strSplitDiffMark.ToCharArray())[0],
+                                                                     hitCard.Split(Engine.Utility.CardUtility.strSplitDiffMark.ToCharArray())[1], false, game));
+                        game.YourInfo.SecretCount--;
+                    }
+                }
+            }
+            //奥秘计算 END
+            Result.AddRange(game.Settle());
+            return Result;
         }
         /// <summary>
         /// 运行奥秘

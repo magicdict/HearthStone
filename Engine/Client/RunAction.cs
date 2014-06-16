@@ -26,7 +26,7 @@ namespace Engine.Client
         public static List<String> StartAction(GameManager game, String CardSn, Boolean ConvertPosDirect = false)
         {
             //清除事件池，注意，事件将在动作结束后整体结算
-            game.事件池.Clear();
+            game.事件处理组件.事件池.Clear();
             Engine.Card.CardBasicInfo card = Engine.Utility.CardUtility.GetCardInfoBySN(CardSn);
             List<String> ActionCodeLst = new List<string>();
             switch (card.CardType)
@@ -42,7 +42,7 @@ namespace Engine.Client
                         ActionCodeLst.AddRange(ResultArg);
                         //英雄技能等的时候，不算[本方施法] 
                         if (CardSn.Substring(1, 1) == Engine.Card.AbilityCard.原生法术)
-                            game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                            game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                             {
                                 事件类型 = CardUtility.事件类型列表.施法,
                                 触发方向 = CardUtility.TargetSelectDirectEnum.本方,
@@ -64,7 +64,7 @@ namespace Engine.Client
                         //初始化
                         minion.Init();
                         //必须在放入之前做得原因是，被放入的随从不能被触发这个事件
-                        game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                        game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                         {
                             事件类型 = CardUtility.事件类型列表.召唤,
                             附加信息 = minion.种族.ToString(),
@@ -134,7 +134,7 @@ namespace Engine.Client
                         ActionCodeLst.AddRange(ResultArg);
                         //英雄技能等的时候，不算[本方施法] 
                         if (CardSn.Substring(1, 1) == Engine.Card.AbilityCard.原生法术)
-                            game.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                            game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                             {
                                 事件类型 = CardUtility.事件类型列表.施法,
                                 触发方向 = CardUtility.TargetSelectDirectEnum.本方,
@@ -146,7 +146,7 @@ namespace Engine.Client
             if (ActionCodeLst.Count != 0)
             {
                 game.MyInfo.连击状态 = true;
-                ActionCodeLst.AddRange(game.事件处理());
+                ActionCodeLst.AddRange(game.事件处理组件.事件处理(game));
             }
             return ActionCodeLst;
         }
@@ -160,13 +160,13 @@ namespace Engine.Client
         /// <returns></returns>
         public static List<String> Fight(GameManager game, int MyPos, int YourPos)
         {
-            game.事件池.Clear();
+            game.事件处理组件.事件池.Clear();
             //FIGHT#1#2
             String actionCode = ActionCode.strFight + CardUtility.strSplitMark + MyPos + CardUtility.strSplitMark + YourPos;
             List<String> ActionCodeLst = new List<string>();
             ActionCodeLst.Add(actionCode);
-            ActionCodeLst.AddRange(game.Fight(MyPos, YourPos, false));
-            ActionCodeLst.AddRange(game.事件处理());
+            ActionCodeLst.AddRange(FightHandler.Fight(MyPos, YourPos, game, false));
+            ActionCodeLst.AddRange(game.事件处理组件.事件处理(game));
             return ActionCodeLst;
         }
         #endregion

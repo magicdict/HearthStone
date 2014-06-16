@@ -27,12 +27,12 @@ namespace Engine.Card
             /// </summary>
             相邻随从,
             /// <summary>
-            /// 英雄
+            /// 全局
             /// </summary>
             全局
         }
         /// <summary>
-        /// 
+        /// 攻击状态
         /// </summary>
         public enum 攻击状态
         {
@@ -100,7 +100,7 @@ namespace Engine.Card
         public enum 战吼类型列表
         {
             /// <summary>
-            /// 
+            /// 默认
             /// </summary>
             默认,
             /// <summary>
@@ -148,27 +148,27 @@ namespace Engine.Card
         /// </summary>
         public CardUtility.种族Enum 种族 = CardUtility.种族Enum.无;
         /// <summary>
-        /// 攻击力（）
+        /// 攻击力
         /// </summary>
-        public int 攻击力 = -1;
+        public int 攻击力 = 0;
         /// <summary>
-        /// 生命值（）
+        /// 生命值
         /// </summary>
-        public int 生命值 = -1;
+        public int 生命值 = 0;
         /// <summary>
-        /// 体力（）
+        /// 体力
         /// </summary>
-        public int 生命值上限 = -1;
+        public int 生命值上限 = 0;
         /// <summary>
-        /// 嘲讽()
+        /// 嘲讽
         /// </summary>
         public Boolean 嘲讽特性 = false;
         /// <summary>
-        /// 冲锋()
+        /// 冲锋
         /// </summary>
         public Boolean 冲锋特性 = false;
         /// <summary>
-        /// 风怒()
+        /// 风怒
         /// </summary>
         public Boolean 风怒特性 = false;
         /// <summary>
@@ -538,7 +538,7 @@ namespace Engine.Card
         public new String GetInfo()
         {
             StringBuilder Status = new StringBuilder();
-            Status.AppendLine(Name);
+            Status.AppendLine(名称);
             Status.AppendLine("[状]" + (圣盾特性 ? "圣" : String.Empty) +
                                        (嘲讽特性 ? "|嘲" : String.Empty) +
                                        (风怒特性 ? "|风" : String.Empty) +

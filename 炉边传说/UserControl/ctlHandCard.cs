@@ -21,9 +21,9 @@ namespace 炉边传说
         {
             set
             {
-                lblName.Text = value.Name;
+                lblName.Text = value.名称;
                 lblCostPoint.Text = value.使用成本.ToString();
-                lblDescription.Text = value.Description;
+                lblDescription.Text = value.描述;
                 mHandCard = value;
                 switch (value.CardType)
                 {

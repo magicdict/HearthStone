@@ -121,7 +121,7 @@ namespace 炉边传说
             }
             LeftPos += (btnMyWeapon.Width + Megrate);
             //没有使用过，有武器，武器耐久度不为零
-            if (game.IsWeaponEnable())
+            if (game.MyInfo.IsWeaponEnable(game.IsMyTurn))
             {
                 btnMyWeapon.Visible = true;
             }
@@ -137,9 +137,8 @@ namespace 炉边传说
 
             LeftPos += btnMyHero.Width + Megrate;
 
-
             //没有使用过，能够使用
-            if (game.IsHeroAblityEnable())
+            if (game.MyInfo.IsHeroAblityEnable(game.IsMyTurn))
             {
                 btnMyHeroAblity.Enabled = true;
             }
@@ -359,14 +358,14 @@ namespace 炉边传说
                 MessageBox.Show(msg);
                 return;
             }
-            var actionlst = RunAction.StartAction(game, card.SN);
+            var actionlst = RunAction.StartAction(game, card.序列号);
             if (actionlst.Count != 0)
             {
                 if ((sender.GetType()) == typeof(Button))
                 {
                     actionlst.Insert(0, ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strMe);
                     game.MyInfo.crystal.CurrentRemainPoint -= card.使用成本;
-                    game.RemoveUsedCard(card.SN);
+                    game.RemoveUsedCard(card.序列号);
                 }
                 else
                 {
@@ -376,7 +375,7 @@ namespace 炉边传说
                 actionlst.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +
                              game.MyInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + game.MyInfo.crystal.CurrentFullPoint);
                 //奥秘计算
-                actionlst.AddRange(game.奥秘计算(actionlst));
+                actionlst.AddRange(SecretCard.奥秘计算(actionlst,game));
                 game.MySelfInfo.ResetHandCardCost(game);
                 Engine.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
                 DisplayMyInfo();
@@ -394,7 +393,7 @@ namespace 炉边传说
             SelectOpt.EffectTargetSelectRole = CardUtility.TargetSelectRoleEnum.所有角色;
             var YourPos = SelectPanel(SelectOpt, true);
             List<String> actionlst = RunAction.Fight(game, MyPos, YourPos.Postion);
-            actionlst.AddRange(game.奥秘计算(actionlst));
+            actionlst.AddRange(SecretCard.奥秘计算(actionlst,game));
             game.MySelfInfo.ResetHandCardCost(game);
             Engine.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), actionlst);
             DisplayMyInfo();

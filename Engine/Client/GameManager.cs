@@ -50,6 +50,10 @@ namespace Engine.Client
         /// </summary>
         public static int RandomSeed = 1;
         /// <summary>
+        /// 
+        /// </summary>
+        public EventHandler 事件处理组件 = new EventHandler();
+        /// <summary>
         /// 游戏信息
         /// </summary>
         /// <returns></returns>
@@ -129,7 +133,7 @@ namespace Engine.Client
         {
             //剩余的法力是否足够实际召唤的法力
             String Message = String.Empty;
-            if (card.Overload > 0 && OverloadPoint > 0)
+            if (card.过载 > 0 && OverloadPoint > 0)
             {
                 Message = "已经使用过载";
                 return Message;
@@ -275,7 +279,7 @@ namespace Engine.Client
                     if (MyInfo.BattleField.BattleMinions[i].特殊效果 == MinionCard.特殊效果列表.回合结束死亡)
                     {
                         MyInfo.BattleField.BattleMinions[i] = null;
-                        事件池.Add(new CardUtility.全局事件()
+                        事件处理组件.事件池.Add(new CardUtility.全局事件()
                         {
                             事件类型 = CardUtility.事件类型列表.死亡,
                             触发方向 = CardUtility.TargetSelectDirectEnum.本方,
@@ -285,167 +289,10 @@ namespace Engine.Client
                 }
             }
             ActionLst.AddRange(Settle());
-            ActionLst.AddRange(事件处理());
+            ActionLst.AddRange(事件处理组件.事件处理(this));
             return ActionLst;
         }
-        /// <summary>
-        /// 奥秘计算
-        /// </summary>
-        /// <param name="actionlst"></param>
-        /// <returns></returns>
-        public List<String> 奥秘计算(List<String> actionlst)
-        {
-            List<String> Result = new List<string>();
-            //奥秘计算 START
-            //本方（Fight也需要）
-            if (MySelfInfo.奥秘列表.Count != 0)
-            {
-                //本方的行动触发本方奥秘的检查
-                for (int i = 0; i < actionlst.Count; i++)
-                {
-                    foreach (var secret in MySelfInfo.奥秘列表)
-                    {
-                        if ((!secret.IsHitted) && Engine.Card.SecretCard.IsSecretHit(secret.SN, actionlst[i], true))
-                        {
-                            //奥秘执行
-                            Result.AddRange(Engine.Card.SecretCard.RunSecretHit(secret.SN, actionlst[i], true, this));
-                            secret.IsHitted = true;
-                        }
-                    }
-                }
-                //移除已经触发的奥秘
-                MySelfInfo.清除命中奥秘();
-            }
-            //对方（Fight也需要）
-            if (YourInfo.SecretCount != 0)
-            {
-                var HitCard = Engine.Client.ClientRequest.IsSecretHit(GameId.ToString(GameServer.GameIdFormat), IsFirst, actionlst);
-                if (!String.IsNullOrEmpty(HitCard))
-                {
-                    var HitCardList = HitCard.Split(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
-                    foreach (var hitCard in HitCardList)
-                    {
-                        Result.AddRange(Engine.Card.SecretCard.RunSecretHit(hitCard.Split(Engine.Utility.CardUtility.strSplitDiffMark.ToCharArray())[0],
-                                                                     hitCard.Split(Engine.Utility.CardUtility.strSplitDiffMark.ToCharArray())[1], false, this));
-                        YourInfo.SecretCount--;
-                    }
-                }
-            }
-            //奥秘计算 END
-            Result.AddRange(Settle());
-            return Result;
-        }
-        /// <summary>
-        /// 战斗
-        /// </summary>
-        /// <param name="攻击方Pos">本方</param>
-        /// <param name="被攻击方Pos">对方</param>
-        /// <param name="被动攻击">被动攻击</param>
-        /// <returns></returns>
-        public List<String> Fight(int 攻击方Pos, int 被攻击方Pos, Boolean 被动攻击 = false)
-        {
-            List<String> Result = new List<string>();
-            //主动攻击方的状态变化
-            if (!被动攻击)
-            {
-                //攻击次数
-                if (攻击方Pos == BattleFieldInfo.HeroPos)
-                {
-                    if (MyInfo.Weapon != null)
-                    {
-                        MyInfo.Weapon.耐久度--;
-                        MyInfo.RemainAttactTimes = 0;
-                    }
-                }
-                else
-                {
-                    //攻击次数的清算,潜行等去除(如果不是被攻击方的处理)
-                    MyInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterDoAttack(被动攻击);
-                }
-            }
-            //伤害计算(本方)
-            //被攻击方如果是英雄，则认为这个时候是攻击方的回合，
-            //则被攻击方的英雄是关闭武器状态的，本方不会受到伤害
-            var YourAttackPoint = 0;
-            if (被攻击方Pos != BattleFieldInfo.HeroPos)
-            {
-                YourAttackPoint = YourInfo.BattleField.BattleMinions[被攻击方Pos - 1].TotalAttack();
-            }
-            if (攻击方Pos != BattleFieldInfo.HeroPos)
-            {
-                //圣盾不引发伤害事件
-                if (MyInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterBeAttack(YourAttackPoint))
-                {
-                    事件池.Add(new Engine.Utility.CardUtility.全局事件()
-                    {
-                        事件类型 = CardUtility.事件类型列表.受伤,
-                        触发方向 = CardUtility.TargetSelectDirectEnum.本方,
-                        触发位置 = 攻击方Pos
-                    });
-                }
-            }
-            else
-            {
-                //护甲不引发伤害事件
-                if (MyInfo.AfterBeAttack(YourAttackPoint))
-                {
-                    事件池.Add(new Engine.Utility.CardUtility.全局事件()
-                    {
-                        事件类型 = CardUtility.事件类型列表.受伤,
-                        触发方向 = CardUtility.TargetSelectDirectEnum.本方,
-                        触发位置 = BattleFieldInfo.HeroPos
-                    });
-                }
-            }
-            //伤害计算(对方)
-            var MyAttackPoint = 0;
-            if (攻击方Pos != BattleFieldInfo.HeroPos)
-            {
-                MyAttackPoint = MyInfo.BattleField.BattleMinions[攻击方Pos - 1].TotalAttack();
-            }
-            else
-            {
-                if (MyInfo.Weapon != null) MyAttackPoint = MyInfo.Weapon.攻击力;
-            }
-            if (被攻击方Pos != BattleFieldInfo.HeroPos)
-            {
-                if (YourInfo.BattleField.BattleMinions[被攻击方Pos - 1].AfterBeAttack(MyAttackPoint))
-                {
-                    事件池.Add(new Engine.Utility.CardUtility.全局事件()
-                    {
-                        事件类型 = CardUtility.事件类型列表.受伤,
-                        触发方向 = CardUtility.TargetSelectDirectEnum.对方,
-                        触发位置 = 被攻击方Pos
-                    });
-                }
-            }
-            else
-            {
-                //护甲不引发伤害事件
-                if (YourInfo.AfterBeAttack(MyAttackPoint))
-                {
-                    事件池.Add(new Engine.Utility.CardUtility.全局事件()
-                    {
-                        事件类型 = CardUtility.事件类型列表.受伤,
-                        触发方向 = CardUtility.TargetSelectDirectEnum.对方,
-                        触发位置 = BattleFieldInfo.HeroPos
-                    });
-                }
-            }
 
-            //每次操作后进行一次清算
-            if (!被动攻击)
-            {
-                //将亡语效果放入结果
-                Result.AddRange(Settle());
-            }
-            else
-            {
-                //对方已经发送亡语效果，本方不用重复模拟了
-                Settle();
-            }
-            return Result;
-        }
         /// <summary>
         /// 清算(核心方法)
         /// </summary>
@@ -485,7 +332,7 @@ namespace Engine.Client
             Engine.Card.CardBasicInfo removeCard = new CardBasicInfo();
             foreach (var Seekcard in MySelfInfo.handCards)
             {
-                if (Seekcard.SN == CardSn)
+                if (Seekcard.序列号 == CardSn)
                 {
                     removeCard = Seekcard;
                 }
@@ -493,71 +340,5 @@ namespace Engine.Client
             MySelfInfo.handCards.Remove(removeCard);
             MyInfo.HandCardCount = MySelfInfo.handCards.Count;
         }
-        /// <summary>
-        /// 武器是否可用
-        /// </summary>
-        /// <returns></returns>
-        public Boolean IsWeaponEnable()
-        {
-            return MyInfo.RemainAttactTimes != 0 &&
-                   MyInfo.Weapon != null &&
-                   MyInfo.Weapon.耐久度 > 0 &&
-                   IsMyTurn;
-        }
-        /// <summary>
-        /// 英雄技能是否可用
-        /// </summary>
-        /// <returns></returns>
-        public Boolean IsHeroAblityEnable()
-        {
-            return (!MyInfo.IsUsedHeroAbility) && IsMyTurn &&
-                    MyInfo.crystal.CurrentRemainPoint >= MyInfo.HeroAbility.使用成本;
-        }
-
-        #region "Event"
-        /// <summary>
-        /// 事件池
-        /// </summary>
-        public List<CardUtility.全局事件> 事件池 = new List<CardUtility.全局事件>();
-        /// <summary>
-        /// 事件处理
-        /// </summary>
-        /// <returns></returns>
-        public List<String> 事件处理()
-        {
-            List<String> Result = new List<string>();
-            for (int j = 0; j < 事件池.Count; j++)
-            {
-                CardUtility.全局事件 事件 = 事件池[j];
-                for (int i = 0; i < MyInfo.BattleField.MinionCount; i++)
-                {
-                    if (事件.事件类型 == CardUtility.事件类型列表.召唤 &&
-                        事件.触发位置 == (i + 1) &&
-                        事件.触发方向 == CardUtility.TargetSelectDirectEnum.本方)
-                    {
-                        continue;
-                    }
-                    else
-                    {
-                        Result.AddRange(MyInfo.BattleField.BattleMinions[i].事件处理方法(事件, this, CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString()));
-                    }
-                }
-                //转换触发方向，对方触发事件？结果是否传送？传送时候要改变strMe和strYou！
-                if (事件.触发方向 == CardUtility.TargetSelectDirectEnum.本方)
-                {
-                    事件.触发方向 = CardUtility.TargetSelectDirectEnum.对方;
-                }
-                else
-                {
-                    事件.触发方向 = CardUtility.TargetSelectDirectEnum.本方;
-                }
-                for (int i = 0; i < YourInfo.BattleField.MinionCount; i++)
-                {
-                    YourInfo.BattleField.BattleMinions[i].事件处理方法(事件, this, CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString());
-                }
-            }
-            return Result;
-        }
-        #endregion
     }
 }

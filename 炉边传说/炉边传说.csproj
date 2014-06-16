@@ -59,6 +59,12 @@
     <Compile Include="CardDeck.Designer.cs">
       <DependentUpon>CardDeck.cs</DependentUpon>
     </Compile>
+    <Compile Include="ServerConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerConfig.Designer.cs">
+      <DependentUpon>ServerConfig.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControl\ctlCardList.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -144,6 +150,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CardDeck.resx">
       <DependentUpon>CardDeck.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ServerConfig.resx">
+      <DependentUpon>ServerConfig.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\ctlCardList.resx">
       <DependentUpon>ctlCardList.cs</DependentUpon>
