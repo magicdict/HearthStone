@@ -60,6 +60,7 @@ namespace 炉边传说
             (game.MyInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
             for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
             {
+                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).Visible = game.MyInfo.BattleField.BattleMinions[i].能否成为动作对象;
                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CardInfo = game.MyInfo.BattleField.BattleMinions[i];
                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).Left = LeftPos;
                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).FightClick += (x, y) =>
@@ -75,6 +76,7 @@ namespace 炉边传说
             LeftPos = (this.Width - (game.YourInfo.BattleField.MinionCount * btnMe1.Width + (game.YourInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
             for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
             {
+                ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).Visible = game.YourInfo.BattleField.BattleMinions[i].能否成为动作对象;
                 ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CardInfo = game.YourInfo.BattleField.BattleMinions[i];
                 ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).Left = LeftPos;
                 ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).FightClick += (x, y) =>

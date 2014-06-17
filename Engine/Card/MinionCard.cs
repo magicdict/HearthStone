@@ -296,7 +296,9 @@ namespace Engine.Card
         public new void Init()
         {
             //初始状态
+            生命值 = 生命值上限;
             this.冰冻状态 = CardUtility.EffectTurn.无效果;
+            //攻击次数
             if (风怒特性)
             {
                 剩余攻击次数 = 2;
@@ -305,7 +307,6 @@ namespace Engine.Card
             {
                 剩余攻击次数 = 1;
             }
-            //攻击次数
             if (冲锋特性)
             {
                 this.AttactStatus = 攻击状态.可攻击;

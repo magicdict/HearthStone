@@ -86,6 +86,7 @@ namespace Engine.Client
             MyInfo.crystal.CurrentRemainPoint = 5;
             YourInfo.crystal.CurrentFullPoint = 5;
             YourInfo.crystal.CurrentRemainPoint = 5;
+            HandCard.Add("A000002");
             //DEBUG END
             //英雄技能：奥术飞弹
             MyInfo.HeroAbility = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");

@@ -113,8 +113,11 @@ namespace Engine.Server
             bytes = Encoding.ASCII.GetBytes(Response);
             stream.Write(bytes, 0, bytes.Length);
             client.Close();
-            logger.TextLog("Request :[" + requestType.ToString() + "]" + Request);
-            logger.TextLog("Response:[" + Response.ToString() + "]");
+            if (!(requestType == RequestType.读取行动 && String.IsNullOrEmpty(Response)))
+            {
+                logger.TextLog("Request :[" + requestType.ToString() + "]" + Request);
+                logger.TextLog("Response:[" + Response.ToString() + "]");
+            }
         }
         /// <summary>
         /// 消息类型(3位)

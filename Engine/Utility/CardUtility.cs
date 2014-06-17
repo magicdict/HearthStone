@@ -299,7 +299,7 @@ namespace Engine.Utility
         public static Boolean 符合选择条件(Engine.Card.MinionCard minion, PositionSelectOption SelectOpt)
         {
             String strCondition = SelectOpt.EffectTargetSelectCondition;
-            if (String.IsNullOrEmpty(strCondition)) return true;
+            if (String.IsNullOrEmpty(strCondition) || strCondition == strIgnore) return true;
             foreach (var 种族名称 in Enum.GetNames(typeof(种族Enum)))
             {
                 if (种族名称 == strCondition)
@@ -311,7 +311,7 @@ namespace Engine.Utility
                     return strCondition != minion.种族.ToString();
                 }
             }
-            switch (strCondition.Substring(1,1))
+            switch (strCondition.Substring(1, 1))
             {
                 case "+":
                     return minion.攻击力 >= int.Parse(strCondition.Substring(0, 1));
@@ -503,6 +503,14 @@ namespace Engine.Utility
             /// 0 - 英雄，1-7 随从位置
             /// </summary>
             public int Postion;
+            /// <summary>
+            /// ToString(重载)
+            /// </summary>
+            /// <returns></returns>
+            public override string ToString()
+            {
+                return (MeOrYou ? strMe : strYou) + strSplitMark + Postion.ToString("D1");
+            }
         }
         #region"委托"
         /// <summary>

@@ -56,6 +56,10 @@ namespace Engine.Effect
             }
             return Result;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="InfoArray"></param>
         public void GetField(List<string> InfoArray)
         {
             获得法力水晶 = InfoArray[0].Split("/".ToCharArray())[0];

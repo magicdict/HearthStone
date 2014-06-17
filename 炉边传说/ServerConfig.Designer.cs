@@ -147,6 +147,7 @@
             this.Controls.Add(this.lbl英雄生命值上限);
             this.Controls.Add(this.lbl套牌牌数上限);
             this.Name = "ServerConfig";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "服务器配置";
             this.Load += new System.EventHandler(this.ServerConfig_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();

@@ -23,11 +23,7 @@ namespace Engine.Effect
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public int 实际伤害点数 = 0;
-        /// <summary>
-        /// 实际强化伤害点数
-        /// </summary>
-        public int 实际强化伤害点数 = 0;
+        public String 实际伤害点数 = String.Empty;
         /// <summary>
         /// 对英雄
         /// </summary>
@@ -37,7 +33,7 @@ namespace Engine.Effect
         void IAtomicEffect.DealHero(Client.GameManager game, EffectDefine singleEffect, Boolean MeOrYou)
         {
             //调整伤害值
-            int AttackPoint = 实际伤害点数;
+            int AttackPoint = ExpressHandler.GetEffectPoint(game,实际伤害点数);
             if (MeOrYou)
             {
                 game.MyInfo.AfterBeAttack(AttackPoint);
@@ -69,7 +65,7 @@ namespace Engine.Effect
         void IAtomicEffect.DealMinion(Client.GameManager game, EffectDefine singleEffect, Boolean MeOrYou, int PosIndex)
         {
             //调整伤害值
-            int AttackPoint = 实际伤害点数;
+            int AttackPoint = ExpressHandler.GetEffectPoint(game, 实际伤害点数);
             if (MeOrYou)
             {
                 if (game.MyInfo.BattleField.BattleMinions[PosIndex].AfterBeAttack(AttackPoint))
@@ -95,9 +91,13 @@ namespace Engine.Effect
                 }
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="InfoArray"></param>
         void IAtomicEffect.GetField(List<string> InfoArray)
         {
-            throw new NotImplementedException();
+            实际伤害点数 = InfoArray[0];
         }
     }
 }

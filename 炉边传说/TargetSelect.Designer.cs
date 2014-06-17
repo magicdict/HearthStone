@@ -56,6 +56,7 @@
             this.btnMe7.Name = "btnMe7";
             this.btnMe7.Size = new System.Drawing.Size(100, 87);
             this.btnMe7.TabIndex = 47;
+            this.btnMe7.Visible = false;
             // 
             // btnMe6
             // 
@@ -65,6 +66,7 @@
             this.btnMe6.Name = "btnMe6";
             this.btnMe6.Size = new System.Drawing.Size(100, 87);
             this.btnMe6.TabIndex = 46;
+            this.btnMe6.Visible = false;
             // 
             // btnMe5
             // 
@@ -74,6 +76,7 @@
             this.btnMe5.Name = "btnMe5";
             this.btnMe5.Size = new System.Drawing.Size(100, 87);
             this.btnMe5.TabIndex = 45;
+            this.btnMe5.Visible = false;
             // 
             // btnMe4
             // 
@@ -83,6 +86,7 @@
             this.btnMe4.Name = "btnMe4";
             this.btnMe4.Size = new System.Drawing.Size(100, 87);
             this.btnMe4.TabIndex = 44;
+            this.btnMe4.Visible = false;
             // 
             // btnMe3
             // 
@@ -92,6 +96,7 @@
             this.btnMe3.Name = "btnMe3";
             this.btnMe3.Size = new System.Drawing.Size(100, 87);
             this.btnMe3.TabIndex = 43;
+            this.btnMe3.Visible = false;
             // 
             // btnMe2
             // 
@@ -101,6 +106,7 @@
             this.btnMe2.Name = "btnMe2";
             this.btnMe2.Size = new System.Drawing.Size(100, 87);
             this.btnMe2.TabIndex = 42;
+            this.btnMe2.Visible = false;
             // 
             // btnMe1
             // 
@@ -110,6 +116,7 @@
             this.btnMe1.Name = "btnMe1";
             this.btnMe1.Size = new System.Drawing.Size(100, 87);
             this.btnMe1.TabIndex = 41;
+            this.btnMe1.Visible = false;
             // 
             // btnYou7
             // 
@@ -119,6 +126,7 @@
             this.btnYou7.Name = "btnYou7";
             this.btnYou7.Size = new System.Drawing.Size(100, 87);
             this.btnYou7.TabIndex = 40;
+            this.btnYou7.Visible = false;
             // 
             // btnYou6
             // 
@@ -128,6 +136,7 @@
             this.btnYou6.Name = "btnYou6";
             this.btnYou6.Size = new System.Drawing.Size(100, 87);
             this.btnYou6.TabIndex = 39;
+            this.btnYou6.Visible = false;
             // 
             // btnYou5
             // 
@@ -137,6 +146,7 @@
             this.btnYou5.Name = "btnYou5";
             this.btnYou5.Size = new System.Drawing.Size(100, 87);
             this.btnYou5.TabIndex = 38;
+            this.btnYou5.Visible = false;
             // 
             // btnYou4
             // 
@@ -146,6 +156,7 @@
             this.btnYou4.Name = "btnYou4";
             this.btnYou4.Size = new System.Drawing.Size(100, 87);
             this.btnYou4.TabIndex = 37;
+            this.btnYou4.Visible = false;
             // 
             // btnYou3
             // 
@@ -155,6 +166,7 @@
             this.btnYou3.Name = "btnYou3";
             this.btnYou3.Size = new System.Drawing.Size(100, 87);
             this.btnYou3.TabIndex = 36;
+            this.btnYou3.Visible = false;
             // 
             // btnYou2
             // 
@@ -164,6 +176,7 @@
             this.btnYou2.Name = "btnYou2";
             this.btnYou2.Size = new System.Drawing.Size(100, 87);
             this.btnYou2.TabIndex = 35;
+            this.btnYou2.Visible = false;
             // 
             // btnYou1
             // 
@@ -173,6 +186,7 @@
             this.btnYou1.Name = "btnYou1";
             this.btnYou1.Size = new System.Drawing.Size(100, 87);
             this.btnYou1.TabIndex = 34;
+            this.btnYou1.Visible = false;
             // 
             // btnMyHero
             // 

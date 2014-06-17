@@ -51,7 +51,7 @@
     <Compile Include="Effect\IAtomicEffect.cs" />
     <Compile Include="Effect\RoleEffect\PointEffect.cs" />
     <Compile Include="Effect\RoleEffect\StatusEffect.cs" />
-    <Compile Include="Effect\RoleEffect\SummonEffect.cs" />
+    <Compile Include="Effect\SystemEffect\SummonEffect.cs" />
     <Compile Include="Effect\SystemEffect\WeaponPointEffect.cs" />
     <Compile Include="Utility\logger.cs" />
     <Compile Include="Client\BattleFieldInfo.cs" />

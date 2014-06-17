@@ -65,24 +65,33 @@ namespace Engine.Utility
             return point;
         }
         /// <summary>
-        /// 战场条件判断
+        /// 
         /// </summary>
         /// <param name="game"></param>
-        /// <param name="Condition"></param>
+        /// <param name="PosInfo"></param>
+        /// <param name="singleEffect"></param>
         /// <returns></returns>
-        public static Boolean BattleFieldCondition(Client.GameManager game, String Condition)
+        public static bool AtomicEffectPickCondition(Client.GameManager game, string PosInfo, Effect.EffectDefine singleEffect)
         {
-            return false;
+            var 效果条件 = singleEffect.效果条件.ToUpper();
+            switch (效果条件)
+            {
+                case "POSITION":
+                    return PosInfo == singleEffect.AbliltyPosPicker.SelectedPos.ToString();
+                default:
+                    break;
+            }
+            return true;
         }
         /// <summary>
-        /// 战场条件判断
+        /// 
         /// </summary>
         /// <param name="game"></param>
-        /// <param name="Condition"></param>
+        /// <param name="效果选择条件"></param>
         /// <returns></returns>
-        public static Boolean BattleFieldCondition(Client.GameManager game, String PositionInfo, String Condition)
+        public static bool AbilityPickCondition(Client.GameManager game, string 效果选择条件)
         {
-            return false;
+            throw new NotImplementedException();
         }
     }
 }

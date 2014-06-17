@@ -16,10 +16,6 @@ namespace Engine.Effect
         /// </summary>
         public String 指定卡牌编号 = String.Empty;
         /// <summary>
-        /// 抽牌次数
-        /// </summary>
-        public String 抽牌次数表达式 = String.Empty;
-        /// <summary>
         /// 法术执行
         /// </summary>
         /// <param name="game"></param>
@@ -31,7 +27,7 @@ namespace Engine.Effect
             {
                 case CardUtility.TargetSelectDirectEnum.本方:
                     //#CARD#ME#M000001
-                    if (String.IsNullOrEmpty(指定卡牌编号))
+                    if (String.IsNullOrEmpty(指定卡牌编号) || 指定卡牌编号 == CardUtility.strIgnore)
                     {
                         var drawCards = Engine.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
                         if (drawCards.Count == 1)
@@ -50,7 +46,7 @@ namespace Engine.Effect
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.对方:
-                    if (String.IsNullOrEmpty(指定卡牌编号))
+                    if (String.IsNullOrEmpty(指定卡牌编号) || 指定卡牌编号 == CardUtility.strIgnore)
                     {
                         if (game.YourInfo.RemainCardDeckCount > 0)
                         {
@@ -66,7 +62,7 @@ namespace Engine.Effect
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.双方:
-                    if (String.IsNullOrEmpty(指定卡牌编号))
+                    if (String.IsNullOrEmpty(指定卡牌编号) || 指定卡牌编号 == CardUtility.strIgnore)
                     {
                         var drawCards = Engine.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
                         if (drawCards.Count == 1)
@@ -83,7 +79,7 @@ namespace Engine.Effect
                         game.MyInfo.HandCardCount++;
                         Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strMe);
                     }
-                    if (String.IsNullOrEmpty(指定卡牌编号))
+                    if (String.IsNullOrEmpty(指定卡牌编号) || 指定卡牌编号 == CardUtility.strIgnore)
                     {
                         if (game.YourInfo.RemainCardDeckCount > 0)
                         {
@@ -102,6 +98,14 @@ namespace Engine.Effect
                     break;
             }
             return Result;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="InfoArray"></param>
+        public void GetField(List<string> InfoArray)
+        {
+            指定卡牌编号 = InfoArray[0];
         }
     }
 }
