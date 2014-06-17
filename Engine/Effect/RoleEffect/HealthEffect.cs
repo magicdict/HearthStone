@@ -20,7 +20,7 @@ namespace Engine.Effect
         /// </summary>
         public String 护甲回复表达式 = String.Empty;
         /// <summary>
-        /// 
+        /// 对英雄施法
         /// </summary>
         /// <param name="game"></param>
         /// <param name="singleEffect"></param>
@@ -57,7 +57,7 @@ namespace Engine.Effect
             }
         }
         /// <summary>
-        /// 
+        /// 对随从施法
         /// </summary>
         /// <param name="game"></param>
         /// <param name="singleEffect"></param>
@@ -91,9 +91,14 @@ namespace Engine.Effect
                 }
             }
         }
+        /// <summary>
+        /// 获得效果信息
+        /// </summary>
+        /// <param name="InfoArray"></param>
         void IAtomicEffect.GetField(List<string> InfoArray)
         {
-            throw new NotImplementedException();
+            生命值回复表达式 = InfoArray[0];
+            护甲回复表达式 = InfoArray[1];
         }
     }
 }

@@ -10,10 +10,6 @@ namespace Engine.Effect
     public class SummonEffect 
     {
         /// <summary>
-        /// 法术方向
-        /// </summary>
-        public CardUtility.TargetSelectDirectEnum 法术方向 = CardUtility.TargetSelectDirectEnum.双方;
-        /// <summary>
         /// 
         /// </summary>
         public String 指定卡牌编号数组 = String.Empty;
@@ -24,14 +20,14 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="Seed"></param>
         /// <returns></returns>
-        public List<string> RunEffect(Client.GameManager game)
+        public List<string> RunEffect(Client.GameManager game, Utility.CardUtility.TargetSelectDirectEnum Direct)
         {
             List<String> Result = new List<string>();
             var MinionLst = 指定卡牌编号数组.Split(Engine.Utility.CardUtility.strSplitMark.ToCharArray());
             Random random = new Random(DateTime.Now.Millisecond);
             var CardSN = MinionLst[random.Next(0, MinionLst.Length)];
             var Minion = (Engine.Card.MinionCard)Engine.Utility.CardUtility.GetCardInfoBySN(CardSN);
-            switch (法术方向)
+            switch (Direct)
             {
                 case CardUtility.TargetSelectDirectEnum.本方:
                     if (game.MyInfo.BattleField.MinionCount < Engine.Client.BattleFieldInfo.MaxMinionCount)
@@ -97,6 +93,14 @@ namespace Engine.Effect
                     break;
             }
             return Result;
+        }
+        /// <summary>
+        /// 获得效果信息
+        /// </summary>
+        /// <param name="InfoArray"></param>
+        public void GetField(List<string> InfoArray)
+        {
+            指定卡牌编号数组 = InfoArray[0];
         }
     }
 }

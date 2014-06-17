@@ -8,10 +8,6 @@ namespace Engine.Effect
     public class WeaponPointEffect
     {
         /// <summary>
-        /// 法术方向
-        /// </summary>
-        public CardUtility.TargetSelectDirectEnum 法术方向 = CardUtility.TargetSelectDirectEnum.双方;
-        /// <summary>
         /// 攻击力
         /// </summary>
         public string 攻击力;
@@ -24,10 +20,10 @@ namespace Engine.Effect
         /// </summary>
         /// <param name="role"></param>
         /// <param name="Ability"></param>
-        public List<string> RunEffect(GameManager game)
+        public List<string> RunEffect(GameManager game, Utility.CardUtility.TargetSelectDirectEnum Direct)
         {
             List<string> Result = new List<string>();
-            if (法术方向 == CardUtility.TargetSelectDirectEnum.本方)
+            if (Direct == CardUtility.TargetSelectDirectEnum.本方)
             {
                 if (game.MyInfo.Weapon != null)
                 {
@@ -46,6 +42,15 @@ namespace Engine.Effect
                 }
             }
             return Result;
+        }
+        /// <summary>
+        /// 获得效果信息
+        /// </summary>
+        /// <param name="InfoArray"></param>
+        public void GetField(List<string> InfoArray)
+        {
+            攻击力 = InfoArray[0];
+            耐久度 = InfoArray[1];
         }
     }
 }

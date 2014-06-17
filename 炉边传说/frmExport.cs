@@ -36,10 +36,10 @@ namespace 炉边传说
             excelObj.Visible = true;
             dynamic workbook;
             workbook = excelObj.Workbooks.Open(ExcelPicker.SelectedPathOrFileName);
-            Minion(workbook);
+            //Minion(workbook);
             Ability(workbook);
-            Weapon(workbook);
-            Secret(workbook);
+            //Weapon(workbook);
+            //Secret(workbook);
             workbook.Close();
             excelObj.Quit();
             excelObj = null;
@@ -189,12 +189,12 @@ namespace 炉边传说
                 Ability.FirstAbilityDefine.描述 = worksheet.Cells(rowCount, 4).Text;
                 Ability.SecondAbilityDefine.描述 = worksheet.Cells(rowCount, 5).Text;
                 rowCount++;
-                Ability.FirstAbilityDefine = GetAbilityDefine(worksheet, ref rowCount);
+                GetAbilityDefine(ref Ability.FirstAbilityDefine,worksheet, ref rowCount);
                 if (Ability.效果选择类型 != Engine.Card.AbilityCard.效果选择类型枚举.无需选择)
                 {
                     rowCount++;
                     //当前行是第一效果的标题栏
-                    Ability.SecondAbilityDefine = GetAbilityDefine(worksheet, ref rowCount);
+                    GetAbilityDefine(ref Ability.SecondAbilityDefine, worksheet, ref rowCount);
                 }
                 XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.AbilityCard));
                 String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Ability\\" + Ability.序列号 + ".xml";
@@ -208,10 +208,8 @@ namespace 炉边传说
         /// <param name="worksheet"></param>
         /// <param name="rowCount"></param>
         /// <returns></returns>
-        private static AbilityCard.AbilityDefine GetAbilityDefine(dynamic worksheet, ref int rowCount)
+        private static void GetAbilityDefine(ref AbilityCard.AbilityDefine Ability, dynamic worksheet, ref int rowCount)
         {
-            AbilityCard.AbilityDefine Ability = new AbilityCard.AbilityDefine();
-            Ability.Init();
             Ability.MainAbilityDefine = GetEffectDefine(worksheet, ref rowCount);
             //追加效果
             String NextLine = worksheet.Cells(rowCount + 1, 2).Text;
@@ -224,7 +222,6 @@ namespace 炉边传说
                 //当前行是第一效果的标题栏
                 Ability.AppendAbilityDefine = GetEffectDefine(worksheet, ref rowCount);
             }
-            return Ability;
         }
         /// <summary>
         /// 获得效果定义

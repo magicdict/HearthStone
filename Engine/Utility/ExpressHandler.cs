@@ -8,7 +8,7 @@ namespace Engine.Utility
     public static class ExpressHandler
     {
         /// <summary>
-        /// PointProcess
+        /// 增益计算
         /// </summary>
         /// <param name="oldPoint"></param>
         /// <param name="ModifyPoint"></param>
@@ -30,6 +30,7 @@ namespace Engine.Utility
                             newPoint *= int.Parse(ModifyPoint.Substring(1, 1));
                             break;
                         default:
+                            newPoint = int.Parse(ModifyPoint);
                             break;
                     }
                 }
@@ -44,13 +45,15 @@ namespace Engine.Utility
         public static int GetEffectPoint(Client.GameManager game, String strEffectPoint)
         {
             int point = 0;
+            strEffectPoint = strEffectPoint.ToUpper();
             if (!String.IsNullOrEmpty(strEffectPoint))
             {
                 if (strEffectPoint.StartsWith("="))
                 {
                     switch (strEffectPoint.Substring(1))
                     {
-                        case "MyWeaponAP":
+                        case "MYWEAPONAP":
+                            //本方武器攻击力
                             if (game.MyInfo.Weapon != null) point = game.MyInfo.Weapon.攻击力;
                             break;
                         default:
@@ -65,7 +68,7 @@ namespace Engine.Utility
             return point;
         }
         /// <summary>
-        /// 
+        /// 目标效果表达式判断
         /// </summary>
         /// <param name="game"></param>
         /// <param name="PosInfo"></param>
@@ -74,17 +77,42 @@ namespace Engine.Utility
         public static bool AtomicEffectPickCondition(Client.GameManager game, string PosInfo, Effect.EffectDefine singleEffect)
         {
             var 效果条件 = singleEffect.效果条件.ToUpper();
+            String YouOrMe = PosInfo.Split(CardUtility.strSplitMark.ToCharArray())[0];
+            String Position = PosInfo.Split(CardUtility.strSplitMark.ToCharArray())[1];
             switch (效果条件)
             {
                 case "POSITION":
                     return PosInfo == singleEffect.AbliltyPosPicker.SelectedPos.ToString();
+                case "ISFREEZE":
+                    if (YouOrMe == CardUtility.strMe)
+                    {
+                        if (Position == Client.BattleFieldInfo.HeroPos.ToString("D1"))
+                        {
+                            return game.MyInfo.冰冻状态 != CardUtility.EffectTurn.无效果;
+                        }
+                        else
+                        {
+                            return game.MyInfo.BattleField.BattleMinions[int.Parse(Position) - 1].冰冻状态 != CardUtility.EffectTurn.无效果;
+                        }
+                    }
+                    else
+                    {
+                        if (Position == Client.BattleFieldInfo.HeroPos.ToString("D1"))
+                        {
+                            return game.YourInfo.冰冻状态 != CardUtility.EffectTurn.无效果;
+                        }
+                        else
+                        {
+                            return game.YourInfo.BattleField.BattleMinions[int.Parse(Position) - 1].冰冻状态 != CardUtility.EffectTurn.无效果;
+                        }
+                    }
                 default:
                     break;
             }
             return true;
         }
         /// <summary>
-        /// 
+        /// 自动计算战场情况
         /// </summary>
         /// <param name="game"></param>
         /// <param name="效果选择条件"></param>
@@ -92,6 +120,23 @@ namespace Engine.Utility
         public static bool AbilityPickCondition(Client.GameManager game, string 效果选择条件)
         {
             throw new NotImplementedException();
+        }
+        /// <summary>
+        /// 追加法术条件计算
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="Ability"></param>
+        /// <returns></returns>
+        internal static bool AppendAbilityCondition(Client.GameManager game, Card.AbilityCard.AbilityDefine Ability)
+        {
+            if (Ability.AppendEffectCondition == CardUtility.strIgnore)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

@@ -100,7 +100,7 @@ namespace Engine.Effect
             return Result;
         }
         /// <summary>
-        /// 
+        /// 获得效果信息
         /// </summary>
         /// <param name="InfoArray"></param>
         public void GetField(List<string> InfoArray)

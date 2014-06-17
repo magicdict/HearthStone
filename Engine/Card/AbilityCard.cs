@@ -197,7 +197,32 @@ namespace Engine.Card
                         Result.AddRange(Effecthandler.RunSingleEffect(Ability.MainAbilityDefine, game, GameManager.RandomSeed));
                         break;
                 }
-
+                GameManager.RandomSeed++;
+                Result.AddRange(game.Settle());
+            }
+            //追加条件计算
+            if (Ability.AppendAbilityDefine == null || (!ExpressHandler.AppendAbilityCondition(game,Ability))) { 
+                return Result;
+            }
+            //按照回数执行追加效果
+            for (int cnt = 0; cnt < Ability.AppendAbilityDefine.EffectCount; cnt++)
+            {
+                //系统法术
+                switch (Ability.AppendAbilityDefine.TrueAtomicEffect.AtomicEffectType)
+                {
+                    case AtomicEffectDefine.AtomicEffectEnum.卡牌:
+                    case AtomicEffectDefine.AtomicEffectEnum.水晶:
+                    case AtomicEffectDefine.AtomicEffectEnum.奥秘:
+                    case AtomicEffectDefine.AtomicEffectEnum.召唤:
+                    case AtomicEffectDefine.AtomicEffectEnum.武器:
+                    case AtomicEffectDefine.AtomicEffectEnum.控制:
+                        Result.AddRange(RunGameSystemEffect(game, ConvertPosDirect, Ability.AppendAbilityDefine.TrueAtomicEffect, 
+                                                                                    Ability.AppendAbilityDefine.AbliltyPosPicker));
+                        break;
+                    default:
+                        Result.AddRange(Effecthandler.RunSingleEffect(Ability.AppendAbilityDefine, game, GameManager.RandomSeed));
+                        break;
+                }
                 GameManager.RandomSeed++;
                 Result.AddRange(game.Settle());
             }

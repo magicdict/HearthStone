@@ -38,56 +38,76 @@ namespace Engine.Effect
         /// 回合结束死亡
         /// </summary>
         public const String strTurnEndDead = "TURNENDDEAD";
-
+        /// <summary>
+        /// 施加状态
+        /// </summary>
         public String 施加状态;
 
         /// <summary>
         /// 施法
         /// </summary>
-        /// <param name="myMinion"></param>
+        /// <param name="Minion"></param>
         /// <param name="AddtionInfo"></param>
-        public void RunStatusEffect(MinionCard myMinion)
+        public void RunStatusEffect(MinionCard Minion)
         {
             switch (施加状态)
             {
                 case strFreeze:
-                    myMinion.冰冻状态 = CardUtility.EffectTurn.效果命中;
+                    Minion.冰冻状态 = CardUtility.EffectTurn.效果命中;
                     break;
                 case strSlience:
-                    myMinion.沉默状态 = true;
+                    Minion.沉默状态 = true;
                     break;
                 case strAngry:
-                    myMinion.风怒特性 = true;
+                    Minion.风怒特性 = true;
                     break;
                 case strCharge:
-                    myMinion.冲锋特性 = true;
-                    if (myMinion.AttactStatus == MinionCard.攻击状态.准备中)
+                    Minion.冲锋特性 = true;
+                    if (Minion.AttactStatus == MinionCard.攻击状态.准备中)
                     {
-                        myMinion.AttactStatus = MinionCard.攻击状态.可攻击;
+                        Minion.AttactStatus = MinionCard.攻击状态.可攻击;
                     }
                     break;
                 case strTaunt:
-                    myMinion.嘲讽特性 = true;
+                    Minion.嘲讽特性 = true;
                     break;
                 case strTurnEndDead:
-                    myMinion.特殊效果 = MinionCard.特殊效果列表.回合结束死亡;
+                    Minion.特殊效果 = MinionCard.特殊效果列表.回合结束死亡;
+                    break;
+                default:
+                    break;
+            }
+        }
+        public void RunStatusEffect(Client.PublicInfo Hero)
+        {
+            switch (施加状态)
+            {
+                case strFreeze:
+                    Hero.冰冻状态 = CardUtility.EffectTurn.效果命中;
                     break;
                 default:
                     break;
             }
         }
         /// <summary>
-        /// 
+        /// 对英雄施法
         /// </summary>
         /// <param name="game"></param>
         /// <param name="singleEffect"></param>
         /// <param name="MeOrYou"></param>
         void IAtomicEffect.DealHero(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou)
         {
-            throw new NotImplementedException();
+            if (MeOrYou)
+            {
+                RunStatusEffect(game.MyInfo);
+            }
+            else
+            {
+                RunStatusEffect(game.YourInfo);
+            }
         }
         /// <summary>
-        /// 
+        /// 对随从施法
         /// </summary>
         /// <param name="game"></param>
         /// <param name="singleEffect"></param>
@@ -104,9 +124,13 @@ namespace Engine.Effect
                 RunStatusEffect(game.YourInfo.BattleField.BattleMinions[PosIndex]);
             }
         }
+        /// <summary>
+        /// 获得效果信息
+        /// </summary>
+        /// <param name="InfoArray"></param>
         void IAtomicEffect.GetField(List<string> InfoArray)
         {
-            throw new NotImplementedException();
+            施加状态 = InfoArray[0];
         }
     }
 }

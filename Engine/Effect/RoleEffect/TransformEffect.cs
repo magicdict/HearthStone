@@ -27,12 +27,13 @@ namespace Engine.Effect
                 game.YourInfo.BattleField.BattleMinions[PosIndex] = Summon;
             }
         }
-
-
-
+        /// <summary>
+        /// 获得效果信息
+        /// </summary>
+        /// <param name="InfoArray"></param>
         void IAtomicEffect.GetField(System.Collections.Generic.List<string> InfoArray)
         {
-            throw new NotImplementedException();
+            变形目标卡牌编号 = InfoArray[0];
         }
     }
 }

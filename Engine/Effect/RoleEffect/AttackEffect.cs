@@ -92,7 +92,7 @@ namespace Engine.Effect
             }
         }
         /// <summary>
-        /// 
+        /// 获得效果信息
         /// </summary>
         /// <param name="InfoArray"></param>
         void IAtomicEffect.GetField(List<string> InfoArray)
