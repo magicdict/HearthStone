@@ -72,7 +72,7 @@ namespace Engine.Client
         /// </summary>
         public AbilityCard HeroAbility = new AbilityCard();
         /// <summary>
-        /// 
+        /// 英雄技能是否已经使用
         /// </summary>
         public Boolean IsUsedHeroAbility = true;
         /// <summary>

@@ -38,6 +38,16 @@ namespace Engine.Utility
             return newPoint;
         }
         /// <summary>
+        /// 布尔型
+        /// </summary>
+        /// <param name="strExpress"></param>
+        /// <returns></returns>
+        public static Boolean GetBooleanExpress(String strExpress)
+        {
+            if (strExpress == "是" || strExpress.ToUpper() == "Y" || strExpress.ToUpper() == "TRUE") return true;
+            return false;
+        }
+        /// <summary>
         /// 效果点数的表达式计算
         /// </summary>
         /// <param name="strEffectPoint"></param>

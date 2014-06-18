@@ -10,7 +10,7 @@ namespace Engine.Effect
     /// <summary>
     /// 增益效果
     /// </summary>
-    public class PointEffect :  IAtomicEffect
+    public class PointEffect : IAtomicEffect
     {
         /// <summary>
         /// 攻击力
@@ -25,35 +25,39 @@ namespace Engine.Effect
         /// </summary>
         public String 持续回合;
         /// <summary>
-        /// 无法对英雄使用？
+        /// 对英雄动作
         /// </summary>
         /// <param name="game"></param>
         /// <param name="PlayInfo"></param>
-        void IAtomicEffect.DealHero(Client.GameManager game, Client.PublicInfo PlayInfo)
+        /// <returns></returns>
+        String IAtomicEffect.DealHero(Client.GameManager game, Client.PublicInfo PlayInfo)
         {
-            throw new NotImplementedException();
+            return String.Empty;
         }
         /// <summary>
-        /// 对随从施法
+        /// 对随从动作
         /// </summary>
         /// <param name="game"></param>
-        /// <param name="singleEffect"></param>
-        /// <param name="本方对方标识"></param>
-        /// <param name="PosIndex"></param>
-        void IAtomicEffect.DealMinion(Client.GameManager game, Card.MinionCard Minion)
+        /// <param name="Minion"></param>
+        /// <returns></returns>
+        String IAtomicEffect.DealMinion(Client.GameManager game, Card.MinionCard Minion)
         {
             int TurnCount = int.Parse(持续回合);
             if (TurnCount == CardUtility.Max)
             {
                 Minion.攻击力 = ExpressHandler.PointProcess(Minion.攻击力, 攻击力);
-                Minion.生命值上限 = ExpressHandler.PointProcess(Minion.生命值上限, 生命值);
                 Minion.生命值 = ExpressHandler.PointProcess(Minion.生命值, 生命值);
+                Minion.生命值上限 = ExpressHandler.PointProcess(Minion.生命值上限, 生命值);
+                return Server.ActionCode.strPoint + CardUtility.strSplitMark + Minion.战场位置.ToString() + CardUtility.strSplitMark +
+                   Minion.攻击力.ToString() + CardUtility.strSplitMark + Minion.生命值.ToString() + CardUtility.strSplitMark + Minion.生命值上限.ToString();
             }
             else
             {
                 //本回合攻击力翻倍的对应
                 Minion.本回合攻击力加成 = ExpressHandler.PointProcess(Minion.攻击力, 攻击力) - Minion.攻击力;
                 Minion.本回合生命力加成 = ExpressHandler.PointProcess(Minion.生命值上限, 生命值) - Minion.生命值上限;
+                return Server.ActionCode.strPoint + CardUtility.strSplitMark + Minion.战场位置.ToString() + CardUtility.strSplitMark +
+                   Minion.本回合攻击力加成.ToString() + CardUtility.strSplitMark + Minion.本回合生命力加成.ToString();
             }
         }
         /// <summary>

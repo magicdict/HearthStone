@@ -120,8 +120,14 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void frmStartGame_Load(object sender, EventArgs e)
         {
-            //DEBUG
+            //DEBUG START
             txtCardPath.Text = @"C:\炉石Git\炉石设计\Card";
+            Engine.Utility.CardUtility.Init(txtCardPath.Text);
+            foreach (var CardSn in Engine.Utility.CardUtility.ReadyCardDic)
+            {
+                cmbHandCard.Items.Add(CardSn.Key + "(" + CardSn.Value + ")");
+            }
+            //DEBUG END
             txtNickName.Text = game.PlayerNickName;
             cmbCardDeck.Items.Clear();
             if (Directory.Exists(DeckDir))
@@ -163,6 +169,29 @@ namespace 炉边传说
         private void btnServer_Click(object sender, EventArgs e)
         {
             (new ServerConfig()).ShowDialog();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnTestCrystal_Click(object sender, EventArgs e)
+        {
+            //DEBUG START
+            game.MyInfo.crystal.CurrentFullPoint = (int)crystalCount.Value;
+            game.MyInfo.crystal.CurrentRemainPoint = (int)crystalCount.Value;
+            game.YourInfo.crystal.CurrentFullPoint = (int)crystalCount.Value;
+            game.YourInfo.crystal.CurrentRemainPoint = (int)crystalCount.Value;
+            //DEBUG END
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnTestHandCard_Click(object sender, EventArgs e)
+        {
+            game.MySelfInfo.handCards.Add(Engine.Utility.CardUtility.GetCardInfoBySN(cmbHandCard.Text.Substring(0, 7)));
         }
     }
 }

@@ -15,27 +15,29 @@ namespace Engine.Effect
         /// </summary>
         public String 伤害效果表达式 = String.Empty;
         /// <summary>
-        /// 强化伤害效果表达式
+        /// 伤害加成
         /// </summary>
-        public String 强化伤害效果表达式 = String.Empty;
-        /// <summary>
-        /// 实际伤害点数
-        /// </summary>
-        /// <param name="game"></param>
-        /// <returns></returns>
-        public String 实际伤害点数 = String.Empty;
+        public Boolean 伤害加成 = false;
         /// <summary>
         /// 获得效果信息
         /// </summary>
         /// <param name="InfoArray"></param>
         void IAtomicEffect.GetField(List<string> InfoArray)
         {
-            实际伤害点数 = InfoArray[0];
+            伤害效果表达式 = InfoArray[0];
+            伤害加成 = ExpressHandler.GetBooleanExpress(InfoArray[1]);
         }
-        void IAtomicEffect.DealHero(Client.GameManager game, Client.PublicInfo PlayInfo)
+        /// <summary>
+        /// 对英雄动作
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="PlayInfo"></param>
+        /// <returns></returns>
+        String IAtomicEffect.DealHero(Client.GameManager game, Client.PublicInfo PlayInfo)
         {
+            int AttackPoint = ExpressHandler.GetEffectPoint(game, 伤害效果表达式);
             //调整伤害值
-            int AttackPoint = ExpressHandler.GetEffectPoint(game, 实际伤害点数);
+            if (伤害加成) AttackPoint += game.MyInfo.BattleField.AbilityDamagePlus;
             if (PlayInfo.AfterBeAttack(AttackPoint))
             {
                 game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
@@ -44,11 +46,19 @@ namespace Engine.Effect
                     触发位置 = PlayInfo.战场位置
                 });
             }
+            return Server.ActionCode.strAttack + CardUtility.strSplitMark + PlayInfo.战场位置.ToString() + CardUtility.strSplitMark + AttackPoint.ToString();
         }
-        void IAtomicEffect.DealMinion(Client.GameManager game, Card.MinionCard Minion)
+        /// <summary>
+        /// 对随从动作
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="Minion"></param>
+        /// <returns></returns>
+        String IAtomicEffect.DealMinion(Client.GameManager game, Card.MinionCard Minion)
         {
+            int AttackPoint = ExpressHandler.GetEffectPoint(game, 伤害效果表达式);
             //调整伤害值
-            int AttackPoint = ExpressHandler.GetEffectPoint(game, 实际伤害点数);
+            if (伤害加成) AttackPoint += game.MyInfo.BattleField.AbilityDamagePlus;
             if (Minion.AfterBeAttack(AttackPoint))
             {
                 game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
@@ -57,6 +67,7 @@ namespace Engine.Effect
                     触发位置 = Minion.战场位置
                 });
             }
+            return Server.ActionCode.strAttack + CardUtility.strSplitMark + Minion.战场位置.ToString() + CardUtility.strSplitMark + AttackPoint.ToString();
         }
     }
 }

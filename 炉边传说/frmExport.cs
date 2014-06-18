@@ -36,10 +36,10 @@ namespace 炉边传说
             excelObj.Visible = true;
             dynamic workbook;
             workbook = excelObj.Workbooks.Open(ExcelPicker.SelectedPathOrFileName);
-            Minion(workbook);
-            //Ability(workbook);
-            //Weapon(workbook);
-            //Secret(workbook);
+            if (chkMinion.Checked) Minion(workbook);
+            if (chkAbility.Checked) Ability(workbook);
+            if (chkWeapon.Checked) Weapon(workbook);
+            if (chkSecret.Checked) Secret(workbook);
             workbook.Close();
             excelObj.Quit();
             excelObj = null;
@@ -189,7 +189,7 @@ namespace 炉边传说
                 Ability.FirstAbilityDefine.描述 = worksheet.Cells(rowCount, 4).Text;
                 Ability.SecondAbilityDefine.描述 = worksheet.Cells(rowCount, 5).Text;
                 rowCount++;
-                GetAbilityDefine(ref Ability.FirstAbilityDefine,worksheet, ref rowCount);
+                GetAbilityDefine(ref Ability.FirstAbilityDefine, worksheet, ref rowCount);
                 if (Ability.效果选择类型 != Engine.Card.AbilityCard.效果选择类型枚举.无需选择)
                 {
                     rowCount++;

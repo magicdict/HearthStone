@@ -16,6 +16,7 @@ namespace 炉边传说
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new frmStartGame());
+            //Application.Run(new ServerConfig());
         }
     }
 }

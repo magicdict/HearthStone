@@ -149,68 +149,6 @@ namespace Engine.Client
             //ATTACK#ME#POS#AP
             //Me代表对方 YOU代表自己，必须反过来
             IAtomicEffect handler = new AttackEffect();
-            //AtomicEffectDefine SingleEffect = new AtomicEffectDefine();
-            //switch (actField[0])
-            //{
-            //case Card.Server.ActionCode.strAttack:
-            //    handler = new AttackEffect();
-            //    SingleEffect.ActualEffectPoint = actField[3];
-            //    break;
-            //case Card.Server.ActionCode.strHealth:
-            //    handler = new HealthEffect();
-            //    SingleEffect.ActualEffectPoint = actField[3];
-            //    if (actField.Length == 5) SingleEffect.AdditionInfo = actField[4];
-            //    break;
-            //case Card.Server.ActionCode.strStatus:
-            //    handler = new StatusEffect();
-            //    SingleEffect.AdditionInfo = actField[3];
-            //    break;
-            //case Card.Server.ActionCode.strPoint:
-            //    handler = new PointEffect();
-            //    SingleEffect.AdditionInfo = actField[3];
-            //    SingleEffect.StandardEffectPoint = actField[4];
-            //    break;
-            //case Card.Server.ActionCode.strTransform:
-            //    handler = new TransformEffect();
-            //    SingleEffect.AdditionInfo = actField[3];
-            //    break;
-            //}
-            //if (actField[1] == CardUtility.strYou)
-            //{
-            //    switch (int.Parse(actField[2]))
-            //    {
-            //        case BattleFieldInfo.HeroPos:
-            //            handler.DealHero(game, SingleEffect, true);
-            //            break;
-            //        case BattleFieldInfo.AllPos:
-            //            for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
-            //            {
-            //                handler.DealMinion(game, SingleEffect, true, i);
-            //            }
-            //            break;
-            //        default:
-            //            handler.DealMinion(game, SingleEffect, true, int.Parse(actField[2]) - 1);
-            //            break;
-            //    }
-            //}
-            //else
-            //{
-            //    switch (int.Parse(actField[2]))
-            //    {
-            //        case BattleFieldInfo.HeroPos:
-            //            handler.DealHero(game, SingleEffect, false);
-            //            break;
-            //        case BattleFieldInfo.AllPos:
-            //            for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
-            //            {
-            //                handler.DealMinion(game, SingleEffect, false, i);
-            //            }
-            //            break;
-            //        default:
-            //            handler.DealMinion(game, SingleEffect, false, int.Parse(actField[2]) - 1);
-            //            break;
-            //    }
-            //}
         }
         #endregion
 

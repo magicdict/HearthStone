@@ -9,17 +9,31 @@ namespace Engine.Effect
     public class TransformEffect :  IAtomicEffect
     {
         public String 变形目标卡牌编号;
-        void IAtomicEffect.DealHero(Client.GameManager game, Client.PublicInfo PlayInfo)
+        /// <summary>
+        /// 对英雄动作
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="PlayInfo"></param>
+        /// <returns></returns>
+        String IAtomicEffect.DealHero(Client.GameManager game, Client.PublicInfo PlayInfo)
         {
-            throw new NotImplementedException();
+            return String.Empty;
         }
-        void IAtomicEffect.DealMinion(Client.GameManager game, Card.MinionCard Minion)
+        /// <summary>
+        /// 对随从动作
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="Minion"></param>
+        /// <returns></returns>
+        String IAtomicEffect.DealMinion(Client.GameManager game, Card.MinionCard Minion)
         {
             var Summon = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(变形目标卡牌编号);
             //一定要初始化，不然的话，生命值是-1；
             Summon.Init();
             Summon.战场位置 = Minion.战场位置;
+            //战场位置的继承
             Minion = Summon;
+            return Server.ActionCode.strStatus + CardUtility.strSplitMark + Minion.战场位置.ToString() + CardUtility.strSplitMark + 变形目标卡牌编号;
         }
         /// <summary>
         /// 获得效果信息

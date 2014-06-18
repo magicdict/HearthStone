@@ -46,7 +46,7 @@
     <Compile Include="Effect\AtomicEffectDefine.cs" />
     <Compile Include="Effect\Effecthandler.cs" />
     <Compile Include="Effect\RoleEffect\AttackEffect.cs" />
-    <Compile Include="Effect\RoleEffect\ControlEffect.cs" />
+    <Compile Include="Effect\Special\ControlEffect.cs" />
     <Compile Include="Effect\RoleEffect\HealthEffect.cs" />
     <Compile Include="Effect\IAtomicEffect.cs" />
     <Compile Include="Effect\RoleEffect\PointEffect.cs" />

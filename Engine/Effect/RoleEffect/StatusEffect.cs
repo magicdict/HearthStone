@@ -43,12 +43,12 @@ namespace Engine.Effect
         /// </summary>
         public String 施加状态;
         /// <summary>
-        /// 对英雄施法
+        /// 对英雄动作
         /// </summary>
         /// <param name="game"></param>
-        /// <param name="singleEffect"></param>
-        /// <param name="本方对方标识"></param>
-        void IAtomicEffect.DealHero(Client.GameManager game, Client.PublicInfo PlayInfo)
+        /// <param name="PlayInfo"></param>
+        /// <returns></returns>
+        String IAtomicEffect.DealHero(Client.GameManager game, Client.PublicInfo PlayInfo)
         {
             switch (施加状态)
             {
@@ -58,15 +58,15 @@ namespace Engine.Effect
                 default:
                     break;
             }
+            return Server.ActionCode.strStatus + CardUtility.strSplitMark + PlayInfo.战场位置.ToString() + CardUtility.strSplitMark + 施加状态;
         }
         /// <summary>
-        /// 对随从施法
+        /// 对随从动作
         /// </summary>
         /// <param name="game"></param>
-        /// <param name="singleEffect"></param>
-        /// <param name="本方对方标识"></param>
-        /// <param name="PosIndex"></param>
-        void IAtomicEffect.DealMinion(Client.GameManager game, Card.MinionCard Minion)
+        /// <param name="Minion"></param>
+        /// <returns></returns>
+        String IAtomicEffect.DealMinion(Client.GameManager game, Card.MinionCard Minion)
         {
             switch (施加状态)
             {
@@ -95,6 +95,7 @@ namespace Engine.Effect
                 default:
                     break;
             }
+            return Server.ActionCode.strStatus + CardUtility.strSplitMark + Minion.战场位置.ToString() + CardUtility.strSplitMark + 施加状态;
         }
         /// <summary>
         /// 获得效果信息

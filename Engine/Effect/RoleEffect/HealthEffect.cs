@@ -20,12 +20,12 @@ namespace Engine.Effect
         /// </summary>
         public String 护甲回复表达式 = String.Empty;
         /// <summary>
-        /// 对英雄施法
+        /// 对英雄动作
         /// </summary>
         /// <param name="game"></param>
-        /// <param name="singleEffect"></param>
-        /// <param name="本方对方标识"></param>
-        void IAtomicEffect.DealHero(Client.GameManager game, Client.PublicInfo PlayInfo)
+        /// <param name="PlayInfo"></param>
+        /// <returns></returns>
+        String IAtomicEffect.DealHero(Client.GameManager game, Client.PublicInfo PlayInfo)
         {
             int ShieldPoint = ExpressHandler.GetEffectPoint(game, 护甲回复表达式);
             int HealthPoint = ExpressHandler.GetEffectPoint(game, 生命值回复表达式);
@@ -38,15 +38,16 @@ namespace Engine.Effect
                     触发位置 = PlayInfo.战场位置
                 });
             }
+            return Server.ActionCode.strHealth + CardUtility.strSplitMark + PlayInfo.战场位置.ToString() + CardUtility.strSplitMark +
+                        ShieldPoint.ToString() + CardUtility.strSplitMark + HealthPoint.ToString();
         }
         /// <summary>
-        /// 对随从施法
+        /// 对随从动作
         /// </summary>
         /// <param name="game"></param>
-        /// <param name="singleEffect"></param>
-        /// <param name="本方对方标识"></param>
-        /// <param name="PosIndex"></param>
-        void IAtomicEffect.DealMinion(Client.GameManager game, Card.MinionCard Minion)
+        /// <param name="Minion"></param>
+        /// <returns></returns>
+        String IAtomicEffect.DealMinion(Client.GameManager game, Card.MinionCard Minion)
         {
             int HealthPoint = ExpressHandler.GetEffectPoint(game, 生命值回复表达式);
             if (Minion.AfterBeHealth(HealthPoint))
@@ -57,6 +58,8 @@ namespace Engine.Effect
                     触发位置 = Minion.战场位置
                 });
             }
+            return Server.ActionCode.strHealth + CardUtility.strSplitMark + Minion.战场位置.ToString() + 
+                                                 CardUtility.strSplitMark + HealthPoint.ToString();
         }
         /// <summary>
         /// 获得效果信息

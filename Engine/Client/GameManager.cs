@@ -1,5 +1,4 @@
 ﻿using Engine.Card;
-using Engine.Effect;
 using Engine.Server;
 using Engine.Utility;
 using System;
@@ -77,21 +76,18 @@ namespace Engine.Client
             //手牌设定
             var HandCard = Engine.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst,
                            IsFirst ? PublicInfo.BasicHandCardCount : (PublicInfo.BasicHandCardCount + 1));
-            MyInfo.crystal.CurrentFullPoint = 0;
-            MyInfo.crystal.CurrentRemainPoint = 0;
-            YourInfo.crystal.CurrentFullPoint = 0;
-            YourInfo.crystal.CurrentRemainPoint = 0;
-            MyInfo.战场位置 = new CardUtility.TargetPosition() { 本方对方标识 =true, Postion = BattleFieldInfo.HeroPos };
+            //暂时从外部注入
+            if (false)
+            {
+                MyInfo.crystal.CurrentFullPoint = 0;
+                MyInfo.crystal.CurrentRemainPoint = 0;
+                YourInfo.crystal.CurrentFullPoint = 0;
+                YourInfo.crystal.CurrentRemainPoint = 0;
+            }
+            MyInfo.战场位置 = new CardUtility.TargetPosition() { 本方对方标识 = true, Postion = BattleFieldInfo.HeroPos };
             YourInfo.战场位置 = new CardUtility.TargetPosition() { 本方对方标识 = false, Postion = BattleFieldInfo.HeroPos };
             MyInfo.BattleField.本方对方标识 = true;
             YourInfo.BattleField.本方对方标识 = false;
-            //DEBUG START
-            MyInfo.crystal.CurrentFullPoint = 5;
-            MyInfo.crystal.CurrentRemainPoint = 5;
-            YourInfo.crystal.CurrentFullPoint = 5;
-            YourInfo.crystal.CurrentRemainPoint = 5;
-            HandCard.Add("M000059");
-            //DEBUG END
             //英雄技能：奥术飞弹
             MyInfo.HeroAbility = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
             YourInfo.HeroAbility = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");

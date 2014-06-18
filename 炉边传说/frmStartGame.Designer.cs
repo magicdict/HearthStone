@@ -44,6 +44,11 @@
             this.label4 = new System.Windows.Forms.Label();
             this.cmbCardDeck = new System.Windows.Forms.ComboBox();
             this.btnServer = new System.Windows.Forms.Button();
+            this.btnTestCrystal = new System.Windows.Forms.Button();
+            this.crystalCount = new System.Windows.Forms.NumericUpDown();
+            this.btnTestHandCard = new System.Windows.Forms.Button();
+            this.cmbHandCard = new System.Windows.Forms.ComboBox();
+            ((System.ComponentModel.ISupportInitialize)(this.crystalCount)).BeginInit();
             this.SuspendLayout();
             // 
             // btnCreateGame
@@ -189,12 +194,62 @@
             this.btnServer.UseVisualStyleBackColor = true;
             this.btnServer.Click += new System.EventHandler(this.btnServer_Click);
             // 
+            // btnTestCrystal
+            // 
+            this.btnTestCrystal.Location = new System.Drawing.Point(564, 10);
+            this.btnTestCrystal.Name = "btnTestCrystal";
+            this.btnTestCrystal.Size = new System.Drawing.Size(167, 23);
+            this.btnTestCrystal.TabIndex = 16;
+            this.btnTestCrystal.Text = "测试环境：起始状态水晶数";
+            this.btnTestCrystal.UseVisualStyleBackColor = true;
+            this.btnTestCrystal.Click += new System.EventHandler(this.btnTestCrystal_Click);
+            // 
+            // crystalCount
+            // 
+            this.crystalCount.Location = new System.Drawing.Point(758, 12);
+            this.crystalCount.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.crystalCount.Name = "crystalCount";
+            this.crystalCount.Size = new System.Drawing.Size(121, 20);
+            this.crystalCount.TabIndex = 18;
+            this.crystalCount.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.crystalCount.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            // 
+            // btnTestHandCard
+            // 
+            this.btnTestHandCard.Location = new System.Drawing.Point(564, 39);
+            this.btnTestHandCard.Name = "btnTestHandCard";
+            this.btnTestHandCard.Size = new System.Drawing.Size(167, 23);
+            this.btnTestHandCard.TabIndex = 19;
+            this.btnTestHandCard.Text = "测试环境：增加手牌";
+            this.btnTestHandCard.UseVisualStyleBackColor = true;
+            this.btnTestHandCard.Click += new System.EventHandler(this.btnTestHandCard_Click);
+            // 
+            // cmbHandCard
+            // 
+            this.cmbHandCard.FormattingEnabled = true;
+            this.cmbHandCard.Location = new System.Drawing.Point(758, 41);
+            this.cmbHandCard.Name = "cmbHandCard";
+            this.cmbHandCard.Size = new System.Drawing.Size(121, 21);
+            this.cmbHandCard.TabIndex = 20;
+            // 
             // frmStartGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(518, 301);
+            this.ClientSize = new System.Drawing.Size(908, 301);
+            this.Controls.Add(this.cmbHandCard);
+            this.Controls.Add(this.btnTestHandCard);
+            this.Controls.Add(this.crystalCount);
+            this.Controls.Add(this.btnTestCrystal);
             this.Controls.Add(this.btnServer);
             this.Controls.Add(this.cmbCardDeck);
             this.Controls.Add(this.label4);
@@ -214,6 +269,7 @@
             this.Name = "frmStartGame";
             this.Text = "开始游戏";
             this.Load += new System.EventHandler(this.frmStartGame_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.crystalCount)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -237,5 +293,9 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox cmbCardDeck;
         private System.Windows.Forms.Button btnServer;
+        private System.Windows.Forms.Button btnTestCrystal;
+        private System.Windows.Forms.NumericUpDown crystalCount;
+        private System.Windows.Forms.Button btnTestHandCard;
+        private System.Windows.Forms.ComboBox cmbHandCard;
     }
 }
