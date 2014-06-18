@@ -8,7 +8,7 @@ namespace Engine.Effect
     /// <summary>
     /// 状态改变效果
     /// </summary>
-    public class StatusEffect : AtomicEffectDefine, IAtomicEffect 
+    public class StatusEffect : IAtomicEffect
     {
         /// <summary>
         /// 冰冻状态
@@ -42,13 +42,31 @@ namespace Engine.Effect
         /// 施加状态
         /// </summary>
         public String 施加状态;
-
         /// <summary>
-        /// 施法
+        /// 对英雄施法
         /// </summary>
-        /// <param name="Minion"></param>
-        /// <param name="AddtionInfo"></param>
-        public void RunStatusEffect(MinionCard Minion)
+        /// <param name="game"></param>
+        /// <param name="singleEffect"></param>
+        /// <param name="本方对方标识"></param>
+        void IAtomicEffect.DealHero(Client.GameManager game, Client.PublicInfo PlayInfo)
+        {
+            switch (施加状态)
+            {
+                case strFreeze:
+                    PlayInfo.冰冻状态 = CardUtility.EffectTurn.效果命中;
+                    break;
+                default:
+                    break;
+            }
+        }
+        /// <summary>
+        /// 对随从施法
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="singleEffect"></param>
+        /// <param name="本方对方标识"></param>
+        /// <param name="PosIndex"></param>
+        void IAtomicEffect.DealMinion(Client.GameManager game, Card.MinionCard Minion)
         {
             switch (施加状态)
             {
@@ -76,52 +94,6 @@ namespace Engine.Effect
                     break;
                 default:
                     break;
-            }
-        }
-        public void RunStatusEffect(Client.PublicInfo Hero)
-        {
-            switch (施加状态)
-            {
-                case strFreeze:
-                    Hero.冰冻状态 = CardUtility.EffectTurn.效果命中;
-                    break;
-                default:
-                    break;
-            }
-        }
-        /// <summary>
-        /// 对英雄施法
-        /// </summary>
-        /// <param name="game"></param>
-        /// <param name="singleEffect"></param>
-        /// <param name="MeOrYou"></param>
-        void IAtomicEffect.DealHero(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou)
-        {
-            if (MeOrYou)
-            {
-                RunStatusEffect(game.MyInfo);
-            }
-            else
-            {
-                RunStatusEffect(game.YourInfo);
-            }
-        }
-        /// <summary>
-        /// 对随从施法
-        /// </summary>
-        /// <param name="game"></param>
-        /// <param name="singleEffect"></param>
-        /// <param name="MeOrYou"></param>
-        /// <param name="PosIndex"></param>
-        void IAtomicEffect.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
-        {
-            if (MeOrYou)
-            {
-                RunStatusEffect(game.MyInfo.BattleField.BattleMinions[PosIndex]);
-            }
-            else
-            {
-                RunStatusEffect(game.YourInfo.BattleField.BattleMinions[PosIndex]);
             }
         }
         /// <summary>

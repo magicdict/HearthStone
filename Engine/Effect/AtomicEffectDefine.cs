@@ -55,7 +55,7 @@ namespace Engine.Effect
             /// <summary>
             /// 奥秘
             /// </summary>
-            奥秘,
+            //奥秘,
             /// <summary>
             /// 武器
             /// </summary>

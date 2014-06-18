@@ -44,9 +44,8 @@ namespace Engine.Client
                         if (CardSn.Substring(1, 1) == Engine.Card.AbilityCard.原生法术)
                             game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                             {
-                                事件类型 = CardUtility.事件类型列表.施法,
-                                触发方向 = CardUtility.TargetSelectDirectEnum.本方,
-                                触发位置 = Engine.Client.BattleFieldInfo.HeroPos
+                                触发事件类型 = CardUtility.事件类型列表.施法,
+                                触发位置 = game.MyInfo.战场位置
                             });
                     }
                     else
@@ -66,9 +65,12 @@ namespace Engine.Client
                         //必须在放入之前做得原因是，被放入的随从不能被触发这个事件
                         game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                         {
-                            事件类型 = CardUtility.事件类型列表.召唤,
-                            附加信息 = minion.种族.ToString(),
-                            触发位置 = MinionPos
+                            触发事件类型 = CardUtility.事件类型列表.召唤,
+                            触发位置 = new CardUtility.TargetPosition()
+                            {
+                                Postion = MinionPos,
+                                本方对方标识 = true
+                            }
                         });
                         switch (minion.战吼类型)
                         {
@@ -96,7 +98,7 @@ namespace Engine.Client
                             case MinionCard.战吼类型列表.相邻:
                             case MinionCard.战吼类型列表.自身:
                                 game.MyInfo.BattleField.PutToBattle(MinionPos, minion);
-                                game.MyInfo.BattleField.发动战吼(MinionPos);
+                                game.MyInfo.BattleField.发动战吼(MinionPos, game);
                                 break;
                             default:
                                 break;
@@ -136,9 +138,8 @@ namespace Engine.Client
                         if (CardSn.Substring(1, 1) == Engine.Card.AbilityCard.原生法术)
                             game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                             {
-                                事件类型 = CardUtility.事件类型列表.施法,
-                                触发方向 = CardUtility.TargetSelectDirectEnum.本方,
-                                触发位置 = Engine.Client.BattleFieldInfo.HeroPos
+                                触发事件类型 = CardUtility.事件类型列表.施法,
+                                触发位置 = game.MyInfo.战场位置
                             });
                     }
                 }

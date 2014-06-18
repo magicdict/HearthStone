@@ -81,12 +81,16 @@ namespace Engine.Client
             MyInfo.crystal.CurrentRemainPoint = 0;
             YourInfo.crystal.CurrentFullPoint = 0;
             YourInfo.crystal.CurrentRemainPoint = 0;
+            MyInfo.战场位置 = new CardUtility.TargetPosition() { 本方对方标识 =true, Postion = BattleFieldInfo.HeroPos };
+            YourInfo.战场位置 = new CardUtility.TargetPosition() { 本方对方标识 = false, Postion = BattleFieldInfo.HeroPos };
+            MyInfo.BattleField.本方对方标识 = true;
+            YourInfo.BattleField.本方对方标识 = false;
             //DEBUG START
             MyInfo.crystal.CurrentFullPoint = 5;
             MyInfo.crystal.CurrentRemainPoint = 5;
             YourInfo.crystal.CurrentFullPoint = 5;
             YourInfo.crystal.CurrentRemainPoint = 5;
-            HandCard.Add("A000005");
+            HandCard.Add("M000059");
             //DEBUG END
             //英雄技能：奥术飞弹
             MyInfo.HeroAbility = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
@@ -277,13 +281,12 @@ namespace Engine.Client
                     ActionLst.AddRange(MyInfo.BattleField.BattleMinions[i].回合结束(this));
                     if (MyInfo.BattleField.BattleMinions[i].特殊效果 == MinionCard.特殊效果列表.回合结束死亡)
                     {
-                        MyInfo.BattleField.BattleMinions[i] = null;
                         事件处理组件.事件池.Add(new CardUtility.全局事件()
                         {
-                            事件类型 = CardUtility.事件类型列表.死亡,
-                            触发方向 = CardUtility.TargetSelectDirectEnum.本方,
-                            触发位置 = i + 1
+                            触发事件类型 = CardUtility.事件类型列表.死亡,
+                            触发位置 = MyInfo.BattleField.BattleMinions[i].战场位置
                         });
+                        MyInfo.BattleField.BattleMinions[i] = null;
                     }
                 }
             }

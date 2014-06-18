@@ -49,9 +49,8 @@ namespace Engine.Client
                 {
                     game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
-                        事件类型 = CardUtility.事件类型列表.受伤,
-                        触发方向 = CardUtility.TargetSelectDirectEnum.本方,
-                        触发位置 = 攻击方Pos
+                        触发事件类型 = CardUtility.事件类型列表.受伤,
+                        触发位置 = game.MyInfo.BattleField.BattleMinions[攻击方Pos - 1].战场位置
                     });
                 }
             }
@@ -62,9 +61,8 @@ namespace Engine.Client
                 {
                     game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
-                        事件类型 = CardUtility.事件类型列表.受伤,
-                        触发方向 = CardUtility.TargetSelectDirectEnum.本方,
-                        触发位置 = BattleFieldInfo.HeroPos
+                        触发事件类型 = CardUtility.事件类型列表.受伤,
+                        触发位置 = game.MyInfo.战场位置 
                     });
                 }
             }
@@ -84,9 +82,8 @@ namespace Engine.Client
                 {
                     game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
-                        事件类型 = CardUtility.事件类型列表.受伤,
-                        触发方向 = CardUtility.TargetSelectDirectEnum.对方,
-                        触发位置 = 被攻击方Pos
+                        触发事件类型 = CardUtility.事件类型列表.受伤,
+                        触发位置 = game.YourInfo.BattleField.BattleMinions[被攻击方Pos - 1].战场位置
                     });
                 }
             }
@@ -97,9 +94,8 @@ namespace Engine.Client
                 {
                     game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
-                        事件类型 = CardUtility.事件类型列表.受伤,
-                        触发方向 = CardUtility.TargetSelectDirectEnum.对方,
-                        触发位置 = BattleFieldInfo.HeroPos
+                        触发事件类型 = CardUtility.事件类型列表.受伤,
+                        触发位置 = game.YourInfo.战场位置
                     });
                 }
             }

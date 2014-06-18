@@ -415,23 +415,31 @@ namespace Engine.Utility
             /// <summary>
             /// 事件名称
             /// </summary>
-            public 事件类型列表 事件类型;
-            /// <summary>
-            /// 事件效果
-            /// </summary>
-            public String 事件效果;
-            /// <summary>
-            /// 触发方向
-            /// </summary>
-            public TargetSelectDirectEnum 触发方向;
+            public 事件类型列表 触发事件类型;
             /// <summary>
             /// 触发位置
             /// </summary>
-            public int 触发位置;
+            public TargetPosition 触发位置;
+        }
+        [Serializable]
+        public struct 事件效果
+        {
             /// <summary>
-            /// 附加信息
+            /// 事件名称
             /// </summary>
-            public String 附加信息;
+            public 事件类型列表 触发效果事件类型;
+            /// <summary>
+            /// 触发位置
+            /// </summary>
+            public TargetSelectDirectEnum 触发效果事件方向;
+            /// <summary>
+            /// 效果编号
+            /// </summary>
+            public String 效果编号;
+            /// <summary>
+            /// 限制信息
+            /// </summary>
+            public String 限制信息;
         }
         #endregion
         /// <summary>
@@ -498,7 +506,7 @@ namespace Engine.Utility
             /// <summary>
             /// 本方/对方
             /// </summary>
-            public Boolean MeOrYou;
+            public Boolean 本方对方标识;
             /// <summary>
             /// 0 - 英雄，1-7 随从位置
             /// </summary>
@@ -509,7 +517,7 @@ namespace Engine.Utility
             /// <returns></returns>
             public override string ToString()
             {
-                return (MeOrYou ? strMe : strYou) + strSplitMark + Postion.ToString("D1");
+                return (本方对方标识 ? strMe : strYou) + strSplitMark + Postion.ToString("D1");
             }
         }
         #region"委托"

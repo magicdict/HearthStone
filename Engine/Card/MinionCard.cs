@@ -222,7 +222,7 @@ namespace Engine.Card
         /// <summary>
         /// 自身事件
         /// </summary>
-        public Engine.Utility.CardUtility.全局事件 自身事件 = new CardUtility.全局事件();
+        public Engine.Utility.CardUtility.事件效果 自身事件效果 = new CardUtility.事件效果();
         #endregion
 
         #region"运行时状态"
@@ -264,7 +264,7 @@ namespace Engine.Card
         /// 战场位置
         /// </summary>
         [XmlIgnore]
-        public int 战场位置 = 1;
+        public Engine.Utility.CardUtility.TargetPosition 战场位置;
         /// <summary>
         /// 该单位受到战地的效果
         /// </summary>
@@ -517,23 +517,23 @@ namespace Engine.Card
         public List<String> 事件处理方法(Engine.Utility.CardUtility.全局事件 事件, GameManager game, String MyPos)
         {
             List<String> ActionLst = new List<string>();
-            if (!沉默状态 && 事件.事件类型 == 自身事件.事件类型)
+            if (!沉默状态 && 自身事件效果.触发效果事件类型 == 事件.触发事件类型)
             {
-                if (自身事件.触发方向 != CardUtility.TargetSelectDirectEnum.双方)
-                {
-                    if (自身事件.触发方向 != 事件.触发方向) return ActionLst;
-                }
-                if (!String.IsNullOrEmpty(自身事件.附加信息) && (事件.附加信息 != 自身事件.附加信息)) return ActionLst;
-                ActionLst.Add(Engine.Server.ActionCode.strHitEvent + CardUtility.strSplitMark);
-                if (自身事件.事件效果.StartsWith("A"))
-                {
-                    //ActionLst.AddRange(((Card.AbilityCard)Card.CardUtility.GetCardInfoBySN(自身事件.事件效果)).UseAbility(gmae, false));
-                }
-                else
-                {
-                    //Card.Effect.PointEffect.RunPointEffect(this, 自身事件.事件效果);
-                    ActionLst.Add(Engine.Server.ActionCode.strPoint + CardUtility.strSplitMark + MyPos + CardUtility.strSplitMark + 自身事件.事件效果);
-                }
+                //if (自身事件.触发位置.本方对方标识 == CardUtility.TargetSelectDirectEnum.双方)
+                //{
+                //    if (自身事件.触发方向 != 事件.触发方向) return ActionLst;
+                //}
+                //if (!String.IsNullOrEmpty(自身事件.附加信息) && (事件.附加信息 != 自身事件.附加信息)) return ActionLst;
+                //ActionLst.Add(Engine.Server.ActionCode.strHitEvent + CardUtility.strSplitMark);
+                //if (自身事件.事件效果.StartsWith("A"))
+                //{
+                //    //ActionLst.AddRange(((Card.AbilityCard)Card.CardUtility.GetCardInfoBySN(自身事件.事件效果)).UseAbility(gmae, false));
+                //}
+                //else
+                //{
+                //    //Card.Effect.PointEffect.RunPointEffect(this, 自身事件.事件效果);
+                //    ActionLst.Add(Engine.Server.ActionCode.strPoint + CardUtility.strSplitMark + MyPos + CardUtility.strSplitMark + 自身事件.事件效果);
+                //}
             }
             return ActionLst;
         }

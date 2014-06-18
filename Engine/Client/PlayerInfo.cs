@@ -20,6 +20,10 @@ namespace Engine.Client
         /// </summary>
         public Boolean IsFirst;
         /// <summary>
+        /// 战场位置
+        /// </summary>
+        public Engine.Utility.CardUtility.TargetPosition 战场位置;
+        /// <summary>
         /// 是否为冰冻状态
         /// </summary>
         public Engine.Utility.CardUtility.EffectTurn 冰冻状态 = CardUtility.EffectTurn.无效果;

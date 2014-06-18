@@ -34,6 +34,7 @@ namespace 炉边传说
             SelectOption = option;
             game = mGame;
             嘲讽限制 = option.嘲讽限制;
+            Position.Postion = -1;
         }
         /// <summary>
         /// 取消选择
@@ -65,7 +66,7 @@ namespace 炉边传说
                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).Left = LeftPos;
                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).FightClick += (x, y) =>
                 {
-                    Position.MeOrYou = true;
+                    Position.本方对方标识 = true;
                     //这里千万不能使用 i ,每次 i 都是固定值
                     Position.Postion = int.Parse(((Button)x).Parent.Name.Substring("btnMe".Length));
                     this.Close();
@@ -81,7 +82,7 @@ namespace 炉边传说
                 ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).Left = LeftPos;
                 ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).FightClick += (x, y) =>
                 {
-                    Position.MeOrYou = false;
+                    Position.本方对方标识 = false;
                     //这里千万不能使用 i ,每次 i 都是固定值
                     //pos.Postion = i + 1;
                     Position.Postion = int.Parse(((Button)x).Parent.Name.Substring("btnYou".Length));
@@ -93,7 +94,7 @@ namespace 炉边传说
             btnMyHero.Left = (this.Width - btnMyHero.Width) / 2;
             btnMyHero.Click += (x, y) =>
             {
-                Position.MeOrYou = true;
+                Position.本方对方标识 = true;
                 Position.Postion = 0;
                 this.Close();
             };
@@ -101,7 +102,7 @@ namespace 炉边传说
             btnYourHero.Left = (this.Width - btnYourHero.Width) / 2;
             btnYourHero.Click += (x, y) =>
             {
-                Position.MeOrYou = false;
+                Position.本方对方标识 = false;
                 Position.Postion = 0;
                 this.Close();
             };

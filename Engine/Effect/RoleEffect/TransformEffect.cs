@@ -9,23 +9,17 @@ namespace Engine.Effect
     public class TransformEffect :  IAtomicEffect
     {
         public String 变形目标卡牌编号;
-        void IAtomicEffect.DealHero(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou)
+        void IAtomicEffect.DealHero(Client.GameManager game, Client.PublicInfo PlayInfo)
         {
             throw new NotImplementedException();
         }
-        void IAtomicEffect.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
+        void IAtomicEffect.DealMinion(Client.GameManager game, Card.MinionCard Minion)
         {
             var Summon = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(变形目标卡牌编号);
             //一定要初始化，不然的话，生命值是-1；
             Summon.Init();
-            if (MeOrYou)
-            {
-                game.MyInfo.BattleField.BattleMinions[PosIndex] = Summon;
-            }
-            else
-            {
-                game.YourInfo.BattleField.BattleMinions[PosIndex] = Summon;
-            }
+            Summon.战场位置 = Minion.战场位置;
+            Minion = Summon;
         }
         /// <summary>
         /// 获得效果信息

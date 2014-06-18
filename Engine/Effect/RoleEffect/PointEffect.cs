@@ -10,7 +10,7 @@ namespace Engine.Effect
     /// <summary>
     /// 增益效果
     /// </summary>
-    public class PointEffect : AtomicEffectDefine, IAtomicEffect
+    public class PointEffect :  IAtomicEffect
     {
         /// <summary>
         /// 攻击力
@@ -25,11 +25,22 @@ namespace Engine.Effect
         /// </summary>
         public String 持续回合;
         /// <summary>
-        /// 运行
+        /// 无法对英雄使用？
         /// </summary>
-        /// <param name="Minion"></param>
-        /// <param name="Addition"></param>
-        public void RunPointEffect(MinionCard Minion)
+        /// <param name="game"></param>
+        /// <param name="PlayInfo"></param>
+        void IAtomicEffect.DealHero(Client.GameManager game, Client.PublicInfo PlayInfo)
+        {
+            throw new NotImplementedException();
+        }
+        /// <summary>
+        /// 对随从施法
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="singleEffect"></param>
+        /// <param name="本方对方标识"></param>
+        /// <param name="PosIndex"></param>
+        void IAtomicEffect.DealMinion(Client.GameManager game, Card.MinionCard Minion)
         {
             int TurnCount = int.Parse(持续回合);
             if (TurnCount == CardUtility.Max)
@@ -43,28 +54,6 @@ namespace Engine.Effect
                 //本回合攻击力翻倍的对应
                 Minion.本回合攻击力加成 = ExpressHandler.PointProcess(Minion.攻击力, 攻击力) - Minion.攻击力;
                 Minion.本回合生命力加成 = ExpressHandler.PointProcess(Minion.生命值上限, 生命值) - Minion.生命值上限;
-            }
-        }
-        void IAtomicEffect.DealHero(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou)
-        {
-            throw new NotImplementedException();
-        }
-        /// <summary>
-        /// 对随从施法
-        /// </summary>
-        /// <param name="game"></param>
-        /// <param name="singleEffect"></param>
-        /// <param name="MeOrYou"></param>
-        /// <param name="PosIndex"></param>
-        void IAtomicEffect.DealMinion(Client.GameManager game, EffectDefine singleEffect, bool MeOrYou, int PosIndex)
-        {
-            if (MeOrYou)
-            {
-                RunPointEffect(game.MyInfo.BattleField.BattleMinions[PosIndex]);
-            }
-            else
-            {
-                RunPointEffect(game.YourInfo.BattleField.BattleMinions[PosIndex]);
             }
         }
         /// <summary>

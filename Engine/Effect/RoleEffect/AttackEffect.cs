@@ -8,7 +8,7 @@ namespace Engine.Effect
     /// <summary>
     /// 攻击效果
     /// </summary>
-    public class AttackEffect :  IAtomicEffect
+    public class AttackEffect : IAtomicEffect
     {
         /// <summary>
         /// 效果表达式
@@ -25,79 +25,38 @@ namespace Engine.Effect
         /// <returns></returns>
         public String 实际伤害点数 = String.Empty;
         /// <summary>
-        /// 对英雄
-        /// </summary>
-        /// <param name="game"></param>
-        /// <param name="singleEffect"></param>
-        /// <param name="MeOrYou"></param>
-        void IAtomicEffect.DealHero(Client.GameManager game, EffectDefine singleEffect, Boolean MeOrYou)
-        {
-            //调整伤害值
-            int AttackPoint = ExpressHandler.GetEffectPoint(game,实际伤害点数);
-            if (MeOrYou)
-            {
-                game.MyInfo.AfterBeAttack(AttackPoint);
-                game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
-                {
-                    事件类型 = CardUtility.事件类型列表.受伤,
-                    触发方向 = CardUtility.TargetSelectDirectEnum.本方,
-                    触发位置 = Engine.Client.BattleFieldInfo.HeroPos
-                });
-            }
-            else
-            {
-                game.YourInfo.AfterBeAttack(AttackPoint);
-                game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
-                {
-                    事件类型 = CardUtility.事件类型列表.受伤,
-                    触发方向 = CardUtility.TargetSelectDirectEnum.对方,
-                    触发位置 = Engine.Client.BattleFieldInfo.HeroPos
-                });
-            }
-        }
-        /// <summary>
-        /// 对随从
-        /// </summary>
-        /// <param name="game"></param>
-        /// <param name="singleEffect"></param>
-        /// <param name="MeOrYou"></param>
-        /// <param name="PosIndex"></param>
-        void IAtomicEffect.DealMinion(Client.GameManager game, EffectDefine singleEffect, Boolean MeOrYou, int PosIndex)
-        {
-            //调整伤害值
-            int AttackPoint = ExpressHandler.GetEffectPoint(game, 实际伤害点数);
-            if (MeOrYou)
-            {
-                if (game.MyInfo.BattleField.BattleMinions[PosIndex].AfterBeAttack(AttackPoint))
-                {
-                    game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
-                    {
-                        事件类型 = CardUtility.事件类型列表.受伤,
-                        触发方向 = CardUtility.TargetSelectDirectEnum.本方,
-                        触发位置 = PosIndex + 1
-                    });
-                }
-            }
-            else
-            {
-                if (game.YourInfo.BattleField.BattleMinions[PosIndex].AfterBeAttack(AttackPoint))
-                {
-                    game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
-                    {
-                        事件类型 = CardUtility.事件类型列表.受伤,
-                        触发方向 = CardUtility.TargetSelectDirectEnum.对方,
-                        触发位置 = PosIndex + 1
-                    });
-                }
-            }
-        }
-        /// <summary>
         /// 获得效果信息
         /// </summary>
         /// <param name="InfoArray"></param>
         void IAtomicEffect.GetField(List<string> InfoArray)
         {
             实际伤害点数 = InfoArray[0];
+        }
+        void IAtomicEffect.DealHero(Client.GameManager game, Client.PublicInfo PlayInfo)
+        {
+            //调整伤害值
+            int AttackPoint = ExpressHandler.GetEffectPoint(game, 实际伤害点数);
+            if (PlayInfo.AfterBeAttack(AttackPoint))
+            {
+                game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                {
+                    触发事件类型 = CardUtility.事件类型列表.受伤,
+                    触发位置 = PlayInfo.战场位置
+                });
+            }
+        }
+        void IAtomicEffect.DealMinion(Client.GameManager game, Card.MinionCard Minion)
+        {
+            //调整伤害值
+            int AttackPoint = ExpressHandler.GetEffectPoint(game, 实际伤害点数);
+            if (Minion.AfterBeAttack(AttackPoint))
+            {
+                game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                {
+                    触发事件类型 = CardUtility.事件类型列表.受伤,
+                    触发位置 = Minion.战场位置
+                });
+            }
         }
     }
 }

@@ -36,8 +36,8 @@ namespace 炉边传说
             excelObj.Visible = true;
             dynamic workbook;
             workbook = excelObj.Workbooks.Open(ExcelPicker.SelectedPathOrFileName);
-            //Minion(workbook);
-            Ability(workbook);
+            Minion(workbook);
+            //Ability(workbook);
             //Weapon(workbook);
             //Secret(workbook);
             workbook.Close();
@@ -143,10 +143,10 @@ namespace 炉边传说
                 Minion.回合开始效果 = worksheet.Cells(rowCount, 30).Text;
                 Minion.回合结束效果 = worksheet.Cells(rowCount, 31).Text;
                 Minion.过载 = CardUtility.GetInt(worksheet.Cells(rowCount, 32).Text);
-                Minion.自身事件.事件类型 = CardUtility.GetEnum<Engine.Utility.CardUtility.事件类型列表>(worksheet.Cells(rowCount, 33).Text, Engine.Utility.CardUtility.事件类型列表.无);
-                Minion.自身事件.事件效果 = worksheet.Cells(rowCount, 34).Text;
-                Minion.自身事件.触发方向 = CardUtility.GetEnum<Engine.Utility.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 35).Text, Engine.Utility.CardUtility.TargetSelectDirectEnum.本方);
-                Minion.自身事件.附加信息 = worksheet.Cells(rowCount, 36).Text;
+                Minion.自身事件效果.触发效果事件类型 = CardUtility.GetEnum<Engine.Utility.CardUtility.事件类型列表>(worksheet.Cells(rowCount, 33).Text, Engine.Utility.CardUtility.事件类型列表.无);
+                Minion.自身事件效果.效果编号 = worksheet.Cells(rowCount, 34).Text;
+                Minion.自身事件效果.触发效果事件方向 = CardUtility.GetEnum<Engine.Utility.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 35).Text, Engine.Utility.CardUtility.TargetSelectDirectEnum.本方);
+                Minion.自身事件效果.限制信息 = worksheet.Cells(rowCount, 36).Text;
                 Minion.特殊效果 = CardUtility.GetEnum<Engine.Card.MinionCard.特殊效果列表>(worksheet.Cells(rowCount, 37).Text, Engine.Card.MinionCard.特殊效果列表.无效果);
 
                 XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.MinionCard));

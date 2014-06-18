@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using Engine.Utility;
 namespace Engine.Effect
 {
+    /// <summary>
+    /// 控制
+    /// </summary>
     public class ControlEffect
     {
-        public List<string> RunEffect(Client.GameManager game, String PosField)
+        public static List<string> RunEffect(Client.GameManager game, String PosField)
         {
             List<String> Result = new List<string>();
             if (game.MyInfo.BattleField.MinionCount != Engine.Client.BattleFieldInfo.MaxMinionCount)

@@ -187,11 +187,12 @@ namespace Engine.Card
                 {
                     case AtomicEffectDefine.AtomicEffectEnum.卡牌:
                     case AtomicEffectDefine.AtomicEffectEnum.水晶:
-                    case AtomicEffectDefine.AtomicEffectEnum.奥秘:
                     case AtomicEffectDefine.AtomicEffectEnum.召唤:
                     case AtomicEffectDefine.AtomicEffectEnum.武器:
-                    case AtomicEffectDefine.AtomicEffectEnum.控制:
                         Result.AddRange(RunGameSystemEffect(game, ConvertPosDirect, Ability.MainAbilityDefine.TrueAtomicEffect, Ability.MainAbilityDefine.AbliltyPosPicker));
+                        break;
+                    case AtomicEffectDefine.AtomicEffectEnum.控制:
+                        Result.AddRange(ControlEffect.RunEffect(game, Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
                         break;
                     default:
                         Result.AddRange(Effecthandler.RunSingleEffect(Ability.MainAbilityDefine, game, GameManager.RandomSeed));
@@ -205,6 +206,8 @@ namespace Engine.Card
                 return Result;
             }
             //按照回数执行追加效果
+            //继承主效果的选定位置信息
+            Ability.AppendAbilityDefine.AbliltyPosPicker.SelectedPos = Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos;
             for (int cnt = 0; cnt < Ability.AppendAbilityDefine.EffectCount; cnt++)
             {
                 //系统法术
@@ -212,12 +215,13 @@ namespace Engine.Card
                 {
                     case AtomicEffectDefine.AtomicEffectEnum.卡牌:
                     case AtomicEffectDefine.AtomicEffectEnum.水晶:
-                    case AtomicEffectDefine.AtomicEffectEnum.奥秘:
                     case AtomicEffectDefine.AtomicEffectEnum.召唤:
                     case AtomicEffectDefine.AtomicEffectEnum.武器:
-                    case AtomicEffectDefine.AtomicEffectEnum.控制:
                         Result.AddRange(RunGameSystemEffect(game, ConvertPosDirect, Ability.AppendAbilityDefine.TrueAtomicEffect, 
                                                                                     Ability.AppendAbilityDefine.AbliltyPosPicker));
+                        break;
+                    case AtomicEffectDefine.AtomicEffectEnum.控制:
+                        Result.AddRange(ControlEffect.RunEffect(game, Ability.AppendAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
                         break;
                     default:
                         Result.AddRange(Effecthandler.RunSingleEffect(Ability.AppendAbilityDefine, game, GameManager.RandomSeed));
@@ -241,21 +245,21 @@ namespace Engine.Card
             switch (effect.AtomicEffectType)
             {
                 case AtomicEffectDefine.AtomicEffectEnum.卡牌:
-                    CardEffect cardatomic = new CardEffect();
-                    cardatomic.GetField(effect.InfoArray);
-                    return cardatomic.RunEffect(game, Option.EffectTargetSelectDirect);
+                    CardEffect CardAtomic = new CardEffect();
+                    CardAtomic.GetField(effect.InfoArray);
+                    return CardAtomic.RunEffect(game, Option.EffectTargetSelectDirect);
                 case AtomicEffectDefine.AtomicEffectEnum.水晶:
-                    CrystalEffect crystalatomic = new CrystalEffect();
-                    crystalatomic.GetField(effect.InfoArray);
-                    return crystalatomic.RunEffect(game, Option.EffectTargetSelectDirect);
-                case AtomicEffectDefine.AtomicEffectEnum.奥秘:
-                    break;
+                    CrystalEffect CrystalAtomic = new CrystalEffect();
+                    CrystalAtomic.GetField(effect.InfoArray);
+                    return CrystalAtomic.RunEffect(game, Option.EffectTargetSelectDirect);
                 case AtomicEffectDefine.AtomicEffectEnum.武器:
-                    break;
+                    WeaponPointEffect WeaponPointAtomic = new WeaponPointEffect();
+                    WeaponPointAtomic.GetField(effect.InfoArray);
+                    return WeaponPointAtomic.RunEffect(game, Option.EffectTargetSelectDirect);
                 case AtomicEffectDefine.AtomicEffectEnum.召唤:
-                    break;
-                case AtomicEffectDefine.AtomicEffectEnum.控制:
-                    break;
+                    SummonEffect SummonAtomic = new SummonEffect();
+                    SummonAtomic.GetField(effect.InfoArray);
+                    return SummonAtomic.RunEffect(game, Option.EffectTargetSelectDirect);
             }
             return Result;
         }
