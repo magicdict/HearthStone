@@ -296,9 +296,8 @@ namespace Engine.Utility
         /// <param name="minion"></param>
         /// <param name="SelectOpt"></param>
         /// <returns></returns>
-        public static Boolean 符合选择条件(Engine.Card.MinionCard minion, PositionSelectOption SelectOpt)
+        public static Boolean 符合选择条件(Engine.Card.MinionCard minion, String strCondition)
         {
-            String strCondition = SelectOpt.EffectTargetSelectCondition;
             if (String.IsNullOrEmpty(strCondition) || strCondition == strIgnore) return true;
             foreach (var 种族名称 in Enum.GetNames(typeof(种族Enum)))
             {

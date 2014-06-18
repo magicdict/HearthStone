@@ -503,7 +503,7 @@ namespace Engine.Card
             if (生命值 == 生命值上限) return false;
             生命值 += HealthPoint;
             if (生命值 > 生命值上限) 生命值 = 生命值上限;
-            //取消风怒
+            //取消激怒
             if (生命值 == 生命值上限) 激怒状态 = false;
             return true;
         }
@@ -514,26 +514,22 @@ namespace Engine.Card
         /// <param name="game"></param>
         /// <param name="MyPos"></param>
         /// <returns></returns>
-        public List<String> 事件处理方法(Engine.Utility.CardUtility.全局事件 事件, GameManager game, String MyPos)
+        public List<String> 事件处理方法(Engine.Utility.CardUtility.全局事件 事件, GameManager game)
         {
             List<String> ActionLst = new List<string>();
             if (!沉默状态 && 自身事件效果.触发效果事件类型 == 事件.触发事件类型)
             {
-                //if (自身事件.触发位置.本方对方标识 == CardUtility.TargetSelectDirectEnum.双方)
-                //{
-                //    if (自身事件.触发方向 != 事件.触发方向) return ActionLst;
-                //}
-                //if (!String.IsNullOrEmpty(自身事件.附加信息) && (事件.附加信息 != 自身事件.附加信息)) return ActionLst;
-                //ActionLst.Add(Engine.Server.ActionCode.strHitEvent + CardUtility.strSplitMark);
-                //if (自身事件.事件效果.StartsWith("A"))
-                //{
-                //    //ActionLst.AddRange(((Card.AbilityCard)Card.CardUtility.GetCardInfoBySN(自身事件.事件效果)).UseAbility(gmae, false));
-                //}
-                //else
-                //{
-                //    //Card.Effect.PointEffect.RunPointEffect(this, 自身事件.事件效果);
-                //    ActionLst.Add(Engine.Server.ActionCode.strPoint + CardUtility.strSplitMark + MyPos + CardUtility.strSplitMark + 自身事件.事件效果);
-                //}
+                if (自身事件效果.触发效果事件方向 != CardUtility.TargetSelectDirectEnum.双方)
+                {
+                    if (自身事件效果.触发效果事件方向 == CardUtility.TargetSelectDirectEnum.本方 && (!事件.触发位置.本方对方标识)) return ActionLst;
+                    if (自身事件效果.触发效果事件方向 == CardUtility.TargetSelectDirectEnum.对方 && (事件.触发位置.本方对方标识)) return ActionLst;
+                }
+                if (!String.IsNullOrEmpty(自身事件效果.限制信息) && !Engine.Utility.CardUtility.符合选择条件(this, 自身事件效果.限制信息))
+                {
+                    return ActionLst;
+                }
+                ActionLst.Add(Engine.Server.ActionCode.strHitEvent + CardUtility.strSplitMark);
+                ActionLst.AddRange(((Card.AbilityCard)CardUtility.GetCardInfoBySN(自身事件效果.效果编号)).UseAbility(game, false));
             }
             return ActionLst;
         }
