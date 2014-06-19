@@ -113,6 +113,32 @@ namespace Engine.Card
             return Result;
         }
         /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="actField"></param>
+        public static void ReRunSecret(GameManager game, String[] actField)
+        {
+            if (actField[1] == CardUtility.strYou)
+            {
+                Engine.Card.SecretCard Hit = new SecretCard();
+                foreach (var secret in game.MySelfInfo.奥秘列表)
+                {
+                    if (secret.序列号 == actField[2])
+                    {
+                        Hit = secret;
+                        break;
+                    }
+                }
+                game.MySelfInfo.奥秘列表.Remove(Hit);
+            }
+            else
+            {
+                game.YourInfo.SecretCount--;
+            }
+        }
+
+        /// <summary>
         /// 运行奥秘
         /// </summary>
         /// <param name="SecretCardSN"></param>

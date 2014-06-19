@@ -7,7 +7,12 @@ namespace Engine.Effect
 {
     public interface IAtomicEffect
     {
-
+        /// <summary>
+        /// 对方复原操作
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="actField"></param>
+        void ReRunEffect(GameManager game, String[] actField);
         /// <summary>
         /// 对英雄动作
         /// </summary>

@@ -1,4 +1,5 @@
-﻿using Engine.Utility;
+﻿using Engine.Client;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 
@@ -7,7 +8,7 @@ namespace Engine.Effect
     /// <summary>
     /// 召唤效果
     /// </summary>
-    public class SummonEffect 
+    public class SummonEffect
     {
         /// <summary>
         /// 
@@ -81,10 +82,27 @@ namespace Engine.Effect
                         });
                     }
                     break;
-                default:
-                    break;
             }
             return Result;
+        }
+        /// <summary>
+        /// 对方复原操作
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="actField"></param>
+        public static void ReRunEffect(GameManager game, String[] actField)
+        {
+            //不会出现溢出的问题，溢出在Effect里面处理过了
+            //SUMMON#YOU#M000001
+            //Me代表对方 YOU代表自己，必须反过来
+            if (actField[1] == CardUtility.strYou)
+            {
+                game.MyInfo.BattleField.AppendToBattle(actField[2]);
+            }
+            else
+            {
+                game.YourInfo.BattleField.AppendToBattle(actField[2]);
+            }
         }
         /// <summary>
         /// 获得效果信息

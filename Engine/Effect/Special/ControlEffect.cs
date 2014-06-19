@@ -1,6 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Engine.Client;
 using Engine.Utility;
+using System;
+using System.Collections.Generic;
 namespace Engine.Effect
 {
     /// <summary>
@@ -19,6 +20,16 @@ namespace Engine.Effect
                 Result.Add(Engine.Server.ActionCode.strControl + Engine.Utility.CardUtility.strSplitMark + PosField[1]);
             }
             return Result;
+        }
+        /// <summary>
+        /// 对方复原操作
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="actField"></param>
+        public static void ReRunEffect(GameManager game, String[] actField)
+        {
+            game.YourInfo.BattleField.AppendToBattle(game.MyInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1].深拷贝());
+            game.MyInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1] = null;
         }
     }
 }

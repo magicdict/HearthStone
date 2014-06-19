@@ -38,7 +38,6 @@ namespace 炉边传说
             RunAction.GetPutPos = GetPutPos;
             WaitTimer.Interval = 3000;
             WaitTimer.Tick += WaitFor;
-            game.IsMyTurn = game.IsFirst;
             for (int i = 0; i < 10; i++)
             {
                 ((ctlHandCard)Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0]).UseClick += this.btnUseHandCard_Click;
@@ -68,6 +67,8 @@ namespace 炉边传说
             btnMyHeroAblity.Enabled = false;
             btnMyHeroAblity.Tag = game.MyInfo.HeroAbility;
             btnMyHeroAblity.Click += btnUseHandCard_Click;
+            game.IsMyTurn = game.IsFirst;
+            game.TurnStart();
             StartNewTurn();
             DisplayMyInfo();
         }
@@ -243,11 +244,12 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnEndTurn_Click(object sender, System.EventArgs e)
         {
-            var ActionLst = game.TurnEnd();
+            var ActionLst = game.MyTurnEnd();
             if (ActionLst.Count != 0) Engine.Client.ClientRequest.WriteAction(game.GameId.ToString(GameServer.GameIdFormat), ActionLst);
             //结束回合
             Engine.Client.ClientRequest.TurnEnd(game.GameId.ToString(GameServer.GameIdFormat));
             game.IsMyTurn = false;
+            game.TurnStart();
             StartNewTurn();
             WaitTimer.Start();
         }
@@ -256,7 +258,6 @@ namespace 炉边传说
         /// </summary>
         private void StartNewTurn()
         {
-            game.TurnStart();
             if (game.IsMyTurn)
             {
                 //回合开始效果
@@ -313,7 +314,9 @@ namespace 炉边传说
                 {
                     WaitTimer.Stop();
                     btnEndTurn.Enabled = true;
+                    game.YourTurnEnd();
                     game.IsMyTurn = true;
+                    game.TurnStart();
                     StartNewTurn();
                     break;
                 }

@@ -1,6 +1,7 @@
 ﻿using Engine.Client;
 using Engine.Server;
 using Engine.Utility;
+using System;
 using System.Collections.Generic;
 
 namespace Engine.Effect
@@ -42,6 +43,27 @@ namespace Engine.Effect
                 }
             }
             return Result;
+        }
+                /// <summary>
+        /// 对方复原操作
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="actField"></param>
+        public static void ReRunEffect(GameManager game, String[] actField)
+        {
+            //WeaponPoint#ME#+0/+0
+            //Me代表对方 YOU代表自己，必须反过来
+            string[] Op = actField[2].Split("/".ToCharArray());
+            if (actField[1] == CardUtility.strMe)
+            {
+                game.MyInfo.Weapon.攻击力 += int.Parse(Op[0]);
+                game.MyInfo.Weapon.耐久度 += int.Parse(Op[1]);
+            }
+            else
+            {
+                game.YourInfo.Weapon.攻击力 += int.Parse(Op[0]);
+                game.YourInfo.Weapon.耐久度 += int.Parse(Op[1]);
+            }
         }
         /// <summary>
         /// 获得效果信息

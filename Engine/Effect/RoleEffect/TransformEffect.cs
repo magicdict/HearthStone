@@ -6,7 +6,7 @@ namespace Engine.Effect
     /// <summary>
     /// 变形法术
     /// </summary>
-    public class TransformEffect :  IAtomicEffect
+    public class TransformEffect : IAtomicEffect
     {
         public String 变形目标卡牌编号;
         /// <summary>
@@ -34,6 +34,23 @@ namespace Engine.Effect
             //战场位置的继承
             Minion = Summon;
             return Server.ActionCode.strStatus + CardUtility.strSplitMark + Minion.战场位置.ToString() + CardUtility.strSplitMark + 变形目标卡牌编号;
+        }
+        /// <summary>
+        /// 对方复原操作
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="actField"></param>
+        void IAtomicEffect.ReRunEffect(Client.GameManager game, string[] actField)
+        {
+            if (actField[1] == CardUtility.strYou)
+            {
+                //MyInfo
+                game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1] = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(actField[3]);
+            }
+            else
+            {
+                game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1] = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(actField[3]);
+            }
         }
         /// <summary>
         /// 获得效果信息

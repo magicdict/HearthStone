@@ -15,31 +15,11 @@ namespace Engine.Client
         /// <param name="game"></param>
         public static void Process(string item, GameManager game)
         {
-            var actField = item.Split(CardUtility.strSplitMark.ToCharArray());
+            string[] actField = item.Split(CardUtility.strSplitMark.ToCharArray());
             switch (Engine.Server.ActionCode.GetActionType(item))
             {
                 case ActionCode.ActionType.Card:
-                    if (actField[1] == CardUtility.strYou)
-                    {
-                        if (actField.Length == 3)
-                        {
-                            //如果有第三参数，则获得指定手牌
-                            game.MySelfInfo.handCards.Add(Engine.Utility.CardUtility.GetCardInfoBySN(actField[2]));
-                            game.MyInfo.HandCardCount++;
-                        }
-                        else
-                        {
-                            var drawCards = Engine.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, 1);
-                            game.MySelfInfo.handCards.Add(Engine.Utility.CardUtility.GetCardInfoBySN(drawCards[0]));
-                            game.MyInfo.HandCardCount++;
-                            game.MyInfo.RemainCardDeckCount--;
-                        }
-                    }
-                    else
-                    {
-                        game.YourInfo.HandCardCount++;
-                        game.YourInfo.RemainCardDeckCount--;
-                    }
+                    CardEffect.ReRunEffect(game, actField);
                     break;
                 case ActionCode.ActionType.UseMinion:
                     int Pos = int.Parse(actField[2]);
@@ -58,97 +38,47 @@ namespace Engine.Client
                     break;
                 case ActionCode.ActionType.Fight:
                     //FIGHT#1#2
-                    FightHandler.Fight(int.Parse(actField[2]), int.Parse(actField[1]),game, true);
+                    FightHandler.Fight(int.Parse(actField[2]), int.Parse(actField[1]), game, true);
                     break;
                 case ActionCode.ActionType.Point:
+                    IAtomicEffect point = new PointEffect();
+                    point.ReRunEffect(game, actField);
+                    break;
                 case ActionCode.ActionType.Health:
+                    IAtomicEffect health = new HealthEffect();
+                    health.ReRunEffect(game, actField);
+                    break;
                 case ActionCode.ActionType.Status:
+                    IAtomicEffect status = new StatusEffect();
+                    status.ReRunEffect(game, actField);
+                    break;
                 case ActionCode.ActionType.Transform:
+                    IAtomicEffect transform = new TransformEffect();
+                    transform.ReRunEffect(game, actField);
+                    break;
                 case ActionCode.ActionType.Attack:
-                    RunNormalEffect(game, actField);
+                    IAtomicEffect attack = new AttackEffect();
+                    attack.ReRunEffect(game, actField);
                     break;
                 case ActionCode.ActionType.HitSecret:
-                    if (actField[1] == CardUtility.strYou)
-                    {
-                        Engine.Card.SecretCard Hit = new SecretCard();
-                        foreach (var secret in game.MySelfInfo.奥秘列表)
-                        {
-                            if (secret.序列号 == actField[2])
-                            {
-                                Hit = secret;
-                                break;
-                            }
-                        }
-                        game.MySelfInfo.奥秘列表.Remove(Hit);
-                    }
-                    else
-                    {
-                        game.YourInfo.SecretCount--;
-                    }
+                    SecretCard.ReRunSecret(game, actField);
                     break;
                 case ActionCode.ActionType.Control:
-                    game.YourInfo.BattleField.AppendToBattle(game.MyInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1].深拷贝());
-                    game.MyInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1] = null;
+                    ControlEffect.ReRunEffect(game, actField);
                     break;
                 case ActionCode.ActionType.Summon:
-                    //不会出现溢出的问题，溢出在Effect里面处理过了
-                    //SUMMON#YOU#M000001
-                    //Me代表对方 YOU代表自己，必须反过来
-                    if (actField[1] == CardUtility.strYou)
-                    {
-                        game.MyInfo.BattleField.AppendToBattle(actField[2]);
-                    }
-                    else
-                    {
-                        game.YourInfo.BattleField.AppendToBattle(actField[2]);
-                    }
+                    SummonEffect.ReRunEffect(game, actField);
                     break;
                 case ActionCode.ActionType.Crystal:
-                    //Crystal#ME#4#4
-                    //Me代表对方 YOU代表自己，必须反过来
-                    if (actField[1] == CardUtility.strMe)
-                    {
-                        game.YourInfo.crystal.CurrentRemainPoint = int.Parse(actField[2]);
-                        game.YourInfo.crystal.CurrentFullPoint = int.Parse(actField[3]);
-                    }
-                    else
-                    {
-                        game.MyInfo.crystal.CurrentRemainPoint = int.Parse(actField[2]);
-                        game.MyInfo.crystal.CurrentFullPoint = int.Parse(actField[3]);
-                    }
+                    CrystalEffect.ReRunEffect(game, actField);
                     break;
                 case ActionCode.ActionType.WeaponPoint:
-                    //WeaponPoint#ME#+0/+0
-                    //Me代表对方 YOU代表自己，必须反过来
-                    string[] Op = actField[2].Split("/".ToCharArray());
-                    if (actField[1] == CardUtility.strMe)
-                    {
-                        game.MyInfo.Weapon.攻击力 += int.Parse(Op[0]);
-                        game.MyInfo.Weapon.耐久度 += int.Parse(Op[1]);
-                    }
-                    else
-                    {
-                        game.YourInfo.Weapon.攻击力 += int.Parse(Op[0]);
-                        game.YourInfo.Weapon.耐久度 += int.Parse(Op[1]);
-                    }
+                    WeaponPointEffect.ReRunEffect(game, actField);
                     break;
-                case ActionCode.ActionType.UnKnown:
+                case ActionCode.ActionType.Settle:
+                    game.Settle();
                     break;
             }
-            //这里不需要发送亡语效果，
-            //由法术或者攻击发动放将结果发送给接受方
-            game.Settle();
-        }
-        /// <summary>
-        /// 运行效果
-        /// </summary>
-        /// <param name="game"></param>
-        /// <param name="actField"></param>
-        private static void RunNormalEffect(GameManager game, string[] actField)
-        {
-            //ATTACK#ME#POS#AP
-            //Me代表对方 YOU代表自己，必须反过来
-            IAtomicEffect handler = new AttackEffect();
         }
         #endregion
 

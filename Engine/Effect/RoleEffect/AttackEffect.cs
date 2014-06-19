@@ -1,5 +1,4 @@
-﻿using Engine.Server;
-using Engine.Utility;
+﻿using Engine.Utility;
 using System;
 using System.Collections.Generic;
 
@@ -68,6 +67,39 @@ namespace Engine.Effect
                 });
             }
             return Server.ActionCode.strAttack + CardUtility.strSplitMark + Minion.战场位置.ToString() + CardUtility.strSplitMark + AttackPoint.ToString();
+        }
+        /// <summary>
+        /// 对方复原操作
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="actField"></param>
+        void IAtomicEffect.ReRunEffect(Client.GameManager game, string[] actField)
+        {
+            int AttackPoint = int.Parse(actField[3]);
+            if (actField[1] == CardUtility.strYou)
+            { 
+                //MyInfo
+                if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
+                {
+                    game.MyInfo.AfterBeAttack(AttackPoint);
+                }
+                else
+                {
+                    game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeAttack(AttackPoint);
+                }
+            }
+            else
+            {
+                //YourInfo
+                if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
+                {
+                    game.YourInfo.AfterBeAttack(AttackPoint);
+                }
+                else
+                {
+                    game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeAttack(AttackPoint);
+                }
+            }
         }
     }
 }

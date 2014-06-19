@@ -57,6 +57,26 @@ namespace Engine.Effect
             return Result;
         }
         /// <summary>
+        /// 对方复原操作
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="actField"></param>
+        public static void ReRunEffect(GameManager game, String[] actField)
+        {
+            //Crystal#ME#4#4
+            //Me代表对方 YOU代表自己，必须反过来
+            if (actField[1] == CardUtility.strMe)
+            {
+                game.YourInfo.crystal.CurrentRemainPoint = int.Parse(actField[2]);
+                game.YourInfo.crystal.CurrentFullPoint = int.Parse(actField[3]);
+            }
+            else
+            {
+                game.MyInfo.crystal.CurrentRemainPoint = int.Parse(actField[2]);
+                game.MyInfo.crystal.CurrentFullPoint = int.Parse(actField[3]);
+            }
+        }
+        /// <summary>
         /// 获得效果信息
         /// </summary>
         /// <param name="InfoArray"></param>

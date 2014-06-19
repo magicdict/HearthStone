@@ -165,6 +165,10 @@ namespace Engine.Server
         /// <summary>
         /// ENDTURN
         /// </summary>
+        public const String strSettle = "SETTLE";
+        /// <summary>
+        /// ENDTURN
+        /// </summary>
         public const String strEndTurn = "ENDTURN";
         /// <summary>
         /// 随从死亡
@@ -187,6 +191,7 @@ namespace Engine.Server
             if (ActionWord.StartsWith(strHitEvent + CardUtility.strSplitMark)) t = ActionType.HitEvent;
 
             if (ActionWord.StartsWith(strFight + CardUtility.strSplitMark)) t = ActionType.Fight;
+            if (ActionWord.Equals(strSettle)) t = ActionType.Settle;
             if (ActionWord.Equals(strEndTurn)) t = ActionType.EndTurn;
             //效果
             if (ActionWord.StartsWith(strTransform + CardUtility.strSplitMark)) t = ActionType.Transform;

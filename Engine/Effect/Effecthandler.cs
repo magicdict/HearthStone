@@ -180,9 +180,9 @@ namespace Engine.Effect
         /// <summary>
         /// 实施效果
         /// </summary>
-        /// <param name="singleEffect">效果</param>
-        /// <param name="Field"></param>
-        /// <param name="Pos">指定对象</param>
+        /// <param name="singleEffect"></param>
+        /// <param name="game"></param>
+        /// <param name="RandomSeed"></param>
         /// <returns></returns>
         public static List<String> RunSingleEffect(EffectDefine singleEffect, Engine.Client.GameManager game, int RandomSeed)
         {
@@ -194,67 +194,53 @@ namespace Engine.Effect
                 var strResult = String.Empty;
                 if (PosField[0] == CardUtility.strMe)
                 {
-                    strResult += CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark;
                     switch (int.Parse(PosField[1]))
                     {
                         case Engine.Client.BattleFieldInfo.HeroPos:
-                            GetEffectHandler(singleEffect, game, CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1")).DealHero(game,game.MyInfo);
-                            strResult += Engine.Client.BattleFieldInfo.HeroPos.ToString();
+                            Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1")).DealHero(game, game.MyInfo));
                             break;
                         case Engine.Client.BattleFieldInfo.AllMinionPos:
                             for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
                             {
-                                GetEffectHandler(singleEffect, game, CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString("D1")).DealMinion(game, game.MyInfo.BattleField.BattleMinions[i]);
-                                strResult += CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString("D1");
+                                Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString("D1")).DealMinion(game, game.MyInfo.BattleField.BattleMinions[i]));
                             }
                             break;
                         case Engine.Client.BattleFieldInfo.AllRolePos:
-                            GetEffectHandler(singleEffect, game, CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1")).DealHero(game, game.MyInfo);
-                            strResult += Engine.Client.BattleFieldInfo.HeroPos.ToString();
+                            Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1")).DealHero(game, game.MyInfo));
                             for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
                             {
-                                GetEffectHandler(singleEffect, game, CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString("D1")).DealMinion(game, game.MyInfo.BattleField.BattleMinions[i]);
-                                strResult += CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString("D1");
+                                Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString("D1")).DealMinion(game, game.MyInfo.BattleField.BattleMinions[i]));
                             }
                             break;
                         default:
-                            GetEffectHandler(singleEffect, game, PosInfo).DealMinion(game, game.MyInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1]);
-                            strResult += PosField[1];
+                            Result.Add(GetEffectHandler(singleEffect, game, PosInfo).DealMinion(game, game.MyInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1]));
                             break;
                     }
                 }
                 else
                 {
-                    strResult += CardUtility.strYou + Engine.Utility.CardUtility.strSplitMark;
                     switch (int.Parse(PosField[1]))
                     {
                         case Engine.Client.BattleFieldInfo.HeroPos:
-                            GetEffectHandler(singleEffect, game, CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1")).DealHero(game, game.YourInfo);
-                            strResult += Engine.Client.BattleFieldInfo.HeroPos.ToString();
+                            Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1")).DealHero(game, game.YourInfo));
                             break;
                         case Engine.Client.BattleFieldInfo.AllMinionPos:
                             for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                             {
-                                GetEffectHandler(singleEffect, game, CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1")).DealMinion(game, game.YourInfo.BattleField.BattleMinions[i]);
-                                strResult += CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1");
+                                Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1")).DealMinion(game, game.YourInfo.BattleField.BattleMinions[i]));
                             }
                             break;
                         case Engine.Client.BattleFieldInfo.AllRolePos:
-                            GetEffectHandler(singleEffect, game, CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1")).DealHero(game, game.YourInfo);
-                            strResult += Engine.Client.BattleFieldInfo.HeroPos.ToString();
+                            Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1")).DealHero(game, game.YourInfo));
                             for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                             {
-                                GetEffectHandler(singleEffect, game, CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1")).DealMinion(game, game.YourInfo.BattleField.BattleMinions[i]);
-                                strResult += CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1");
+                                Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1")).DealMinion(game, game.YourInfo.BattleField.BattleMinions[i]));
                             }
                             break;
                         default:
-                            GetEffectHandler(singleEffect, game, PosInfo).DealMinion(game, game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1]);
-                            strResult += PosField[1];
+                            Result.Add(GetEffectHandler(singleEffect, game, PosInfo).DealMinion(game, game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1]));
                             break;
                     }
-                    strResult += Engine.Utility.CardUtility.strSplitMark;
-                    Result.Add(strResult);
                 }
             }
             return Result;

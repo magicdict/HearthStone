@@ -68,7 +68,17 @@ namespace Engine.Effect
         /// <returns></returns>
         String IAtomicEffect.DealMinion(Client.GameManager game, Card.MinionCard Minion)
         {
-            switch (施加状态)
+            ChangeStatus(Minion, 施加状态);
+            return Server.ActionCode.strStatus + CardUtility.strSplitMark + Minion.战场位置.ToString() + CardUtility.strSplitMark + 施加状态;
+        }
+        /// <summary>
+        /// 改变状态
+        /// </summary>
+        /// <param name="Minion"></param>
+        /// <param name="状态"></param>
+        private void ChangeStatus(Card.MinionCard Minion, String 状态)
+        {
+            switch (状态)
             {
                 case strFreeze:
                     Minion.冰冻状态 = CardUtility.EffectTurn.效果命中;
@@ -95,7 +105,38 @@ namespace Engine.Effect
                 default:
                     break;
             }
-            return Server.ActionCode.strStatus + CardUtility.strSplitMark + Minion.战场位置.ToString() + CardUtility.strSplitMark + 施加状态;
+        }
+        /// <summary>
+        /// 对方复原操作
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="actField"></param>
+        void IAtomicEffect.ReRunEffect(Client.GameManager game, string[] actField)
+        {
+            String 新状态 = actField[3];
+            if (actField[1] == CardUtility.strYou)
+            {
+                //MyInfo
+                if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
+                {
+                    game.MyInfo.冰冻状态 = CardUtility.EffectTurn.效果命中;                }
+                else
+                {
+                    ChangeStatus(game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1],新状态);
+                }
+            }
+            else
+            {
+                //YourInfo
+                if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
+                {
+                    game.YourInfo.冰冻状态 = CardUtility.EffectTurn.效果作用;
+                }
+                else
+                {
+                    ChangeStatus(game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1], 新状态);
+                }
+            }
         }
         /// <summary>
         /// 获得效果信息

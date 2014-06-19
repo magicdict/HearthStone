@@ -166,24 +166,6 @@ namespace Engine.Client
         {
             if (IsMyTurn)
             {
-                //对手回合加成属性的去除
-                int ExistMinionCount = YourInfo.BattleField.MinionCount;
-                for (int i = 0; i < ExistMinionCount; i++)
-                {
-                    if (YourInfo.BattleField.BattleMinions[i] != null)
-                    {
-                        YourInfo.BattleField.BattleMinions[i].本回合生命力加成 = 0;
-                        YourInfo.BattleField.BattleMinions[i].本回合攻击力加成 = 0;
-                        if (YourInfo.BattleField.BattleMinions[i].特殊效果 == MinionCard.特殊效果列表.回合结束死亡)
-                        {
-                            YourInfo.BattleField.BattleMinions[i] = null;
-                        }
-                    }
-                }
-                YourInfo.BattleField.ClearDead(this, false);
-
-                //魔法水晶的增加
-                MyInfo.crystal.NewTurn();
                 //过载的清算
                 if (OverloadPoint != 0)
                 {
@@ -192,6 +174,8 @@ namespace Engine.Client
                 }
                 //连击的重置
                 MyInfo.连击状态 = false;
+                //魔法水晶的增加
+                MyInfo.crystal.NewTurn();
                 //手牌
                 var NewCardList = Engine.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsFirst, 1);
                 foreach (var card in NewCardList)
@@ -202,23 +186,7 @@ namespace Engine.Client
                 MyInfo.RemainCardDeckCount--;
                 MyInfo.RemainAttactTimes = 1;
                 MyInfo.IsUsedHeroAbility = false;
-                foreach (var minion in MyInfo.BattleField.BattleMinions)
-                {
-                    if (minion != null)
-                    {
-                        switch (minion.冰冻状态)
-                        {
-                            case CardUtility.EffectTurn.效果命中:
-                                //如果上回合被命中的，这回合就是作用中
-                                minion.冰冻状态 = CardUtility.EffectTurn.效果作用;
-                                break;
-                            case CardUtility.EffectTurn.效果作用:
-                                //如果上回合作用中的，这回合就是解除
-                                minion.冰冻状态 = CardUtility.EffectTurn.无效果;
-                                break;
-                        }
-                    }
-                }
+                FreezeStatus(MyInfo.BattleField);
                 //重置攻击次数,必须放在状态变化之后！
                 //原因是剩余攻击回数和状态有关！
                 foreach (var minion in MyInfo.BattleField.BattleMinions)
@@ -241,21 +209,29 @@ namespace Engine.Client
                     if (minion != null) minion.ResetAttackTimes();
                 }
                 //如果对手有可以解除冰冻的，解除冰冻
-                foreach (var minion in YourInfo.BattleField.BattleMinions)
+                FreezeStatus(YourInfo.BattleField);
+            }
+        }
+        /// <summary>
+        /// 冰冻状态的更新
+        /// </summary>
+        /// <param name="battle"></param>
+        private void FreezeStatus(BattleFieldInfo battle)
+        {
+            foreach (var minion in battle.BattleMinions)
+            {
+                if (minion != null)
                 {
-                    if (minion != null)
+                    switch (minion.冰冻状态)
                     {
-                        switch (minion.冰冻状态)
-                        {
-                            case CardUtility.EffectTurn.效果命中:
-                                //如果上回合被命中的，这回合就是作用中
-                                minion.冰冻状态 = CardUtility.EffectTurn.效果作用;
-                                break;
-                            case CardUtility.EffectTurn.效果作用:
-                                //如果上回合作用中的，这回合就是解除
-                                minion.冰冻状态 = CardUtility.EffectTurn.无效果;
-                                break;
-                        }
+                        case CardUtility.EffectTurn.效果命中:
+                            //如果上回合被命中的，这回合就是作用中
+                            minion.冰冻状态 = CardUtility.EffectTurn.效果作用;
+                            break;
+                        case CardUtility.EffectTurn.效果作用:
+                            //如果上回合作用中的，这回合就是解除
+                            minion.冰冻状态 = CardUtility.EffectTurn.无效果;
+                            break;
                     }
                 }
             }
@@ -263,7 +239,7 @@ namespace Engine.Client
         /// <summary>
         /// 结束回合
         /// </summary>
-        public List<String> TurnEnd()
+        public List<String> MyTurnEnd()
         {
             //调用这个方法的时候，IsMyTurn肯定是True
             //回合结束效果
@@ -290,7 +266,28 @@ namespace Engine.Client
             ActionLst.AddRange(事件处理组件.事件处理(this));
             return ActionLst;
         }
-
+        /// <summary>
+        /// 对手回合结束的清场
+        /// </summary>
+        public void YourTurnEnd()
+        {
+            //回合结束时候自动死亡的随从的清除
+            YourInfo.BattleField.ClearDead(this, false);
+            //对手回合加成属性的去除
+            int ExistMinionCount = YourInfo.BattleField.MinionCount;
+            for (int i = 0; i < ExistMinionCount; i++)
+            {
+                if (YourInfo.BattleField.BattleMinions[i] != null)
+                {
+                    YourInfo.BattleField.BattleMinions[i].本回合生命力加成 = 0;
+                    YourInfo.BattleField.BattleMinions[i].本回合攻击力加成 = 0;
+                    if (YourInfo.BattleField.BattleMinions[i].特殊效果 == MinionCard.特殊效果列表.回合结束死亡)
+                    {
+                        YourInfo.BattleField.BattleMinions[i] = null;
+                    }
+                }
+            }
+        }
         /// <summary>
         /// 清算(核心方法)
         /// </summary>
@@ -302,23 +299,26 @@ namespace Engine.Client
             List<String> actionlst = new List<string>();
             //1.检查需要移除的对象
             var MyDeadMinion = MyInfo.BattleField.ClearDead(this, true);
-            foreach (var minion in MyDeadMinion)
-            {
-                //亡语的时候，需要倒置方向
-                actionlst.AddRange(minion.发动亡语(this, false));
-            }
             var YourDeadMinion = YourInfo.BattleField.ClearDead(this, false);
-            foreach (var minion in YourDeadMinion)
-            {
-                //亡语的时候，需要倒置方向
-                actionlst.AddRange(minion.发动亡语(this, true));
-            }
             //2.重新计算Buff
             MyInfo.BattleField.ResetBuff();
             YourInfo.BattleField.ResetBuff();
             //3.武器的移除
             if (MyInfo.Weapon != null && MyInfo.Weapon.耐久度 == 0) MyInfo.Weapon = null;
             if (YourInfo.Weapon != null && YourInfo.Weapon.耐久度 == 0) YourInfo.Weapon = null;
+            //发送结算同步信息
+            actionlst.Add(Server.ActionCode.strSettle);
+            foreach (var minion in MyDeadMinion)
+            {
+                //亡语的时候，本方无需倒置方向
+                actionlst.AddRange(minion.发动亡语(this, false));
+            }
+            foreach (var minion in YourDeadMinion)
+            {
+                //亡语的时候，对方需要倒置方向
+                //例如，亡语为 本方召唤一个随从，敌人亡语，变为敌方召唤一个随从
+                actionlst.AddRange(minion.发动亡语(this, true));
+            }
             return actionlst;
         }
         /// <summary>

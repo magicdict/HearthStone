@@ -1,9 +1,6 @@
-﻿using Engine.Card;
-using Engine.Client;
-using Engine.Utility;
+﻿using Engine.Utility;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Engine.Effect
 {
@@ -61,14 +58,51 @@ namespace Engine.Effect
             }
         }
         /// <summary>
+        /// 对方复原操作
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="actField"></param>
+        void IAtomicEffect.ReRunEffect(Client.GameManager game, string[] actField)
+        {
+            int HealthPoint = int.Parse(actField[3]);
+            if (actField[1] == CardUtility.strYou)
+            {
+                if (actField.Length == 6)
+                {
+                    game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].攻击力 = int.Parse(actField[3]);
+                    game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].生命值 = int.Parse(actField[4]);
+                    game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].生命值上限 = int.Parse(actField[5]);
+                }
+                else
+                {
+                    game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].本回合攻击力加成 = int.Parse(actField[3]);
+                    game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].本回合生命力加成 = int.Parse(actField[4]);
+                }
+            }
+            else
+            {
+                if (actField.Length == 6)
+                {
+                    game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].攻击力 = int.Parse(actField[3]);
+                    game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].生命值 = int.Parse(actField[4]);
+                    game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].生命值上限 = int.Parse(actField[5]);
+                }
+                else
+                {
+                    game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].本回合攻击力加成 = int.Parse(actField[3]);
+                    game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].本回合生命力加成 = int.Parse(actField[4]);
+                }
+            }
+        }
+        /// <summary>
         /// 获得效果信息
         /// </summary>
         /// <param name="InfoArray"></param>
         void IAtomicEffect.GetField(List<string> InfoArray)
         {
-            攻击力 = InfoArray[0].Split("/".ToCharArray())[0];
-            生命值 = InfoArray[0].Split("/".ToCharArray())[1];
-            持续回合 = InfoArray[1];
+            攻击力 = InfoArray[0];
+            生命值 = InfoArray[1];
+            持续回合 = InfoArray[2];
         }
     }
 }

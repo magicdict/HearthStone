@@ -1,8 +1,6 @@
-﻿using Engine.Client;
-using Engine.Utility;
+﻿using Engine.Utility;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Engine.Effect
 {
@@ -39,7 +37,7 @@ namespace Engine.Effect
                 });
             }
             return Server.ActionCode.strHealth + CardUtility.strSplitMark + PlayInfo.战场位置.ToString() + CardUtility.strSplitMark +
-                        ShieldPoint.ToString() + CardUtility.strSplitMark + HealthPoint.ToString();
+                        HealthPoint.ToString() + CardUtility.strSplitMark + ShieldPoint.ToString();
         }
         /// <summary>
         /// 对随从动作
@@ -60,6 +58,47 @@ namespace Engine.Effect
             }
             return Server.ActionCode.strHealth + CardUtility.strSplitMark + Minion.战场位置.ToString() + 
                                                  CardUtility.strSplitMark + HealthPoint.ToString();
+        }
+        /// <summary>
+        /// 对方复原操作
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="actField"></param>
+        void IAtomicEffect.ReRunEffect(Client.GameManager game, string[] actField)
+        {
+            int HealthPoint = int.Parse(actField[3]);
+            if (actField[1] == CardUtility.strYou)
+            {
+                //MyInfo
+                if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
+                {
+                    game.MyInfo.AfterBeHealth(HealthPoint);
+                    if (actField.Length == 5)
+                    {
+                        game.MyInfo.AfterBeShield(int.Parse(actField[4]));
+                    }
+                }
+                else
+                {
+                    game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeHealth(HealthPoint);
+                }
+            }
+            else
+            {
+                //YourInfo
+                if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
+                {
+                    game.YourInfo.AfterBeHealth(HealthPoint);
+                    if (actField.Length == 5)
+                    {
+                        game.YourInfo.AfterBeShield(int.Parse(actField[4]));
+                    }
+                }
+                else
+                {
+                    game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeHealth(HealthPoint);
+                }
+            }
         }
         /// <summary>
         /// 获得效果信息
