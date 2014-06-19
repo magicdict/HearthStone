@@ -88,7 +88,6 @@
             this.btnFight.TabIndex = 4;
             this.btnFight.Text = "攻";
             this.btnFight.UseVisualStyleBackColor = false;
-            this.btnFight.Click += new System.EventHandler(this.btnFight_Click);
             // 
             // lblStatus
             // 

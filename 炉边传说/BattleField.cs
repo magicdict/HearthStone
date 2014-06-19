@@ -185,8 +185,10 @@ namespace 炉边传说
                 if (game.YourInfo.BattleField.BattleMinions[i] != null)
                 {
                     Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Visible = true;
-                    ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CanAttack = false;
+                    //这里注意：随从有个 能否成为动作对象 属性，这个会影响CanAttack的状态
                     ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CardInfo = game.YourInfo.BattleField.BattleMinions[i];
+                    //能否成为动作对象 在对象选择的时候用的，这里的话还是要设置为 False
+                    ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CanAttack = false;
                     Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Left = LeftPos;
                     LeftPos += btnYou1.Width + Megrate;
                 }
@@ -214,6 +216,7 @@ namespace 炉边传说
                     Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Visible = false;
                 }
             }
+            lblGameStatus.Text = game.GetGameInfo();
             //胜负判定
             if (game.MyInfo.LifePoint <= 0 && game.YourInfo.LifePoint <= 0)
             {

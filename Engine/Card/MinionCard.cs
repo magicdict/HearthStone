@@ -545,6 +545,7 @@ namespace Engine.Card
                                        (嘲讽特性 ? "|嘲" : String.Empty) +
                                        (风怒特性 ? "|风" : String.Empty) +
                                        (冲锋特性 ? "|冲" : String.Empty) +
+                                       (潜行特性 ? "|潜" : String.Empty) +
                                        (冰冻状态 != CardUtility.EffectTurn.无效果 ? "冻" : String.Empty));
             Status.AppendLine("[实]" + 攻击力.ToString() + "/" + 生命值.ToString() +
                               "[总]" + TotalAttack().ToString() + "/" + 生命值.ToString());

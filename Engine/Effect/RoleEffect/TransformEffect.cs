@@ -28,7 +28,7 @@ namespace Engine.Effect
         String IAtomicEffect.DealMinion(Client.GameManager game, Card.MinionCard Minion)
         {
             var Summon = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(变形目标卡牌编号);
-            //一定要初始化，不然的话，生命值是-1；
+            //一定要初始化，不然的话，生命值是0；
             Summon.Init();
             Summon.战场位置 = Minion.战场位置;
             //战场位置的继承

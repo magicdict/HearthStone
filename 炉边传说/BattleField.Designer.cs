@@ -63,6 +63,7 @@
             this.btnMe7 = new 炉边传说.ctlCard();
             this.MyCrystalBar = new 炉边传说.ctlCrystalBar();
             this.YourCrystalBar = new 炉边传说.ctlCrystalBar();
+            this.lblGameStatus = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnEndTurn
@@ -383,12 +384,22 @@
             this.YourCrystalBar.Size = new System.Drawing.Size(297, 28);
             this.YourCrystalBar.TabIndex = 46;
             // 
+            // lblGameStatus
+            // 
+            this.lblGameStatus.AutoSize = true;
+            this.lblGameStatus.Location = new System.Drawing.Point(65, 22);
+            this.lblGameStatus.Name = "lblGameStatus";
+            this.lblGameStatus.Size = new System.Drawing.Size(65, 13);
+            this.lblGameStatus.TabIndex = 47;
+            this.lblGameStatus.Text = "GameStatus";
+            // 
             // BattleField
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(966, 671);
+            this.Controls.Add(this.lblGameStatus);
             this.Controls.Add(this.YourCrystalBar);
             this.Controls.Add(this.MyCrystalBar);
             this.Controls.Add(this.statusStrip1);
@@ -475,6 +486,7 @@
         private ctlWeapon btnYourWeapon;
         private ctlCrystalBar MyCrystalBar;
         private ctlCrystalBar YourCrystalBar;
+        private System.Windows.Forms.Label lblGameStatus;
 
     }
 }

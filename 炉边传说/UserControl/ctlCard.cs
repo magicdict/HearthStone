@@ -53,26 +53,23 @@ namespace 炉边传说
         {
             set
             {
-                if (value)
-                {
-                    btnFight.Visible = true;
-                }
-                else
-                {
-                    btnFight.Visible = false;
-                }
-
+                btnFight.Visible = value;
             }
         }
         public ctlCard()
         {
             InitializeComponent();
+            btnFight.Click += (x, y) => { FightClick(x, y); };
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         public delegate void BtnClick(object sender, EventArgs e);
-        public BtnClick FightClick; 
-        private void btnFight_Click(object sender, EventArgs e)
-        {
-            FightClick(sender, e);
-        }
+        /// <summary>
+        /// 
+        /// </summary>
+        public BtnClick FightClick;
     }
 }

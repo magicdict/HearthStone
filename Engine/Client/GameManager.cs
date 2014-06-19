@@ -66,6 +66,10 @@ namespace Engine.Client
             Status.AppendLine("IsHost：" + IsHost);
             Status.AppendLine("IsFirst：" + IsFirst);
             Status.AppendLine("==============");
+            Status.AppendLine("本方剩余牌数：" + MyInfo.RemainCardDeckCount);
+            Status.AppendLine("对方剩余牌数：" + YourInfo.RemainCardDeckCount);
+            Status.AppendLine("对方手牌数：" + YourInfo.HandCardCount);
+            Status.AppendLine("==============");
             return Status.ToString();
         }
         /// <summary>

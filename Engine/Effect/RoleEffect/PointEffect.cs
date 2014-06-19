@@ -65,33 +65,17 @@ namespace Engine.Effect
         void IAtomicEffect.ReRunEffect(Client.GameManager game, string[] actField)
         {
             int HealthPoint = int.Parse(actField[3]);
-            if (actField[1] == CardUtility.strYou)
+            Client.PublicInfo info = actField[1] == CardUtility.strYou ? game.MyInfo : game.YourInfo;
+            if (actField.Length == 6)
             {
-                if (actField.Length == 6)
-                {
-                    game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].攻击力 = int.Parse(actField[3]);
-                    game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].生命值 = int.Parse(actField[4]);
-                    game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].生命值上限 = int.Parse(actField[5]);
-                }
-                else
-                {
-                    game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].本回合攻击力加成 = int.Parse(actField[3]);
-                    game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].本回合生命力加成 = int.Parse(actField[4]);
-                }
+                info.BattleField.BattleMinions[int.Parse(actField[2]) - 1].攻击力 = int.Parse(actField[3]);
+                info.BattleField.BattleMinions[int.Parse(actField[2]) - 1].生命值 = int.Parse(actField[4]);
+                info.BattleField.BattleMinions[int.Parse(actField[2]) - 1].生命值上限 = int.Parse(actField[5]);
             }
             else
             {
-                if (actField.Length == 6)
-                {
-                    game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].攻击力 = int.Parse(actField[3]);
-                    game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].生命值 = int.Parse(actField[4]);
-                    game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].生命值上限 = int.Parse(actField[5]);
-                }
-                else
-                {
-                    game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].本回合攻击力加成 = int.Parse(actField[3]);
-                    game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].本回合生命力加成 = int.Parse(actField[4]);
-                }
+                info.BattleField.BattleMinions[int.Parse(actField[2]) - 1].本回合攻击力加成 = int.Parse(actField[3]);
+                info.BattleField.BattleMinions[int.Parse(actField[2]) - 1].本回合生命力加成 = int.Parse(actField[4]);
             }
         }
         /// <summary>
