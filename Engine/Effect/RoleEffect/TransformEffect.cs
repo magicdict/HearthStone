@@ -45,11 +45,11 @@ namespace Engine.Effect
             if (actField[1] == CardUtility.strYou)
             {
                 //MyInfo
-                game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1] = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(actField[3]);
+                game.HostInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1] = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(actField[3]);
             }
             else
             {
-                game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1] = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(actField[3]);
+                game.GuestInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1] = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(actField[3]);
             }
         }
         /// <summary>

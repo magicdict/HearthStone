@@ -12,10 +12,10 @@ namespace Engine.Effect
         public static List<string> RunEffect(Client.GameManager game, String PosField)
         {
             List<String> Result = new List<string>();
-            if (game.MyInfo.BattleField.MinionCount != Engine.Client.BattleFieldInfo.MaxMinionCount)
+            if (game.HostInfo.BattleField.MinionCount != Engine.Client.BattleFieldInfo.MaxMinionCount)
             {
-                game.MyInfo.BattleField.AppendToBattle(game.YourInfo.BattleField.BattleMinions[int.Parse(PosField) - 1].深拷贝());
-                game.YourInfo.BattleField.BattleMinions[int.Parse(PosField) - 1] = null;
+                game.HostInfo.BattleField.AppendToBattle(game.GuestInfo.BattleField.BattleMinions[int.Parse(PosField) - 1].深拷贝());
+                game.GuestInfo.BattleField.BattleMinions[int.Parse(PosField) - 1] = null;
                 //CONTROL#1
                 Result.Add(Engine.Server.ActionCode.strControl + Engine.Utility.CardUtility.strSplitMark + PosField[1]);
             }
@@ -28,8 +28,8 @@ namespace Engine.Effect
         /// <param name="actField"></param>
         public static void ReRunEffect(GameManager game, String[] actField)
         {
-            game.YourInfo.BattleField.AppendToBattle(game.MyInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1].深拷贝());
-            game.MyInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1] = null;
+            game.GuestInfo.BattleField.AppendToBattle(game.HostInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1].深拷贝());
+            game.HostInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1] = null;
         }
     }
 }

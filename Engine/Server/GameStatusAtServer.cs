@@ -35,47 +35,62 @@ namespace Engine.Server
         /// </summary>
         public Boolean HostAsFirst = false;
         /// <summary>
-        /// 当前是否为先手正在的回合
+        /// 当前是否为先手回合
         /// </summary>
         public Boolean IsFirstNowTurn = true;
         /// <summary>
+        /// 当前是否为主机回合
+        /// </summary>
+        /// <returns></returns>
+        public Boolean IsHostNowTurn()
+        {
+            if (HostAsFirst && IsFirstNowTurn) return true;
+            if (!HostAsFirst && !IsFirstNowTurn) return true;
+            return false;
+        }
+        /// <summary>
         /// 先手牌堆
         /// </summary>
-        private CardDeck FirstCardDeck = new CardDeck();
+        private CardDeck HostCardDeck = new CardDeck();
         /// <summary>
         /// 先手套牌
         /// </summary>
-        private Stack<String> FirstCardStack;
+        private Stack<String> HostCardStack;
         /// <summary>
         /// 先手奥秘
         /// </summary>
-        private List<String> FirstSecret = new List<string>();
+        private List<String> HostSecret = new List<string>();
         /// <summary>
         /// 后手牌堆
         /// </summary>
-        private CardDeck SecondCardDeck = new CardDeck();
+        private CardDeck GuestCardDeck = new CardDeck();
         /// <summary>
         /// 后手套牌
         /// </summary>
-        private Stack<String> SecondCardStack;
+        private Stack<String> GuestCardStack;
         /// <summary>
         /// 后手奥秘
         /// </summary>
-        private List<String> SecondSecret = new List<string>();
+        private List<String> GuestSecret = new List<string>();
         /// <summary>
         /// 行动集
         /// </summary>
         private List<String> ActionInfo = new List<string>();
         /// <summary>
+        /// 游戏管理器
+        /// </summary>
+        public GameManager game;
+        /// <summary>
         /// 建立新游戏
         /// </summary>
         /// <param name="newGameId"></param>
-        public GameStatusAtServer(int newGameId, String hostNickName)
+        public GameStatusAtServer(int newGameId, String hostNickName, SystemManager.GameType gameType)
         {
             this.GameId = newGameId;
             this.HostNickName = hostNickName;
             //决定先后手,主机位先手概率为2/1
             HostAsFirst = (GameId % 2 == 0);
+            if (gameType == SystemManager.GameType.HTML版) game = new GameManager();
         }
         /// <summary>
         /// 设定牌堆
@@ -86,11 +101,11 @@ namespace Engine.Server
         {
             if ((IsHost && HostAsFirst) || (!IsHost && !HostAsFirst))
             {
-                FirstCardStack = cards;
+                HostCardStack = cards;
             }
             else
             {
-                SecondCardStack = cards;
+                GuestCardStack = cards;
             }
             //如果非主机的套牌也上传的话，可以初始化了
             if (!IsHost)
@@ -109,8 +124,8 @@ namespace Engine.Server
             //洗牌处理
             //如果以时间随机，则两者洗牌都一样
             //前者默认，后者用GameID随机
-            FirstCardDeck.Init(FirstCardStack, 0);
-            SecondCardDeck.Init(SecondCardStack, GameId);
+            HostCardDeck.Init(HostCardStack, 0);
+            GuestCardDeck.Init(GuestCardStack, GameId);
         }
         /// <summary>
         /// 抽牌
@@ -120,7 +135,7 @@ namespace Engine.Server
         /// <returns></returns>
         public List<String> DrawCard(Boolean IsFirst, int Count)
         {
-            var targetStock = IsFirst ? FirstCardDeck : SecondCardDeck;
+            var targetStock = IsFirst ? HostCardDeck : GuestCardDeck;
             return targetStock.DrawCard(Count);
         }
         /// <summary>
@@ -137,11 +152,11 @@ namespace Engine.Server
                     String SecretCardSN = actionDetail.Substring(ActionCode.strSecret.Length + Engine.Utility.CardUtility.strSplitMark.Length);
                     if (IsFirstNowTurn)
                     {
-                        FirstSecret.Add(SecretCardSN);
+                        HostSecret.Add(SecretCardSN);
                     }
                     else
                     {
-                        SecondSecret.Add(SecretCardSN);
+                        GuestSecret.Add(SecretCardSN);
                     }
                     //奥秘的时候，不放松奥秘内容
                     //注意和ActionCode.GetActionType()保持一致
@@ -158,11 +173,11 @@ namespace Engine.Server
                             //先手
                             if (secretInfo[1] == CardUtility.strMe)
                             {
-                                FirstSecret.Remove(secretInfo[2]);
+                                HostSecret.Remove(secretInfo[2]);
                             }
                             else
                             {
-                                SecondSecret.Remove(secretInfo[2]);
+                                GuestSecret.Remove(secretInfo[2]);
                             }
                         }
                         else
@@ -170,11 +185,11 @@ namespace Engine.Server
                             //后手
                             if (secretInfo[1] == CardUtility.strMe)
                             {
-                                SecondSecret.Remove(secretInfo[2]);
+                                GuestSecret.Remove(secretInfo[2]);
                             }
                             else
                             {
-                                FirstSecret.Remove(secretInfo[2]);
+                                HostSecret.Remove(secretInfo[2]);
                             }
                         }
                     }
@@ -215,24 +230,24 @@ namespace Engine.Server
             foreach (var actionDetail in Action.Split(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray()))
             {
                 //检查Second
-                if (IsFirst && SecondSecret.Count != 0)
+                if (IsFirst && GuestSecret.Count != 0)
                 {
-                    for (int i = 0; i < SecondSecret.Count; i++)
+                    for (int i = 0; i < GuestSecret.Count; i++)
                     {
-                        if (SecretCard.IsSecretHit(SecondSecret[i], actionDetail, false))
+                        if (SecretCard.IsSecretHit(GuestSecret[i], actionDetail, false))
                         {
-                            HITCardList.Add(SecondSecret[i] + Engine.Utility.CardUtility.strSplitDiffMark + actionDetail);
+                            HITCardList.Add(GuestSecret[i] + Engine.Utility.CardUtility.strSplitDiffMark + actionDetail);
                         }
                     }
                 }
                 //检查First
-                if ((!IsFirst) && FirstSecret.Count != 0)
+                if ((!IsFirst) && HostSecret.Count != 0)
                 {
-                    for (int i = 0; i < FirstSecret.Count; i++)
+                    for (int i = 0; i < HostSecret.Count; i++)
                     {
-                        if (SecretCard.IsSecretHit(FirstSecret[i], actionDetail, false))
+                        if (SecretCard.IsSecretHit(HostSecret[i], actionDetail, false))
                         {
-                            HITCardList.Add(FirstSecret[i] + Engine.Utility.CardUtility.strSplitDiffMark + actionDetail);
+                            HITCardList.Add(HostSecret[i] + Engine.Utility.CardUtility.strSplitDiffMark + actionDetail);
                         }
                     }
                 }

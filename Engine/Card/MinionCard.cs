@@ -428,6 +428,7 @@ namespace Engine.Card
                 //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
                 回合开始Result.RemoveAt(0);
                 ActionCodeLst.AddRange(回合开始Result);
+                潜行特性 = false;
             }
             return ActionCodeLst;
         }
@@ -446,6 +447,7 @@ namespace Engine.Card
                 //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
                 回合结束Result.RemoveAt(0);
                 ActionCodeLst.AddRange(回合结束Result);
+                潜行特性 = false;
             }
             本回合生命力加成 = 0;
             本回合攻击力加成 = 0;
@@ -530,6 +532,7 @@ namespace Engine.Card
                 }
                 ActionLst.Add(Engine.Server.ActionCode.strHitEvent + CardUtility.strSplitMark);
                 ActionLst.AddRange(((Card.AbilityCard)CardUtility.GetCardInfoBySN(自身事件效果.效果编号)).UseAbility(game, false));
+                潜行特性 = false;
             }
             return ActionLst;
         }

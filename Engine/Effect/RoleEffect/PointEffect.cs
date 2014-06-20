@@ -65,7 +65,7 @@ namespace Engine.Effect
         void IAtomicEffect.ReRunEffect(Client.GameManager game, string[] actField)
         {
             int HealthPoint = int.Parse(actField[3]);
-            Client.PublicInfo info = actField[1] == CardUtility.strYou ? game.MyInfo : game.YourInfo;
+            Client.PublicInfo info = actField[1] == CardUtility.strYou ? game.HostInfo : game.GuestInfo;
             if (actField.Length == 6)
             {
                 info.BattleField.BattleMinions[int.Parse(actField[2]) - 1].攻击力 = int.Parse(actField[3]);

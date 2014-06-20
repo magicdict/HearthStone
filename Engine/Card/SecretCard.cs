@@ -75,12 +75,12 @@ namespace Engine.Card
             List<String> Result = new List<string>();
             //奥秘计算 START
             //本方（Fight也需要）
-            if (game.MySelfInfo.奥秘列表.Count != 0)
+            if (game.HostSelfInfo.奥秘列表.Count != 0)
             {
                 //本方的行动触发本方奥秘的检查
                 for (int i = 0; i < actionlst.Count; i++)
                 {
-                    foreach (var secret in game.MySelfInfo.奥秘列表)
+                    foreach (var secret in game.HostSelfInfo.奥秘列表)
                     {
                         if ((!secret.IsHitted) && Engine.Card.SecretCard.IsSecretHit(secret.序列号, actionlst[i], true))
                         {
@@ -91,12 +91,12 @@ namespace Engine.Card
                     }
                 }
                 //移除已经触发的奥秘
-                game.MySelfInfo.清除命中奥秘();
+                game.HostSelfInfo.清除命中奥秘();
             }
             //对方（Fight也需要）
-            if (game.YourInfo.SecretCount != 0)
+            if (game.GuestInfo.SecretCount != 0)
             {
-                var HitCard = Engine.Client.ClientRequest.IsSecretHit(game.GameId.ToString(GameServer.GameIdFormat), game.IsFirst, actionlst);
+                var HitCard = Engine.Client.ClientRequest.IsSecretHit(game.GameId.ToString(GameServer.GameIdFormat), true, actionlst);
                 if (!String.IsNullOrEmpty(HitCard))
                 {
                     var HitCardList = HitCard.Split(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
@@ -104,7 +104,7 @@ namespace Engine.Card
                     {
                         Result.AddRange(Engine.Card.SecretCard.RunSecretHit(hitCard.Split(Engine.Utility.CardUtility.strSplitDiffMark.ToCharArray())[0],
                                                                      hitCard.Split(Engine.Utility.CardUtility.strSplitDiffMark.ToCharArray())[1], false, game));
-                        game.YourInfo.SecretCount--;
+                        game.GuestInfo.SecretCount--;
                     }
                 }
             }
@@ -122,7 +122,7 @@ namespace Engine.Card
             if (actField[1] == CardUtility.strYou)
             {
                 Engine.Card.SecretCard Hit = new SecretCard();
-                foreach (var secret in game.MySelfInfo.奥秘列表)
+                foreach (var secret in game.HostSelfInfo.奥秘列表)
                 {
                     if (secret.序列号 == actField[2])
                     {
@@ -130,11 +130,11 @@ namespace Engine.Card
                         break;
                     }
                 }
-                game.MySelfInfo.奥秘列表.Remove(Hit);
+                game.HostSelfInfo.奥秘列表.Remove(Hit);
             }
             else
             {
-                game.YourInfo.SecretCount--;
+                game.GuestInfo.SecretCount--;
             }
         }
 

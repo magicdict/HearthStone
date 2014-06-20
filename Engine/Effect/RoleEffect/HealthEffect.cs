@@ -72,15 +72,15 @@ namespace Engine.Effect
                 //MyInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.MyInfo.AfterBeHealth(HealthPoint);
+                    game.HostInfo.AfterBeHealth(HealthPoint);
                     if (actField.Length == 5)
                     {
-                        game.MyInfo.AfterBeShield(int.Parse(actField[4]));
+                        game.HostInfo.AfterBeShield(int.Parse(actField[4]));
                     }
                 }
                 else
                 {
-                    game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeHealth(HealthPoint);
+                    game.HostInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeHealth(HealthPoint);
                 }
             }
             else
@@ -88,15 +88,15 @@ namespace Engine.Effect
                 //YourInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.YourInfo.AfterBeHealth(HealthPoint);
+                    game.GuestInfo.AfterBeHealth(HealthPoint);
                     if (actField.Length == 5)
                     {
-                        game.YourInfo.AfterBeShield(int.Parse(actField[4]));
+                        game.GuestInfo.AfterBeShield(int.Parse(actField[4]));
                     }
                 }
                 else
                 {
-                    game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeHealth(HealthPoint);
+                    game.GuestInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeHealth(HealthPoint);
                 }
             }
         }

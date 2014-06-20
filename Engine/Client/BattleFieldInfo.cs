@@ -270,6 +270,30 @@ namespace Engine.Client
             }
         }
         /// <summary>
+        /// 冰冻状态的更新
+        /// </summary>
+        /// <param name="battle"></param>
+        public void FreezeStatus()
+        {
+            foreach (var minion in BattleMinions)
+            {
+                if (minion != null)
+                {
+                    switch (minion.冰冻状态)
+                    {
+                        case CardUtility.EffectTurn.效果命中:
+                            //如果上回合被命中的，这回合就是作用中
+                            minion.冰冻状态 = CardUtility.EffectTurn.效果作用;
+                            break;
+                        case CardUtility.EffectTurn.效果作用:
+                            //如果上回合作用中的，这回合就是解除
+                            minion.冰冻状态 = CardUtility.EffectTurn.无效果;
+                            break;
+                    }
+                }
+            }
+        }
+        /// <summary>
         /// 设置是否能成为当前动作的对象
         /// </summary>
         /// <param name="SelectOption"></param>
@@ -282,23 +306,23 @@ namespace Engine.Client
                     switch (SelectOption.EffectTargetSelectRole)
                     {
                         case CardUtility.TargetSelectRoleEnum.随从:
-                            for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
+                            for (int i = 0; i < game.HostInfo.BattleField.MinionCount; i++)
                             {
-                                if (Engine.Utility.CardUtility.符合选择条件(game.MyInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
-                                    game.MyInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
-                                game.MyInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.MyInfo.BattleField.BattleMinions[i].潜行特性;
+                                if (Engine.Utility.CardUtility.符合选择条件(game.HostInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
+                                    game.HostInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                                game.HostInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.HostInfo.BattleField.BattleMinions[i].潜行特性;
                             }
                             break;
                         case CardUtility.TargetSelectRoleEnum.英雄:
-                            game.MyInfo.能否成为动作对象 = true;
+                            game.HostInfo.能否成为动作对象 = true;
                             break;
                         case CardUtility.TargetSelectRoleEnum.所有角色:
-                            game.MyInfo.能否成为动作对象 = true;
-                            for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
+                            game.HostInfo.能否成为动作对象 = true;
+                            for (int i = 0; i < game.HostInfo.BattleField.MinionCount; i++)
                             {
-                                if (Engine.Utility.CardUtility.符合选择条件(game.MyInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
-                                    game.MyInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
-                                game.MyInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.MyInfo.BattleField.BattleMinions[i].潜行特性;
+                                if (Engine.Utility.CardUtility.符合选择条件(game.HostInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
+                                    game.HostInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                                game.HostInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.HostInfo.BattleField.BattleMinions[i].潜行特性;
                             }
                             break;
                     }
@@ -307,22 +331,22 @@ namespace Engine.Client
                     switch (SelectOption.EffectTargetSelectRole)
                     {
                         case CardUtility.TargetSelectRoleEnum.随从:
-                            for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
+                            for (int i = 0; i < game.GuestInfo.BattleField.MinionCount; i++)
                             {
-                                if (Engine.Utility.CardUtility.符合选择条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
-                                    game.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
-                                game.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.YourInfo.BattleField.BattleMinions[i].潜行特性;
+                                if (Engine.Utility.CardUtility.符合选择条件(game.GuestInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
+                                    game.GuestInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                                game.GuestInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.GuestInfo.BattleField.BattleMinions[i].潜行特性;
                             }
                             break;
                         case CardUtility.TargetSelectRoleEnum.英雄:
-                            game.YourInfo.能否成为动作对象 = true;
+                            game.GuestInfo.能否成为动作对象 = true;
                             break;
                         case CardUtility.TargetSelectRoleEnum.所有角色:
                             Boolean Has嘲讽 = false;
-                            for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
+                            for (int i = 0; i < game.GuestInfo.BattleField.MinionCount; i++)
                             {
-                                if (game.YourInfo.BattleField.BattleMinions[i].嘲讽特性 &&
-                                    (!game.YourInfo.BattleField.BattleMinions[i].潜行特性))
+                                if (game.GuestInfo.BattleField.BattleMinions[i].嘲讽特性 &&
+                                    (!game.GuestInfo.BattleField.BattleMinions[i].潜行特性))
                                 {
                                     //嘲讽特性的时候，如果潜行特性，则潜行特性无效
                                     Has嘲讽 = true;
@@ -331,23 +355,23 @@ namespace Engine.Client
                             }
                             if (SelectOption.嘲讽限制 && Has嘲讽)
                             {
-                                game.YourInfo.能否成为动作对象 = false;
-                                for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
+                                game.GuestInfo.能否成为动作对象 = false;
+                                for (int i = 0; i < game.GuestInfo.BattleField.MinionCount; i++)
                                 {
                                     //只能选择嘲讽对象
-                                    if (game.YourInfo.BattleField.BattleMinions[i].嘲讽特性)
-                                        game.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
-                                    game.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.YourInfo.BattleField.BattleMinions[i].潜行特性;
+                                    if (game.GuestInfo.BattleField.BattleMinions[i].嘲讽特性)
+                                        game.GuestInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                                    game.GuestInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.GuestInfo.BattleField.BattleMinions[i].潜行特性;
                                 }
                             }
                             else
                             {
-                                game.YourInfo.能否成为动作对象 = true;
-                                for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
+                                game.GuestInfo.能否成为动作对象 = true;
+                                for (int i = 0; i < game.GuestInfo.BattleField.MinionCount; i++)
                                 {
-                                    if (Engine.Utility.CardUtility.符合选择条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
-                                        game.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
-                                    game.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.YourInfo.BattleField.BattleMinions[i].潜行特性;
+                                    if (Engine.Utility.CardUtility.符合选择条件(game.GuestInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
+                                        game.GuestInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                                    game.GuestInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.GuestInfo.BattleField.BattleMinions[i].潜行特性;
                                 }
                             }
                             break;
@@ -357,33 +381,33 @@ namespace Engine.Client
                     switch (SelectOption.EffectTargetSelectRole)
                     {
                         case CardUtility.TargetSelectRoleEnum.随从:
-                            for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
+                            for (int i = 0; i < game.HostInfo.BattleField.MinionCount; i++)
                             {
-                                if (Engine.Utility.CardUtility.符合选择条件(game.MyInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
-                                    game.MyInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                                if (Engine.Utility.CardUtility.符合选择条件(game.HostInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
+                                    game.HostInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
                             }
-                            for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
+                            for (int i = 0; i < game.GuestInfo.BattleField.MinionCount; i++)
                             {
-                                if (Engine.Utility.CardUtility.符合选择条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
-                                    game.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                                if (Engine.Utility.CardUtility.符合选择条件(game.GuestInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
+                                    game.GuestInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
                             }
                             break;
                         case CardUtility.TargetSelectRoleEnum.英雄:
-                            game.MyInfo.能否成为动作对象 = true;
-                            game.YourInfo.能否成为动作对象 = true;
+                            game.HostInfo.能否成为动作对象 = true;
+                            game.GuestInfo.能否成为动作对象 = true;
                             break;
                         case CardUtility.TargetSelectRoleEnum.所有角色:
-                            game.MyInfo.能否成为动作对象 = true;
-                            game.YourInfo.能否成为动作对象 = true;
-                            for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
+                            game.HostInfo.能否成为动作对象 = true;
+                            game.GuestInfo.能否成为动作对象 = true;
+                            for (int i = 0; i < game.HostInfo.BattleField.MinionCount; i++)
                             {
-                                if (Engine.Utility.CardUtility.符合选择条件(game.MyInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
-                                    game.MyInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                                if (Engine.Utility.CardUtility.符合选择条件(game.HostInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
+                                    game.HostInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
                             }
-                            for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
+                            for (int i = 0; i < game.GuestInfo.BattleField.MinionCount; i++)
                             {
-                                if (Engine.Utility.CardUtility.符合选择条件(game.YourInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
-                                    game.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
+                                if (Engine.Utility.CardUtility.符合选择条件(game.GuestInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
+                                    game.GuestInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
                             }
                             break;
                     }

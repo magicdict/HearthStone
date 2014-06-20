@@ -177,7 +177,7 @@ namespace Engine.Card
             //法术伤害对于攻击型效果的加成
             if (Ability.MainAbilityDefine.效果条件 == CardUtility.strIgnore && Ability.MainAbilityDefine.EffectCount > 1)
             {
-                Ability.MainAbilityDefine.EffectCount += game.MyInfo.BattleField.AbilityDamagePlus;
+                Ability.MainAbilityDefine.EffectCount += game.HostInfo.BattleField.AbilityDamagePlus;
             }
             //按照回数执行效果
             for (int cnt = 0; cnt < Ability.MainAbilityDefine.EffectCount; cnt++)

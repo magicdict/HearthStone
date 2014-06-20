@@ -7,6 +7,7 @@ namespace Engine.Server
 {
     public static class GameServer
     {
+
         /// <summary>
         /// GameId
         /// </summary>
@@ -31,7 +32,7 @@ namespace Engine.Server
         {
             GameId++;
             //新建游戏的同时决定游戏的先后手
-            GameWaitGuest.Add(GameId, new GameStatusAtServer(GameId, hostNickName));
+            GameWaitGuest.Add(GameId, new GameStatusAtServer(GameId, hostNickName, SystemManager.CurrentGameType));
             return GameId;
         }
         /// <summary>

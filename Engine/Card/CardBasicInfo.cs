@@ -123,6 +123,41 @@ namespace Engine.Card
         /// </summary>
         public int 使用成本;
         /// <summary>
+        /// 检查是否可以使用
+        /// </summary>
+        /// <returns></returns>
+        public static String CheckCondition(Engine.Card.CardBasicInfo card,Client.PublicInfo MyInfo)
+        {
+            //剩余的法力是否足够实际召唤的法力
+            String Message = String.Empty;
+            if (card.过载 > 0 && MyInfo.OverloadPoint > 0)
+            {
+                Message = "已经使用过载";
+                return Message;
+            }
+            //if (card.CardType == CardBasicInfo.CardTypeEnum.法术)
+            //{
+            //    if (((Card.AbilityCard)card).CheckCondition(this) == false)
+            //    {
+            //        Message = "没有法术使用对象";
+            //        return Message;
+            //    }
+            //}
+            if (card.CardType == CardBasicInfo.CardTypeEnum.随从)
+            {
+                if (MyInfo.BattleField.MinionCount == Engine.Client.BattleFieldInfo.MaxMinionCount)
+                {
+                    Message = "随从已经满员";
+                    return Message;
+                }
+            }
+            if (MyInfo.crystal.CurrentRemainPoint < card.使用成本)
+            {
+                Message = "法力水晶不足";
+            }
+            return Message;
+        }
+        /// <summary>
         /// 获得信息
         /// </summary>
         /// <returns></returns>
@@ -135,6 +170,7 @@ namespace Engine.Card
         /// </summary>
         public void Init()
         {
+
         }
         #endregion
 

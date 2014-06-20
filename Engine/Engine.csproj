@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Client\EventHandler.cs" />
     <Compile Include="Client\FightHandler.cs" />
+    <Compile Include="Client\ClientInfo.cs" />
     <Compile Include="Utility\ExpressHandler.cs" />
     <Compile Include="Effect\AtomicEffectDefine.cs" />
     <Compile Include="Effect\Effecthandler.cs" />
@@ -53,7 +54,7 @@
     <Compile Include="Effect\RoleEffect\StatusEffect.cs" />
     <Compile Include="Effect\SystemEffect\SummonEffect.cs" />
     <Compile Include="Effect\SystemEffect\WeaponPointEffect.cs" />
-    <Compile Include="Utility\logger.cs" />
+    <Compile Include="Utility\SystemManager.cs" />
     <Compile Include="Client\BattleFieldInfo.cs" />
     <Compile Include="Client\Crystal.cs" />
     <Compile Include="Card\MinionCard.cs" />

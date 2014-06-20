@@ -25,14 +25,14 @@ namespace Engine.Client
                     int Pos = int.Parse(actField[2]);
                     var minion = (Engine.Card.MinionCard)Engine.Utility.CardUtility.GetCardInfoBySN(actField[1]);
                     minion.Init();
-                    game.YourInfo.BattleField.PutToBattle(Pos, minion);
-                    game.YourInfo.BattleField.ResetBuff();
+                    game.GuestInfo.BattleField.PutToBattle(Pos, minion);
+                    game.GuestInfo.BattleField.ResetBuff();
                     break;
                 case ActionCode.ActionType.UseWeapon:
-                    game.YourInfo.Weapon = (Engine.Card.WeaponCard)Engine.Utility.CardUtility.GetCardInfoBySN(actField[1]);
+                    game.GuestInfo.Weapon = (Engine.Card.WeaponCard)Engine.Utility.CardUtility.GetCardInfoBySN(actField[1]);
                     break;
                 case ActionCode.ActionType.UseSecret:
-                    game.YourInfo.SecretCount++; ;
+                    game.GuestInfo.SecretCount++; ;
                     break;
                 case ActionCode.ActionType.UseAbility:
                     break;

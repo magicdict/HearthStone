@@ -64,7 +64,7 @@ namespace Engine.Utility
                     {
                         case "MYWEAPONAP":
                             //本方武器攻击力
-                            if (game.MyInfo.Weapon != null) point = game.MyInfo.Weapon.攻击力;
+                            if (game.HostInfo.Weapon != null) point = game.HostInfo.Weapon.攻击力;
                             break;
                         default:
                             break;
@@ -98,22 +98,22 @@ namespace Engine.Utility
                     {
                         if (Position == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                         {
-                            return game.MyInfo.冰冻状态 != CardUtility.EffectTurn.无效果;
+                            return game.HostInfo.冰冻状态 != CardUtility.EffectTurn.无效果;
                         }
                         else
                         {
-                            return game.MyInfo.BattleField.BattleMinions[int.Parse(Position) - 1].冰冻状态 != CardUtility.EffectTurn.无效果;
+                            return game.HostInfo.BattleField.BattleMinions[int.Parse(Position) - 1].冰冻状态 != CardUtility.EffectTurn.无效果;
                         }
                     }
                     else
                     {
                         if (Position == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                         {
-                            return game.YourInfo.冰冻状态 != CardUtility.EffectTurn.无效果;
+                            return game.GuestInfo.冰冻状态 != CardUtility.EffectTurn.无效果;
                         }
                         else
                         {
-                            return game.YourInfo.BattleField.BattleMinions[int.Parse(Position) - 1].冰冻状态 != CardUtility.EffectTurn.无效果;
+                            return game.GuestInfo.BattleField.BattleMinions[int.Parse(Position) - 1].冰冻状态 != CardUtility.EffectTurn.无效果;
                         }
                     }
                 default:

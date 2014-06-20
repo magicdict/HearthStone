@@ -55,14 +55,14 @@ namespace 炉边传说
         {
             BattleFieldInfo.SetTargetSelectEnable(SelectOption, game);
             int Megrate = 3;
-            btnMyHero.Hero = game.MyInfo;
-            btnYourHero.Hero = game.YourInfo;
-            int LeftPos = (this.Width - (game.MyInfo.BattleField.MinionCount * btnMe1.Width +
-            (game.MyInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
-            for (int i = 0; i < game.MyInfo.BattleField.MinionCount; i++)
+            btnMyHero.Hero = game.HostInfo;
+            btnYourHero.Hero = game.GuestInfo;
+            int LeftPos = (this.Width - (game.HostInfo.BattleField.MinionCount * btnMe1.Width +
+            (game.HostInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
+            for (int i = 0; i < game.HostInfo.BattleField.MinionCount; i++)
             {
-                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).Visible = game.MyInfo.BattleField.BattleMinions[i].能否成为动作对象;
-                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CardInfo = game.MyInfo.BattleField.BattleMinions[i];
+                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).Visible = game.HostInfo.BattleField.BattleMinions[i].能否成为动作对象;
+                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CardInfo = game.HostInfo.BattleField.BattleMinions[i];
                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).Left = LeftPos;
                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).FightClick += (x, y) =>
                 {
@@ -74,11 +74,11 @@ namespace 炉边传说
                 LeftPos += btnMe1.Width + Megrate;
             }
 
-            LeftPos = (this.Width - (game.YourInfo.BattleField.MinionCount * btnMe1.Width + (game.YourInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
-            for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
+            LeftPos = (this.Width - (game.GuestInfo.BattleField.MinionCount * btnMe1.Width + (game.GuestInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
+            for (int i = 0; i < game.GuestInfo.BattleField.MinionCount; i++)
             {
-                ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).Visible = game.YourInfo.BattleField.BattleMinions[i].能否成为动作对象;
-                ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CardInfo = game.YourInfo.BattleField.BattleMinions[i];
+                ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).Visible = game.GuestInfo.BattleField.BattleMinions[i].能否成为动作对象;
+                ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CardInfo = game.GuestInfo.BattleField.BattleMinions[i];
                 ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).Left = LeftPos;
                 ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).FightClick += (x, y) =>
                 {
@@ -90,7 +90,7 @@ namespace 炉边传说
                 };
                 LeftPos += btnMe1.Width + Megrate;
             }
-            btnMyHero.Enabled = game.MyInfo.能否成为动作对象;
+            btnMyHero.Enabled = game.HostInfo.能否成为动作对象;
             btnMyHero.Left = (this.Width - btnMyHero.Width) / 2;
             btnMyHero.Click += (x, y) =>
             {
@@ -98,7 +98,7 @@ namespace 炉边传说
                 Position.Postion = 0;
                 this.Close();
             };
-            btnYourHero.Enabled = game.YourInfo.能否成为动作对象; ;
+            btnYourHero.Enabled = game.GuestInfo.能否成为动作对象; ;
             btnYourHero.Left = (this.Width - btnYourHero.Width) / 2;
             btnYourHero.Click += (x, y) =>
             {

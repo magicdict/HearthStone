@@ -45,7 +45,7 @@ namespace Engine.Client
                             game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                             {
                                 触发事件类型 = CardUtility.事件类型列表.施法,
-                                触发位置 = game.MyInfo.战场位置
+                                触发位置 = game.HostInfo.战场位置
                             });
                     }
                     else
@@ -55,7 +55,7 @@ namespace Engine.Client
                     break;
                 case CardBasicInfo.CardTypeEnum.随从:
                     int MinionPos = 1;
-                    if (game.MyInfo.BattleField.MinionCount != 0) MinionPos = GetPutPos(game);
+                    if (game.HostInfo.BattleField.MinionCount != 0) MinionPos = GetPutPos(game);
                     if (MinionPos != -1)
                     {
                         ActionCodeLst.Add(ActionCode.strMinion + CardUtility.strSplitMark + CardSn + CardUtility.strSplitMark + MinionPos.ToString("D1"));
@@ -75,7 +75,7 @@ namespace Engine.Client
                         switch (minion.战吼类型)
                         {
                             case MinionCard.战吼类型列表.默认:
-                                game.MyInfo.BattleField.PutToBattle(MinionPos, minion);
+                                game.HostInfo.BattleField.PutToBattle(MinionPos, minion);
                                 ActionCodeLst.AddRange(minion.发动战吼(game));
                                 break;
                             case MinionCard.战吼类型列表.抢先:
@@ -96,17 +96,17 @@ namespace Engine.Client
                                         (int.Parse(resultArray[2]) + 1).ToString() + CardUtility.strSplitMark + resultArray[3]);
                                     }
                                 }
-                                game.MyInfo.BattleField.PutToBattle(MinionPos, minion);
+                                game.HostInfo.BattleField.PutToBattle(MinionPos, minion);
                                 break;
                             case MinionCard.战吼类型列表.相邻:
                             case MinionCard.战吼类型列表.自身:
-                                game.MyInfo.BattleField.PutToBattle(MinionPos, minion);
-                                game.MyInfo.BattleField.发动战吼(MinionPos, game);
+                                game.HostInfo.BattleField.PutToBattle(MinionPos, minion);
+                                game.HostInfo.BattleField.发动战吼(MinionPos, game);
                                 break;
                             default:
                                 break;
                         }
-                        game.MyInfo.BattleField.ResetBuff();
+                        game.HostInfo.BattleField.ResetBuff();
                     }
                     else
                     {
@@ -115,18 +115,18 @@ namespace Engine.Client
                     break;
                 case CardBasicInfo.CardTypeEnum.武器:
                     ActionCodeLst.Add(ActionCode.strWeapon + CardUtility.strSplitMark + CardSn);
-                    game.MyInfo.Weapon = (Engine.Card.WeaponCard)card;
+                    game.HostInfo.Weapon = (Engine.Card.WeaponCard)card;
                     break;
                 case CardBasicInfo.CardTypeEnum.奥秘:
                     ActionCodeLst.Add(ActionCode.strSecret + CardUtility.strSplitMark + CardSn);
-                    game.MySelfInfo.奥秘列表.Add((Engine.Card.SecretCard)card);
-                    game.MyInfo.SecretCount = game.MySelfInfo.奥秘列表.Count;
+                    game.HostSelfInfo.奥秘列表.Add((Engine.Card.SecretCard)card);
+                    game.HostInfo.SecretCount = game.HostSelfInfo.奥秘列表.Count;
                     break;
                 default:
                     break;
             }
             //随从卡牌的连击效果启动
-            if (card.CardType != CardBasicInfo.CardTypeEnum.法术 && game.MyInfo.连击状态)
+            if (card.CardType != CardBasicInfo.CardTypeEnum.法术 && game.HostInfo.连击状态)
             {
                 if (!String.IsNullOrEmpty(card.连击效果))
                 {
@@ -142,14 +142,14 @@ namespace Engine.Client
                             game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                             {
                                 触发事件类型 = CardUtility.事件类型列表.施法,
-                                触发位置 = game.MyInfo.战场位置
+                                触发位置 = game.HostInfo.战场位置
                             });
                     }
                 }
             }
             if (ActionCodeLst.Count != 0)
             {
-                game.MyInfo.连击状态 = true;
+                game.HostInfo.连击状态 = true;
                 ActionCodeLst.AddRange(game.事件处理组件.事件处理(game));
             }
             return ActionCodeLst;

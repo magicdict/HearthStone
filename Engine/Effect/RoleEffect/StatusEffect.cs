@@ -119,10 +119,10 @@ namespace Engine.Effect
                 //MyInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.MyInfo.冰冻状态 = CardUtility.EffectTurn.效果命中;                }
+                    game.HostInfo.冰冻状态 = CardUtility.EffectTurn.效果命中;                }
                 else
                 {
-                    ChangeStatus(game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1],新状态);
+                    ChangeStatus(game.HostInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1],新状态);
                 }
             }
             else
@@ -130,11 +130,11 @@ namespace Engine.Effect
                 //YourInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.YourInfo.冰冻状态 = CardUtility.EffectTurn.效果作用;
+                    game.GuestInfo.冰冻状态 = CardUtility.EffectTurn.效果作用;
                 }
                 else
                 {
-                    ChangeStatus(game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1], 新状态);
+                    ChangeStatus(game.GuestInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1], 新状态);
                 }
             }
         }

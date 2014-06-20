@@ -22,16 +22,16 @@ namespace Engine.Client
                 //攻击次数
                 if (攻击方Pos == BattleFieldInfo.HeroPos)
                 {
-                    if (game.MyInfo.Weapon != null)
+                    if (game.HostInfo.Weapon != null)
                     {
-                        game.MyInfo.Weapon.耐久度--;
-                        game.MyInfo.RemainAttactTimes = 0;
+                        game.HostInfo.Weapon.耐久度--;
+                        game.HostInfo.RemainAttactTimes = 0;
                     }
                 }
                 else
                 {
                     //攻击次数的清算,潜行等去除(如果不是被攻击方的处理)
-                    game.MyInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterDoAttack(被动攻击);
+                    game.HostInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterDoAttack(被动攻击);
                 }
             }
             //伤害计算(本方)
@@ -40,29 +40,29 @@ namespace Engine.Client
             var YourAttackPoint = 0;
             if (被攻击方Pos != BattleFieldInfo.HeroPos)
             {
-                YourAttackPoint = game.YourInfo.BattleField.BattleMinions[被攻击方Pos - 1].TotalAttack();
+                YourAttackPoint = game.GuestInfo.BattleField.BattleMinions[被攻击方Pos - 1].TotalAttack();
             }
             if (攻击方Pos != BattleFieldInfo.HeroPos)
             {
                 //圣盾不引发伤害事件
-                if (game.MyInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterBeAttack(YourAttackPoint))
+                if (game.HostInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterBeAttack(YourAttackPoint))
                 {
                     game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型列表.受伤,
-                        触发位置 = game.MyInfo.BattleField.BattleMinions[攻击方Pos - 1].战场位置
+                        触发位置 = game.HostInfo.BattleField.BattleMinions[攻击方Pos - 1].战场位置
                     });
                 }
             }
             else
             {
                 //护甲不引发伤害事件
-                if (game.MyInfo.AfterBeAttack(YourAttackPoint))
+                if (game.HostInfo.AfterBeAttack(YourAttackPoint))
                 {
                     game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型列表.受伤,
-                        触发位置 = game.MyInfo.战场位置 
+                        触发位置 = game.HostInfo.战场位置 
                     });
                 }
             }
@@ -70,32 +70,32 @@ namespace Engine.Client
             var MyAttackPoint = 0;
             if (攻击方Pos != BattleFieldInfo.HeroPos)
             {
-                MyAttackPoint = game.MyInfo.BattleField.BattleMinions[攻击方Pos - 1].TotalAttack();
+                MyAttackPoint = game.HostInfo.BattleField.BattleMinions[攻击方Pos - 1].TotalAttack();
             }
             else
             {
-                if (game.MyInfo.Weapon != null) MyAttackPoint = game.MyInfo.Weapon.攻击力;
+                if (game.HostInfo.Weapon != null) MyAttackPoint = game.HostInfo.Weapon.攻击力;
             }
             if (被攻击方Pos != BattleFieldInfo.HeroPos)
             {
-                if (game.YourInfo.BattleField.BattleMinions[被攻击方Pos - 1].AfterBeAttack(MyAttackPoint))
+                if (game.GuestInfo.BattleField.BattleMinions[被攻击方Pos - 1].AfterBeAttack(MyAttackPoint))
                 {
                     game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型列表.受伤,
-                        触发位置 = game.YourInfo.BattleField.BattleMinions[被攻击方Pos - 1].战场位置
+                        触发位置 = game.GuestInfo.BattleField.BattleMinions[被攻击方Pos - 1].战场位置
                     });
                 }
             }
             else
             {
                 //护甲不引发伤害事件
-                if (game.YourInfo.AfterBeAttack(MyAttackPoint))
+                if (game.GuestInfo.AfterBeAttack(MyAttackPoint))
                 {
                     game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型列表.受伤,
-                        触发位置 = game.YourInfo.战场位置
+                        触发位置 = game.GuestInfo.战场位置
                     });
                 }
             }

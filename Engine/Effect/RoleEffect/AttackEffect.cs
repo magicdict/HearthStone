@@ -36,7 +36,7 @@ namespace Engine.Effect
         {
             int AttackPoint = ExpressHandler.GetEffectPoint(game, 伤害效果表达式);
             //调整伤害值
-            if (伤害加成) AttackPoint += game.MyInfo.BattleField.AbilityDamagePlus;
+            if (伤害加成) AttackPoint += game.HostInfo.BattleField.AbilityDamagePlus;
             if (PlayInfo.AfterBeAttack(AttackPoint))
             {
                 game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
@@ -57,7 +57,7 @@ namespace Engine.Effect
         {
             int AttackPoint = ExpressHandler.GetEffectPoint(game, 伤害效果表达式);
             //调整伤害值
-            if (伤害加成) AttackPoint += game.MyInfo.BattleField.AbilityDamagePlus;
+            if (伤害加成) AttackPoint += game.HostInfo.BattleField.AbilityDamagePlus;
             if (Minion.AfterBeAttack(AttackPoint))
             {
                 game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
@@ -81,11 +81,11 @@ namespace Engine.Effect
                 //MyInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.MyInfo.AfterBeAttack(AttackPoint);
+                    game.HostInfo.AfterBeAttack(AttackPoint);
                 }
                 else
                 {
-                    game.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeAttack(AttackPoint);
+                    game.HostInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeAttack(AttackPoint);
                 }
             }
             else
@@ -93,11 +93,11 @@ namespace Engine.Effect
                 //YourInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.YourInfo.AfterBeAttack(AttackPoint);
+                    game.GuestInfo.AfterBeAttack(AttackPoint);
                 }
                 else
                 {
-                    game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeAttack(AttackPoint);
+                    game.GuestInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeAttack(AttackPoint);
                 }
             }
         }

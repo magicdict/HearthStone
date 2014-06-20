@@ -40,6 +40,10 @@ namespace Engine.Client
         /// </summary>
         public Crystal crystal = new Crystal();
         /// <summary>
+        /// 上回合过载
+        /// </summary>
+        public int OverloadPoint = 0;
+        /// <summary>
         /// 武器
         /// </summary>
         public Engine.Card.WeaponCard Weapon;
@@ -185,10 +189,26 @@ namespace Engine.Client
             {
                 if (card.CardType == CardBasicInfo.CardTypeEnum.法术)
                 {
-                    card.使用成本 = card.使用成本 + game.MyInfo.BattleField.AbilityCost;
+                    card.使用成本 = card.使用成本 + game.HostInfo.BattleField.AbilityCost;
                     if (card.使用成本 < 0) card.使用成本 = 0;
                 }
             }
+        }
+        /// <summary>
+        /// 去掉使用过的手牌
+        /// </summary>
+        /// <param name="CardSn"></param>
+        public void RemoveUsedCard(String CardSn)
+        {
+            Engine.Card.CardBasicInfo removeCard = new CardBasicInfo();
+            foreach (var Seekcard in handCards)
+            {
+                if (Seekcard.序列号 == CardSn)
+                {
+                    removeCard = Seekcard;
+                }
+            }
+            handCards.Remove(removeCard);
         }
         /// <summary>
         /// 清除命中奥秘

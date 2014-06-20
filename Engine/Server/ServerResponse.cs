@@ -115,8 +115,8 @@ namespace Engine.Server
             client.Close();
             if (!(requestType == RequestType.读取行动 && String.IsNullOrEmpty(Response)))
             {
-                logger.TextLog("Request :[" + requestType.ToString() + "]" + Request);
-                logger.TextLog("Response:[" + Response.ToString() + "]");
+                SystemManager.TextLog("Request :[" + requestType.ToString() + "]" + Request);
+                SystemManager.TextLog("Response:[" + Response.ToString() + "]");
             }
         }
         /// <summary>

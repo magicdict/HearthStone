@@ -21,7 +21,7 @@ namespace 炉边传说
             Engine.Utility.CardUtility.Init(txtCardPath.Text);
             btnStart.Enabled = false;
             btnStop.Enabled = true;
-            Engine.Utility.logger.Init();
+            Engine.Utility.SystemManager.Init();
             ServerThread = new Thread(Engine.Server.ServerResponse.StartServer);
             ServerThread.IsBackground = true;
             ServerThread.Start();
@@ -35,7 +35,7 @@ namespace 炉边传说
         {
             ServerThread.Abort();
             ServerThread = null;
-            Engine.Utility.logger.Terminate();
+            Engine.Utility.SystemManager.Terminate();
             GC.Collect();
         }
         /// <summary>

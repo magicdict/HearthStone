@@ -6,8 +6,18 @@ namespace Engine.Utility
     /// <summary>
     /// 日志
     /// </summary>
-    public static class logger
+    public static class SystemManager
     {
+        /// <summary>
+        /// 游戏类型枚举
+        /// </summary>
+        public enum GameType
+        {
+            单机版,
+            客户端服务器版,
+            HTML版
+        }
+        public static GameType CurrentGameType = GameType.HTML版;
         /// <summary>
         /// 日志
         /// </summary>
