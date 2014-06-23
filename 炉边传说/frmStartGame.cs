@@ -118,8 +118,11 @@ namespace 炉边传说
             }
             Engine.Utility.CardUtility.Init(txtCardPath.Text);
             GameManager.游戏类型 = Engine.Utility.SystemManager.GameType.单机版;
-            GameManager.gameStatus.server.HostAsFirst = (DateTime.Now.Millisecond % 2) == 0;
+            GameManager.gameStatus.client.IsHost = true;
             GameManager.SimulateServer = new RemoteGameManager(0, txtNickName.Text, Engine.Utility.SystemManager.GameType.单机版);
+            GameManager.SimulateServer.serverinfo.Init();
+            GameManager.SimulateServer.serverinfo.HostAsFirst = (DateTime.Now.Millisecond % 2) == 0;
+            GameManager.gameStatus.client.IsFirst = GameManager.SimulateServer.serverinfo.HostAsFirst;
             var CardList = GetCardDeckList();
             var CardStackFirst = new Stack<String>();
             foreach (String card in CardList)
@@ -133,7 +136,7 @@ namespace 炉边传说
             {
                 CardStackSecond.Push(card);
             }
-            GameManager.SimulateServer.SetCardStack(false, CardStackFirst);
+            GameManager.SimulateServer.SetCardStack(false, CardStackSecond);
             GameManager.IsStart = true;
             this.Close();
         }

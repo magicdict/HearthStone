@@ -17,17 +17,9 @@ namespace Engine.Client
         /// </summary>
         public int GameId;
         /// <summary>
-        /// 游戏类型
-        /// </summary>
-        public SystemManager.GameType 游戏类型 = SystemManager.GameType.客户端服务器版;
-        /// <summary>
         /// 客户信息
         /// </summary>
         public ClientInfo client = new ClientInfo();
-        /// <summary>
-        /// 服务器信息
-        /// </summary>
-        public ServerInfo server = new ServerInfo();
         /// <summary>
         /// 客户端状态信息
         /// </summary>
@@ -93,64 +85,12 @@ namespace Engine.Client
             }
         }
         /// <summary>
-        /// 服务器端状态信息
+        /// 
         /// </summary>
-        public struct ServerInfo
-        {
-            /// <summary>
-            /// 主机作为先手
-            /// </summary>
-            public Boolean HostAsFirst;
-            /// <summary>
-            /// 是否先手
-            /// </summary>
-            /// <param name="IsHost"></param>
-            /// <returns></returns>
-            public Boolean IsFirst(Boolean IsHost)
-            {
-                if (IsHost && HostAsFirst) return true;
-                if (!IsHost && !HostAsFirst) return true;
-                return false;
-            }
-            /// <summary>
-            /// 主机玩家名称
-            /// </summary>
-            public String HostNickName;
-            /// <summary>
-            /// 非主机玩家名称
-            /// </summary>
-            public String GuestNickName;
-            /// <summary>
-            /// 先手牌堆
-            /// </summary>
-            public CardDeck HostCardDeck;
-            /// <summary>
-            /// 先手奥秘
-            /// </summary>
-            public List<String> HostSecret;
-            /// <summary>
-            /// 后手牌堆
-            /// </summary>
-            public CardDeck GuestCardDeck;
-            /// <summary>
-            /// 后手奥秘
-            /// </summary>
-            public List<String> GuestSecret;
-            /// <summary>
-            /// 初始化
-            /// </summary>
-            public void Init()
-            {
-                HostCardDeck = new CardDeck();
-                HostSecret = new List<string>();
-                GuestCardDeck = new CardDeck();
-                GuestSecret = new List<string>();
-            }
-        }
-
+        /// <returns></returns>
         public string GetGameInfo()
         {
-            throw new NotImplementedException();
+            return "NotImplementedException";
         }
     }
 }

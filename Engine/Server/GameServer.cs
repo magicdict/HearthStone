@@ -45,7 +45,7 @@ namespace Engine.Server
         {
             if (GameWaitGuest.ContainsKey(GameId))
             {
-                GameWaitGuest[GameId].gamestatus.server.GuestNickName = GuestNickName;
+                GameWaitGuest[GameId].serverinfo.GuestNickName = GuestNickName;
                 GameRunning.Add(GameId, GameWaitGuest[GameId]);
                 GameWaitGuest.Remove(GameId);
                 //套牌

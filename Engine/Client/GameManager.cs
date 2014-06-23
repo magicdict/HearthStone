@@ -50,16 +50,19 @@ namespace Engine.Client
         public static void InitPlayInfo()
         {
             gameStatus.client.Init();
-            gameStatus.server.Init();
             if (gameStatus.client.IsHost)
             {
                 gameStatus.client.MyInfo = gameStatus.client.HostInfo;
                 gameStatus.client.YourInfo = gameStatus.client.GuestInfo;
+                gameStatus.client.MySelfInfo = gameStatus.client.HostSelfInfo;
+                gameStatus.client.YourSelfInfo = gameStatus.client.GuestSelfInfo;
             }
             else
             {
                 gameStatus.client.MyInfo = gameStatus.client.GuestInfo;
                 gameStatus.client.YourInfo = gameStatus.client.HostInfo;
+                gameStatus.client.MySelfInfo = gameStatus.client.GuestSelfInfo;
+                gameStatus.client.YourSelfInfo = gameStatus.client.HostSelfInfo;
             }
             gameStatus.client.HostInfo.crystal.CurrentFullPoint = 0;
             gameStatus.client.HostInfo.crystal.CurrentRemainPoint = 0;
@@ -80,9 +83,9 @@ namespace Engine.Client
         public static void InitHandCard()
         {
             int DrawCardCnt = gameStatus.client.IsFirst ? PublicInfo.BasicHandCardCount : (PublicInfo.BasicHandCardCount + 1);
-            foreach (var card in Engine.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), gameStatus.client.IsFirst,DrawCardCnt))
+            foreach (var card in Engine.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), gameStatus.client.IsFirst, DrawCardCnt))
             {
-                gameStatus.client.HostSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(card));
+                gameStatus.client.MySelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(card));
             }
             if (gameStatus.client.IsFirst)
             {
@@ -106,7 +109,7 @@ namespace Engine.Client
         /// <param name="IsHost"></param>
         public static void InitHandCard(Boolean IsHost)
         {
-            int DrawCardCnt = gameStatus.server.IsFirst(IsHost) ? PublicInfo.BasicHandCardCount : (PublicInfo.BasicHandCardCount + 1);
+            int DrawCardCnt = SimulateServer.serverinfo.IsFirst(IsHost) ? PublicInfo.BasicHandCardCount : (PublicInfo.BasicHandCardCount + 1);
             if (IsHost)
             {
                 foreach (var card in SimulateServer.DrawCard(IsHost, DrawCardCnt))
@@ -115,7 +118,7 @@ namespace Engine.Client
                     gameStatus.client.HostInfo.HandCardCount++;
                     gameStatus.client.HostInfo.RemainCardDeckCount--;
                 }
-                if (gameStatus.server.IsFirst(IsHost))
+                if (SimulateServer.serverinfo.IsFirst(IsHost))
                 {
                     gameStatus.client.HostSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.AbilityCard.SN幸运币));
                     gameStatus.client.HostInfo.HandCardCount++;
@@ -129,18 +132,35 @@ namespace Engine.Client
                     gameStatus.client.GuestInfo.HandCardCount++;
                     gameStatus.client.GuestInfo.RemainCardDeckCount--;
                 }
-                if (gameStatus.server.IsFirst(IsHost))
+                if (SimulateServer.serverinfo.IsFirst(IsHost))
                 {
                     gameStatus.client.GuestSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.AbilityCard.SN幸运币));
                     gameStatus.client.GuestInfo.HandCardCount++;
                 }
             }
-         }
+        }
         /// <summary>
         /// 新的回合
         /// </summary>
-        public static void TurnStart(PublicInfo PlayInfo)
+        public static void TurnStart(Boolean MeOrYou)
         {
+            PublicInfo PlayInfo = MeOrYou ? gameStatus.client.MyInfo : gameStatus.client.YourInfo;
+            PrivateInfo SelfInfo = MeOrYou ? gameStatus.client.MySelfInfo : gameStatus.client.YourSelfInfo;
+            //抽一张手牌
+            switch (游戏类型)
+            {
+                case SystemManager.GameType.单机版:
+                    SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(SimulateServer.DrawCard(MeOrYou, 1)[0]));
+                    break;
+                case SystemManager.GameType.客户端服务器版:
+                    SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), gameStatus.client.IsFirst, 1)[0]));
+                    break;
+                case SystemManager.GameType.HTML版:
+                    break;
+                default:
+                    break;
+            }
+            PlayInfo.HandCardCount++;
             //过载的清算
             if (PlayInfo.OverloadPoint != 0)
             {
@@ -164,8 +184,9 @@ namespace Engine.Client
         /// <summary>
         /// 对手回合结束的清场
         /// </summary>
-        public static List<String> TurnEnd(PublicInfo PlayInfo)
+        public static List<String> TurnEnd(Boolean MeOrYou)
         {
+            PublicInfo PlayInfo = MeOrYou ? gameStatus.client.MyInfo : gameStatus.client.YourInfo;
             List<String> ActionLst = new List<string>();
             //对手回合加成属性的去除
             int ExistMinionCount = PlayInfo.BattleField.MinionCount;

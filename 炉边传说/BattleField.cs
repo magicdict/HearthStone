@@ -28,17 +28,21 @@ namespace 炉边传说
         {
             RunAction.GetPutPos = GetPutPos;
             GameManager.InitPlayInfo();
-            switch (GameManager.gameStatus.游戏类型)
+            switch (GameManager.游戏类型)
             {
                 case SystemManager.GameType.单机版:
+                    //Host,Guest
+                    GameManager.InitHandCard(true);
+                    GameManager.InitHandCard(false);
                     btnMyHeroAblity.Tag = GameManager.gameStatus.client.MyInfo.HeroAbility;
                     GameManager.gameStatus.client.IsMyTurn = GameManager.gameStatus.client.IsFirst;
-                    GameManager.TurnStart(GameManager.gameStatus.client.MyInfo);
+                    GameManager.TurnStart(true);
                     break;
                 case SystemManager.GameType.客户端服务器版:
+                    GameManager.InitHandCard();
                     btnMyHeroAblity.Tag = GameManager.gameStatus.client.MyInfo.HeroAbility;
                     GameManager.gameStatus.client.IsMyTurn = GameManager.gameStatus.client.IsFirst;
-                    GameManager.TurnStart(GameManager.gameStatus.client.MyInfo);
+                    GameManager.TurnStart(true);
                     break;
                 case SystemManager.GameType.HTML版:
                     //HTML版不实现
@@ -250,12 +254,12 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnEndTurn_Click(object sender, System.EventArgs e)
         {
-            var ActionLst = GameManager.TurnEnd(GameManager.gameStatus.client.MyInfo);
+            var ActionLst = GameManager.TurnEnd(true);
             if (ActionLst.Count != 0) Engine.Client.ClientRequest.WriteAction(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat), ActionLst);
             //结束回合
             Engine.Client.ClientRequest.TurnEnd(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat));
             GameManager.gameStatus.client.IsMyTurn = false;
-            GameManager.TurnStart(GameManager.gameStatus.client.IsFirst ? GameManager.gameStatus.client.MyInfo : GameManager.gameStatus.client.YourInfo);
+            GameManager.TurnStart(false);
             StartNewTurn();
             WaitTimer.Start();
         }
@@ -320,9 +324,9 @@ namespace 炉边传说
                 {
                     WaitTimer.Stop();
                     btnEndTurn.Enabled = true;
-                    GameManager.TurnEnd(GameManager.gameStatus.client.YourInfo);
+                    GameManager.TurnEnd(false);
                     GameManager.gameStatus.client.IsMyTurn = true;
-                    GameManager.TurnStart(GameManager.gameStatus.client.IsFirst ? GameManager.gameStatus.client.MyInfo : GameManager.gameStatus.client.YourInfo);
+                    GameManager.TurnStart(true);
                     StartNewTurn();
                     break;
                 }

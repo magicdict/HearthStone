@@ -27,9 +27,64 @@ namespace Engine.Server
         /// </summary>
         public Boolean IsFirstNowTurn = true;
         /// <summary>
+        /// 服务器端状态信息
+        /// </summary>
+        public struct ServerInfo
+        {
+            /// <summary>
+            /// 主机作为先手
+            /// </summary>
+            public Boolean HostAsFirst;
+            /// <summary>
+            /// 是否先手
+            /// </summary>
+            /// <param name="IsHost"></param>
+            /// <returns></returns>
+            public Boolean IsFirst(Boolean IsHost)
+            {
+                if (IsHost && HostAsFirst) return true;
+                if (!IsHost && !HostAsFirst) return true;
+                return false;
+            }
+            /// <summary>
+            /// 主机玩家名称
+            /// </summary>
+            public String HostNickName;
+            /// <summary>
+            /// 非主机玩家名称
+            /// </summary>
+            public String GuestNickName;
+            /// <summary>
+            /// 先手牌堆
+            /// </summary>
+            public CardDeck HostCardDeck;
+            /// <summary>
+            /// 先手奥秘
+            /// </summary>
+            public List<String> HostSecret;
+            /// <summary>
+            /// 后手牌堆
+            /// </summary>
+            public CardDeck GuestCardDeck;
+            /// <summary>
+            /// 后手奥秘
+            /// </summary>
+            public List<String> GuestSecret;
+            /// <summary>
+            /// 初始化
+            /// </summary>
+            public void Init()
+            {
+                HostCardDeck = new CardDeck();
+                HostSecret = new List<string>();
+                GuestCardDeck = new CardDeck();
+                GuestSecret = new List<string>();
+            }
+        }
+        /// <summary>
         /// 服务器端信息
         /// </summary>
-        public GameStatus.ServerInfo serverinfo = new GameStatus.ServerInfo();
+        public ServerInfo serverinfo = new ServerInfo();
         /// <summary>
         /// 当前是否为主机回合
         /// </summary>
@@ -45,9 +100,9 @@ namespace Engine.Server
         /// </summary>
         public List<String> ActionInfo = new List<string>(); 
         /// <summary>
-        /// 游戏状态容器
+        /// 游戏状态容器(HTML)
         /// </summary>
-        public GameStatus gamestatus;
+        public GameStatus BSgamestatus;
         /// <summary>
         /// 建立新游戏
         /// </summary>
@@ -58,8 +113,8 @@ namespace Engine.Server
             serverinfo.HostNickName = hostNickName;
             //决定先后手,主机位先手概率为2/1
             serverinfo.HostAsFirst = (GameId % 2 == 0);
-            if (gameType != SystemManager.GameType.客户端服务器版) gamestatus = new GameStatus();
             serverinfo.Init();
+            if (gameType == SystemManager.GameType.HTML版) BSgamestatus = new GameStatus();
         }
         /// <summary>
         /// 设定牌堆
