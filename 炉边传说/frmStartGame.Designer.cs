@@ -54,7 +54,7 @@
             // 
             // btnCreateGame
             // 
-            this.btnCreateGame.Location = new System.Drawing.Point(7, 162);
+            this.btnCreateGame.Location = new System.Drawing.Point(18, 194);
             this.btnCreateGame.Name = "btnCreateGame";
             this.btnCreateGame.Size = new System.Drawing.Size(119, 23);
             this.btnCreateGame.TabIndex = 0;
@@ -65,16 +65,16 @@
             // lstWaitGuest
             // 
             this.lstWaitGuest.FormattingEnabled = true;
-            this.lstWaitGuest.Location = new System.Drawing.Point(7, 191);
+            this.lstWaitGuest.Location = new System.Drawing.Point(18, 223);
             this.lstWaitGuest.Name = "lstWaitGuest";
             this.lstWaitGuest.Size = new System.Drawing.Size(499, 95);
             this.lstWaitGuest.TabIndex = 1;
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Location = new System.Drawing.Point(398, 162);
+            this.btnRefresh.Location = new System.Drawing.Point(398, 194);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(108, 23);
+            this.btnRefresh.Size = new System.Drawing.Size(113, 23);
             this.btnRefresh.TabIndex = 2;
             this.btnRefresh.Text = "刷新";
             this.btnRefresh.UseVisualStyleBackColor = true;
@@ -82,7 +82,7 @@
             // 
             // btnJoinGame
             // 
-            this.btnJoinGame.Location = new System.Drawing.Point(132, 162);
+            this.btnJoinGame.Location = new System.Drawing.Point(137, 194);
             this.btnJoinGame.Name = "btnJoinGame";
             this.btnJoinGame.Size = new System.Drawing.Size(119, 23);
             this.btnJoinGame.TabIndex = 3;
@@ -93,7 +93,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 15);
+            this.label1.Location = new System.Drawing.Point(18, 15);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(73, 13);
             this.label1.TabIndex = 4;
@@ -110,7 +110,7 @@
             // 
             this.btnPickCard.Location = new System.Drawing.Point(398, 10);
             this.btnPickCard.Name = "btnPickCard";
-            this.btnPickCard.Size = new System.Drawing.Size(108, 23);
+            this.btnPickCard.Size = new System.Drawing.Size(113, 23);
             this.btnPickCard.TabIndex = 6;
             this.btnPickCard.Text = "选择..";
             this.btnPickCard.UseVisualStyleBackColor = true;
@@ -119,7 +119,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(18, 105);
+            this.label2.Location = new System.Drawing.Point(18, 137);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(77, 13);
             this.label2.TabIndex = 7;
@@ -127,7 +127,7 @@
             // 
             // txtServerIP
             // 
-            this.txtServerIP.Location = new System.Drawing.Point(101, 102);
+            this.txtServerIP.Location = new System.Drawing.Point(106, 134);
             this.txtServerIP.Name = "txtServerIP";
             this.txtServerIP.Size = new System.Drawing.Size(282, 20);
             this.txtServerIP.TabIndex = 8;
@@ -135,7 +135,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(18, 136);
+            this.label3.Location = new System.Drawing.Point(18, 168);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(55, 13);
             this.label3.TabIndex = 9;
@@ -143,7 +143,7 @@
             // 
             // txtNickName
             // 
-            this.txtNickName.Location = new System.Drawing.Point(101, 133);
+            this.txtNickName.Location = new System.Drawing.Point(106, 165);
             this.txtNickName.Name = "txtNickName";
             this.txtNickName.Size = new System.Drawing.Size(282, 20);
             this.txtNickName.TabIndex = 10;
@@ -152,7 +152,7 @@
             // 
             this.btnCreateCard.Location = new System.Drawing.Point(398, 39);
             this.btnCreateCard.Name = "btnCreateCard";
-            this.btnCreateCard.Size = new System.Drawing.Size(108, 23);
+            this.btnCreateCard.Size = new System.Drawing.Size(113, 23);
             this.btnCreateCard.TabIndex = 11;
             this.btnCreateCard.Text = "卡牌资料生成";
             this.btnCreateCard.UseVisualStyleBackColor = true;
@@ -162,7 +162,7 @@
             // 
             this.btnCreateCardDeck.Location = new System.Drawing.Point(398, 68);
             this.btnCreateCardDeck.Name = "btnCreateCardDeck";
-            this.btnCreateCardDeck.Size = new System.Drawing.Size(108, 23);
+            this.btnCreateCardDeck.Size = new System.Drawing.Size(113, 23);
             this.btnCreateCardDeck.TabIndex = 12;
             this.btnCreateCardDeck.Text = "套牌构成";
             this.btnCreateCardDeck.UseVisualStyleBackColor = true;
@@ -187,9 +187,9 @@
             // 
             // btnServer
             // 
-            this.btnServer.Location = new System.Drawing.Point(398, 100);
+            this.btnServer.Location = new System.Drawing.Point(398, 132);
             this.btnServer.Name = "btnServer";
-            this.btnServer.Size = new System.Drawing.Size(108, 23);
+            this.btnServer.Size = new System.Drawing.Size(113, 23);
             this.btnServer.TabIndex = 15;
             this.btnServer.Text = "服务器界面";
             this.btnServer.UseVisualStyleBackColor = true;
@@ -197,7 +197,7 @@
             // 
             // btnTestCrystal
             // 
-            this.btnTestCrystal.Location = new System.Drawing.Point(564, 10);
+            this.btnTestCrystal.Location = new System.Drawing.Point(12, 325);
             this.btnTestCrystal.Name = "btnTestCrystal";
             this.btnTestCrystal.Size = new System.Drawing.Size(167, 23);
             this.btnTestCrystal.TabIndex = 16;
@@ -207,7 +207,7 @@
             // 
             // crystalCount
             // 
-            this.crystalCount.Location = new System.Drawing.Point(758, 12);
+            this.crystalCount.Location = new System.Drawing.Point(206, 327);
             this.crystalCount.Maximum = new decimal(new int[] {
             10,
             0,
@@ -225,7 +225,7 @@
             // 
             // btnTestHandCard
             // 
-            this.btnTestHandCard.Location = new System.Drawing.Point(564, 39);
+            this.btnTestHandCard.Location = new System.Drawing.Point(12, 354);
             this.btnTestHandCard.Name = "btnTestHandCard";
             this.btnTestHandCard.Size = new System.Drawing.Size(167, 23);
             this.btnTestHandCard.TabIndex = 19;
@@ -236,16 +236,16 @@
             // cmbHandCard
             // 
             this.cmbHandCard.FormattingEnabled = true;
-            this.cmbHandCard.Location = new System.Drawing.Point(758, 41);
+            this.cmbHandCard.Location = new System.Drawing.Point(206, 356);
             this.cmbHandCard.Name = "cmbHandCard";
             this.cmbHandCard.Size = new System.Drawing.Size(121, 21);
             this.cmbHandCard.TabIndex = 20;
             // 
             // btnSingleGame
             // 
-            this.btnSingleGame.Location = new System.Drawing.Point(269, 162);
+            this.btnSingleGame.Location = new System.Drawing.Point(398, 97);
             this.btnSingleGame.Name = "btnSingleGame";
-            this.btnSingleGame.Size = new System.Drawing.Size(119, 23);
+            this.btnSingleGame.Size = new System.Drawing.Size(113, 23);
             this.btnSingleGame.TabIndex = 21;
             this.btnSingleGame.Text = "单机游戏";
             this.btnSingleGame.UseVisualStyleBackColor = true;
@@ -256,7 +256,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(908, 301);
+            this.ClientSize = new System.Drawing.Size(539, 388);
             this.Controls.Add(this.btnSingleGame);
             this.Controls.Add(this.cmbHandCard);
             this.Controls.Add(this.btnTestHandCard);

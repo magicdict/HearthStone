@@ -27,7 +27,7 @@ namespace Engine.Server
         /// </summary>
         public Boolean IsFirstNowTurn = true;
         /// <summary>
-        /// 
+        /// 服务器端信息
         /// </summary>
         public GameStatus.ServerInfo serverinfo = new GameStatus.ServerInfo();
         /// <summary>

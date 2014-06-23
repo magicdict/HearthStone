@@ -9,6 +9,14 @@ namespace Engine.Client
     public static class GameManager
     {
         /// <summary>
+        /// 游戏编号
+        /// </summary>
+        public static int GameId;
+        /// <summary>
+        /// 游戏类型
+        /// </summary>
+        public static SystemManager.GameType 游戏类型 = SystemManager.GameType.客户端服务器版;
+        /// <summary>
         /// 是否开始运行
         /// </summary>
         public static Boolean IsStart = false;
@@ -21,9 +29,13 @@ namespace Engine.Client
         /// </summary>
         public static Engine.Utility.CardUtility.delegatePickEffect PickEffect;
         /// <summary>
-        /// 
+        /// 游戏状态
         /// </summary>
         public static GameStatus gameStatus = new GameStatus();
+        /// <summary>
+        /// 单机版的模拟服务器
+        /// </summary>
+        public static RemoteGameManager SimulateServer;
         /// <summary>
         /// 全局随机种子
         /// </summary>
@@ -62,36 +74,68 @@ namespace Engine.Client
             gameStatus.client.YourInfo.HeroAbility = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
         }
         /// <summary>
-        /// 从服务器获得初始手牌
+        /// 初始化手牌(CS)
         /// </summary>
-        public static void 获得初始手牌()
+        /// <param name="IsHost"></param>
+        public static void InitHandCard()
         {
-            var HandCard = Engine.Client.ClientRequest.DrawCard(gameStatus.GameId.ToString(GameServer.GameIdFormat), gameStatus.client.IsFirst,
-                           gameStatus.client.IsFirst ? PublicInfo.BasicHandCardCount : (PublicInfo.BasicHandCardCount + 1));
-            foreach (var card in HandCard)
+            int DrawCardCnt = gameStatus.client.IsFirst ? PublicInfo.BasicHandCardCount : (PublicInfo.BasicHandCardCount + 1);
+            foreach (var card in Engine.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), gameStatus.client.IsFirst,DrawCardCnt))
             {
                 gameStatus.client.HostSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(card));
             }
-            gameStatus.client.HostInfo.HandCardCount = HandCard.Count;
-        }
-        /// <summary>
-        /// 初始化手牌
-        /// </summary>
-        /// <param name="IsFirst"></param>
-        public static void InitHandCard(Boolean IsFirst)
-        {
-            if (IsFirst)
+            if (gameStatus.client.IsFirst)
             {
-                gameStatus.client.HostInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 3;
-                gameStatus.client.GuestInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 4;
+                gameStatus.client.MyInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 3;
+                gameStatus.client.YourInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 4;
+                gameStatus.client.MyInfo.HandCardCount = PublicInfo.BasicHandCardCount;
+                gameStatus.client.YourInfo.HandCardCount = PublicInfo.BasicHandCardCount + 1 + 1;
             }
             else
             {
-                gameStatus.client.HostSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.AbilityCard.SN幸运币));
-                gameStatus.client.HostInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 4;
-                gameStatus.client.GuestInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 3;
+                gameStatus.client.MySelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.AbilityCard.SN幸运币));
+                gameStatus.client.MyInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 4;
+                gameStatus.client.YourInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 3;
+                gameStatus.client.MyInfo.HandCardCount = PublicInfo.BasicHandCardCount + 1 + 1;
+                gameStatus.client.YourInfo.HandCardCount = PublicInfo.BasicHandCardCount;
             }
         }
+        /// <summary>
+        /// 初始化手牌(Single)
+        /// </summary>
+        /// <param name="IsHost"></param>
+        public static void InitHandCard(Boolean IsHost)
+        {
+            int DrawCardCnt = gameStatus.server.IsFirst(IsHost) ? PublicInfo.BasicHandCardCount : (PublicInfo.BasicHandCardCount + 1);
+            if (IsHost)
+            {
+                foreach (var card in SimulateServer.DrawCard(IsHost, DrawCardCnt))
+                {
+                    gameStatus.client.HostSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(card));
+                    gameStatus.client.HostInfo.HandCardCount++;
+                    gameStatus.client.HostInfo.RemainCardDeckCount--;
+                }
+                if (gameStatus.server.IsFirst(IsHost))
+                {
+                    gameStatus.client.HostSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.AbilityCard.SN幸运币));
+                    gameStatus.client.HostInfo.HandCardCount++;
+                }
+            }
+            else
+            {
+                foreach (var card in SimulateServer.DrawCard(IsHost, DrawCardCnt))
+                {
+                    gameStatus.client.GuestSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(card));
+                    gameStatus.client.GuestInfo.HandCardCount++;
+                    gameStatus.client.GuestInfo.RemainCardDeckCount--;
+                }
+                if (gameStatus.server.IsFirst(IsHost))
+                {
+                    gameStatus.client.GuestSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.AbilityCard.SN幸运币));
+                    gameStatus.client.GuestInfo.HandCardCount++;
+                }
+            }
+         }
         /// <summary>
         /// 新的回合
         /// </summary>

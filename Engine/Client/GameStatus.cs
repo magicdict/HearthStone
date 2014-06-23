@@ -70,13 +70,17 @@ namespace Engine.Client
             /// </summary>
             public PublicInfo MyInfo;
             /// <summary>
-            /// 本方情报
+            /// 本方情报[CS]
             /// </summary>
             public PrivateInfo MySelfInfo;
             /// <summary>
             /// 对方情报
             /// </summary>
             public PublicInfo YourInfo;
+            /// <summary>
+            /// 对方情报[单机]
+            /// </summary>
+            public PrivateInfo YourSelfInfo;
             /// <summary>
             /// 初始化
             /// </summary>
@@ -97,6 +101,17 @@ namespace Engine.Client
             /// 主机作为先手
             /// </summary>
             public Boolean HostAsFirst;
+            /// <summary>
+            /// 是否先手
+            /// </summary>
+            /// <param name="IsHost"></param>
+            /// <returns></returns>
+            public Boolean IsFirst(Boolean IsHost)
+            {
+                if (IsHost && HostAsFirst) return true;
+                if (!IsHost && !HostAsFirst) return true;
+                return false;
+            }
             /// <summary>
             /// 主机玩家名称
             /// </summary>
@@ -131,6 +146,11 @@ namespace Engine.Client
                 GuestCardDeck = new CardDeck();
                 GuestSecret = new List<string>();
             }
+        }
+
+        public string GetGameInfo()
+        {
+            throw new NotImplementedException();
         }
     }
 }

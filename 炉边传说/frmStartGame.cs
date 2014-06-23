@@ -29,23 +29,24 @@ namespace 炉边传说
         {
             //新建游戏的时候，已经决定游戏的先后手
             if (!String.IsNullOrEmpty(txtServerIP.Text)) ClientRequest.strIP = txtServerIP.Text;
-            if (!String.IsNullOrEmpty(txtNickName.Text)) ClientInfo.PlayerNickName = txtNickName.Text;
+            if (!String.IsNullOrEmpty(txtNickName.Text)) GameManager.gameStatus.client.PlayerNickName = txtNickName.Text;
             if (String.IsNullOrEmpty(cmbCardDeck.Text))
             {
                 MessageBox.Show("请选择套牌");
                 return;
             }
-            ClientInfo.IsHost = true;
-            String GameId = Engine.Client.ClientRequest.CreateGame(ClientInfo.PlayerNickName);
+            GameManager.游戏类型 = Engine.Utility.SystemManager.GameType.客户端服务器版;
+            GameManager.gameStatus.client.IsHost = true;
+            String GameId = Engine.Client.ClientRequest.CreateGame(GameManager.gameStatus.client.PlayerNickName);
             Engine.Utility.CardUtility.Init(txtCardPath.Text);
-            ClientInfo.gamestatus.GameId = int.Parse(GameId);
+            GameManager.GameId = int.Parse(GameId);
             var CardList = GetCardDeckList();
-            Engine.Client.ClientRequest.SendDeck(int.Parse(GameId), ClientInfo.IsHost, CardList);
+            Engine.Client.ClientRequest.SendDeck(int.Parse(GameId), GameManager.gameStatus.client.IsHost, CardList);
             btnJoinGame.Enabled = false;
             btnRefresh.Enabled = false;
             btnCreateGame.Enabled = false;
             int Count = 0;
-            while (!Engine.Client.ClientRequest.IsGameStart(ClientInfo.gamestatus.GameId.ToString(GameServer.GameIdFormat)) && Count <= 10)
+            while (!Engine.Client.ClientRequest.IsGameStart(GameManager.GameId.ToString(GameServer.GameIdFormat)) && Count <= 10)
             {
                 Thread.Sleep(3000);
                 Count++;
@@ -56,14 +57,13 @@ namespace 炉边传说
             }
             else
             {
-                ClientInfo.IsFirst = Engine.Client.ClientRequest.IsFirst(ClientInfo.gamestatus.GameId.ToString(GameServer.GameIdFormat), ClientInfo.IsHost);
-                ClientInfo.gameType = Engine.Utility.SystemManager.GameType.客户端服务器版;
-                ClientInfo.IsStart = true;
+                GameManager.gameStatus.client.IsFirst = Engine.Client.ClientRequest.IsFirst(GameManager.GameId.ToString(GameServer.GameIdFormat), true);
+                GameManager.IsStart = true;
                 this.Close();
             }
         }
         /// <summary>
-        /// 
+        /// 刷新
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -85,23 +85,23 @@ namespace 炉边传说
         private void btnJoinGame_Click(object sender, EventArgs e)
         {
             if (!String.IsNullOrEmpty(txtServerIP.Text)) ClientRequest.strIP = txtServerIP.Text;
-            if (!String.IsNullOrEmpty(txtNickName.Text)) ClientInfo.PlayerNickName = txtNickName.Text;
+            if (!String.IsNullOrEmpty(txtNickName.Text)) GameManager.gameStatus.client.PlayerNickName = txtNickName.Text;
+            if (lstWaitGuest.SelectedItems.Count != 1) return;
             if (String.IsNullOrEmpty(cmbCardDeck.Text))
             {
                 MessageBox.Show("请选择套牌");
                 return;
             }
-            ClientInfo.IsHost = false;
-            if (lstWaitGuest.SelectedItems.Count != 1) return;
+            GameManager.游戏类型 = Engine.Utility.SystemManager.GameType.客户端服务器版;
+            GameManager.gameStatus.client.IsHost = false;
             var strWait = lstWaitGuest.SelectedItem.ToString();
+            String GameId = Engine.Client.ClientRequest.JoinGame(int.Parse(strWait.Substring(0, strWait.IndexOf("("))), GameManager.gameStatus.client.PlayerNickName);
+            GameManager.GameId = int.Parse(GameId);
+            GameManager.gameStatus.client.IsFirst = Engine.Client.ClientRequest.IsFirst(GameManager.GameId.ToString(GameServer.GameIdFormat), GameManager.gameStatus.client.IsHost);
             Engine.Utility.CardUtility.Init(txtCardPath.Text);
-            String GameId = Engine.Client.ClientRequest.JoinGame(int.Parse(strWait.Substring(0, strWait.IndexOf("("))), ClientInfo.PlayerNickName);
             var CardList = GetCardDeckList();
-            Engine.Client.ClientRequest.SendDeck(int.Parse(GameId), ClientInfo.IsHost, CardList);
-            ClientInfo.gamestatus.GameId = int.Parse(GameId);
-            ClientInfo.IsFirst = Engine.Client.ClientRequest.IsFirst(ClientInfo.gamestatus.GameId.ToString(GameServer.GameIdFormat), ClientInfo.IsHost);
-            ClientInfo.gameType = Engine.Utility.SystemManager.GameType.客户端服务器版;
-            ClientInfo.IsStart = true;
+            Engine.Client.ClientRequest.SendDeck(int.Parse(GameId), GameManager.gameStatus.client.IsHost, CardList);
+            GameManager.IsStart = true;
             this.Close();
         }
         /// <summary>
@@ -116,25 +116,25 @@ namespace 炉边传说
                 MessageBox.Show("请选择套牌");
                 return;
             }
-
             Engine.Utility.CardUtility.Init(txtCardPath.Text);
-            ClientInfoSingle.HostAsFirst = (DateTime.Now.Millisecond % 2) == 0;
-            ClientInfoSingle.IsStart = true;
+            GameManager.游戏类型 = Engine.Utility.SystemManager.GameType.单机版;
+            GameManager.gameStatus.server.HostAsFirst = (DateTime.Now.Millisecond % 2) == 0;
+            GameManager.SimulateServer = new RemoteGameManager(0, txtNickName.Text, Engine.Utility.SystemManager.GameType.单机版);
             var CardList = GetCardDeckList();
-
             var CardStackFirst = new Stack<String>();
             foreach (String card in CardList)
             {
                 CardStackFirst.Push(card);
             }
-            ClientInfoSingle.remoteGame.SetCardStack(true, CardStackFirst);
+            GameManager.SimulateServer.SetCardStack(true, CardStackFirst);
 
             var CardStackSecond = new Stack<String>();
             foreach (String card in CardList)
             {
                 CardStackSecond.Push(card);
             }
-            ClientInfoSingle.remoteGame.SetCardStack(false, CardStackSecond);
+            GameManager.SimulateServer.SetCardStack(false, CardStackFirst);
+            GameManager.IsStart = true;
             this.Close();
         }
         /// <summary>
@@ -152,7 +152,7 @@ namespace 炉边传说
                 cmbHandCard.Items.Add(CardSn.Key + "(" + CardSn.Value + ")");
             }
             //DEBUG END
-            txtNickName.Text = ClientInfo.PlayerNickName;
+            txtNickName.Text = "PlayerNickName";
             cmbCardDeck.Items.Clear();
             if (Directory.Exists(DeckDir))
             {
@@ -229,10 +229,10 @@ namespace 炉边传说
         private void btnTestCrystal_Click(object sender, EventArgs e)
         {
             //DEBUG START
-            ClientInfo.gamestatus.HostInfo.crystal.CurrentFullPoint = (int)crystalCount.Value;
-            ClientInfo.gamestatus.HostInfo.crystal.CurrentRemainPoint = (int)crystalCount.Value;
-            ClientInfo.gamestatus.GuestInfo.crystal.CurrentFullPoint = (int)crystalCount.Value;
-            ClientInfo.gamestatus.GuestInfo.crystal.CurrentRemainPoint = (int)crystalCount.Value;
+            GameManager.gameStatus.client.HostInfo.crystal.CurrentFullPoint = (int)crystalCount.Value;
+            GameManager.gameStatus.client.HostInfo.crystal.CurrentRemainPoint = (int)crystalCount.Value;
+            GameManager.gameStatus.client.GuestInfo.crystal.CurrentFullPoint = (int)crystalCount.Value;
+            GameManager.gameStatus.client.GuestInfo.crystal.CurrentRemainPoint = (int)crystalCount.Value;
             //DEBUG END
         }
         /// <summary>
@@ -242,9 +242,7 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnTestHandCard_Click(object sender, EventArgs e)
         {
-            ClientInfo.gamestatus.HostSelfInfo.handCards.Add(Engine.Utility.CardUtility.GetCardInfoBySN(cmbHandCard.Text.Substring(0, 7)));
+            GameManager.gameStatus.client.HostSelfInfo.handCards.Add(Engine.Utility.CardUtility.GetCardInfoBySN(cmbHandCard.Text.Substring(0, 7)));
         }
-
-
     }
 }
