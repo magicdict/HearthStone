@@ -183,13 +183,13 @@ namespace Engine.Client
         /// <summary>
         /// 手牌消耗重置
         /// </summary>
-        public void ResetHandCardCost(GameManager game)
+        public void ResetHandCardCost(GameStatus game)
         {
             foreach (var card in handCards)
             {
                 if (card.CardType == CardBasicInfo.CardTypeEnum.法术)
                 {
-                    card.使用成本 = card.使用成本 + game.HostInfo.BattleField.AbilityCost;
+                    card.使用成本 = card.使用成本 + game.client.MyInfo.BattleField.AbilityCost;
                     if (card.使用成本 < 0) card.使用成本 = 0;
                 }
             }

@@ -548,7 +548,7 @@ namespace Engine.Utility
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public delegate int delegateGetPutPos(Engine.Client.GameManager game);
+        public delegate int delegateGetPutPos(Engine.Client.GameStatus game);
         #endregion
         #region"扩展方法"
 

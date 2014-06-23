@@ -14,10 +14,6 @@ namespace 炉边传说
             InitializeComponent();
         }
         /// <summary>
-        /// 游戏控制
-        /// </summary>
-        public ClientInfo client;
-        /// <summary>
         /// 等待对方行动Timer
         /// </summary>
         private Timer WaitTimer = new Timer();
@@ -26,18 +22,31 @@ namespace 炉边传说
         /// </summary>
         int Megrate = 3;
         /// <summary>
-        /// 
+        /// 开始游戏
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void BattleField_Load(object sender, System.EventArgs e)
+        private void InitGame()
         {
-
-            client.game.GetSelectTarget = SelectPanel;
-            client.game.PickEffect = PickEffect;
             RunAction.GetPutPos = GetPutPos;
-            WaitTimer.Interval = 3000;
-            WaitTimer.Tick += WaitFor;
+            if (ClientInfo.gameType == SystemManager.GameType.客户端服务器版)
+            {
+                ClientInfo.gamestatus.GetSelectTarget = SelectPanel;
+                ClientInfo.gamestatus.PickEffect = PickEffect;
+                ClientInfo.gamestatus.InitPlayInfo();
+                ClientInfo.gamestatus.InitHandCard(ClientInfo.IsFirst);
+                ClientInfo.获得网初始手牌();
+                WaitTimer.Interval = 3000;
+                WaitTimer.Tick += WaitFor;
+            }
+            else
+            {
+                ClientInfoSingle.remoteGame.gamestatus.GetSelectTarget = SelectPanel;
+                ClientInfoSingle.remoteGame.gamestatus.PickEffect = PickEffect;
+                ClientInfoSingle.remoteGame.gamestatus.InitPlayInfo();
+                ClientInfoSingle.remoteGame.gamestatus.InitHandCard(ClientInfo.IsFirst);
+                ClientInfoSingle.remoteGame.gamestatus.InitHandCard(!ClientInfo.IsFirst);
+                ClientInfoSingle.获得初始手牌(true);
+                ClientInfoSingle.获得初始手牌(false);
+            }
             for (int i = 0; i < 10; i++)
             {
                 ((ctlHandCard)Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0]).UseClick += this.btnUseHandCard_Click;
@@ -65,11 +74,22 @@ namespace 炉边传说
 
             btnYourHeroAblity.Enabled = false;
             btnMyHeroAblity.Enabled = false;
-            btnMyHeroAblity.Tag = client.game.HostInfo.HeroAbility;
-            btnMyHeroAblity.Click += btnUseHandCard_Click;
-            client.IsMyTurn = client.IsFirst;
-            client.game.TurnStart(client.IsFirst?client.game.HostInfo:client.game.GuestInfo);
-            StartNewTurn();
+            if (ClientInfo.gameType == SystemManager.GameType.客户端服务器版)
+            {
+                btnMyHeroAblity.Tag = ClientInfo.gamestatus.HostInfo.HeroAbility;
+                btnMyHeroAblity.Click += btnUseHandCard_Click;
+                ClientInfo.IsMyTurn = ClientInfo.IsFirst;
+                ClientInfo.gamestatus.TurnStart(ClientInfo.IsFirst ? ClientInfo.gamestatus.HostInfo : ClientInfo.gamestatus.GuestInfo);
+                StartNewTurn();
+            }
+            else
+            {
+                btnMyHeroAblity.Tag = ClientInfoSingle.remoteGame.gamestatus.HostInfo.HeroAbility;
+                btnMyHeroAblity.Click += btnUseHandCard_Click;
+                ClientInfoSingle.IsMyTurn = ClientInfoSingle.IsFirst;
+                ClientInfoSingle.remoteGame.gamestatus.TurnStart(ClientInfoSingle.IsFirst ? ClientInfoSingle.remoteGame.gamestatus.HostInfo : ClientInfoSingle.remoteGame.gamestatus.GuestInfo);
+                StartNewTurn();
+            }
             DisplayMyInfo();
         }
         /// <summary>
@@ -77,7 +97,7 @@ namespace 炉边传说
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        private int GetPutPos(GameManager game)
+        private int GetPutPos(GameStatus game)
         {
             var frm = new PutMinion(game);
             frm.ShowDialog();
@@ -89,7 +109,7 @@ namespace 炉边传说
         /// <returns></returns>
         private CardUtility.TargetPosition SelectPanel(CardUtility.PositionSelectOption SelectOpt)
         {
-            var frm = new TargetSelect(SelectOpt, client.game);
+            var frm = new TargetSelect(SelectOpt, ClientInfo.gamestatus);
             frm.ShowDialog();
             var SelectPos = frm.Position;
             return SelectPos;
@@ -102,18 +122,18 @@ namespace 炉边传说
             int LeftPos = (this.Width - (btnMyHero.Width + btnMyHeroAblity.Width + btnMyWeapon.Width + 2 * Megrate)) / 2;
             //武器
             btnMyWeapon.Left = LeftPos;
-            if (client.game.HostInfo.Weapon != null)
+            if (ClientInfo.gamestatus.HostInfo.Weapon != null)
             {
-                btnMyWeapon.Weapon = client.game.HostInfo.Weapon;
+                btnMyWeapon.Weapon = ClientInfo.gamestatus.HostInfo.Weapon;
             }
             else
             {
                 btnMyWeapon.Clear();
             }
             btnYourWeapon.Left = LeftPos;
-            if (client.game.GuestInfo.Weapon != null)
+            if (ClientInfo.gamestatus.GuestInfo.Weapon != null)
             {
-                btnYourWeapon.Weapon = client.game.GuestInfo.Weapon;
+                btnYourWeapon.Weapon = ClientInfo.gamestatus.GuestInfo.Weapon;
             }
             else
             {
@@ -121,7 +141,7 @@ namespace 炉边传说
             }
             LeftPos += (btnMyWeapon.Width + Megrate);
             //没有使用过，有武器，武器耐久度不为零
-            if (client.game.HostInfo.IsWeaponEnable(client.IsMyTurn))
+            if (ClientInfo.gamestatus.HostInfo.IsWeaponEnable(ClientInfo.IsMyTurn))
             {
                 btnMyWeapon.Visible = true;
             }
@@ -130,15 +150,15 @@ namespace 炉边传说
                 btnMyWeapon.Visible = false;
             }
 
-            btnMyHero.Hero = client.game.HostInfo;
+            btnMyHero.Hero = ClientInfo.gamestatus.HostInfo;
             btnMyHero.Left = LeftPos;
-            btnYourHero.Hero = client.game.GuestInfo;
+            btnYourHero.Hero = ClientInfo.gamestatus.GuestInfo;
             btnYourHero.Left = LeftPos;
 
             LeftPos += btnMyHero.Width + Megrate;
 
             //没有使用过，能够使用
-            if (client.game.HostInfo.IsHeroAblityEnable(client.IsMyTurn))
+            if (ClientInfo.gamestatus.HostInfo.IsHeroAblityEnable(ClientInfo.IsMyTurn))
             {
                 btnMyHeroAblity.Enabled = true;
             }
@@ -149,15 +169,15 @@ namespace 炉边传说
             btnMyHeroAblity.Left = LeftPos;
             btnYourHeroAblity.Left = LeftPos;
 
-            MyCrystalBar.CrystalInfo = client.game.HostInfo.crystal;
-            YourCrystalBar.CrystalInfo = client.game.GuestInfo.crystal;
+            MyCrystalBar.CrystalInfo = ClientInfo.gamestatus.HostInfo.crystal;
+            YourCrystalBar.CrystalInfo = ClientInfo.gamestatus.GuestInfo.crystal;
 
 
-            LeftPos = (this.Width - (client.game.HostInfo.BattleField.MinionCount * btnMe1.Width +
-                      (client.game.HostInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
+            LeftPos = (this.Width - (ClientInfo.gamestatus.HostInfo.BattleField.MinionCount * btnMe1.Width +
+                      (ClientInfo.gamestatus.HostInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
             for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
             {
-                var myMinion = client.game.HostInfo.BattleField.BattleMinions[i];
+                var myMinion = ClientInfo.gamestatus.HostInfo.BattleField.BattleMinions[i];
                 if (myMinion != null)
                 {
                     Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = true;
@@ -166,7 +186,7 @@ namespace 炉边传说
                     LeftPos += btnMe1.Width + Megrate;
                     if (myMinion.CanAttack())
                     {
-                        if (client.IsMyTurn) ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = true;
+                        if (ClientInfo.IsMyTurn) ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = true;
                     }
                     else
                     {
@@ -178,15 +198,15 @@ namespace 炉边传说
                     Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = false;
                 }
             }
-            LeftPos = (this.Width - (client.game.GuestInfo.BattleField.MinionCount * btnYou1.Width +
-                      (client.game.GuestInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
+            LeftPos = (this.Width - (ClientInfo.gamestatus.GuestInfo.BattleField.MinionCount * btnYou1.Width +
+                      (ClientInfo.gamestatus.GuestInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
             for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
             {
-                if (client.game.GuestInfo.BattleField.BattleMinions[i] != null)
+                if (ClientInfo.gamestatus.GuestInfo.BattleField.BattleMinions[i] != null)
                 {
                     Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Visible = true;
                     //这里注意：随从有个 能否成为动作对象 属性，这个会影响CanAttack的状态
-                    ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CardInfo = client.game.GuestInfo.BattleField.BattleMinions[i];
+                    ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CardInfo = ClientInfo.gamestatus.GuestInfo.BattleField.BattleMinions[i];
                     //能否成为动作对象 在对象选择的时候用的，这里的话还是要设置为 False
                     ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CanAttack = false;
                     Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Left = LeftPos;
@@ -197,14 +217,14 @@ namespace 炉边传说
                     Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Visible = false;
                 }
             }
-            LeftPos = (this.Width - (client.game.HostSelfInfo.handCards.Count * btnHandCard1.Width + (client.game.HostSelfInfo.handCards.Count - 1) * Megrate)) / 2;
+            LeftPos = (this.Width - (ClientInfo.gamestatus.HostSelfInfo.handCards.Count * btnHandCard1.Width + (ClientInfo.gamestatus.HostSelfInfo.handCards.Count - 1) * Megrate)) / 2;
             for (int i = 0; i < 10; i++)
             {
-                if (i < client.game.HostSelfInfo.handCards.Count)
+                if (i < ClientInfo.gamestatus.HostSelfInfo.handCards.Count)
                 {
-                    ((ctlHandCard)Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0]).HandCard = client.game.HostSelfInfo.handCards[i];
-                    Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Tag = client.game.HostSelfInfo.handCards[i];
-                    if (client.IsMyTurn) Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Enabled = true;
+                    ((ctlHandCard)Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0]).HandCard = ClientInfo.gamestatus.HostSelfInfo.handCards[i];
+                    Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Tag = ClientInfo.gamestatus.HostSelfInfo.handCards[i];
+                    if (ClientInfo.IsMyTurn) Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Enabled = true;
                     Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Visible = true;
                     Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Left = LeftPos;
                     LeftPos += btnHandCard1.Width + Megrate;
@@ -216,9 +236,9 @@ namespace 炉边传说
                     Controls.Find("btnHandCard" + (i + 1).ToString(), true)[0].Visible = false;
                 }
             }
-            lblGameStatus.Text = client.GetClientInfo();
+            lblGameStatus.Text = ClientInfo.GetClientInfo();
             //胜负判定
-            if (client.game.HostInfo.LifePoint <= 0 && client.game.GuestInfo.LifePoint <= 0)
+            if (ClientInfo.gamestatus.HostInfo.LifePoint <= 0 && ClientInfo.gamestatus.GuestInfo.LifePoint <= 0)
             {
                 MessageBox.Show("Draw Game");
                 WaitTimer.Stop();
@@ -226,13 +246,13 @@ namespace 炉边传说
             }
             else
             {
-                if (client.game.HostInfo.LifePoint <= 0)
+                if (ClientInfo.gamestatus.HostInfo.LifePoint <= 0)
                 {
                     MessageBox.Show("You Lose");
                     WaitTimer.Stop();
                     this.Close();
                 }
-                if (client.game.GuestInfo.LifePoint <= 0)
+                if (ClientInfo.gamestatus.GuestInfo.LifePoint <= 0)
                 {
                     MessageBox.Show("You Win");
                     WaitTimer.Stop();
@@ -247,12 +267,12 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnEndTurn_Click(object sender, System.EventArgs e)
         {
-            var ActionLst = client.game.TurnEnd(client.game.HostInfo);
-            if (ActionLst.Count != 0) Engine.Client.ClientRequest.WriteAction(client.game.GameId.ToString(GameServer.GameIdFormat), ActionLst);
+            var ActionLst = ClientInfo.gamestatus.TurnEnd(ClientInfo.gamestatus.HostInfo);
+            if (ActionLst.Count != 0) Engine.Client.ClientRequest.WriteAction(ClientInfo.gamestatus.GameId.ToString(GameServer.GameIdFormat), ActionLst);
             //结束回合
-            Engine.Client.ClientRequest.TurnEnd(client.game.GameId.ToString(GameServer.GameIdFormat));
-            client.IsMyTurn = false;
-            client.game.TurnStart(client.IsFirst ? client.game.HostInfo : client.game.GuestInfo);
+            Engine.Client.ClientRequest.TurnEnd(ClientInfo.gamestatus.GameId.ToString(GameServer.GameIdFormat));
+            ClientInfo.IsMyTurn = false;
+            ClientInfo.gamestatus.TurnStart(ClientInfo.IsFirst ? ClientInfo.gamestatus.HostInfo : ClientInfo.gamestatus.GuestInfo);
             StartNewTurn();
             WaitTimer.Start();
         }
@@ -261,18 +281,18 @@ namespace 炉边传说
         /// </summary>
         private void StartNewTurn()
         {
-            if (client.IsMyTurn)
+            if (ClientInfo.IsMyTurn)
             {
                 //回合开始效果
                 List<String> ActionLst = new List<string>();
-                for (int i = 0; i < client.game.HostInfo.BattleField.MinionCount; i++)
+                for (int i = 0; i < ClientInfo.gamestatus.HostInfo.BattleField.MinionCount; i++)
                 {
-                    if (client.game.HostInfo.BattleField.BattleMinions[i] != null)
+                    if (ClientInfo.gamestatus.HostInfo.BattleField.BattleMinions[i] != null)
                     {
-                        ActionLst.AddRange(client.game.HostInfo.BattleField.BattleMinions[i].回合开始(client.game));
+                        ActionLst.AddRange(ClientInfo.gamestatus.HostInfo.BattleField.BattleMinions[i].回合开始(ClientInfo.gamestatus));
                     }
                 }
-                if (ActionLst.Count != 0) Engine.Client.ClientRequest.WriteAction(client.game.GameId.ToString(GameServer.GameIdFormat), ActionLst);
+                if (ActionLst.Count != 0) Engine.Client.ClientRequest.WriteAction(ClientInfo.gamestatus.GameId.ToString(GameServer.GameIdFormat), ActionLst);
                 //按钮可用性设定
                 btnEndTurn.Enabled = true;
                 for (int i = 0; i < 10; i++)
@@ -304,22 +324,22 @@ namespace 炉边传说
         /// </summary>
         private void WaitFor(object sender, System.EventArgs e)
         {
-            var Actions = Engine.Client.ClientRequest.ReadAction(client.game.GameId.ToString(GameServer.GameIdFormat));
+            var Actions = Engine.Client.ClientRequest.ReadAction(ClientInfo.gamestatus.GameId.ToString(GameServer.GameIdFormat));
             if (String.IsNullOrEmpty(Actions)) return;
             var ActionList = Actions.Split(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
             foreach (var item in ActionList)
             {
                 if (ActionCode.GetActionType(item) != ActionCode.ActionType.EndTurn)
                 {
-                    ProcessAction.Process(item, client.game);
+                    ProcessAction.Process(item, ClientInfo.gamestatus);
                 }
                 else
                 {
                     WaitTimer.Stop();
                     btnEndTurn.Enabled = true;
-                    client.game.TurnEnd(client.game.GuestInfo);
-                    client.IsMyTurn = true;
-                    client.game.TurnStart(client.IsFirst ? client.game.HostInfo : client.game.GuestInfo);
+                    ClientInfo.gamestatus.TurnEnd(ClientInfo.gamestatus.GuestInfo);
+                    ClientInfo.IsMyTurn = true;
+                    ClientInfo.gamestatus.TurnStart(ClientInfo.IsFirst ? ClientInfo.gamestatus.HostInfo : ClientInfo.gamestatus.GuestInfo);
                     StartNewTurn();
                     break;
                 }
@@ -357,33 +377,33 @@ namespace 炉边传说
             {
                 card = (CardBasicInfo)(((ctlHeroAbility)sender).Tag);
             }
-            var msg = Engine.Card.CardBasicInfo.CheckCondition(card,client.game.HostInfo);
+            var msg = Engine.Card.CardBasicInfo.CheckCondition(card, ClientInfo.gamestatus.HostInfo);
             if (!String.IsNullOrEmpty(msg))
             {
                 MessageBox.Show(msg);
                 return;
             }
-            var actionlst = RunAction.StartAction(client.game, card.序列号);
+            var actionlst = RunAction.StartAction(ClientInfo.gamestatus, card.序列号);
             if (actionlst.Count != 0)
             {
                 if ((sender.GetType()) == typeof(Button))
                 {
                     actionlst.Insert(0, ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strMe);
-                    client.game.HostInfo.crystal.CurrentRemainPoint -= card.使用成本;
-                    client.game.HostInfo.HandCardCount--;
-                    client.game.HostSelfInfo.RemoveUsedCard(card.序列号);
+                    ClientInfo.gamestatus.HostInfo.crystal.CurrentRemainPoint -= card.使用成本;
+                    ClientInfo.gamestatus.HostInfo.HandCardCount--;
+                    ClientInfo.gamestatus.HostSelfInfo.RemoveUsedCard(card.序列号);
                 }
                 else
                 {
-                    client.game.HostInfo.crystal.CurrentRemainPoint -= card.使用成本;
-                    client.game.HostInfo.IsUsedHeroAbility = true;
+                    ClientInfo.gamestatus.HostInfo.crystal.CurrentRemainPoint -= card.使用成本;
+                    ClientInfo.gamestatus.HostInfo.IsUsedHeroAbility = true;
                 }
                 actionlst.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +
-                             client.game.HostInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + client.game.HostInfo.crystal.CurrentFullPoint);
+                             ClientInfo.gamestatus.HostInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + ClientInfo.gamestatus.HostInfo.crystal.CurrentFullPoint);
                 //奥秘计算
-                actionlst.AddRange(SecretCard.奥秘计算(actionlst, client.game));
-                client.game.HostSelfInfo.ResetHandCardCost(client.game);
-                Engine.Client.ClientRequest.WriteAction(client.game.GameId.ToString(GameServer.GameIdFormat), actionlst);
+                actionlst.AddRange(SecretCard.奥秘计算(actionlst, ClientInfo.gamestatus));
+                ClientInfo.gamestatus.HostSelfInfo.ResetHandCardCost(ClientInfo.gamestatus);
+                Engine.Client.ClientRequest.WriteAction(ClientInfo.gamestatus.GameId.ToString(GameServer.GameIdFormat), actionlst);
                 DisplayMyInfo();
             }
 
@@ -399,11 +419,22 @@ namespace 炉边传说
             SelectOpt.EffectTargetSelectRole = CardUtility.TargetSelectRoleEnum.所有角色;
             SelectOpt.嘲讽限制 = true;
             var YourPos = SelectPanel(SelectOpt);
-            List<String> actionlst = RunAction.Fight(client.game, MyPos, YourPos.Postion);
-            actionlst.AddRange(SecretCard.奥秘计算(actionlst, client.game));
-            client.game.HostSelfInfo.ResetHandCardCost(client.game);
-            Engine.Client.ClientRequest.WriteAction(client.game.GameId.ToString(GameServer.GameIdFormat), actionlst);
+            List<String> actionlst = RunAction.Fight(ClientInfo.gamestatus, MyPos, YourPos.Postion);
+            actionlst.AddRange(SecretCard.奥秘计算(actionlst, ClientInfo.gamestatus));
+            ClientInfo.gamestatus.HostSelfInfo.ResetHandCardCost(ClientInfo.gamestatus);
+            Engine.Client.ClientRequest.WriteAction(ClientInfo.gamestatus.GameId.ToString(GameServer.GameIdFormat), actionlst);
             DisplayMyInfo();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnStartGame_Click(object sender, EventArgs e)
+        {
+            var startform = new frmStartGame();
+            startform.ShowDialog();
+            if (ClientInfo.IsStart || ClientInfoSingle.IsStart) InitGame();
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Engine.Utility
         /// </summary>
         /// <param name="strEffectPoint"></param>
         /// <returns></returns>
-        public static int GetEffectPoint(Client.GameManager game, String strEffectPoint)
+        public static int GetEffectPoint(Client.GameStatus game, String strEffectPoint)
         {
             int point = 0;
             strEffectPoint = strEffectPoint.ToUpper();
@@ -64,7 +64,7 @@ namespace Engine.Utility
                     {
                         case "MYWEAPONAP":
                             //本方武器攻击力
-                            if (game.HostInfo.Weapon != null) point = game.HostInfo.Weapon.攻击力;
+                            if (game.client.MyInfo.Weapon != null) point = game.client.MyInfo.Weapon.攻击力;
                             break;
                         default:
                             break;
@@ -84,7 +84,7 @@ namespace Engine.Utility
         /// <param name="PosInfo"></param>
         /// <param name="singleEffect"></param>
         /// <returns></returns>
-        public static bool AtomicEffectPickCondition(Client.GameManager game, string PosInfo, Effect.EffectDefine singleEffect)
+        public static bool AtomicEffectPickCondition(Client.GameStatus game, string PosInfo, Effect.EffectDefine singleEffect)
         {
             var 效果条件 = singleEffect.效果条件.ToUpper();
             String YouOrMe = PosInfo.Split(CardUtility.strSplitMark.ToCharArray())[0];
@@ -98,22 +98,22 @@ namespace Engine.Utility
                     {
                         if (Position == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                         {
-                            return game.HostInfo.冰冻状态 != CardUtility.EffectTurn.无效果;
+                            return game.client.MyInfo.冰冻状态 != CardUtility.EffectTurn.无效果;
                         }
                         else
                         {
-                            return game.HostInfo.BattleField.BattleMinions[int.Parse(Position) - 1].冰冻状态 != CardUtility.EffectTurn.无效果;
+                            return game.client.MyInfo.BattleField.BattleMinions[int.Parse(Position) - 1].冰冻状态 != CardUtility.EffectTurn.无效果;
                         }
                     }
                     else
                     {
                         if (Position == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                         {
-                            return game.GuestInfo.冰冻状态 != CardUtility.EffectTurn.无效果;
+                            return game.client.YourInfo.冰冻状态 != CardUtility.EffectTurn.无效果;
                         }
                         else
                         {
-                            return game.GuestInfo.BattleField.BattleMinions[int.Parse(Position) - 1].冰冻状态 != CardUtility.EffectTurn.无效果;
+                            return game.client.YourInfo.BattleField.BattleMinions[int.Parse(Position) - 1].冰冻状态 != CardUtility.EffectTurn.无效果;
                         }
                     }
                 default:
@@ -127,7 +127,7 @@ namespace Engine.Utility
         /// <param name="game"></param>
         /// <param name="效果选择条件"></param>
         /// <returns></returns>
-        public static bool AbilityPickCondition(Client.GameManager game, string 效果选择条件)
+        public static bool AbilityPickCondition(Client.GameStatus game, string 效果选择条件)
         {
             throw new NotImplementedException();
         }
@@ -137,7 +137,7 @@ namespace Engine.Utility
         /// <param name="game"></param>
         /// <param name="Ability"></param>
         /// <returns></returns>
-        internal static bool AppendAbilityCondition(Client.GameManager game, Card.AbilityCard.AbilityDefine Ability)
+        internal static bool AppendAbilityCondition(Client.GameStatus game, Card.AbilityCard.AbilityDefine Ability)
         {
             if (Ability.AppendEffectCondition == CardUtility.strIgnore)
             {

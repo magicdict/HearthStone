@@ -381,7 +381,7 @@ namespace Engine.Card
         /// <param name="game"></param>
         /// <param name="SelfPosition"></param>
         /// <returns></returns>
-        public List<String> 发动战吼(GameManager game)
+        public List<String> 发动战吼(GameStatus game)
         {
             List<String> ActionCodeLst = new List<string>();
             //战吼效果
@@ -400,7 +400,7 @@ namespace Engine.Card
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public List<String> 发动亡语(GameManager game, Boolean IsNeedConvertPosDirect)
+        public List<String> 发动亡语(GameStatus game, Boolean IsNeedConvertPosDirect)
         {
             List<String> ActionCodeLst = new List<string>();
             //亡语效果
@@ -418,7 +418,7 @@ namespace Engine.Card
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public List<String> 回合开始(GameManager game)
+        public List<String> 回合开始(GameStatus game)
         {
             List<String> ActionCodeLst = new List<string>();
             //回合开始效果
@@ -437,7 +437,7 @@ namespace Engine.Card
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public List<String> 回合结束(GameManager game)
+        public List<String> 回合结束(GameStatus game)
         {
             List<String> ActionCodeLst = new List<string>();
             //回合结束效果
@@ -516,7 +516,7 @@ namespace Engine.Card
         /// <param name="game"></param>
         /// <param name="MyPos"></param>
         /// <returns></returns>
-        public List<String> 事件处理方法(Engine.Utility.CardUtility.全局事件 事件, GameManager game)
+        public List<String> 事件处理方法(Engine.Utility.CardUtility.全局事件 事件, GameStatus game)
         {
             List<String> ActionLst = new List<string>();
             if (!沉默状态 && 自身事件效果.触发效果事件类型 == 事件.触发事件类型)

@@ -10,7 +10,7 @@ namespace 炉边传说
         /// <summary>
         /// 游戏控制
         /// </summary>
-        GameManager game;
+        GameStatus game;
         /// <summary>
         /// 嘲讽限制
         /// </summary>
@@ -28,7 +28,7 @@ namespace 炉边传说
         /// </summary>
         /// <param name="option"></param>
         /// <param name="mGame"></param>
-        public TargetSelect(CardUtility.PositionSelectOption option, GameManager mGame)
+        public TargetSelect(CardUtility.PositionSelectOption option, GameStatus mGame)
         {
             InitializeComponent();
             SelectOption = option;

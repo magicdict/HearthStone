@@ -48,6 +48,7 @@
             this.crystalCount = new System.Windows.Forms.NumericUpDown();
             this.btnTestHandCard = new System.Windows.Forms.Button();
             this.cmbHandCard = new System.Windows.Forms.ComboBox();
+            this.btnSingleGame = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.crystalCount)).BeginInit();
             this.SuspendLayout();
             // 
@@ -240,12 +241,23 @@
             this.cmbHandCard.Size = new System.Drawing.Size(121, 21);
             this.cmbHandCard.TabIndex = 20;
             // 
+            // btnSingleGame
+            // 
+            this.btnSingleGame.Location = new System.Drawing.Point(269, 162);
+            this.btnSingleGame.Name = "btnSingleGame";
+            this.btnSingleGame.Size = new System.Drawing.Size(119, 23);
+            this.btnSingleGame.TabIndex = 21;
+            this.btnSingleGame.Text = "单机游戏";
+            this.btnSingleGame.UseVisualStyleBackColor = true;
+            this.btnSingleGame.Click += new System.EventHandler(this.btnSingleGame_Click);
+            // 
             // frmStartGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(908, 301);
+            this.Controls.Add(this.btnSingleGame);
             this.Controls.Add(this.cmbHandCard);
             this.Controls.Add(this.btnTestHandCard);
             this.Controls.Add(this.crystalCount);
@@ -297,5 +309,6 @@
         private System.Windows.Forms.NumericUpDown crystalCount;
         private System.Windows.Forms.Button btnTestHandCard;
         private System.Windows.Forms.ComboBox cmbHandCard;
+        private System.Windows.Forms.Button btnSingleGame;
     }
 }

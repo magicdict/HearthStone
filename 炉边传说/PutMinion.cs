@@ -6,7 +6,7 @@ namespace 炉边传说
 {
     public partial class PutMinion : Form
     {
-        public PutMinion(GameManager mgame)
+        public PutMinion(GameStatus mgame)
         {
             InitializeComponent();
             game = mgame;
@@ -14,7 +14,7 @@ namespace 炉边传说
         /// <summary>
         /// 游戏管理者
         /// </summary>
-        GameManager game;
+        GameStatus game;
         /// <summary>
         /// 战场位置
         /// </summary>

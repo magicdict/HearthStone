@@ -1,4 +1,5 @@
-﻿using Engine.Utility;
+﻿using Engine.Client;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 
@@ -32,14 +33,14 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="PlayInfo"></param>
         /// <returns></returns>
-        String IAtomicEffect.DealHero(Client.GameManager game, Client.PublicInfo PlayInfo)
+        String IAtomicEffect.DealHero(Client.GameStatus game, Client.PublicInfo PlayInfo)
         {
             int AttackPoint = ExpressHandler.GetEffectPoint(game, 伤害效果表达式);
             //调整伤害值
-            if (伤害加成) AttackPoint += game.HostInfo.BattleField.AbilityDamagePlus;
+            if (伤害加成) AttackPoint += game.client.MyInfo.BattleField.AbilityDamagePlus;
             if (PlayInfo.AfterBeAttack(AttackPoint))
             {
-                game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
                     触发事件类型 = CardUtility.事件类型列表.受伤,
                     触发位置 = PlayInfo.战场位置
@@ -53,14 +54,14 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="Minion"></param>
         /// <returns></returns>
-        String IAtomicEffect.DealMinion(Client.GameManager game, Card.MinionCard Minion)
+        String IAtomicEffect.DealMinion(Client.GameStatus game, Card.MinionCard Minion)
         {
             int AttackPoint = ExpressHandler.GetEffectPoint(game, 伤害效果表达式);
             //调整伤害值
-            if (伤害加成) AttackPoint += game.HostInfo.BattleField.AbilityDamagePlus;
+            if (伤害加成) AttackPoint += game.client.MyInfo.BattleField.AbilityDamagePlus;
             if (Minion.AfterBeAttack(AttackPoint))
             {
-                game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
                     触发事件类型 = CardUtility.事件类型列表.受伤,
                     触发位置 = Minion.战场位置
@@ -73,7 +74,7 @@ namespace Engine.Effect
         /// </summary>
         /// <param name="game"></param>
         /// <param name="actField"></param>
-        void IAtomicEffect.ReRunEffect(Client.GameManager game, string[] actField)
+        void IAtomicEffect.ReRunEffect(Client.GameStatus game, string[] actField)
         {
             int AttackPoint = int.Parse(actField[3]);
             if (actField[1] == CardUtility.strYou)
@@ -81,11 +82,11 @@ namespace Engine.Effect
                 //MyInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.HostInfo.AfterBeAttack(AttackPoint);
+                    game.client.MyInfo.AfterBeAttack(AttackPoint);
                 }
                 else
                 {
-                    game.HostInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeAttack(AttackPoint);
+                    game.client.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeAttack(AttackPoint);
                 }
             }
             else
@@ -93,11 +94,11 @@ namespace Engine.Effect
                 //YourInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.GuestInfo.AfterBeAttack(AttackPoint);
+                    game.client.MyInfo.AfterBeAttack(AttackPoint);
                 }
                 else
                 {
-                    game.GuestInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeAttack(AttackPoint);
+                    game.client.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeAttack(AttackPoint);
                 }
             }
         }

@@ -94,7 +94,7 @@ namespace Engine.Card
         /// </summary>
         /// <param name="game"></param>
         /// <param name="ConvertPosDirect">对象方向转换</param>
-        public List<String> UseAbility(GameManager game,
+        public List<String> UseAbility(GameStatus game,
                                        Boolean ConvertPosDirect)
         {
             List<String> Result = new List<string>();
@@ -104,7 +104,7 @@ namespace Engine.Card
                 case 效果选择类型枚举.无需选择:
                     break;
                 case 效果选择类型枚举.主动选择:
-                    PickEffectResult = game.PickEffect(FirstAbilityDefine.描述, SecondAbilityDefine.描述);
+                    PickEffectResult = GameManager.PickEffect(FirstAbilityDefine.描述, SecondAbilityDefine.描述);
                     if (PickEffectResult == CardUtility.PickEffect.取消) return new List<string>();
                     break;
                 case 效果选择类型枚举.自动判定:
@@ -134,7 +134,7 @@ namespace Engine.Card
         /// <param name="Ability"></param>
         /// <param name="TargetPosInfo"></param>
         /// <returns></returns>
-        private List<String> RunAbilityEffect(GameManager game,
+        private List<String> RunAbilityEffect(GameStatus game,
                                               Boolean ConvertPosDirect,
                                               AbilityCard.AbilityDefine Ability)
         {
@@ -145,7 +145,7 @@ namespace Engine.Card
                 Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.横扫 ||
                 Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.相邻)
             {
-                Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = game.GetSelectTarget(Ability.MainAbilityDefine.AbliltyPosPicker);
+                Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = GameManager.GetSelectTarget(Ability.MainAbilityDefine.AbliltyPosPicker);
             }
             else
             {
@@ -177,7 +177,7 @@ namespace Engine.Card
             //法术伤害对于攻击型效果的加成
             if (Ability.MainAbilityDefine.效果条件 == CardUtility.strIgnore && Ability.MainAbilityDefine.EffectCount > 1)
             {
-                Ability.MainAbilityDefine.EffectCount += game.HostInfo.BattleField.AbilityDamagePlus;
+                Ability.MainAbilityDefine.EffectCount += GameManager.gameStatus.client.MyInfo.BattleField.AbilityDamagePlus;
             }
             //按照回数执行效果
             for (int cnt = 0; cnt < Ability.MainAbilityDefine.EffectCount; cnt++)
@@ -199,7 +199,7 @@ namespace Engine.Card
                         break;
                 }
                 GameManager.RandomSeed++;
-                Result.AddRange(game.Settle());
+                Result.AddRange(GameManager.Settle());
             }
             //追加条件计算
             if (Ability.AppendAbilityDefine == null || (!ExpressHandler.AppendAbilityCondition(game,Ability))) { 
@@ -228,7 +228,7 @@ namespace Engine.Card
                         break;
                 }
                 GameManager.RandomSeed++;
-                Result.AddRange(game.Settle());
+                Result.AddRange(GameManager.Settle());
             }
             return Result;
         }
@@ -239,7 +239,7 @@ namespace Engine.Card
         /// <param name="ConvertPosDirect"></param>
         /// <param name="Ability"></param>
         /// <returns></returns>
-        private List<string> RunGameSystemEffect(GameManager game, bool ConvertPosDirect, AtomicEffectDefine effect, CardUtility.PositionSelectOption Option)
+        private List<string> RunGameSystemEffect(GameStatus game, bool ConvertPosDirect, AtomicEffectDefine effect, CardUtility.PositionSelectOption Option)
         {
             List<string> Result = new List<string>();
             switch (effect.AtomicEffectType)

@@ -13,7 +13,7 @@ namespace Engine.Client
         /// <param name="被攻击方Pos">对方</param>
         /// <param name="被动攻击">被动攻击</param>
         /// <returns></returns>
-        public static List<String> Fight(int 攻击方Pos, int 被攻击方Pos, GameManager game,Boolean 被动攻击 = false)
+        public static List<String> Fight(int 攻击方Pos, int 被攻击方Pos, GameStatus game,Boolean 被动攻击 = false)
         {
             List<String> Result = new List<string>();
             //主动攻击方的状态变化
@@ -22,16 +22,16 @@ namespace Engine.Client
                 //攻击次数
                 if (攻击方Pos == BattleFieldInfo.HeroPos)
                 {
-                    if (game.HostInfo.Weapon != null)
+                    if (game.client.MyInfo.Weapon != null)
                     {
-                        game.HostInfo.Weapon.耐久度--;
-                        game.HostInfo.RemainAttactTimes = 0;
+                        game.client.MyInfo.Weapon.耐久度--;
+                        game.client.MyInfo.RemainAttactTimes = 0;
                     }
                 }
                 else
                 {
                     //攻击次数的清算,潜行等去除(如果不是被攻击方的处理)
-                    game.HostInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterDoAttack(被动攻击);
+                    game.client.MyInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterDoAttack(被动攻击);
                 }
             }
             //伤害计算(本方)
@@ -40,29 +40,29 @@ namespace Engine.Client
             var YourAttackPoint = 0;
             if (被攻击方Pos != BattleFieldInfo.HeroPos)
             {
-                YourAttackPoint = game.GuestInfo.BattleField.BattleMinions[被攻击方Pos - 1].TotalAttack();
+                YourAttackPoint = game.client.YourInfo.BattleField.BattleMinions[被攻击方Pos - 1].TotalAttack();
             }
             if (攻击方Pos != BattleFieldInfo.HeroPos)
             {
                 //圣盾不引发伤害事件
-                if (game.HostInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterBeAttack(YourAttackPoint))
+                if (game.client.MyInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterBeAttack(YourAttackPoint))
                 {
-                    game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型列表.受伤,
-                        触发位置 = game.HostInfo.BattleField.BattleMinions[攻击方Pos - 1].战场位置
+                        触发位置 = game.client.MyInfo.BattleField.BattleMinions[攻击方Pos - 1].战场位置
                     });
                 }
             }
             else
             {
                 //护甲不引发伤害事件
-                if (game.HostInfo.AfterBeAttack(YourAttackPoint))
+                if (game.client.MyInfo.AfterBeAttack(YourAttackPoint))
                 {
-                    game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型列表.受伤,
-                        触发位置 = game.HostInfo.战场位置 
+                        触发位置 = game.client.MyInfo.战场位置 
                     });
                 }
             }
@@ -70,32 +70,32 @@ namespace Engine.Client
             var MyAttackPoint = 0;
             if (攻击方Pos != BattleFieldInfo.HeroPos)
             {
-                MyAttackPoint = game.HostInfo.BattleField.BattleMinions[攻击方Pos - 1].TotalAttack();
+                MyAttackPoint = game.client.MyInfo.BattleField.BattleMinions[攻击方Pos - 1].TotalAttack();
             }
             else
             {
-                if (game.HostInfo.Weapon != null) MyAttackPoint = game.HostInfo.Weapon.攻击力;
+                if (game.client.MyInfo.Weapon != null) MyAttackPoint = game.client.MyInfo.Weapon.攻击力;
             }
             if (被攻击方Pos != BattleFieldInfo.HeroPos)
             {
-                if (game.GuestInfo.BattleField.BattleMinions[被攻击方Pos - 1].AfterBeAttack(MyAttackPoint))
+                if (game.client.YourInfo.BattleField.BattleMinions[被攻击方Pos - 1].AfterBeAttack(MyAttackPoint))
                 {
-                    game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型列表.受伤,
-                        触发位置 = game.GuestInfo.BattleField.BattleMinions[被攻击方Pos - 1].战场位置
+                        触发位置 = game.client.YourInfo.BattleField.BattleMinions[被攻击方Pos - 1].战场位置
                     });
                 }
             }
             else
             {
                 //护甲不引发伤害事件
-                if (game.GuestInfo.AfterBeAttack(MyAttackPoint))
+                if (game.client.YourInfo.AfterBeAttack(MyAttackPoint))
                 {
-                    game.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型列表.受伤,
-                        触发位置 = game.GuestInfo.战场位置
+                        触发位置 = game.client.YourInfo.战场位置
                     });
                 }
             }
@@ -104,12 +104,12 @@ namespace Engine.Client
             if (!被动攻击)
             {
                 //将亡语效果放入结果
-                Result.AddRange(game.Settle());
+                Result.AddRange(GameManager.Settle());
             }
             else
             {
                 //对方已经发送亡语效果，本方不用重复模拟了
-                game.Settle();
+                GameManager.Settle();
             }
             return Result;
         }

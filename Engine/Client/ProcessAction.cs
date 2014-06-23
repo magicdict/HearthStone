@@ -13,7 +13,7 @@ namespace Engine.Client
         /// </summary>
         /// <param name="item"></param>
         /// <param name="game"></param>
-        public static void Process(string item, GameManager game)
+        public static void Process(string item, GameStatus game)
         {
             string[] actField = item.Split(CardUtility.strSplitMark.ToCharArray());
             switch (Engine.Server.ActionCode.GetActionType(item))
@@ -25,14 +25,14 @@ namespace Engine.Client
                     int Pos = int.Parse(actField[2]);
                     var minion = (Engine.Card.MinionCard)Engine.Utility.CardUtility.GetCardInfoBySN(actField[1]);
                     minion.Init();
-                    game.GuestInfo.BattleField.PutToBattle(Pos, minion);
-                    game.GuestInfo.BattleField.ResetBuff();
+                    game.client.YourInfo.BattleField.PutToBattle(Pos, minion);
+                    game.client.YourInfo.BattleField.ResetBuff();
                     break;
                 case ActionCode.ActionType.UseWeapon:
-                    game.GuestInfo.Weapon = (Engine.Card.WeaponCard)Engine.Utility.CardUtility.GetCardInfoBySN(actField[1]);
+                    game.client.YourInfo.Weapon = (Engine.Card.WeaponCard)Engine.Utility.CardUtility.GetCardInfoBySN(actField[1]);
                     break;
                 case ActionCode.ActionType.UseSecret:
-                    game.GuestInfo.SecretCount++; ;
+                    game.client.YourInfo.SecretCount++; ;
                     break;
                 case ActionCode.ActionType.UseAbility:
                     break;
@@ -76,7 +76,7 @@ namespace Engine.Client
                     WeaponPointEffect.ReRunEffect(game, actField);
                     break;
                 case ActionCode.ActionType.Settle:
-                    game.Settle();
+                    GameManager.Settle();
                     break;
             }
         }

@@ -19,11 +19,11 @@ namespace Engine.Server
         /// <summary>
         /// 等待玩家游戏
         /// </summary>
-        public static Dictionary<int, GameStatusAtServer> GameWaitGuest = new Dictionary<int, GameStatusAtServer>();
+        public static Dictionary<int, RemoteGameManager> GameWaitGuest = new Dictionary<int, RemoteGameManager>();
         /// <summary>
         /// 进行中游戏
         /// </summary>
-        public static Dictionary<int, GameStatusAtServer> GameRunning = new Dictionary<int, GameStatusAtServer>();
+        public static Dictionary<int, RemoteGameManager> GameRunning = new Dictionary<int, RemoteGameManager>();
         /// <summary>
         /// 新建游戏
         /// </summary>
@@ -32,7 +32,7 @@ namespace Engine.Server
         {
             GameId++;
             //新建游戏的同时决定游戏的先后手
-            GameWaitGuest.Add(GameId, new GameStatusAtServer(GameId, hostNickName, SystemManager.CurrentGameType));
+            GameWaitGuest.Add(GameId, new RemoteGameManager(GameId, hostNickName, SystemManager.CurrentGameType));
             return GameId;
         }
         /// <summary>
@@ -45,7 +45,7 @@ namespace Engine.Server
         {
             if (GameWaitGuest.ContainsKey(GameId))
             {
-                GameWaitGuest[GameId].GuestNickName = GuestNickName;
+                GameWaitGuest[GameId].gamestatus.server.GuestNickName = GuestNickName;
                 GameRunning.Add(GameId, GameWaitGuest[GameId]);
                 GameWaitGuest.Remove(GameId);
                 //套牌
@@ -67,7 +67,7 @@ namespace Engine.Server
             String WaitGame = String.Empty;
             foreach (var item in GameWaitGuest)
             {
-                WaitGame += item.Key + "(" + item.Value.HostNickName + ")|";
+                WaitGame += item.Key + "(" + item.Value.serverinfo.HostNickName + ")|";
             }
             WaitGame = WaitGame.TrimEnd(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
             return WaitGame;
@@ -88,7 +88,7 @@ namespace Engine.Server
         /// <returns></returns>
         public static Boolean IsFirst(int GameId, bool IsHost)
         {
-            return ((IsHost && GameRunning[GameId].HostAsFirst) || (!IsHost && !GameRunning[GameId].HostAsFirst));
+            return ((IsHost && GameRunning[GameId].serverinfo.HostAsFirst) || (!IsHost && !GameRunning[GameId].serverinfo.HostAsFirst));
         }
         /// <summary>
         /// 向服务器发送套牌

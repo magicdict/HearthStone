@@ -31,6 +31,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BattleField));
             this.btnEndTurn = new System.Windows.Forms.Button();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.lblGameStatus = new System.Windows.Forms.Label();
+            this.btnStartGame = new System.Windows.Forms.Button();
+            this.YourCrystalBar = new 炉边传说.ctlCrystalBar();
+            this.MyCrystalBar = new 炉边传说.ctlCrystalBar();
             this.btnYourWeapon = new 炉边传说.ctlWeapon();
             this.btnYourHero = new 炉边传说.ctlHero();
             this.btnMyHero = new 炉边传说.ctlHero();
@@ -61,16 +65,14 @@
             this.btnMe6 = new 炉边传说.ctlCard();
             this.btnHandCard1 = new 炉边传说.ctlHandCard();
             this.btnMe7 = new 炉边传说.ctlCard();
-            this.MyCrystalBar = new 炉边传说.ctlCrystalBar();
-            this.YourCrystalBar = new 炉边传说.ctlCrystalBar();
-            this.lblGameStatus = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btnEndTurn
             // 
             this.btnEndTurn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.btnEndTurn.Enabled = false;
             this.btnEndTurn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this.btnEndTurn.Location = new System.Drawing.Point(841, 242);
+            this.btnEndTurn.Location = new System.Drawing.Point(841, 276);
             this.btnEndTurn.Name = "btnEndTurn";
             this.btnEndTurn.Size = new System.Drawing.Size(106, 39);
             this.btnEndTurn.TabIndex = 3;
@@ -85,6 +87,43 @@
             this.statusStrip1.Size = new System.Drawing.Size(966, 22);
             this.statusStrip1.TabIndex = 8;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // lblGameStatus
+            // 
+            this.lblGameStatus.AutoSize = true;
+            this.lblGameStatus.Location = new System.Drawing.Point(65, 57);
+            this.lblGameStatus.Name = "lblGameStatus";
+            this.lblGameStatus.Size = new System.Drawing.Size(65, 13);
+            this.lblGameStatus.TabIndex = 47;
+            this.lblGameStatus.Text = "GameStatus";
+            // 
+            // btnStartGame
+            // 
+            this.btnStartGame.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.btnStartGame.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStartGame.Location = new System.Drawing.Point(841, 221);
+            this.btnStartGame.Name = "btnStartGame";
+            this.btnStartGame.Size = new System.Drawing.Size(106, 34);
+            this.btnStartGame.TabIndex = 48;
+            this.btnStartGame.Text = "开始游戏";
+            this.btnStartGame.UseVisualStyleBackColor = false;
+            this.btnStartGame.Click += new System.EventHandler(this.btnStartGame_Click);
+            // 
+            // YourCrystalBar
+            // 
+            this.YourCrystalBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.YourCrystalBar.Location = new System.Drawing.Point(653, 22);
+            this.YourCrystalBar.Name = "YourCrystalBar";
+            this.YourCrystalBar.Size = new System.Drawing.Size(297, 28);
+            this.YourCrystalBar.TabIndex = 46;
+            // 
+            // MyCrystalBar
+            // 
+            this.MyCrystalBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
+            this.MyCrystalBar.Location = new System.Drawing.Point(653, 490);
+            this.MyCrystalBar.Name = "MyCrystalBar";
+            this.MyCrystalBar.Size = new System.Drawing.Size(301, 28);
+            this.MyCrystalBar.TabIndex = 45;
             // 
             // btnYourWeapon
             // 
@@ -127,6 +166,7 @@
             this.btnYou1.Name = "btnYou1";
             this.btnYou1.Size = new System.Drawing.Size(100, 82);
             this.btnYou1.TabIndex = 18;
+            this.btnYou1.Visible = false;
             // 
             // btnYourHeroAblity
             // 
@@ -147,6 +187,7 @@
             this.btnYou2.Name = "btnYou2";
             this.btnYou2.Size = new System.Drawing.Size(100, 82);
             this.btnYou2.TabIndex = 19;
+            this.btnYou2.Visible = false;
             // 
             // btnMyWeapon
             // 
@@ -167,6 +208,7 @@
             this.btnYou3.Name = "btnYou3";
             this.btnYou3.Size = new System.Drawing.Size(100, 82);
             this.btnYou3.TabIndex = 20;
+            this.btnYou3.Visible = false;
             // 
             // btnMyHeroAblity
             // 
@@ -187,6 +229,7 @@
             this.btnYou4.Name = "btnYou4";
             this.btnYou4.Size = new System.Drawing.Size(100, 82);
             this.btnYou4.TabIndex = 21;
+            this.btnYou4.Visible = false;
             // 
             // btnHandCard10
             // 
@@ -196,6 +239,7 @@
             this.btnHandCard10.Name = "btnHandCard10";
             this.btnHandCard10.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard10.TabIndex = 41;
+            this.btnHandCard10.Visible = false;
             // 
             // btnYou5
             // 
@@ -205,6 +249,7 @@
             this.btnYou5.Name = "btnYou5";
             this.btnYou5.Size = new System.Drawing.Size(100, 82);
             this.btnYou5.TabIndex = 22;
+            this.btnYou5.Visible = false;
             // 
             // btnHandCard9
             // 
@@ -214,6 +259,7 @@
             this.btnHandCard9.Name = "btnHandCard9";
             this.btnHandCard9.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard9.TabIndex = 40;
+            this.btnHandCard9.Visible = false;
             // 
             // btnYou6
             // 
@@ -223,6 +269,7 @@
             this.btnYou6.Name = "btnYou6";
             this.btnYou6.Size = new System.Drawing.Size(100, 82);
             this.btnYou6.TabIndex = 23;
+            this.btnYou6.Visible = false;
             // 
             // btnHandCard8
             // 
@@ -232,6 +279,7 @@
             this.btnHandCard8.Name = "btnHandCard8";
             this.btnHandCard8.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard8.TabIndex = 39;
+            this.btnHandCard8.Visible = false;
             // 
             // btnYou7
             // 
@@ -241,6 +289,7 @@
             this.btnYou7.Name = "btnYou7";
             this.btnYou7.Size = new System.Drawing.Size(100, 82);
             this.btnYou7.TabIndex = 24;
+            this.btnYou7.Visible = false;
             // 
             // btnHandCard7
             // 
@@ -250,6 +299,7 @@
             this.btnHandCard7.Name = "btnHandCard7";
             this.btnHandCard7.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard7.TabIndex = 38;
+            this.btnHandCard7.Visible = false;
             // 
             // btnMe1
             // 
@@ -259,6 +309,7 @@
             this.btnMe1.Name = "btnMe1";
             this.btnMe1.Size = new System.Drawing.Size(100, 82);
             this.btnMe1.TabIndex = 25;
+            this.btnMe1.Visible = false;
             // 
             // btnHandCard6
             // 
@@ -268,6 +319,7 @@
             this.btnHandCard6.Name = "btnHandCard6";
             this.btnHandCard6.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard6.TabIndex = 37;
+            this.btnHandCard6.Visible = false;
             // 
             // btnMe2
             // 
@@ -277,6 +329,7 @@
             this.btnMe2.Name = "btnMe2";
             this.btnMe2.Size = new System.Drawing.Size(100, 82);
             this.btnMe2.TabIndex = 26;
+            this.btnMe2.Visible = false;
             // 
             // btnHandCard5
             // 
@@ -286,6 +339,7 @@
             this.btnHandCard5.Name = "btnHandCard5";
             this.btnHandCard5.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard5.TabIndex = 36;
+            this.btnHandCard5.Visible = false;
             // 
             // btnMe3
             // 
@@ -295,6 +349,7 @@
             this.btnMe3.Name = "btnMe3";
             this.btnMe3.Size = new System.Drawing.Size(100, 82);
             this.btnMe3.TabIndex = 27;
+            this.btnMe3.Visible = false;
             // 
             // btnHandCard4
             // 
@@ -304,6 +359,7 @@
             this.btnHandCard4.Name = "btnHandCard4";
             this.btnHandCard4.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard4.TabIndex = 35;
+            this.btnHandCard4.Visible = false;
             // 
             // btnMe4
             // 
@@ -313,6 +369,7 @@
             this.btnMe4.Name = "btnMe4";
             this.btnMe4.Size = new System.Drawing.Size(100, 82);
             this.btnMe4.TabIndex = 28;
+            this.btnMe4.Visible = false;
             // 
             // btnHandCard3
             // 
@@ -322,6 +379,7 @@
             this.btnHandCard3.Name = "btnHandCard3";
             this.btnHandCard3.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard3.TabIndex = 34;
+            this.btnHandCard3.Visible = false;
             // 
             // btnMe5
             // 
@@ -331,6 +389,7 @@
             this.btnMe5.Name = "btnMe5";
             this.btnMe5.Size = new System.Drawing.Size(100, 82);
             this.btnMe5.TabIndex = 29;
+            this.btnMe5.Visible = false;
             // 
             // btnHandCard2
             // 
@@ -340,6 +399,7 @@
             this.btnHandCard2.Name = "btnHandCard2";
             this.btnHandCard2.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard2.TabIndex = 33;
+            this.btnHandCard2.Visible = false;
             // 
             // btnMe6
             // 
@@ -349,6 +409,7 @@
             this.btnMe6.Name = "btnMe6";
             this.btnMe6.Size = new System.Drawing.Size(100, 82);
             this.btnMe6.TabIndex = 30;
+            this.btnMe6.Visible = false;
             // 
             // btnHandCard1
             // 
@@ -358,6 +419,7 @@
             this.btnHandCard1.Name = "btnHandCard1";
             this.btnHandCard1.Size = new System.Drawing.Size(81, 100);
             this.btnHandCard1.TabIndex = 32;
+            this.btnHandCard1.Visible = false;
             // 
             // btnMe7
             // 
@@ -367,31 +429,7 @@
             this.btnMe7.Name = "btnMe7";
             this.btnMe7.Size = new System.Drawing.Size(100, 82);
             this.btnMe7.TabIndex = 31;
-            // 
-            // MyCrystalBar
-            // 
-            this.MyCrystalBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.MyCrystalBar.Location = new System.Drawing.Point(653, 490);
-            this.MyCrystalBar.Name = "MyCrystalBar";
-            this.MyCrystalBar.Size = new System.Drawing.Size(301, 28);
-            this.MyCrystalBar.TabIndex = 45;
-            // 
-            // YourCrystalBar
-            // 
-            this.YourCrystalBar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
-            this.YourCrystalBar.Location = new System.Drawing.Point(653, 22);
-            this.YourCrystalBar.Name = "YourCrystalBar";
-            this.YourCrystalBar.Size = new System.Drawing.Size(297, 28);
-            this.YourCrystalBar.TabIndex = 46;
-            // 
-            // lblGameStatus
-            // 
-            this.lblGameStatus.AutoSize = true;
-            this.lblGameStatus.Location = new System.Drawing.Point(65, 22);
-            this.lblGameStatus.Name = "lblGameStatus";
-            this.lblGameStatus.Size = new System.Drawing.Size(65, 13);
-            this.lblGameStatus.TabIndex = 47;
-            this.lblGameStatus.Text = "GameStatus";
+            this.btnMe7.Visible = false;
             // 
             // BattleField
             // 
@@ -399,6 +437,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(966, 671);
+            this.Controls.Add(this.btnStartGame);
             this.Controls.Add(this.lblGameStatus);
             this.Controls.Add(this.YourCrystalBar);
             this.Controls.Add(this.MyCrystalBar);
@@ -439,7 +478,6 @@
             this.Name = "BattleField";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "战场";
-            this.Load += new System.EventHandler(this.BattleField_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -487,6 +525,7 @@
         private ctlCrystalBar MyCrystalBar;
         private ctlCrystalBar YourCrystalBar;
         private System.Windows.Forms.Label lblGameStatus;
+        private System.Windows.Forms.Button btnStartGame;
 
     }
 }

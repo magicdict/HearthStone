@@ -12,21 +12,21 @@ namespace Engine.Effect
         /// </summary>
         /// <param name="game"></param>
         /// <param name="actField"></param>
-        void ReRunEffect(GameManager game, String[] actField);
+        void ReRunEffect(GameStatus game, String[] actField);
         /// <summary>
         /// 对英雄动作
         /// </summary>
         /// <param name="game"></param>
         /// <param name="PlayInfo"></param>
         /// <returns></returns>
-        String DealHero(Client.GameManager game, PublicInfo PlayInfo);
+        String DealHero(Client.GameStatus game, PublicInfo PlayInfo);
         /// <summary>
         /// 对随从动作
         /// </summary>
         /// <param name="game"></param>
         /// <param name="Minion"></param>
         /// <returns></returns>
-        String DealMinion(Client.GameManager game, MinionCard Minion);
+        String DealMinion(Client.GameStatus game, MinionCard Minion);
         /// <summary>
         /// 获得效果信息
         /// </summary>
