@@ -118,7 +118,7 @@ namespace Engine.Client
                     gameStatus.client.HostInfo.HandCardCount++;
                     gameStatus.client.HostInfo.RemainCardDeckCount--;
                 }
-                if (SimulateServer.serverinfo.IsFirst(IsHost))
+                if (!SimulateServer.serverinfo.IsFirst(IsHost))
                 {
                     gameStatus.client.HostSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.AbilityCard.SN幸运币));
                     gameStatus.client.HostInfo.HandCardCount++;
@@ -132,7 +132,7 @@ namespace Engine.Client
                     gameStatus.client.GuestInfo.HandCardCount++;
                     gameStatus.client.GuestInfo.RemainCardDeckCount--;
                 }
-                if (SimulateServer.serverinfo.IsFirst(IsHost))
+                if (!SimulateServer.serverinfo.IsFirst(IsHost))
                 {
                     gameStatus.client.GuestSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.AbilityCard.SN幸运币));
                     gameStatus.client.GuestInfo.HandCardCount++;
@@ -142,15 +142,15 @@ namespace Engine.Client
         /// <summary>
         /// 新的回合
         /// </summary>
-        public static void TurnStart(Boolean MeOrYou)
+        public static void TurnStart(Boolean IsMyTurn)
         {
-            PublicInfo PlayInfo = MeOrYou ? gameStatus.client.MyInfo : gameStatus.client.YourInfo;
-            PrivateInfo SelfInfo = MeOrYou ? gameStatus.client.MySelfInfo : gameStatus.client.YourSelfInfo;
+            PublicInfo PlayInfo = IsMyTurn ? gameStatus.client.MyInfo : gameStatus.client.YourInfo;
+            PrivateInfo SelfInfo = IsMyTurn ? gameStatus.client.MySelfInfo : gameStatus.client.YourSelfInfo;
             //抽一张手牌
             switch (游戏类型)
             {
                 case SystemManager.GameType.单机版:
-                    SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(SimulateServer.DrawCard(MeOrYou, 1)[0]));
+                    SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(SimulateServer.DrawCard(IsMyTurn, 1)[0]));
                     break;
                 case SystemManager.GameType.客户端服务器版:
                     SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), gameStatus.client.IsFirst, 1)[0]));
@@ -168,9 +168,9 @@ namespace Engine.Client
                 PlayInfo.OverloadPoint = 0;
             }
             //连击的重置
-            gameStatus.client.HostInfo.连击状态 = false;
+            PlayInfo.连击状态 = false;
             //魔法水晶的增加
-            gameStatus.client.HostInfo.crystal.NewTurn();
+            PlayInfo.crystal.NewTurn();
             PlayInfo.RemainAttactTimes = 1;
             PlayInfo.IsUsedHeroAbility = false;
             PlayInfo.BattleField.FreezeStatus();
@@ -184,9 +184,9 @@ namespace Engine.Client
         /// <summary>
         /// 对手回合结束的清场
         /// </summary>
-        public static List<String> TurnEnd(Boolean MeOrYou)
+        public static List<String> TurnEnd(Boolean IsMyTurn)
         {
-            PublicInfo PlayInfo = MeOrYou ? gameStatus.client.MyInfo : gameStatus.client.YourInfo;
+            PublicInfo PlayInfo = IsMyTurn ? gameStatus.client.MyInfo : gameStatus.client.YourInfo;
             List<String> ActionLst = new List<string>();
             //对手回合加成属性的去除
             int ExistMinionCount = PlayInfo.BattleField.MinionCount;

@@ -36,13 +36,13 @@ namespace 炉边传说
                     GameManager.InitHandCard(false);
                     btnMyHeroAblity.Tag = GameManager.gameStatus.client.MyInfo.HeroAbility;
                     GameManager.gameStatus.client.IsMyTurn = GameManager.gameStatus.client.IsFirst;
-                    GameManager.TurnStart(true);
+                    GameManager.TurnStart(GameManager.gameStatus.client.IsMyTurn);
                     break;
                 case SystemManager.GameType.客户端服务器版:
                     GameManager.InitHandCard();
                     btnMyHeroAblity.Tag = GameManager.gameStatus.client.MyInfo.HeroAbility;
                     GameManager.gameStatus.client.IsMyTurn = GameManager.gameStatus.client.IsFirst;
-                    GameManager.TurnStart(true);
+                    GameManager.TurnStart(GameManager.gameStatus.client.IsMyTurn);
                     break;
                 case SystemManager.GameType.HTML版:
                     //HTML版不实现
@@ -228,22 +228,19 @@ namespace 炉边传说
             if (GameManager.gameStatus.client.MyInfo.LifePoint <= 0 && GameManager.gameStatus.client.YourInfo.LifePoint <= 0)
             {
                 MessageBox.Show("Draw Game");
-                WaitTimer.Stop();
-                this.Close();
+                if (GameManager.游戏类型 != SystemManager.GameType.单机版) WaitTimer.Stop();
             }
             else
             {
                 if (GameManager.gameStatus.client.MyInfo.LifePoint <= 0)
                 {
                     MessageBox.Show("You Lose");
-                    WaitTimer.Stop();
-                    this.Close();
+                    if (GameManager.游戏类型 != SystemManager.GameType.单机版) WaitTimer.Stop();
                 }
                 if (GameManager.gameStatus.client.YourInfo.LifePoint <= 0)
                 {
                     MessageBox.Show("You Win");
-                    WaitTimer.Stop();
-                    this.Close();
+                    if (GameManager.游戏类型 != SystemManager.GameType.单机版) WaitTimer.Stop();
                 }
             }
         }
@@ -255,13 +252,14 @@ namespace 炉边传说
         private void btnEndTurn_Click(object sender, System.EventArgs e)
         {
             var ActionLst = GameManager.TurnEnd(true);
-            if (ActionLst.Count != 0) Engine.Client.ClientRequest.WriteAction(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat), ActionLst);
+            if (ActionLst.Count != 0 && GameManager.游戏类型 != SystemManager.GameType.单机版) 
+                Engine.Client.ClientRequest.WriteAction(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat), ActionLst);
             //结束回合
-            Engine.Client.ClientRequest.TurnEnd(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat));
+            if (GameManager.游戏类型 != SystemManager.GameType.单机版) 
+                Engine.Client.ClientRequest.TurnEnd(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat));
             GameManager.gameStatus.client.IsMyTurn = false;
             GameManager.TurnStart(false);
             StartNewTurn();
-            WaitTimer.Start();
         }
         /// <summary>
         /// 新的回合
@@ -279,7 +277,8 @@ namespace 炉边传说
                         ActionLst.AddRange(GameManager.gameStatus.client.MyInfo.BattleField.BattleMinions[i].回合开始(GameManager.gameStatus));
                     }
                 }
-                if (ActionLst.Count != 0) Engine.Client.ClientRequest.WriteAction(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat), ActionLst);
+                if (ActionLst.Count != 0 && GameManager.游戏类型 != SystemManager.GameType.单机版) 
+                    Engine.Client.ClientRequest.WriteAction(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat), ActionLst);
                 //按钮可用性设定
                 btnEndTurn.Enabled = true;
                 for (int i = 0; i < 10; i++)
@@ -301,7 +300,19 @@ namespace 炉边传说
                 {
                     ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = false;
                 }
-                WaitTimer.Start();
+                if (GameManager.游戏类型 != SystemManager.GameType.单机版)
+                {
+                    WaitTimer.Start();
+                }
+                else
+                {
+                    List<String> ActionList = Engine.AI.DoAction.Run();
+                    btnEndTurn.Enabled = true;
+                    GameManager.TurnEnd(false);
+                    GameManager.gameStatus.client.IsMyTurn = true;
+                    GameManager.TurnStart(true);
+                    StartNewTurn();
+                }
             }
             //刷新双方状态
             DisplayMyInfo();
@@ -322,7 +333,7 @@ namespace 炉边传说
                 }
                 else
                 {
-                    WaitTimer.Stop();
+                    if (GameManager.游戏类型 != SystemManager.GameType.单机版) WaitTimer.Stop();
                     btnEndTurn.Enabled = true;
                     GameManager.TurnEnd(false);
                     GameManager.gameStatus.client.IsMyTurn = true;
@@ -390,7 +401,7 @@ namespace 炉边传说
                 //奥秘计算
                 actionlst.AddRange(SecretCard.奥秘计算(actionlst, GameManager.gameStatus));
                 GameManager.gameStatus.client.MySelfInfo.ResetHandCardCost(GameManager.gameStatus);
-                Engine.Client.ClientRequest.WriteAction(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat), actionlst);
+                if (GameManager.游戏类型 != SystemManager.GameType.单机版) Engine.Client.ClientRequest.WriteAction(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat), actionlst);
                 DisplayMyInfo();
             }
 
@@ -409,7 +420,7 @@ namespace 炉边传说
             List<String> actionlst = RunAction.Fight(GameManager.gameStatus, MyPos, YourPos.Postion);
             actionlst.AddRange(SecretCard.奥秘计算(actionlst, GameManager.gameStatus));
             GameManager.gameStatus.client.MySelfInfo.ResetHandCardCost(GameManager.gameStatus);
-            Engine.Client.ClientRequest.WriteAction(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat), actionlst);
+            if (GameManager.游戏类型 != SystemManager.GameType.单机版) Engine.Client.ClientRequest.WriteAction(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat), actionlst);
             DisplayMyInfo();
         }
         /// <summary>
