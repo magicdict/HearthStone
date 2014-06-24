@@ -38,7 +38,7 @@ namespace Engine.Client
                     break;
                 case ActionCode.ActionType.Fight:
                     //FIGHT#1#2
-                    FightHandler.Fight(int.Parse(actField[2]), int.Parse(actField[1]), game, true);
+                    FightHandler.Fight(int.Parse(actField[2]), int.Parse(actField[1]), game, false);
                     break;
                 case ActionCode.ActionType.Point:
                     IAtomicEffect point = new PointEffect();

@@ -21,14 +21,16 @@ namespace Engine.Client
         /// </summary>
         /// <param name="game"></param>
         /// <param name="CardSn"></param>
-        /// <param name="ConvertPosDirect">亡语的时候，需要倒置方向</param>
+        /// <param name="IsMyAction">动作的发起方，默认是本方</param>
+        /// <param name="AIParm">AI决定的参数</param>
         /// <returns></returns>
-        public static List<String> StartAction(GameStatus game, String CardSn, Boolean ConvertPosDirect = false)
+        public static List<String> StartAction(GameStatus game, String CardSn, Boolean IsMyAction, String[] AIParm = null)
         {
             //清除事件池，注意，事件将在动作结束后整体结算
             GameManager.事件处理组件.事件池.Clear();
             Engine.Card.CardBasicInfo card = Engine.Utility.CardUtility.GetCardInfoBySN(CardSn);
             List<String> ActionCodeLst = new List<string>();
+            PublicInfo PlayInfo = IsMyAction ? game.client.MyInfo : game.client.YourInfo;
             switch (card.CardType)
             {
                 case CardBasicInfo.CardTypeEnum.法术:
@@ -36,7 +38,7 @@ namespace Engine.Client
                     //初始化 Buff效果等等
                     Engine.Card.AbilityCard ablity = (Engine.Card.AbilityCard)CardUtility.GetCardInfoBySN(CardSn);
                     ablity.Init();
-                    var ResultArg = ablity.UseAbility(game, ConvertPosDirect);
+                    var ResultArg = ablity.UseAbility(game, IsMyAction);
                     if (ResultArg.Count != 0)
                     {
                         ActionCodeLst.AddRange(ResultArg);
@@ -45,7 +47,7 @@ namespace Engine.Client
                             GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                             {
                                 触发事件类型 = CardUtility.事件类型列表.施法,
-                                触发位置 = game.client.MyInfo.战场位置
+                                触发位置 = PlayInfo.战场位置
                             });
                     }
                     else
@@ -55,7 +57,17 @@ namespace Engine.Client
                     break;
                 case CardBasicInfo.CardTypeEnum.随从:
                     int MinionPos = 1;
-                    if (game.client.MyInfo.BattleField.MinionCount != 0) MinionPos = GetPutPos(game);
+                    if (PlayInfo.BattleField.MinionCount != 0)
+                    {
+                        if (IsMyAction)
+                        {
+                            MinionPos = GetPutPos(game);
+                        }
+                        else
+                        {
+                            MinionPos = int.Parse(AIParm[0]);
+                        }
+                    }
                     if (MinionPos != -1)
                     {
                         ActionCodeLst.Add(ActionCode.strMinion + CardUtility.strSplitMark + CardSn + CardUtility.strSplitMark + MinionPos.ToString("D1"));
@@ -75,7 +87,7 @@ namespace Engine.Client
                         switch (minion.战吼类型)
                         {
                             case MinionCard.战吼类型列表.默认:
-                                game.client.MyInfo.BattleField.PutToBattle(MinionPos, minion);
+                                PlayInfo.BattleField.PutToBattle(MinionPos, minion);
                                 ActionCodeLst.AddRange(minion.发动战吼(game));
                                 break;
                             case MinionCard.战吼类型列表.抢先:
@@ -96,17 +108,17 @@ namespace Engine.Client
                                         (int.Parse(resultArray[2]) + 1).ToString() + CardUtility.strSplitMark + resultArray[3]);
                                     }
                                 }
-                                game.client.MyInfo.BattleField.PutToBattle(MinionPos, minion);
+                                PlayInfo.BattleField.PutToBattle(MinionPos, minion);
                                 break;
                             case MinionCard.战吼类型列表.相邻:
                             case MinionCard.战吼类型列表.自身:
-                                game.client.MyInfo.BattleField.PutToBattle(MinionPos, minion);
-                                game.client.MyInfo.BattleField.发动战吼(MinionPos, game);
+                                PlayInfo.BattleField.PutToBattle(MinionPos, minion);
+                                PlayInfo.BattleField.发动战吼(MinionPos, game);
                                 break;
                             default:
                                 break;
                         }
-                        game.client.MyInfo.BattleField.ResetBuff();
+                        PlayInfo.BattleField.ResetBuff();
                     }
                     else
                     {
@@ -115,25 +127,25 @@ namespace Engine.Client
                     break;
                 case CardBasicInfo.CardTypeEnum.武器:
                     ActionCodeLst.Add(ActionCode.strWeapon + CardUtility.strSplitMark + CardSn);
-                    game.client.MyInfo.Weapon = (Engine.Card.WeaponCard)card;
+                    PlayInfo.Weapon = (Engine.Card.WeaponCard)card;
                     break;
                 case CardBasicInfo.CardTypeEnum.奥秘:
                     ActionCodeLst.Add(ActionCode.strSecret + CardUtility.strSplitMark + CardSn);
                     game.client.MySelfInfo.奥秘列表.Add((Engine.Card.SecretCard)card);
-                    game.client.MyInfo.SecretCount = game.client.MySelfInfo.奥秘列表.Count;
+                    PlayInfo.SecretCount = game.client.MySelfInfo.奥秘列表.Count;
                     break;
                 default:
                     break;
             }
             //随从卡牌的连击效果启动
-            if (card.CardType != CardBasicInfo.CardTypeEnum.法术 && game.client.MyInfo.连击状态)
+            if (card.CardType != CardBasicInfo.CardTypeEnum.法术 && PlayInfo.连击状态)
             {
                 if (!String.IsNullOrEmpty(card.连击效果))
                 {
                     //初始化 Buff效果等等
                     Engine.Card.AbilityCard ablity = (Engine.Card.AbilityCard)CardUtility.GetCardInfoBySN(card.连击效果);
                     ablity.Init();
-                    var ResultArg = ablity.UseAbility(game, ConvertPosDirect);
+                    var ResultArg = ablity.UseAbility(game, IsMyAction);
                     if (ResultArg.Count != 0)
                     {
                         ActionCodeLst.AddRange(ResultArg);
@@ -142,34 +154,35 @@ namespace Engine.Client
                             GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                             {
                                 触发事件类型 = CardUtility.事件类型列表.施法,
-                                触发位置 = game.client.MyInfo.战场位置
+                                触发位置 = PlayInfo.战场位置
                             });
                     }
                 }
             }
             if (ActionCodeLst.Count != 0)
             {
-                game.client.MyInfo.连击状态 = true;
+                PlayInfo.连击状态 = true;
                 ActionCodeLst.AddRange(GameManager.事件处理组件.事件处理(game));
             }
             return ActionCodeLst;
         }
 
         /// <summary>
-        /// 战斗
+        /// 攻击动作
         /// </summary>
         /// <param name="game"></param>
-        /// <param name="MyPos"></param>
-        /// <param name="YourPos"></param>
+        /// <param name="MyPos">攻击方</param>
+        /// <param name="YourPos">被攻击方</param>
+        /// <param name="IsMyAction">动作发起方</param>
         /// <returns></returns>
-        public static List<String> Fight(GameStatus game, int MyPos, int YourPos)
+        public static List<String> Fight(GameStatus game, int MyPos, int YourPos, Boolean IsMyAction)
         {
             GameManager.事件处理组件.事件池.Clear();
             //FIGHT#1#2
             String actionCode = ActionCode.strFight + CardUtility.strSplitMark + MyPos + CardUtility.strSplitMark + YourPos;
             List<String> ActionCodeLst = new List<string>();
             ActionCodeLst.Add(actionCode);
-            ActionCodeLst.AddRange(FightHandler.Fight(MyPos, YourPos, game, false));
+            ActionCodeLst.AddRange(FightHandler.Fight(MyPos, YourPos, game, IsMyAction));
             ActionCodeLst.AddRange(GameManager.事件处理组件.事件处理(game));
             return ActionCodeLst;
         }

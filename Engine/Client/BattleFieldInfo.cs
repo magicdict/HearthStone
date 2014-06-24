@@ -306,53 +306,39 @@ namespace Engine.Client
                     switch (SelectOption.EffectTargetSelectRole)
                     {
                         case CardUtility.TargetSelectRoleEnum.随从:
+                        case CardUtility.TargetSelectRoleEnum.所有角色:
                             for (int i = 0; i < game.client.MyInfo.BattleField.MinionCount; i++)
                             {
                                 if (Engine.Utility.CardUtility.符合选择条件(game.client.MyInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
                                     game.client.MyInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
                                 game.client.MyInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.client.MyInfo.BattleField.BattleMinions[i].潜行特性;
                             }
+                            if (SelectOption.EffectTargetSelectRole == CardUtility.TargetSelectRoleEnum.所有角色) game.client.MyInfo.能否成为动作对象 = true;
                             break;
                         case CardUtility.TargetSelectRoleEnum.英雄:
                             game.client.MyInfo.能否成为动作对象 = true;
-                            break;
-                        case CardUtility.TargetSelectRoleEnum.所有角色:
-                            game.client.MyInfo.能否成为动作对象 = true;
-                            for (int i = 0; i < game.client.MyInfo.BattleField.MinionCount; i++)
-                            {
-                                if (Engine.Utility.CardUtility.符合选择条件(game.client.MyInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
-                                    game.client.MyInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
-                                game.client.MyInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.client.MyInfo.BattleField.BattleMinions[i].潜行特性;
-                            }
                             break;
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.对方:
+                    Boolean Has嘲讽 = false;
+                    for (int i = 0; i < game.client.YourInfo.BattleField.MinionCount; i++)
+                    {
+                        if (game.client.YourInfo.BattleField.BattleMinions[i].嘲讽特性 &&
+                            (!game.client.YourInfo.BattleField.BattleMinions[i].潜行特性))
+                        {
+                            //嘲讽特性的时候，如果潜行特性，则潜行特性无效
+                            Has嘲讽 = true;
+                            break;
+                        }
+                    }
                     switch (SelectOption.EffectTargetSelectRole)
                     {
-                        case CardUtility.TargetSelectRoleEnum.随从:
-                            for (int i = 0; i < game.client.YourInfo.BattleField.MinionCount; i++)
-                            {
-                                if (Engine.Utility.CardUtility.符合选择条件(game.client.YourInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
-                                    game.client.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
-                                game.client.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.client.YourInfo.BattleField.BattleMinions[i].潜行特性;
-                            }
-                            break;
                         case CardUtility.TargetSelectRoleEnum.英雄:
                             game.client.YourInfo.能否成为动作对象 = true;
                             break;
+                        case CardUtility.TargetSelectRoleEnum.随从:
                         case CardUtility.TargetSelectRoleEnum.所有角色:
-                            Boolean Has嘲讽 = false;
-                            for (int i = 0; i < game.client.YourInfo.BattleField.MinionCount; i++)
-                            {
-                                if (game.client.YourInfo.BattleField.BattleMinions[i].嘲讽特性 &&
-                                    (!game.client.YourInfo.BattleField.BattleMinions[i].潜行特性))
-                                {
-                                    //嘲讽特性的时候，如果潜行特性，则潜行特性无效
-                                    Has嘲讽 = true;
-                                    break;
-                                }
-                            }
                             if (SelectOption.嘲讽限制 && Has嘲讽)
                             {
                                 game.client.YourInfo.能否成为动作对象 = false;
@@ -374,6 +360,7 @@ namespace Engine.Client
                                     game.client.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.client.YourInfo.BattleField.BattleMinions[i].潜行特性;
                                 }
                             }
+                            if (SelectOption.EffectTargetSelectRole == CardUtility.TargetSelectRoleEnum.所有角色) game.client.YourInfo.能否成为动作对象 = true;
                             break;
                     }
                     break;

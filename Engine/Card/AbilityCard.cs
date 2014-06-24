@@ -93,9 +93,8 @@ namespace Engine.Card
         /// 使用法术
         /// </summary>
         /// <param name="game"></param>
-        /// <param name="ConvertPosDirect">对象方向转换</param>
-        public List<String> UseAbility(GameStatus game,
-                                       Boolean ConvertPosDirect)
+        /// <param name="IsMyAction">对象方向转换</param>
+        public List<String> UseAbility(GameStatus game, Boolean IsMyAction)
         {
             List<String> Result = new List<string>();
             Engine.Utility.CardUtility.PickEffect PickEffectResult = CardUtility.PickEffect.第一效果;
@@ -123,20 +122,18 @@ namespace Engine.Card
             {
                 ability = SecondAbilityDefine;
             }
-            Result.AddRange(RunAbilityEffect(game, ConvertPosDirect, ability));
+            Result.AddRange(RunAbilityEffect(game, IsMyAction, ability));
             return Result;
         }
         /// <summary>
         /// 运行法术
         /// </summary>
         /// <param name="ability"></param>
-        /// <param name="ConvertPosDirect"></param>
+        /// <param name="IsMyAction"></param>
         /// <param name="Ability"></param>
         /// <param name="TargetPosInfo"></param>
         /// <returns></returns>
-        private List<String> RunAbilityEffect(GameStatus game,
-                                              Boolean ConvertPosDirect,
-                                              AbilityCard.AbilityDefine Ability)
+        private List<String> RunAbilityEffect(GameStatus game, Boolean IsMyAction, AbilityCard.AbilityDefine Ability)
         {
             List<String> Result = new List<string>();
 
@@ -149,7 +146,7 @@ namespace Engine.Card
             }
             else
             {
-                if (ConvertPosDirect)
+                if (!IsMyAction)
                 {
                     switch (Ability.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectDirect)
                     {
@@ -189,7 +186,7 @@ namespace Engine.Card
                     case AtomicEffectDefine.AtomicEffectEnum.水晶:
                     case AtomicEffectDefine.AtomicEffectEnum.召唤:
                     case AtomicEffectDefine.AtomicEffectEnum.武器:
-                        Result.AddRange(RunGameSystemEffect(game, ConvertPosDirect, Ability.MainAbilityDefine.TrueAtomicEffect, Ability.MainAbilityDefine.AbliltyPosPicker));
+                        Result.AddRange(RunGameSystemEffect(game,Ability.MainAbilityDefine.TrueAtomicEffect, Ability.MainAbilityDefine.AbliltyPosPicker));
                         break;
                     case AtomicEffectDefine.AtomicEffectEnum.控制:
                         Result.AddRange(ControlEffect.RunEffect(game, Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
@@ -202,7 +199,8 @@ namespace Engine.Card
                 Result.AddRange(GameManager.Settle());
             }
             //追加条件计算
-            if (Ability.AppendAbilityDefine == null || (!ExpressHandler.AppendAbilityCondition(game,Ability))) { 
+            if (Ability.AppendAbilityDefine == null || (!ExpressHandler.AppendAbilityCondition(game, Ability)))
+            {
                 return Result;
             }
             //按照回数执行追加效果
@@ -217,7 +215,7 @@ namespace Engine.Card
                     case AtomicEffectDefine.AtomicEffectEnum.水晶:
                     case AtomicEffectDefine.AtomicEffectEnum.召唤:
                     case AtomicEffectDefine.AtomicEffectEnum.武器:
-                        Result.AddRange(RunGameSystemEffect(game, ConvertPosDirect, Ability.AppendAbilityDefine.TrueAtomicEffect, 
+                        Result.AddRange(RunGameSystemEffect(game, Ability.AppendAbilityDefine.TrueAtomicEffect,
                                                                                     Ability.AppendAbilityDefine.AbliltyPosPicker));
                         break;
                     case AtomicEffectDefine.AtomicEffectEnum.控制:
@@ -239,7 +237,7 @@ namespace Engine.Card
         /// <param name="ConvertPosDirect"></param>
         /// <param name="Ability"></param>
         /// <returns></returns>
-        private List<string> RunGameSystemEffect(GameStatus game, bool ConvertPosDirect, AtomicEffectDefine effect, CardUtility.PositionSelectOption Option)
+        private List<string> RunGameSystemEffect(GameStatus game, AtomicEffectDefine effect, CardUtility.PositionSelectOption Option)
         {
             List<string> Result = new List<string>();
             switch (effect.AtomicEffectType)

@@ -379,7 +379,6 @@ namespace Engine.Card
         /// 发动战吼(默认)
         /// </summary>
         /// <param name="game"></param>
-        /// <param name="SelfPosition"></param>
         /// <returns></returns>
         public List<String> 发动战吼(GameStatus game)
         {
@@ -387,7 +386,7 @@ namespace Engine.Card
             //战吼效果
             if (战吼效果 != String.Empty && !沉默状态)
             {
-                var 战吼Result = RunAction.StartAction(game, 战吼效果);
+                var 战吼Result = RunAction.StartAction(game, 战吼效果, true);
                 //第一条是使用了战吼卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
                 //如果战吼在召唤的时候无法成功，法术机能会误认为是取消
                 if (战吼Result.Count > 0) 战吼Result.RemoveAt(0);
@@ -399,17 +398,18 @@ namespace Engine.Card
         /// 发动亡语
         /// </summary>
         /// <param name="game"></param>
+        /// <param name="IsMyAction"></param>
         /// <returns></returns>
-        public List<String> 发动亡语(GameStatus game, Boolean IsNeedConvertPosDirect)
+        public List<String> 发动亡语(GameStatus game, Boolean IsMyAction)
         {
             List<String> ActionCodeLst = new List<string>();
             //亡语效果
             if (亡语效果 != String.Empty && !沉默状态)
             {
-                var 战吼Result = RunAction.StartAction(game, 亡语效果, IsNeedConvertPosDirect);
+                var 亡语Result = RunAction.StartAction(game, 亡语效果, IsMyAction);
                 //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
-                战吼Result.RemoveAt(0);
-                ActionCodeLst.AddRange(战吼Result);
+                亡语Result.RemoveAt(0);
+                ActionCodeLst.AddRange(亡语Result);
             }
             return ActionCodeLst;
         }
@@ -424,7 +424,7 @@ namespace Engine.Card
             //回合开始效果
             if (回合开始效果 != String.Empty && !沉默状态)
             {
-                var 回合开始Result = RunAction.StartAction(game, 回合开始效果);
+                var 回合开始Result = RunAction.StartAction(game, 回合开始效果, true);
                 //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
                 回合开始Result.RemoveAt(0);
                 ActionCodeLst.AddRange(回合开始Result);
@@ -443,7 +443,7 @@ namespace Engine.Card
             //回合结束效果
             if (回合结束效果 != String.Empty && !沉默状态)
             {
-                var 回合结束Result = RunAction.StartAction(game, 回合结束效果);
+                var 回合结束Result = RunAction.StartAction(game, 回合结束效果, true);
                 //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
                 回合结束Result.RemoveAt(0);
                 ActionCodeLst.AddRange(回合结束Result);
@@ -456,15 +456,12 @@ namespace Engine.Card
         /// <summary>
         /// 攻击后
         /// </summary>
-        public void AfterDoAttack(Boolean 被动攻击)
+        public void AfterDoAttack()
         {
             //失去潜行
-            if (!被动攻击)
-            {
-                潜行特性 = false;
-                剩余攻击次数--;
-                if (剩余攻击次数 == 0) AttactStatus = MinionCard.攻击状态.攻击完毕;
-            }
+            潜行特性 = false;
+            剩余攻击次数--;
+            if (剩余攻击次数 == 0) AttactStatus = MinionCard.攻击状态.攻击完毕;
         }
         /// <summary>
         /// 被攻击

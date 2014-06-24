@@ -27,6 +27,7 @@ namespace 炉边传说
         private void InitGame()
         {
             RunAction.GetPutPos = GetPutPos;
+            GameManager.GetSelectTarget = SelectPanel;
             GameManager.InitPlayInfo();
             switch (GameManager.游戏类型)
             {
@@ -252,10 +253,10 @@ namespace 炉边传说
         private void btnEndTurn_Click(object sender, System.EventArgs e)
         {
             var ActionLst = GameManager.TurnEnd(true);
-            if (ActionLst.Count != 0 && GameManager.游戏类型 != SystemManager.GameType.单机版) 
+            if (ActionLst.Count != 0 && GameManager.游戏类型 != SystemManager.GameType.单机版)
                 Engine.Client.ClientRequest.WriteAction(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat), ActionLst);
             //结束回合
-            if (GameManager.游戏类型 != SystemManager.GameType.单机版) 
+            if (GameManager.游戏类型 != SystemManager.GameType.单机版)
                 Engine.Client.ClientRequest.TurnEnd(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat));
             GameManager.gameStatus.client.IsMyTurn = false;
             GameManager.TurnStart(false);
@@ -277,7 +278,7 @@ namespace 炉边传说
                         ActionLst.AddRange(GameManager.gameStatus.client.MyInfo.BattleField.BattleMinions[i].回合开始(GameManager.gameStatus));
                     }
                 }
-                if (ActionLst.Count != 0 && GameManager.游戏类型 != SystemManager.GameType.单机版) 
+                if (ActionLst.Count != 0 && GameManager.游戏类型 != SystemManager.GameType.单机版)
                     Engine.Client.ClientRequest.WriteAction(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat), ActionLst);
                 //按钮可用性设定
                 btnEndTurn.Enabled = true;
@@ -381,7 +382,7 @@ namespace 炉边传说
                 MessageBox.Show(msg);
                 return;
             }
-            var actionlst = RunAction.StartAction(GameManager.gameStatus, card.序列号);
+            var actionlst = RunAction.StartAction(GameManager.gameStatus, card.序列号, true);
             if (actionlst.Count != 0)
             {
                 if ((sender.GetType()) == typeof(Button))
@@ -417,7 +418,7 @@ namespace 炉边传说
             SelectOpt.EffectTargetSelectRole = CardUtility.TargetSelectRoleEnum.所有角色;
             SelectOpt.嘲讽限制 = true;
             var YourPos = SelectPanel(SelectOpt);
-            List<String> actionlst = RunAction.Fight(GameManager.gameStatus, MyPos, YourPos.Postion);
+            List<String> actionlst = RunAction.Fight(GameManager.gameStatus, MyPos, YourPos.Postion, true);
             actionlst.AddRange(SecretCard.奥秘计算(actionlst, GameManager.gameStatus));
             GameManager.gameStatus.client.MySelfInfo.ResetHandCardCost(GameManager.gameStatus);
             if (GameManager.游戏类型 != SystemManager.GameType.单机版) Engine.Client.ClientRequest.WriteAction(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat), actionlst);
