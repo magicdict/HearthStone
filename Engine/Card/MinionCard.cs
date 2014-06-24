@@ -380,13 +380,13 @@ namespace Engine.Card
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public List<String> 发动战吼(GameStatus game)
+        public List<String> 发动战吼(GameStatus game, Boolean IsMyAction)
         {
             List<String> ActionCodeLst = new List<string>();
             //战吼效果
             if (战吼效果 != String.Empty && !沉默状态)
             {
-                var 战吼Result = RunAction.StartAction(game, 战吼效果, true);
+                var 战吼Result = RunAction.StartAction(game, 战吼效果, IsMyAction);
                 //第一条是使用了战吼卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
                 //如果战吼在召唤的时候无法成功，法术机能会误认为是取消
                 if (战吼Result.Count > 0) 战吼Result.RemoveAt(0);

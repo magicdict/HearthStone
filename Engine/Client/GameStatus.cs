@@ -90,7 +90,12 @@ namespace Engine.Client
         /// <returns></returns>
         public string GetGameInfo()
         {
-            return "NotImplementedException";
+            StringBuilder info = new StringBuilder();
+            info.AppendLine("本方手牌数：" + client.MyInfo.HandCardCount);
+            info.AppendLine("对方手牌数：" + client.YourInfo.HandCardCount);
+            info.AppendLine("本方剩余牌数：" + client.MyInfo.RemainCardDeckCount);
+            info.AppendLine("对方剩余牌数：" + client.YourInfo.RemainCardDeckCount);
+            return info.ToString();
         }
     }
 }

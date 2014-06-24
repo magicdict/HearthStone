@@ -30,6 +30,8 @@ namespace Engine.Client
             GameManager.事件处理组件.事件池.Clear();
             Engine.Card.CardBasicInfo card = Engine.Utility.CardUtility.GetCardInfoBySN(CardSn);
             List<String> ActionCodeLst = new List<string>();
+            //未知的异常，卡牌资料缺失
+            if (card == null) return ActionCodeLst;
             PublicInfo PlayInfo = IsMyAction ? game.client.MyInfo : game.client.YourInfo;
             switch (card.CardType)
             {
@@ -88,12 +90,12 @@ namespace Engine.Client
                         {
                             case MinionCard.战吼类型列表.默认:
                                 PlayInfo.BattleField.PutToBattle(MinionPos, minion);
-                                ActionCodeLst.AddRange(minion.发动战吼(game));
+                                ActionCodeLst.AddRange(minion.发动战吼(game,IsMyAction));
                                 break;
                             case MinionCard.战吼类型列表.抢先:
                                 //战吼中，其他系列的法术效果 例如其他鱼人获得XX效果
                                 //战吼中，友方系列的法术效果 例如友方随从获得XX效果
-                                foreach (var result in minion.发动战吼(game))
+                                foreach (var result in minion.发动战吼(game, IsMyAction))
                                 {
                                     var resultArray = result.Split(CardUtility.strSplitMark.ToCharArray());
                                     if (resultArray.Length == 1 || int.Parse(resultArray[2]) < MinionPos)

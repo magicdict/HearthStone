@@ -14,18 +14,16 @@ namespace Engine.AI
 
             List<String> Result = new List<string>();
             //能上场的随从都上场
-            foreach (var card in PlaySelfInfo.handCards)
+            int HandCardIndex = HasBattleMinion();
+            while (HandCardIndex != -1)
             {
-                if (card.CardType == Card.CardBasicInfo.CardTypeEnum.随从 &&
-                    PlayInfo.BattleField.MinionCount != BattleFieldInfo.MaxMinionCount)
-                {
-                    if (card.使用成本 <= PlayInfo.crystal.CurrentRemainPoint)
-                    {
-                        int newPos = PlayInfo.BattleField.MinionCount + 1;
-                        RunAction.StartAction(GameManager.gameStatus, card.序列号, false, new string[] { newPos.ToString() });
-                        PlayInfo.crystal.CurrentRemainPoint -= card.使用成本;
-                    }
-                }
+                int newPos = PlayInfo.BattleField.MinionCount + 1;
+                var card = PlaySelfInfo.handCards[HandCardIndex];
+                RunAction.StartAction(GameManager.gameStatus, card.序列号, false, new string[] { newPos.ToString() });
+                PlayInfo.crystal.CurrentRemainPoint -= card.使用成本;
+                PlaySelfInfo.RemoveUsedCard(card.序列号);
+                PlayInfo.HandCardCount = PlaySelfInfo.handCards.Count;
+                HandCardIndex = HasBattleMinion();
             }
             //能攻击的随从都攻击，优先攻击英雄
             int AttackPos = HasAttackMinion();
@@ -37,6 +35,28 @@ namespace Engine.AI
             }
             Result.Add(ActionCode.strEndTurn);
             return Result;
+        }
+        /// <summary>
+        /// 能上场的随从
+        /// </summary>
+        /// <returns></returns>
+        private static int HasBattleMinion()
+        {
+            PrivateInfo PlaySelfInfo = GameManager.gameStatus.client.YourSelfInfo;
+            PublicInfo PlayInfo = GameManager.gameStatus.client.YourInfo;
+            for (int i = 0; i < PlaySelfInfo.handCards.Count; i++)
+            {
+                var card = PlaySelfInfo.handCards[i];
+                if (card.CardType == Card.CardBasicInfo.CardTypeEnum.随从 &&
+                    PlayInfo.BattleField.MinionCount != BattleFieldInfo.MaxMinionCount)
+                {
+                    if (card.使用成本 <= PlayInfo.crystal.CurrentRemainPoint)
+                    {
+                        return i;
+                    }
+                }
+            }
+            return -1;
         }
         /// <summary>
         /// 是否拥有可以攻击的随从

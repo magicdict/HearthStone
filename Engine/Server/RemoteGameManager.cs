@@ -126,7 +126,7 @@ namespace Engine.Server
             if ((IsHost && serverinfo.HostAsFirst) || (!IsHost && !serverinfo.HostAsFirst))
             {
                 //防止单机模式的时候出现一样的卡牌，所以 + 1
-                serverinfo.HostCardDeck.Init(cards, DateTime.Now.Millisecond + 1);
+                serverinfo.HostCardDeck.Init(cards, DateTime.Now.Millisecond * 2);
             }
             else
             {
