@@ -12,7 +12,7 @@ namespace Engine.Effect
         public static List<string> RunEffect(Client.GameStatus game, String PosField)
         {
             List<String> Result = new List<string>();
-            if (game.client.MyInfo.BattleField.MinionCount != Engine.Client.BattleFieldInfo.MaxMinionCount)
+            if (game.client.MyInfo.BattleField.MinionCount != SystemManager.MaxMinionCount)
             {
                 game.client.MyInfo.BattleField.AppendToBattle(game.client.YourInfo.BattleField.BattleMinions[int.Parse(PosField) - 1].深拷贝());
                 game.client.YourInfo.BattleField.BattleMinions[int.Parse(PosField) - 1] = null;

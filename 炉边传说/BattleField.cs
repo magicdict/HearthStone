@@ -39,6 +39,7 @@ namespace 炉边传说
                     GameManager.TurnStart(GameManager.gameStatus.client.IsMyTurn);
                     break;
                 case SystemManager.GameType.客户端服务器版:
+                    WaitTimer.Tick += WaitFor;
                     GameManager.InitHandCard();
                     btnMyHeroAblity.Tag = GameManager.gameStatus.client.MyInfo.HeroAbility;
                     GameManager.gameStatus.client.IsMyTurn = GameManager.gameStatus.client.IsFirst;
@@ -165,7 +166,7 @@ namespace 炉边传说
 
             LeftPos = (this.Width - (GameManager.gameStatus.client.MyInfo.BattleField.MinionCount * btnMe1.Width +
                       (GameManager.gameStatus.client.MyInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
-            for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
+            for (int i = 0; i < SystemManager.MaxMinionCount; i++)
             {
                 var myMinion = GameManager.gameStatus.client.MyInfo.BattleField.BattleMinions[i];
                 if (myMinion != null)
@@ -190,7 +191,7 @@ namespace 炉边传说
             }
             LeftPos = (this.Width - (GameManager.gameStatus.client.YourInfo.BattleField.MinionCount * btnYou1.Width +
                       (GameManager.gameStatus.client.YourInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
-            for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
+            for (int i = 0; i < SystemManager.MaxMinionCount; i++)
             {
                 if (GameManager.gameStatus.client.YourInfo.BattleField.BattleMinions[i] != null)
                 {
@@ -259,10 +260,10 @@ namespace 炉边传说
         {
             var ActionLst = GameManager.TurnEnd(true);
             if (ActionLst.Count != 0 && GameManager.游戏类型 != SystemManager.GameType.单机版)
-                Engine.Client.ClientRequest.WriteAction(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat), ActionLst);
+                Engine.Client.ClientRequest.WriteAction(GameManager.GameId.ToString(GameServer.GameIdFormat), ActionLst);
             //结束回合
             if (GameManager.游戏类型 != SystemManager.GameType.单机版)
-                Engine.Client.ClientRequest.TurnEnd(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat));
+                Engine.Client.ClientRequest.TurnEnd(GameManager.GameId.ToString(GameServer.GameIdFormat));
             GameManager.gameStatus.client.IsMyTurn = false;
             GameManager.TurnStart(false);
             StartNewTurn();
@@ -284,7 +285,7 @@ namespace 炉边传说
                     }
                 }
                 if (ActionLst.Count != 0 && GameManager.游戏类型 != SystemManager.GameType.单机版)
-                    Engine.Client.ClientRequest.WriteAction(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat), ActionLst);
+                    Engine.Client.ClientRequest.WriteAction(GameManager.GameId.ToString(GameServer.GameIdFormat), ActionLst);
                 //按钮可用性设定
                 btnEndTurn.Enabled = true;
                 for (int i = 0; i < 10; i++)
@@ -328,7 +329,7 @@ namespace 炉边传说
         /// </summary>
         private void WaitFor(object sender, System.EventArgs e)
         {
-            var Actions = Engine.Client.ClientRequest.ReadAction(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat));
+            var Actions = Engine.Client.ClientRequest.ReadAction(GameManager.GameId.ToString(GameServer.GameIdFormat));
             if (String.IsNullOrEmpty(Actions)) return;
             var ActionList = Actions.Split(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
             foreach (var item in ActionList)
@@ -339,7 +340,7 @@ namespace 炉边传说
                 }
                 else
                 {
-                    if (GameManager.游戏类型 != SystemManager.GameType.单机版) WaitTimer.Stop();
+                    WaitTimer.Stop();
                     btnEndTurn.Enabled = true;
                     GameManager.TurnEnd(false);
                     GameManager.gameStatus.client.IsMyTurn = true;
@@ -408,7 +409,7 @@ namespace 炉边传说
                 //奥秘计算
                 actionlst.AddRange(SecretCard.奥秘计算(actionlst, GameManager.gameStatus));
                 GameManager.gameStatus.client.MySelfInfo.ResetHandCardCost(GameManager.gameStatus);
-                if (GameManager.游戏类型 != SystemManager.GameType.单机版) Engine.Client.ClientRequest.WriteAction(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat), actionlst);
+                if (GameManager.游戏类型 != SystemManager.GameType.单机版) Engine.Client.ClientRequest.WriteAction(GameManager.GameId.ToString(GameServer.GameIdFormat), actionlst);
                 DisplayMyInfo();
             }
 
@@ -428,7 +429,7 @@ namespace 炉边传说
             List<String> actionlst = RunAction.Fight(GameManager.gameStatus, MyPos, YourPos.Postion, true);
             actionlst.AddRange(SecretCard.奥秘计算(actionlst, GameManager.gameStatus));
             GameManager.gameStatus.client.MySelfInfo.ResetHandCardCost(GameManager.gameStatus);
-            if (GameManager.游戏类型 != SystemManager.GameType.单机版) Engine.Client.ClientRequest.WriteAction(GameManager.gameStatus.GameId.ToString(GameServer.GameIdFormat), actionlst);
+            if (GameManager.游戏类型 != SystemManager.GameType.单机版) Engine.Client.ClientRequest.WriteAction(GameManager.GameId.ToString(GameServer.GameIdFormat), actionlst);
             DisplayMyInfo();
         }
         /// <summary>

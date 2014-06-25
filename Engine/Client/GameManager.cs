@@ -171,7 +171,7 @@ namespace Engine.Client
                     {
                         if (!IsMyTurn)
                         {
-                            for (int i = 0; i < PublicInfo.MaxHandCardCount - PlayInfo.HandCardCount; i++)
+                            for (int i = 0; i < SystemManager.MaxHandCardCount - PlayInfo.HandCardCount; i++)
                             {
                                 var t = SimulateServer.DrawCard(IsMyTurn, 1);
                                 if (t.Count == 1)
@@ -183,7 +183,7 @@ namespace Engine.Client
                         }
                         else
                         {
-                            if (SelfInfo.handCards.Count < PublicInfo.MaxHandCardCount)
+                            if (SelfInfo.handCards.Count < SystemManager.MaxHandCardCount)
                             {
                                 var t = SimulateServer.DrawCard(IsMyTurn, 1);
                                 if (t.Count == 1) SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(t[0]));
@@ -193,7 +193,7 @@ namespace Engine.Client
                     }
                     else
                     {
-                        if (SelfInfo.handCards.Count < PublicInfo.MaxHandCardCount)
+                        if (SelfInfo.handCards.Count < SystemManager.MaxHandCardCount)
                         {
                             var t = SimulateServer.DrawCard(IsMyTurn, 1);
                             if (t.Count == 1) SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(t[0]));

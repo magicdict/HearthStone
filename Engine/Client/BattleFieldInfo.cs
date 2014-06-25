@@ -12,10 +12,6 @@ namespace Engine.Client
     public class BattleFieldInfo
     {
         /// <summary>
-        /// 最多7个随从的位置
-        /// </summary>
-        public const int MaxMinionCount = 7;
-        /// <summary>
         /// 未知
         /// </summary>
         public const int UnknowPos = -1;
@@ -57,7 +53,7 @@ namespace Engine.Client
             get
             {
                 int t = 0;
-                for (int i = 0; i < MaxMinionCount; i++)
+                for (int i = 0; i < SystemManager.MaxMinionCount; i++)
                 {
                     if (BattleMinions[i] != null) t++;
                 }
@@ -72,7 +68,7 @@ namespace Engine.Client
         ///[0][1][2][3][4][5][6]
         ///有些卡牌涉及到对于左右位置的加成问题，所以，位置是很敏感的
         ///</remarks>
-        public MinionCard[] BattleMinions = new MinionCard[MaxMinionCount];
+        public MinionCard[] BattleMinions = new MinionCard[SystemManager.MaxMinionCount];
         /// <summary>
         /// 卡牌入战场
         /// </summary>
@@ -110,9 +106,9 @@ namespace Engine.Client
         public void PutToBattle(int Position, MinionCard Minion)
         {
             //战场满了
-            if (MinionCount == MaxMinionCount) return;
+            if (MinionCount == SystemManager.MaxMinionCount) return;
             //无效的位置
-            if ((Position < 1) || (Position > MinionCount + 1) || Position > MaxMinionCount) return;
+            if ((Position < 1) || (Position > MinionCount + 1) || Position > SystemManager.MaxMinionCount) return;
             //插入操作
             if (BattleMinions[Position - 1] == null)
             {
@@ -122,7 +118,7 @@ namespace Engine.Client
             else
             {
                 //Position右边的全体移位，腾出地方
-                for (int i = MaxMinionCount - 1; i >= Position; i--)
+                for (int i = SystemManager.MaxMinionCount - 1; i >= Position; i--)
                 {
                     BattleMinions[i] = BattleMinions[i - 1];
                 }
@@ -209,11 +205,11 @@ namespace Engine.Client
         /// <remarks>不涉及到亡语等计算</remarks>
         public void GetOutFromBattle(int Position)
         {
-            for (int i = Position - 1; i < MaxMinionCount - 1; i++)
+            for (int i = Position - 1; i < SystemManager.MaxMinionCount - 1; i++)
             {
                 BattleMinions[i] = BattleMinions[i + 1];
             }
-            BattleMinions[MaxMinionCount - 1] = null;
+            BattleMinions[SystemManager.MaxMinionCount - 1] = null;
             for (int i = 0; i < MinionCount; i++)
             {
                 BattleMinions[i].战场位置.Postion = i + 1;
@@ -416,9 +412,9 @@ namespace Engine.Client
             //必须是当前的随从，不能使编号
             //如果是沉默状态的随从，无亡语效果！
             List<MinionCard> DeadList = new List<MinionCard>();
-            var CloneMinions = new MinionCard[BattleFieldInfo.MaxMinionCount];
+            var CloneMinions = new MinionCard[SystemManager.MaxMinionCount];
             int ALive = 0;
-            for (int i = 0; i < BattleFieldInfo.MaxMinionCount; i++)
+            for (int i = 0; i < SystemManager.MaxMinionCount; i++)
             {
                 if (BattleMinions[i] != null)
                 {

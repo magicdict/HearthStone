@@ -1,5 +1,6 @@
 ﻿using Engine.Client;
 using Engine.Server;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +10,6 @@ namespace 炉边传说
 {
     public partial class frmStartGame : Form
     {
-
         /// <summary>
         /// frmStartGame
         /// </summary>
@@ -145,7 +145,7 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnSingleGameDefance_Click(object sender, EventArgs e)
         {
-            PublicInfo.MaxHealthPoint = Engine.Utility.CardUtility.Max;
+            SystemManager.MaxHealthPoint = Engine.Utility.CardUtility.Max;
             Engine.Utility.CardUtility.Init(txtCardPath.Text);
             GameManager.游戏类型 = Engine.Utility.SystemManager.GameType.单机版;
             GameManager.游戏模式 = Engine.Utility.SystemManager.GameMode.塔防;

@@ -25,6 +25,21 @@ namespace Engine.Utility
             标准,
             塔防
         }
+        /// <summary>
+        /// 最大生命值
+        /// </summary>
+        public static int MaxHealthPoint = 30;
+        /// <summary>
+        /// 最大手牌数
+        /// </summary>
+        public const int MaxHandCardCount = 10;
+        /// <summary>
+        /// 最多7个随从的位置
+        /// </summary>
+        public const int MaxMinionCount = 7;
+        /// <summary>
+        /// 游戏类型
+        /// </summary>
         public static GameType CurrentGameType = GameType.HTML版;
         /// <summary>
         /// 日志

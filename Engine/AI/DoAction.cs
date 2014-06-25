@@ -1,5 +1,6 @@
 ﻿using Engine.Client;
 using Engine.Server;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 
@@ -48,7 +49,7 @@ namespace Engine.AI
             {
                 var card = PlaySelfInfo.handCards[i];
                 if (card.CardType == Card.CardBasicInfo.CardTypeEnum.随从 &&
-                    PlayInfo.BattleField.MinionCount != BattleFieldInfo.MaxMinionCount)
+                    PlayInfo.BattleField.MinionCount != SystemManager.MaxMinionCount)
                 {
                     if (card.使用成本 <= PlayInfo.crystal.CurrentRemainPoint)
                     {

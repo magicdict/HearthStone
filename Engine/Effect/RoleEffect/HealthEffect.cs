@@ -57,7 +57,7 @@ namespace Engine.Effect
                     触发位置 = Minion.战场位置
                 });
             }
-            return Server.ActionCode.strHealth + CardUtility.strSplitMark + Minion.战场位置.ToString() + 
+            return Server.ActionCode.strHealth + CardUtility.strSplitMark + Minion.战场位置.ToString() +
                                                  CardUtility.strSplitMark + HealthPoint.ToString();
         }
         /// <summary>

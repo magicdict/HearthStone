@@ -12,10 +12,6 @@ namespace Engine.Client
     public class PublicInfo
     {
         /// <summary>
-        /// 最大生命值
-        /// </summary>
-        public static int MaxHealthPoint = 30;
-        /// <summary>
         /// 是否为先手
         /// </summary>
         public Boolean IsFirst;
@@ -59,10 +55,6 @@ namespace Engine.Client
         /// 初始手牌数
         /// </summary>
         public const int BasicHandCardCount = 3;
-        /// <summary>
-        /// 最大手牌数
-        /// </summary>
-        public const int MaxHandCardCount = 10;
         /// <summary>
         /// 手牌数
         /// </summary>
@@ -152,9 +144,9 @@ namespace Engine.Client
         /// <param name="HealthPoint"></param>
         public Boolean AfterBeHealth(int HealthPoint)
         {
-            if (LifePoint == PublicInfo.MaxHealthPoint) return false;
+            if (LifePoint == SystemManager.MaxHealthPoint) return false;
             LifePoint += HealthPoint;
-            if (LifePoint > PublicInfo.MaxHealthPoint) LifePoint = PublicInfo.MaxHealthPoint;
+            if (LifePoint > SystemManager.MaxHealthPoint) LifePoint = SystemManager.MaxHealthPoint;
             return true;
         }
         /// <summary>

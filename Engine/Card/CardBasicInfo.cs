@@ -145,7 +145,7 @@ namespace Engine.Card
             //}
             if (card.CardType == CardBasicInfo.CardTypeEnum.随从)
             {
-                if (MyInfo.BattleField.MinionCount == Engine.Client.BattleFieldInfo.MaxMinionCount)
+                if (MyInfo.BattleField.MinionCount == SystemManager.MaxMinionCount)
                 {
                     Message = "随从已经满员";
                     return Message;

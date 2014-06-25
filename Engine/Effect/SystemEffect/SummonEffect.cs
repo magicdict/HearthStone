@@ -31,7 +31,7 @@ namespace Engine.Effect
             switch (Direct)
             {
                 case CardUtility.TargetSelectDirectEnum.本方:
-                    if (game.client.MyInfo.BattleField.MinionCount < Engine.Client.BattleFieldInfo.MaxMinionCount)
+                    if (game.client.MyInfo.BattleField.MinionCount < SystemManager.MaxMinionCount)
                     {
                         game.client.MyInfo.BattleField.AppendToBattle(Minion);
                         //SUMMON#YOU#M000001#POS
@@ -45,7 +45,7 @@ namespace Engine.Effect
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.对方:
-                    if (game.client.YourInfo.BattleField.MinionCount < Engine.Client.BattleFieldInfo.MaxMinionCount)
+                    if (game.client.YourInfo.BattleField.MinionCount < SystemManager.MaxMinionCount)
                     {
                         game.client.YourInfo.BattleField.AppendToBattle(Minion);
                         Result.Add(Engine.Server.ActionCode.strSummon + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strYou +
@@ -58,7 +58,7 @@ namespace Engine.Effect
                     }
                     break;
                 case CardUtility.TargetSelectDirectEnum.双方:
-                    if (game.client.MyInfo.BattleField.MinionCount < Engine.Client.BattleFieldInfo.MaxMinionCount)
+                    if (game.client.MyInfo.BattleField.MinionCount < SystemManager.MaxMinionCount)
                     {
                         game.client.MyInfo.BattleField.AppendToBattle(Minion);
                         //SUMMON#YOU#M000001#POS
@@ -70,7 +70,7 @@ namespace Engine.Effect
                             触发位置 = Minion.战场位置
                         });
                     }
-                    if (game.client.YourInfo.BattleField.MinionCount < Engine.Client.BattleFieldInfo.MaxMinionCount)
+                    if (game.client.YourInfo.BattleField.MinionCount < SystemManager.MaxMinionCount)
                     {
                         game.client.YourInfo.BattleField.AppendToBattle(Minion);
                         Result.Add(Engine.Server.ActionCode.strSummon + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strYou +
