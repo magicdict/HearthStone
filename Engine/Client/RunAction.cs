@@ -90,7 +90,7 @@ namespace Engine.Client
                         {
                             case MinionCard.战吼类型列表.默认:
                                 PlayInfo.BattleField.PutToBattle(MinionPos, minion);
-                                ActionCodeLst.AddRange(minion.发动战吼(game,IsMyAction));
+                                ActionCodeLst.AddRange(minion.发动战吼(game, IsMyAction));
                                 break;
                             case MinionCard.战吼类型列表.抢先:
                                 //战吼中，其他系列的法术效果 例如其他鱼人获得XX效果
@@ -146,18 +146,21 @@ namespace Engine.Client
                 {
                     //初始化 Buff效果等等
                     Engine.Card.AbilityCard ablity = (Engine.Card.AbilityCard)CardUtility.GetCardInfoBySN(card.连击效果);
-                    ablity.Init();
-                    var ResultArg = ablity.UseAbility(game, IsMyAction);
-                    if (ResultArg.Count != 0)
+                    if (ablity != null)
                     {
-                        ActionCodeLst.AddRange(ResultArg);
-                        //英雄技能等的时候，不算[本方施法] 
-                        if (CardSn.Substring(1, 1) == Engine.Card.AbilityCard.原生法术)
-                            GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
-                            {
-                                触发事件类型 = CardUtility.事件类型列表.施法,
-                                触发位置 = PlayInfo.战场位置
-                            });
+                        ablity.Init();
+                        var ResultArg = ablity.UseAbility(game, IsMyAction);
+                        if (ResultArg.Count != 0)
+                        {
+                            ActionCodeLst.AddRange(ResultArg);
+                            //英雄技能等的时候，不算[本方施法] 
+                            if (CardSn.Substring(1, 1) == Engine.Card.AbilityCard.原生法术)
+                                GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                                {
+                                    触发事件类型 = CardUtility.事件类型列表.施法,
+                                    触发位置 = PlayInfo.战场位置
+                                });
+                        }
                     }
                 }
             }

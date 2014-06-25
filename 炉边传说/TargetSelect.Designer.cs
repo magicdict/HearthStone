@@ -46,6 +46,7 @@
             this.btnMyHero = new 炉边传说.ctlHero();
             this.btnYourHero = new 炉边传说.ctlHero();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.ctlUsageCard = new 炉边传说.ctlCard();
             this.SuspendLayout();
             // 
             // btnMe7
@@ -221,12 +222,23 @@
             this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // ctlUsageCard
+            // 
+            this.ctlUsageCard.BackColor = System.Drawing.Color.White;
+            this.ctlUsageCard.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ctlUsageCard.Location = new System.Drawing.Point(12, 29);
+            this.ctlUsageCard.Name = "ctlUsageCard";
+            this.ctlUsageCard.Size = new System.Drawing.Size(100, 87);
+            this.ctlUsageCard.TabIndex = 49;
+            this.ctlUsageCard.Visible = false;
+            // 
             // TargetSelect
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(757, 463);
+            this.Controls.Add(this.ctlUsageCard);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnMe7);
             this.Controls.Add(this.btnMe6);
@@ -272,5 +284,6 @@
         private ctlHero btnMyHero;
         private ctlHero btnYourHero;
         private System.Windows.Forms.Button btnCancel;
+        private ctlCard ctlUsageCard;
     }
 }

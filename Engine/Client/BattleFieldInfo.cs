@@ -158,42 +158,45 @@ namespace Engine.Client
                     PosList.Add(MinionPos);
                 }
                 //处理状态和数值变化
-                var 战吼 = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN(BattleMinions[MinionPos - 1].战吼效果);
-                foreach (int PosInfo in PosList)
+                var 战吼效果 = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN(BattleMinions[MinionPos - 1].战吼效果);
+                if (战吼效果 != null)
                 {
-                    switch (战吼.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.AtomicEffectType)
+                    foreach (int PosInfo in PosList)
                     {
-                        case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.增益:
-                            IAtomicEffect IAtomicPoint = new PointEffect();
-                            IAtomicPoint.GetField(战吼.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.InfoArray);
-                            IAtomicPoint.DealMinion(game, BattleMinions[PosInfo - 1]);
-                            ActionCodeLst.Add(Engine.Server.ActionCode.strPoint + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
-                            PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼.FirstAbilityDefine.MainAbilityDefine);
-                            break;
-                        case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.状态:
-                            IAtomicEffect IAtomicStatus = new StatusEffect();
-                            IAtomicStatus.GetField(战吼.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.InfoArray);
-                            IAtomicStatus.DealMinion(game, BattleMinions[PosInfo - 1]);
-                            ActionCodeLst.Add(Engine.Server.ActionCode.strStatus + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
-                            PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼.FirstAbilityDefine.MainAbilityDefine);
-                            break;
-                    }
-                    switch (战吼.SecondAbilityDefine.MainAbilityDefine.TrueAtomicEffect.AtomicEffectType)
-                    {
-                        case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.增益:
-                            IAtomicEffect IAtomicPoint = new PointEffect();
-                            IAtomicPoint.GetField(战吼.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.InfoArray);
-                            IAtomicPoint.DealMinion(game, BattleMinions[PosInfo - 1]);
-                            ActionCodeLst.Add(Engine.Server.ActionCode.strPoint + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
-                            PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼.SecondAbilityDefine.MainAbilityDefine);
-                            break;
-                        case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.状态:
-                            IAtomicEffect IAtomicStatus = new StatusEffect();
-                            IAtomicStatus.GetField(战吼.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.InfoArray);
-                            IAtomicStatus.DealMinion(game, BattleMinions[PosInfo - 1]);
-                            ActionCodeLst.Add(Engine.Server.ActionCode.strStatus + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
-                            PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼.SecondAbilityDefine.MainAbilityDefine);
-                            break;
+                        switch (战吼效果.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.AtomicEffectType)
+                        {
+                            case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.增益:
+                                IAtomicEffect IAtomicPoint = new PointEffect();
+                                IAtomicPoint.GetField(战吼效果.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.InfoArray);
+                                IAtomicPoint.DealMinion(game, BattleMinions[PosInfo - 1]);
+                                ActionCodeLst.Add(Engine.Server.ActionCode.strPoint + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
+                                PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼效果.FirstAbilityDefine.MainAbilityDefine);
+                                break;
+                            case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.状态:
+                                IAtomicEffect IAtomicStatus = new StatusEffect();
+                                IAtomicStatus.GetField(战吼效果.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.InfoArray);
+                                IAtomicStatus.DealMinion(game, BattleMinions[PosInfo - 1]);
+                                ActionCodeLst.Add(Engine.Server.ActionCode.strStatus + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
+                                PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼效果.FirstAbilityDefine.MainAbilityDefine);
+                                break;
+                        }
+                        switch (战吼效果.SecondAbilityDefine.MainAbilityDefine.TrueAtomicEffect.AtomicEffectType)
+                        {
+                            case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.增益:
+                                IAtomicEffect IAtomicPoint = new PointEffect();
+                                IAtomicPoint.GetField(战吼效果.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.InfoArray);
+                                IAtomicPoint.DealMinion(game, BattleMinions[PosInfo - 1]);
+                                ActionCodeLst.Add(Engine.Server.ActionCode.strPoint + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
+                                PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼效果.SecondAbilityDefine.MainAbilityDefine);
+                                break;
+                            case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.状态:
+                                IAtomicEffect IAtomicStatus = new StatusEffect();
+                                IAtomicStatus.GetField(战吼效果.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.InfoArray);
+                                IAtomicStatus.DealMinion(game, BattleMinions[PosInfo - 1]);
+                                ActionCodeLst.Add(Engine.Server.ActionCode.strStatus + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
+                                PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼效果.SecondAbilityDefine.MainAbilityDefine);
+                                break;
+                        }
                     }
                 }
             }

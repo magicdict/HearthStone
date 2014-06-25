@@ -8,5 +8,19 @@ namespace 炉边传说
         {
             InitializeComponent();
         }
+        public bool IsEnable
+        {
+            set
+            {
+                if (value)
+                {
+                    lblEnable.BackColor = System.Drawing.Color.LightGreen;
+                }
+                else
+                {
+                    lblEnable.BackColor = System.Drawing.Color.LightPink;
+                }
+            }
+        } 
     }
 }

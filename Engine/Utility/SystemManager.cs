@@ -17,6 +17,14 @@ namespace Engine.Utility
             客户端服务器版,
             HTML版
         }
+        /// <summary>
+        /// 游戏模式枚举
+        /// </summary>
+        public enum GameMode
+        {
+            标准,
+            塔防
+        }
         public static GameType CurrentGameType = GameType.HTML版;
         /// <summary>
         /// 日志

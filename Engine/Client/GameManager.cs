@@ -17,6 +17,10 @@ namespace Engine.Client
         /// </summary>
         public static SystemManager.GameType 游戏类型 = SystemManager.GameType.客户端服务器版;
         /// <summary>
+        /// 游戏模式
+        /// </summary>
+        public static SystemManager.GameMode 游戏模式 = SystemManager.GameMode.标准;
+        /// <summary>
         /// 是否开始运行
         /// </summary>
         public static Boolean IsStart = false;
@@ -40,6 +44,10 @@ namespace Engine.Client
         /// 全局随机种子
         /// </summary>
         public static int RandomSeed = 1;
+        /// <summary>
+        /// 
+        /// </summary>
+        public static CardBasicInfo CurrentActiveCard;
         /// <summary>
         /// 事件处理组件
         /// </summary>
@@ -75,6 +83,13 @@ namespace Engine.Client
             //英雄技能：奥术飞弹
             gameStatus.client.MyInfo.HeroAbility = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
             gameStatus.client.YourInfo.HeroAbility = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
+
+            if (游戏模式 == SystemManager.GameMode.塔防)
+            {
+                gameStatus.client.YourInfo.LifePoint = CardUtility.Max;
+                gameStatus.client.HostInfo.crystal.CurrentFullPoint = 10;
+                gameStatus.client.HostInfo.crystal.CurrentRemainPoint = 10;
+            }
         }
         /// <summary>
         /// 初始化手牌(CS)
@@ -109,6 +124,8 @@ namespace Engine.Client
         /// <param name="IsHost"></param>
         public static void InitHandCard(Boolean IsHost)
         {
+            if (!IsHost && 游戏模式 == SystemManager.GameMode.塔防) return;
+
             int DrawCardCnt = SimulateServer.serverinfo.IsFirst(IsHost) ? PublicInfo.BasicHandCardCount : (PublicInfo.BasicHandCardCount + 1);
             if (IsHost)
             {
@@ -150,7 +167,39 @@ namespace Engine.Client
             switch (游戏类型)
             {
                 case SystemManager.GameType.单机版:
-                    SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(SimulateServer.DrawCard(IsMyTurn, 1)[0]));
+                    if (游戏模式 == SystemManager.GameMode.塔防)
+                    {
+                        if (!IsMyTurn)
+                        {
+                            for (int i = 0; i < PublicInfo.MaxHandCardCount - PlayInfo.HandCardCount; i++)
+                            {
+                                var t = SimulateServer.DrawCard(IsMyTurn, 1);
+                                if (t.Count == 1)
+                                {
+                                    SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(t[0]));
+                                    PlayInfo.HandCardCount++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (SelfInfo.handCards.Count < PublicInfo.MaxHandCardCount)
+                            {
+                                var t = SimulateServer.DrawCard(IsMyTurn, 1);
+                                if (t.Count == 1) SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(t[0]));
+                                PlayInfo.HandCardCount++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (SelfInfo.handCards.Count < PublicInfo.MaxHandCardCount)
+                        {
+                            var t = SimulateServer.DrawCard(IsMyTurn, 1);
+                            if (t.Count == 1) SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(t[0]));
+                            PlayInfo.HandCardCount++;
+                        }
+                    }
                     break;
                 case SystemManager.GameType.客户端服务器版:
                     SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), gameStatus.client.IsFirst, 1)[0]));
@@ -160,7 +209,6 @@ namespace Engine.Client
                 default:
                     break;
             }
-            PlayInfo.HandCardCount++;
             //过载的清算
             if (PlayInfo.OverloadPoint != 0)
             {

@@ -16,6 +16,8 @@ namespace Engine.Client
         /// <returns></returns>
         public List<String> 事件处理(GameStatus game)
         {
+            if (事件特殊处理 != null) 事件特殊处理(game);
+
             List<String> Result = new List<string>();
             for (int j = 0; j < 事件池.Count; j++)
             {
@@ -36,5 +38,15 @@ namespace Engine.Client
             }
             return Result;
         }
+        /// <summary>
+        /// 事件特殊处理
+        /// </summary>
+        public delegate事件处理 事件特殊处理;
+        /// <summary>
+        /// delegate事件处理
+        /// </summary>
+        /// <param name="game"></param>
+        public delegate void delegate事件处理(GameStatus game);
+
     }
 }

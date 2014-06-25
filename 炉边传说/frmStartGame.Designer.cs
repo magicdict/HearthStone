@@ -48,6 +48,7 @@
             this.crystalCount = new System.Windows.Forms.NumericUpDown();
             this.btnTestHandCard = new System.Windows.Forms.Button();
             this.cmbHandCard = new System.Windows.Forms.ComboBox();
+            this.btnSingleGameDefance = new System.Windows.Forms.Button();
             this.btnSingleGame = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.crystalCount)).BeginInit();
             this.SuspendLayout();
@@ -241,13 +242,23 @@
             this.cmbHandCard.Size = new System.Drawing.Size(121, 21);
             this.cmbHandCard.TabIndex = 20;
             // 
+            // btnSingleGameDefance
+            // 
+            this.btnSingleGameDefance.Location = new System.Drawing.Point(164, 39);
+            this.btnSingleGameDefance.Name = "btnSingleGameDefance";
+            this.btnSingleGameDefance.Size = new System.Drawing.Size(158, 23);
+            this.btnSingleGameDefance.TabIndex = 21;
+            this.btnSingleGameDefance.Text = "单机游戏【塔防模式】";
+            this.btnSingleGameDefance.UseVisualStyleBackColor = true;
+            this.btnSingleGameDefance.Click += new System.EventHandler(this.btnSingleGameDefance_Click);
+            // 
             // btnSingleGame
             // 
             this.btnSingleGame.Location = new System.Drawing.Point(398, 97);
             this.btnSingleGame.Name = "btnSingleGame";
             this.btnSingleGame.Size = new System.Drawing.Size(113, 23);
-            this.btnSingleGame.TabIndex = 21;
-            this.btnSingleGame.Text = "单机游戏";
+            this.btnSingleGame.TabIndex = 22;
+            this.btnSingleGame.Text = "单机游戏【标准】";
             this.btnSingleGame.UseVisualStyleBackColor = true;
             this.btnSingleGame.Click += new System.EventHandler(this.btnSingleGame_Click);
             // 
@@ -256,8 +267,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(539, 129);
+            this.ClientSize = new System.Drawing.Size(539, 68);
             this.Controls.Add(this.btnSingleGame);
+            this.Controls.Add(this.btnSingleGameDefance);
             this.Controls.Add(this.cmbHandCard);
             this.Controls.Add(this.btnTestHandCard);
             this.Controls.Add(this.crystalCount);
@@ -279,6 +291,7 @@
             this.Controls.Add(this.lstWaitGuest);
             this.Controls.Add(this.btnCreateGame);
             this.Name = "frmStartGame";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "开始游戏";
             this.Load += new System.EventHandler(this.frmStartGame_Load);
             ((System.ComponentModel.ISupportInitialize)(this.crystalCount)).EndInit();
@@ -309,6 +322,7 @@
         private System.Windows.Forms.NumericUpDown crystalCount;
         private System.Windows.Forms.Button btnTestHandCard;
         private System.Windows.Forms.ComboBox cmbHandCard;
+        private System.Windows.Forms.Button btnSingleGameDefance;
         private System.Windows.Forms.Button btnSingleGame;
     }
 }

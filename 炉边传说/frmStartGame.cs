@@ -9,12 +9,9 @@ namespace 炉边传说
 {
     public partial class frmStartGame : Form
     {
+
         /// <summary>
-        /// 
-        /// </summary>
-        private String DeckDir = Application.StartupPath + "\\CardDeck\\";
-        /// <summary>
-        /// 
+        /// frmStartGame
         /// </summary>
         public frmStartGame()
         {
@@ -118,6 +115,7 @@ namespace 炉边传说
             }
             Engine.Utility.CardUtility.Init(txtCardPath.Text);
             GameManager.游戏类型 = Engine.Utility.SystemManager.GameType.单机版;
+            GameManager.游戏模式 = Engine.Utility.SystemManager.GameMode.标准;
             GameManager.gameStatus.client.IsHost = true;
             GameManager.SimulateServer = new RemoteGameManager(0, txtNickName.Text, Engine.Utility.SystemManager.GameType.单机版);
             GameManager.SimulateServer.serverinfo.Init();
@@ -140,6 +138,58 @@ namespace 炉边传说
             GameManager.IsStart = true;
             this.Close();
         }
+        /// <summary>
+        /// 塔防游戏
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnSingleGameDefance_Click(object sender, EventArgs e)
+        {
+            PublicInfo.MaxHealthPoint = Engine.Utility.CardUtility.Max;
+            Engine.Utility.CardUtility.Init(txtCardPath.Text);
+            GameManager.游戏类型 = Engine.Utility.SystemManager.GameType.单机版;
+            GameManager.游戏模式 = Engine.Utility.SystemManager.GameMode.塔防;
+            GameManager.gameStatus.client.IsHost = true;
+            GameManager.SimulateServer = new RemoteGameManager(0, txtNickName.Text, Engine.Utility.SystemManager.GameType.单机版);
+            GameManager.SimulateServer.serverinfo.Init();
+            GameManager.SimulateServer.serverinfo.HostAsFirst = true;
+            GameManager.gameStatus.client.IsFirst = true;
+            GameManager.事件处理组件.事件特殊处理 += (x) =>
+            {
+                foreach (var item in GameManager.事件处理组件.事件池)
+                {
+                    if (item.触发事件类型 == Engine.Utility.CardUtility.事件类型列表.死亡 && item.触发位置.本方对方标识 == false)
+                    {
+                        x.client.MyInfo.LifePoint++;
+                    }
+                }
+            };
+            var CardStackSecond = new Stack<String>();
+            for (int i = 20; i >= 1; i--)
+            {
+                for (int j = 0; j < 7; j++)
+                {
+                    CardStackSecond.Push("M9100" + i.ToString("D2"));
+                }
+            }
+            //不随机
+            GameManager.SimulateServer.serverinfo.GuestCardDeck.CardList = CardStackSecond;
+            var CardStackFirst = new Stack<String>();
+            for (int i = 0; i < 20; i++)
+            {
+                foreach (var card in Engine.Utility.CardUtility.ReadyCardDic.Keys)
+                {
+                    if (card.Substring(1, 1) == "0") CardStackFirst.Push(card);
+                }
+            }
+            GameManager.SimulateServer.SetCardStack(true, CardStackFirst);
+            GameManager.IsStart = true;
+            this.Close();
+        }
+        /// <summary>
+        /// 套牌目录
+        /// </summary>
+        String DeckDir = Application.StartupPath + "\\CardDeck\\";
         /// <summary>
         /// Load/Init
         /// </summary>
@@ -247,5 +297,7 @@ namespace 炉边传说
         {
             GameManager.gameStatus.client.HostSelfInfo.handCards.Add(Engine.Utility.CardUtility.GetCardInfoBySN(cmbHandCard.Text.Substring(0, 7)));
         }
+
+
     }
 }

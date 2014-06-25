@@ -14,7 +14,7 @@ namespace Engine.Client
         /// <summary>
         /// 最大生命值
         /// </summary>
-        public const int MaxHealthPoint = 30;
+        public static int MaxHealthPoint = 30;
         /// <summary>
         /// 是否为先手
         /// </summary>

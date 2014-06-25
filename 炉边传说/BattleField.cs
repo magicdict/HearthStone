@@ -32,7 +32,6 @@ namespace 炉边传说
             switch (GameManager.游戏类型)
             {
                 case SystemManager.GameType.单机版:
-                    //Host,Guest
                     GameManager.InitHandCard(true);
                     GameManager.InitHandCard(false);
                     btnMyHeroAblity.Tag = GameManager.gameStatus.client.MyInfo.HeroAbility;
@@ -76,6 +75,7 @@ namespace 炉边传说
             };
             btnYourHeroAblity.Enabled = false;
             btnMyHeroAblity.Enabled = false;
+            btnMyHeroAblity.IsEnable = false;
             btnMyHeroAblity.Click += btnUseHandCard_Click;
             StartNewTurn();
             DisplayMyInfo();
@@ -149,10 +149,12 @@ namespace 炉边传说
             if (GameManager.gameStatus.client.MyInfo.IsHeroAblityEnable(GameManager.gameStatus.client.IsMyTurn))
             {
                 btnMyHeroAblity.Enabled = true;
+                btnMyHeroAblity.IsEnable = true;
             }
             else
             {
                 btnMyHeroAblity.Enabled = false;
+                btnMyHeroAblity.IsEnable = false;
             }
             btnMyHeroAblity.Left = LeftPos;
             btnYourHeroAblity.Left = LeftPos;
@@ -230,6 +232,7 @@ namespace 炉边传说
             {
                 MessageBox.Show("Draw Game");
                 if (GameManager.游戏类型 != SystemManager.GameType.单机版) WaitTimer.Stop();
+                GameManager.事件处理组件.事件特殊处理 = null;
             }
             else
             {
@@ -237,11 +240,13 @@ namespace 炉边传说
                 {
                     MessageBox.Show("You Lose");
                     if (GameManager.游戏类型 != SystemManager.GameType.单机版) WaitTimer.Stop();
+                    GameManager.事件处理组件.事件特殊处理 = null;
                 }
                 if (GameManager.gameStatus.client.YourInfo.LifePoint <= 0)
                 {
                     MessageBox.Show("You Win");
                     if (GameManager.游戏类型 != SystemManager.GameType.单机版) WaitTimer.Stop();
+                    GameManager.事件处理组件.事件特殊处理 = null;
                 }
             }
         }
@@ -367,34 +372,35 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnUseHandCard_Click(object sender, EventArgs e)
         {
-            CardBasicInfo card;
+            CardBasicInfo UseHandCard;
             if ((sender.GetType()) == typeof(Button))
             {
-                card = (CardBasicInfo)((ctlHandCard)(((Button)sender).Parent)).Tag;
+                UseHandCard = (CardBasicInfo)((ctlHandCard)(((Button)sender).Parent)).Tag;
             }
             else
             {
-                card = (CardBasicInfo)(((ctlHeroAbility)sender).Tag);
+                UseHandCard = (CardBasicInfo)(((ctlHeroAbility)sender).Tag);
             }
-            var msg = Engine.Card.CardBasicInfo.CheckCondition(card, GameManager.gameStatus.client.MyInfo);
+            GameManager.CurrentActiveCard = UseHandCard;
+            var msg = Engine.Card.CardBasicInfo.CheckCondition(UseHandCard, GameManager.gameStatus.client.MyInfo);
             if (!String.IsNullOrEmpty(msg))
             {
                 MessageBox.Show(msg);
                 return;
             }
-            var actionlst = RunAction.StartAction(GameManager.gameStatus, card.序列号, true);
+            var actionlst = RunAction.StartAction(GameManager.gameStatus, UseHandCard.序列号, true);
             if (actionlst.Count != 0)
             {
                 if ((sender.GetType()) == typeof(Button))
                 {
                     actionlst.Insert(0, ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strMe);
-                    GameManager.gameStatus.client.MyInfo.crystal.CurrentRemainPoint -= card.使用成本;
+                    GameManager.gameStatus.client.MyInfo.crystal.CurrentRemainPoint -= UseHandCard.使用成本;
                     GameManager.gameStatus.client.MyInfo.HandCardCount--;
-                    GameManager.gameStatus.client.MySelfInfo.RemoveUsedCard(card.序列号);
+                    GameManager.gameStatus.client.MySelfInfo.RemoveUsedCard(UseHandCard.序列号);
                 }
                 else
                 {
-                    GameManager.gameStatus.client.MyInfo.crystal.CurrentRemainPoint -= card.使用成本;
+                    GameManager.gameStatus.client.MyInfo.crystal.CurrentRemainPoint -= UseHandCard.使用成本;
                     GameManager.gameStatus.client.MyInfo.IsUsedHeroAbility = true;
                 }
                 actionlst.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +
@@ -417,6 +423,7 @@ namespace 炉边传说
             SelectOpt.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
             SelectOpt.EffectTargetSelectRole = CardUtility.TargetSelectRoleEnum.所有角色;
             SelectOpt.嘲讽限制 = true;
+            GameManager.CurrentActiveCard = GameManager.gameStatus.client.MyInfo.BattleField.BattleMinions[MyPos - 1];
             var YourPos = SelectPanel(SelectOpt);
             List<String> actionlst = RunAction.Fight(GameManager.gameStatus, MyPos, YourPos.Postion, true);
             actionlst.AddRange(SecretCard.奥秘计算(actionlst, GameManager.gameStatus));

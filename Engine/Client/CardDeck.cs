@@ -14,7 +14,7 @@ namespace Engine.Client
         /// <summary>
         /// 牌堆(存放牌的序列号)
         /// </summary>
-        private Stack<String> CardList = new Stack<string>();
+        public Stack<String> CardList = new Stack<string>();
         /// <summary>
         /// 初始化
         /// </summary>

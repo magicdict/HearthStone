@@ -408,7 +408,7 @@ namespace Engine.Card
             {
                 var 亡语Result = RunAction.StartAction(game, 亡语效果, IsMyAction);
                 //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
-                亡语Result.RemoveAt(0);
+                if (亡语Result.Count > 0) 亡语Result.RemoveAt(0);
                 ActionCodeLst.AddRange(亡语Result);
             }
             return ActionCodeLst;
@@ -426,7 +426,7 @@ namespace Engine.Card
             {
                 var 回合开始Result = RunAction.StartAction(game, 回合开始效果, true);
                 //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
-                回合开始Result.RemoveAt(0);
+                if (回合开始Result.Count > 0) 回合开始Result.RemoveAt(0);
                 ActionCodeLst.AddRange(回合开始Result);
                 潜行特性 = false;
             }
@@ -445,7 +445,7 @@ namespace Engine.Card
             {
                 var 回合结束Result = RunAction.StartAction(game, 回合结束效果, true);
                 //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
-                回合结束Result.RemoveAt(0);
+                if (回合结束Result.Count > 0) 回合结束Result.RemoveAt(0);
                 ActionCodeLst.AddRange(回合结束Result);
                 潜行特性 = false;
             }

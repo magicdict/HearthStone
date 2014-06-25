@@ -35,6 +35,9 @@ namespace 炉边传说
             game = mGame;
             嘲讽限制 = option.嘲讽限制;
             Position.Postion = -1;
+            ctlUsageCard.CardInfo = GameManager.CurrentActiveCard;
+            ctlUsageCard.Enabled = false;
+            ctlUsageCard.Visible = true;
         }
         /// <summary>
         /// 取消选择
