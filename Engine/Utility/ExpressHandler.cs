@@ -98,22 +98,22 @@ namespace Engine.Utility
                     {
                         if (Position == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                         {
-                            return game.client.MyInfo.冰冻状态 != CardUtility.EffectTurn.无效果;
+                            return game.client.MyInfo.冰冻状态 != CardUtility.效果回合枚举.无效果;
                         }
                         else
                         {
-                            return game.client.MyInfo.BattleField.BattleMinions[int.Parse(Position) - 1].冰冻状态 != CardUtility.EffectTurn.无效果;
+                            return game.client.MyInfo.BattleField.BattleMinions[int.Parse(Position) - 1].冰冻状态 != CardUtility.效果回合枚举.无效果;
                         }
                     }
                     else
                     {
                         if (Position == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                         {
-                            return game.client.YourInfo.冰冻状态 != CardUtility.EffectTurn.无效果;
+                            return game.client.YourInfo.冰冻状态 != CardUtility.效果回合枚举.无效果;
                         }
                         else
                         {
-                            return game.client.YourInfo.BattleField.BattleMinions[int.Parse(Position) - 1].冰冻状态 != CardUtility.EffectTurn.无效果;
+                            return game.client.YourInfo.BattleField.BattleMinions[int.Parse(Position) - 1].冰冻状态 != CardUtility.效果回合枚举.无效果;
                         }
                     }
                 default:

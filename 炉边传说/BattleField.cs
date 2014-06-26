@@ -96,7 +96,7 @@ namespace 炉边传说
         /// 选择目标
         /// </summary>
         /// <returns></returns>
-        private CardUtility.TargetPosition SelectPanel(CardUtility.PositionSelectOption SelectOpt)
+        private CardUtility.指定位置结构体 SelectPanel(CardUtility.位置选择用参数结构体 SelectOpt)
         {
             var frm = new TargetSelect(SelectOpt, GameManager.gameStatus);
             frm.ShowDialog();
@@ -357,7 +357,7 @@ namespace 炉边传说
         /// <param name="FirstEffect"></param>
         /// <param name="SecondEffect"></param>
         /// <returns></returns>
-        private Engine.Utility.CardUtility.PickEffect PickEffect(String FirstEffect, String SecondEffect)
+        private Engine.Utility.CardUtility.抉择枚举 PickEffect(String FirstEffect, String SecondEffect)
         {
             EffectSelect frm = new EffectSelect();
             frm.FirstEffect = FirstEffect;
@@ -420,9 +420,9 @@ namespace 炉边传说
         /// <param name="MyPos"></param>
         private void Fight(int MyPos)
         {
-            var SelectOpt = new Engine.Utility.CardUtility.PositionSelectOption();
-            SelectOpt.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
-            SelectOpt.EffectTargetSelectRole = CardUtility.TargetSelectRoleEnum.所有角色;
+            var SelectOpt = new Engine.Utility.CardUtility.位置选择用参数结构体();
+            SelectOpt.EffectTargetSelectDirect = CardUtility.目标选择方向枚举.对方;
+            SelectOpt.EffectTargetSelectRole = CardUtility.目标选择角色枚举.所有角色;
             SelectOpt.嘲讽限制 = true;
             GameManager.CurrentActiveCard = GameManager.gameStatus.client.MyInfo.BattleField.BattleMinions[MyPos - 1];
             var YourPos = SelectPanel(SelectOpt);

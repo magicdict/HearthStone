@@ -37,7 +37,7 @@ namespace Engine.Card
         /// <summary>
         /// 稀有度
         /// </summary>
-        public enum 稀有程度 : byte
+        public enum 稀有程度枚举 : byte
         {
             白色,
             绿色,
@@ -51,7 +51,7 @@ namespace Engine.Card
         ///<remarks>
         /// 该卡牌的稀有度
         /// </remarks>
-        public 稀有程度 Rare;
+        public 稀有程度枚举 Rare;
         /// <summary>
         /// 获得卡牌种类
         /// </summary>
@@ -117,7 +117,7 @@ namespace Engine.Card
         /// <summary>
         /// 职业
         /// </summary>
-        public CardUtility.ClassEnum 职业;
+        public CardUtility.职业枚举 职业;
         /// <summary>
         /// 使用成本
         /// </summary>

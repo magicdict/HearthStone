@@ -97,24 +97,24 @@ namespace Engine.Card
         public List<String> UseAbility(GameStatus game, Boolean IsMyAction)
         {
             List<String> Result = new List<string>();
-            Engine.Utility.CardUtility.PickEffect PickEffectResult = CardUtility.PickEffect.第一效果;
+            Engine.Utility.CardUtility.抉择枚举 PickEffectResult = CardUtility.抉择枚举.第一效果;
             switch (效果选择类型)
             {
                 case 效果选择类型枚举.无需选择:
                     break;
                 case 效果选择类型枚举.主动选择:
                     PickEffectResult = GameManager.PickEffect(FirstAbilityDefine.描述, SecondAbilityDefine.描述);
-                    if (PickEffectResult == CardUtility.PickEffect.取消) return new List<string>();
+                    if (PickEffectResult == CardUtility.抉择枚举.取消) return new List<string>();
                     break;
                 case 效果选择类型枚举.自动判定:
-                    if (!ExpressHandler.AbilityPickCondition(game, 效果选择条件)) PickEffectResult = CardUtility.PickEffect.第二效果;
+                    if (!ExpressHandler.AbilityPickCondition(game, 效果选择条件)) PickEffectResult = CardUtility.抉择枚举.第二效果;
                     break;
                 default:
                     break;
             }
             List<EffectDefine> SingleEffectList = new List<EffectDefine>();
             AbilityCard.AbilityDefine ability;
-            if (PickEffectResult == CardUtility.PickEffect.第一效果)
+            if (PickEffectResult == CardUtility.抉择枚举.第一效果)
             {
                 ability = FirstAbilityDefine;
             }
@@ -138,9 +138,9 @@ namespace Engine.Card
             List<String> Result = new List<string>();
 
             //对象选择处理
-            if (Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.指定 ||
-                Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.横扫 ||
-                Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.TargetSelectModeEnum.相邻)
+            if (Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.指定 ||
+                Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.横扫 ||
+                Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.相邻)
             {
                 Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = GameManager.GetSelectTarget(Ability.MainAbilityDefine.AbliltyPosPicker);
             }
@@ -150,13 +150,13 @@ namespace Engine.Card
                 {
                     switch (Ability.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectDirect)
                     {
-                        case CardUtility.TargetSelectDirectEnum.本方:
-                            Ability.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.对方;
+                        case CardUtility.目标选择方向枚举.本方:
+                            Ability.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectDirect = CardUtility.目标选择方向枚举.对方;
                             break;
-                        case CardUtility.TargetSelectDirectEnum.对方:
-                            Ability.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectDirect = CardUtility.TargetSelectDirectEnum.本方;
+                        case CardUtility.目标选择方向枚举.对方:
+                            Ability.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectDirect = CardUtility.目标选择方向枚举.本方;
                             break;
-                        case CardUtility.TargetSelectDirectEnum.双方:
+                        case CardUtility.目标选择方向枚举.双方:
                             break;
                         default:
                             break;
@@ -237,7 +237,7 @@ namespace Engine.Card
         /// <param name="ConvertPosDirect"></param>
         /// <param name="Ability"></param>
         /// <returns></returns>
-        private List<string> RunGameSystemEffect(GameStatus game, AtomicEffectDefine effect, CardUtility.PositionSelectOption Option)
+        private List<string> RunGameSystemEffect(GameStatus game, AtomicEffectDefine effect, CardUtility.位置选择用参数结构体 Option)
         {
             List<string> Result = new List<string>();
             switch (effect.AtomicEffectType)

@@ -76,7 +76,6 @@ namespace Engine.Utility
             }
             return Status.ToString();
         }
-
         /// <summary>
         /// 卡牌组合
         /// </summary>
@@ -182,7 +181,7 @@ namespace Engine.Utility
         /// <summary>
         /// 职业
         /// </summary>
-        public enum ClassEnum
+        public enum 职业枚举
         {
             猎人,
             盗贼,
@@ -198,7 +197,7 @@ namespace Engine.Utility
         /// <summary>
         /// 种族
         /// </summary>
-        public enum 种族Enum
+        public enum 种族枚举
         {
             无,
             恶魔,
@@ -210,7 +209,7 @@ namespace Engine.Utility
         /// <summary>
         /// 目标选择模式
         /// </summary>
-        public enum TargetSelectModeEnum
+        public enum 目标选择模式枚举
         {
             /// <summary>
             /// 无需选择
@@ -244,7 +243,7 @@ namespace Engine.Utility
         /// <summary>
         /// 目标选择方向
         /// </summary>
-        public enum TargetSelectDirectEnum
+        public enum 目标选择方向枚举
         {
             /// <summary>
             /// 本方
@@ -263,20 +262,20 @@ namespace Engine.Utility
         /// 选择器和选择结果
         /// </summary>
         [Serializable]
-        public struct PositionSelectOption
+        public struct 位置选择用参数结构体
         {
             /// <summary>
             /// 法术对象选择模式
             /// </summary>
-            public CardUtility.TargetSelectModeEnum EffictTargetSelectMode;
+            public CardUtility.目标选择模式枚举 EffictTargetSelectMode;
             /// <summary>
             /// 法术对象选择角色
             /// </summary>
-            public CardUtility.TargetSelectRoleEnum EffectTargetSelectRole;
+            public CardUtility.目标选择角色枚举 EffectTargetSelectRole;
             /// <summary>
             /// 法术对象选择方向
             /// </summary>
-            public CardUtility.TargetSelectDirectEnum EffectTargetSelectDirect;
+            public CardUtility.目标选择方向枚举 EffectTargetSelectDirect;
             /// <summary>
             /// 法术对象选择条件
             /// </summary>
@@ -284,7 +283,7 @@ namespace Engine.Utility
             /// <summary>
             /// 选定位置
             /// </summary>
-            public TargetPosition SelectedPos;
+            public 指定位置结构体 SelectedPos;
             /// <summary>
             /// 嘲讽限制
             /// </summary>
@@ -299,7 +298,7 @@ namespace Engine.Utility
         public static Boolean 符合选择条件(Engine.Card.MinionCard minion, String strCondition)
         {
             if (String.IsNullOrEmpty(strCondition) || strCondition == strIgnore) return true;
-            foreach (var 种族名称 in Enum.GetNames(typeof(种族Enum)))
+            foreach (var 种族名称 in Enum.GetNames(typeof(种族枚举)))
             {
                 if (种族名称 == strCondition)
                 {
@@ -322,7 +321,7 @@ namespace Engine.Utility
         /// <summary>
         /// 目标选择角色
         /// </summary>
-        public enum TargetSelectRoleEnum
+        public enum 目标选择角色枚举
         {
             /// <summary>
             /// 随从
@@ -342,9 +341,9 @@ namespace Engine.Utility
             武器
         }
         /// <summary>
-        /// 返回值
+        /// 返回值枚举
         /// </summary>
-        public enum CommandResult
+        public enum 返回值枚举
         {
             /// <summary>
             /// 正常
@@ -358,7 +357,7 @@ namespace Engine.Utility
         /// <summary>
         /// 抉择枚举
         /// </summary>
-        public enum PickEffect
+        public enum 抉择枚举
         {
             /// <summary>
             /// 第一效果
@@ -376,7 +375,7 @@ namespace Engine.Utility
         /// <summary>
         /// 效果回合
         /// </summary>
-        public enum EffectTurn
+        public enum 效果回合枚举
         {
             /// <summary>
             /// 无效果
@@ -394,7 +393,7 @@ namespace Engine.Utility
         /// <summary>
         /// 事件类型列表
         /// </summary>
-        public enum 事件类型列表
+        public enum 事件类型枚举
         {
             无,
             施法,
@@ -414,23 +413,23 @@ namespace Engine.Utility
             /// <summary>
             /// 事件名称
             /// </summary>
-            public 事件类型列表 触发事件类型;
+            public 事件类型枚举 触发事件类型;
             /// <summary>
             /// 触发位置
             /// </summary>
-            public TargetPosition 触发位置;
+            public 指定位置结构体 触发位置;
         }
         [Serializable]
-        public struct 事件效果
+        public struct 事件效果结构体
         {
             /// <summary>
             /// 事件名称
             /// </summary>
-            public 事件类型列表 触发效果事件类型;
+            public 事件类型枚举 触发效果事件类型;
             /// <summary>
             /// 触发位置
             /// </summary>
-            public TargetSelectDirectEnum 触发效果事件方向;
+            public 目标选择方向枚举 触发效果事件方向;
             /// <summary>
             /// 效果编号
             /// </summary>
@@ -440,67 +439,11 @@ namespace Engine.Utility
             /// </summary>
             public String 限制信息;
         }
-        #endregion
-        /// <summary>
-        /// 随机打算数组
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="array"></param>
-        /// <returns></returns>
-        public static T[] RandomSort<T>(T[] array, int Seed)
-        {
-            int len = array.Length;
-            System.Collections.Generic.List<int> list = new System.Collections.Generic.List<int>();
-            T[] ret = new T[len];
-            Random rand = Seed == 0 ? new Random() : new Random(DateTime.Now.Millisecond + Seed);
-            int i = 0;
-            while (list.Count < len)
-            {
-                int iter = rand.Next(0, len);
-                if (!list.Contains(iter))
-                {
-                    list.Add(iter);
-                    ret[i] = array[iter];
-                    i++;
-                }
-            }
-            return ret;
-        }
-        /// <summary>
-        /// 获得字符枚举值
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="strEnum"></param>
-        /// <returns></returns>
-        public static T GetEnum<T>(String strEnum, T Default)
-        {
-            if (String.IsNullOrEmpty(strEnum)) return Default;
-            try
-            {
-                T EnumValue = (T)Enum.Parse(typeof(T), strEnum);
-                return EnumValue;
-            }
-            catch (Exception)
-            {
-                return Default;
-            }
-        }
-        /// <summary>
-        /// 数字字符转数字，错误则返回默认值
-        /// </summary>
-        /// <param name="StringInt"></param>
-        /// <param name="DefaultValue">默认值</param>
-        /// <returns></returns>
-        public static int GetInt(String StringInt, int DefaultValue = 0)
-        {
-            if (String.IsNullOrEmpty(StringInt)) return DefaultValue;
-            return int.Parse(StringInt);
-        }
         /// <summary>
         /// 用户指定位置
         /// </summary>
         [Serializable]
-        public struct TargetPosition
+        public struct 指定位置结构体
         {
             /// <summary>
             /// 本方/对方
@@ -519,6 +462,9 @@ namespace Engine.Utility
                 return (本方对方标识 ? strMe : strYou) + strSplitMark + Postion.ToString("D1");
             }
         }
+        #endregion
+
+
         #region"委托"
         /// <summary>
         /// 抉择
@@ -526,7 +472,7 @@ namespace Engine.Utility
         /// <param name="First">第一效果</param>
         /// <param name="Second">第二效果</param>
         /// <returns>是否为第一效果</returns>
-        public delegate PickEffect delegatePickEffect(String First, String Second);
+        public delegate 抉择枚举 delegatePickEffect(String First, String Second);
         /// <summary>
         /// 抽牌委托
         /// </summary>
@@ -542,7 +488,7 @@ namespace Engine.Utility
         /// 获得位置
         /// </summary>
         /// <returns></returns>
-        public delegate TargetPosition deleteGetTargetPosition(PositionSelectOption 选择参数);
+        public delegate 指定位置结构体 deleteGetTargetPosition(位置选择用参数结构体 选择参数);
         /// <summary>
         /// 随从进场位置
         /// </summary>

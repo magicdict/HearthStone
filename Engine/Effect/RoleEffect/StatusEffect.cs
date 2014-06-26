@@ -53,7 +53,7 @@ namespace Engine.Effect
             switch (施加状态)
             {
                 case strFreeze:
-                    PlayInfo.冰冻状态 = CardUtility.EffectTurn.效果命中;
+                    PlayInfo.冰冻状态 = CardUtility.效果回合枚举.效果命中;
                     break;
                 default:
                     break;
@@ -81,7 +81,7 @@ namespace Engine.Effect
             switch (状态)
             {
                 case strFreeze:
-                    Minion.冰冻状态 = CardUtility.EffectTurn.效果命中;
+                    Minion.冰冻状态 = CardUtility.效果回合枚举.效果命中;
                     break;
                 case strSlience:
                     Minion.沉默状态 = true;
@@ -91,16 +91,16 @@ namespace Engine.Effect
                     break;
                 case strCharge:
                     Minion.冲锋特性 = true;
-                    if (Minion.AttactStatus == MinionCard.攻击状态.准备中)
+                    if (Minion.攻击状态 == MinionCard.攻击状态枚举.准备中)
                     {
-                        Minion.AttactStatus = MinionCard.攻击状态.可攻击;
+                        Minion.攻击状态 = MinionCard.攻击状态枚举.可攻击;
                     }
                     break;
                 case strTaunt:
                     Minion.嘲讽特性 = true;
                     break;
                 case strTurnEndDead:
-                    Minion.特殊效果 = MinionCard.特殊效果列表.回合结束死亡;
+                    Minion.特殊效果 = MinionCard.特殊效果枚举.回合结束死亡;
                     break;
                 default:
                     break;
@@ -119,7 +119,7 @@ namespace Engine.Effect
                 //MyInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.client.MyInfo.冰冻状态 = CardUtility.EffectTurn.效果命中;                }
+                    game.client.MyInfo.冰冻状态 = CardUtility.效果回合枚举.效果命中;                }
                 else
                 {
                     ChangeStatus(game.client.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1],新状态);
@@ -130,7 +130,7 @@ namespace Engine.Effect
                 //YourInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.client.YourInfo.冰冻状态 = CardUtility.EffectTurn.效果作用;
+                    game.client.YourInfo.冰冻状态 = CardUtility.效果回合枚举.效果作用;
                 }
                 else
                 {

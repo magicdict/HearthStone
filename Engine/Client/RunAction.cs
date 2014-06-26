@@ -48,7 +48,7 @@ namespace Engine.Client
                         if (CardSn.Substring(1, 1) == Engine.Card.AbilityCard.原生法术)
                             GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                             {
-                                触发事件类型 = CardUtility.事件类型列表.施法,
+                                触发事件类型 = CardUtility.事件类型枚举.施法,
                                 触发位置 = PlayInfo.战场位置
                             });
                     }
@@ -79,8 +79,8 @@ namespace Engine.Client
                         //必须在放入之前做得原因是，被放入的随从不能被触发这个事件
                         GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                         {
-                            触发事件类型 = CardUtility.事件类型列表.召唤,
-                            触发位置 = new CardUtility.TargetPosition()
+                            触发事件类型 = CardUtility.事件类型枚举.召唤,
+                            触发位置 = new CardUtility.指定位置结构体()
                             {
                                 Postion = MinionPos,
                                 本方对方标识 = true
@@ -88,11 +88,11 @@ namespace Engine.Client
                         });
                         switch (minion.战吼类型)
                         {
-                            case MinionCard.战吼类型列表.默认:
+                            case MinionCard.战吼类型枚举.默认:
                                 PlayInfo.BattleField.PutToBattle(MinionPos, minion);
                                 ActionCodeLst.AddRange(minion.发动战吼(game, IsMyAction));
                                 break;
-                            case MinionCard.战吼类型列表.抢先:
+                            case MinionCard.战吼类型枚举.抢先:
                                 //战吼中，其他系列的法术效果 例如其他鱼人获得XX效果
                                 //战吼中，友方系列的法术效果 例如友方随从获得XX效果
                                 foreach (var result in minion.发动战吼(game, IsMyAction))
@@ -112,8 +112,8 @@ namespace Engine.Client
                                 }
                                 PlayInfo.BattleField.PutToBattle(MinionPos, minion);
                                 break;
-                            case MinionCard.战吼类型列表.相邻:
-                            case MinionCard.战吼类型列表.自身:
+                            case MinionCard.战吼类型枚举.相邻:
+                            case MinionCard.战吼类型枚举.自身:
                                 PlayInfo.BattleField.PutToBattle(MinionPos, minion);
                                 PlayInfo.BattleField.发动战吼(MinionPos, game);
                                 break;
@@ -157,7 +157,7 @@ namespace Engine.Client
                             if (CardSn.Substring(1, 1) == Engine.Card.AbilityCard.原生法术)
                                 GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                                 {
-                                    触发事件类型 = CardUtility.事件类型列表.施法,
+                                    触发事件类型 = CardUtility.事件类型枚举.施法,
                                     触发位置 = PlayInfo.战场位置
                                 });
                         }

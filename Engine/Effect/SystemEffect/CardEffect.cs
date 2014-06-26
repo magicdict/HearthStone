@@ -20,12 +20,12 @@ namespace Engine.Effect
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public List<string> RunEffect(GameStatus game, CardUtility.TargetSelectDirectEnum Direct)
+        public List<string> RunEffect(GameStatus game, CardUtility.目标选择方向枚举 Direct)
         {
             List<string> Result = new List<string>();
             switch (Direct)
             {
-                case CardUtility.TargetSelectDirectEnum.本方:
+                case CardUtility.目标选择方向枚举.本方:
                     //#CARD#ME#M000001
                     if (String.IsNullOrEmpty(指定卡牌编号) || 指定卡牌编号 == CardUtility.strIgnore)
                     {
@@ -45,7 +45,7 @@ namespace Engine.Effect
                         Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strMe);
                     }
                     break;
-                case CardUtility.TargetSelectDirectEnum.对方:
+                case CardUtility.目标选择方向枚举.对方:
                     if (String.IsNullOrEmpty(指定卡牌编号) || 指定卡牌编号 == CardUtility.strIgnore)
                     {
                         if (game.client.YourInfo.RemainCardDeckCount > 0)
@@ -61,7 +61,7 @@ namespace Engine.Effect
                         Result.Add(ActionCode.strCard + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark + 指定卡牌编号);
                     }
                     break;
-                case CardUtility.TargetSelectDirectEnum.双方:
+                case CardUtility.目标选择方向枚举.双方:
                     if (String.IsNullOrEmpty(指定卡牌编号) || 指定卡牌编号 == CardUtility.strIgnore)
                     {
                         var drawCards = Engine.Client.ClientRequest.DrawCard(GameManager.GameId.ToString(GameServer.GameIdFormat), true, 1);

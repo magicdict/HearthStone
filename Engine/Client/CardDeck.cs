@@ -31,7 +31,7 @@ namespace Engine.Client
         /// </summary>
         public void Suffle(int Seed)
         {
-            var newList = CardUtility.RandomSort<String>(CardList.ToArray(), Seed);
+            var newList = CSharpUtility.RandomSort<String>(CardList.ToArray(), Seed);
             CardList.Clear();
             foreach (var item in newList)
             {
@@ -66,7 +66,7 @@ namespace Engine.Client
                 {
                     if (CardSN.Substring(1, 1) == "0") cards.Add(CardSN);
                 }
-                var newList = CardUtility.RandomSort<String>(cards.ToArray(), Seed);
+                var newList = CSharpUtility.RandomSort<String>(cards.ToArray(), Seed);
                 for (int i = 0; i < Math.Min(MaxCards, newList.Length); i++)
                 {
                     Ramdom.Push(newList[i]);

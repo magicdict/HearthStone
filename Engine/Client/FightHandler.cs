@@ -58,7 +58,7 @@ namespace Engine.Client
                 {
                     GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
-                        触发事件类型 = CardUtility.事件类型列表.受伤,
+                        触发事件类型 = CardUtility.事件类型枚举.受伤,
                         触发位置 = AttackInfo.BattleField.BattleMinions[攻击方Pos - 1].战场位置
                     });
                 }
@@ -70,7 +70,7 @@ namespace Engine.Client
                 {
                     GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
-                        触发事件类型 = CardUtility.事件类型列表.受伤,
+                        触发事件类型 = CardUtility.事件类型枚举.受伤,
                         触发位置 = AttackInfo.战场位置
                     });
                 }
@@ -93,7 +93,7 @@ namespace Engine.Client
                 {
                     GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
-                        触发事件类型 = CardUtility.事件类型列表.受伤,
+                        触发事件类型 = CardUtility.事件类型枚举.受伤,
                         触发位置 = AttackedInfo.BattleField.BattleMinions[被攻击方Pos - 1].战场位置
                     });
                 }
@@ -105,7 +105,7 @@ namespace Engine.Client
                 {
                     GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
-                        触发事件类型 = CardUtility.事件类型列表.受伤,
+                        触发事件类型 = CardUtility.事件类型枚举.受伤,
                         触发位置 = AttackedInfo.战场位置
                     });
                 }

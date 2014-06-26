@@ -16,7 +16,7 @@ namespace Engine.Card
         /// <summary>
         /// 光环范围
         /// </summary>
-        public enum 光环范围
+        public enum 光环范围枚举
         {
             /// <summary>
             /// 随从全体
@@ -34,7 +34,7 @@ namespace Engine.Card
         /// <summary>
         /// 攻击状态
         /// </summary>
-        public enum 攻击状态
+        public enum 攻击状态枚举
         {
             /// <summary>
             /// 新上场的随从
@@ -52,7 +52,7 @@ namespace Engine.Card
         /// <summary>
         /// 光环类型
         /// </summary>
-        public enum 光环类型
+        public enum 光环类型枚举
         {
             /// <summary>
             /// 增加攻防
@@ -75,29 +75,29 @@ namespace Engine.Card
         /// 效果
         /// </summary>
         [Serializable]
-        public struct Buff
+        public struct 光环结构体
         {
             /// <summary>
             /// 范围
             /// </summary>
-            public 光环范围 Scope;
+            public 光环范围枚举 范围;
             /// <summary>
-            /// 效果
+            /// 类型
             /// </summary>
-            public 光环类型 EffectType;
+            public 光环类型枚举 类型;
             /// <summary>
             /// 信息
             /// </summary>
-            public String BuffInfo;
+            public String 信息;
             /// <summary>
-            /// 效果来源
+            /// 来源
             /// </summary>
-            public String Name;
+            public String 来源;
         }
         /// <summary>
         /// 战吼类型列表
         /// </summary>
-        public enum 战吼类型列表
+        public enum 战吼类型枚举
         {
             /// <summary>
             /// 默认
@@ -119,7 +119,7 @@ namespace Engine.Card
         /// <summary>
         /// 特殊效果列表
         /// </summary>
-        public enum 特殊效果列表
+        public enum 特殊效果枚举
         {
             无效果,
             /// <summary>
@@ -142,11 +142,11 @@ namespace Engine.Card
         /// <summary>
         /// 
         /// </summary>
-        public 特殊效果列表 特殊效果 = 特殊效果列表.无效果;
+        public 特殊效果枚举 特殊效果 = 特殊效果枚举.无效果;
         /// <summary>
         /// 种族
         /// </summary>
-        public CardUtility.种族Enum 种族 = CardUtility.种族Enum.无;
+        public CardUtility.种族枚举 种族 = CardUtility.种族枚举.无;
         /// <summary>
         /// 攻击力
         /// </summary>
@@ -198,7 +198,7 @@ namespace Engine.Card
         /// <summary>
         /// 战吼类型
         /// </summary>
-        public 战吼类型列表 战吼类型 = 战吼类型列表.默认;
+        public 战吼类型枚举 战吼类型 = 战吼类型枚举.默认;
         /// <summary>
         /// 亡语(效果号码)
         /// </summary>
@@ -218,11 +218,11 @@ namespace Engine.Card
         /// <summary>
         /// 该单位在战地时的效果
         /// </summary>
-        public Buff 光环效果;
+        public 光环结构体 光环效果;
         /// <summary>
         /// 自身事件
         /// </summary>
-        public Engine.Utility.CardUtility.事件效果 自身事件效果 = new CardUtility.事件效果();
+        public Engine.Utility.CardUtility.事件效果结构体 自身事件效果 = new CardUtility.事件效果结构体();
         #endregion
 
         #region"运行时状态"
@@ -245,7 +245,7 @@ namespace Engine.Card
         /// 是否为冰冻状态
         /// </summary>
         [XmlIgnore]
-        public Engine.Utility.CardUtility.EffectTurn 冰冻状态 = CardUtility.EffectTurn.无效果;
+        public Engine.Utility.CardUtility.效果回合枚举 冰冻状态 = CardUtility.效果回合枚举.无效果;
         /// <summary>
         /// 剩余攻击次数
         /// </summary>
@@ -259,17 +259,17 @@ namespace Engine.Card
         /// 攻击状态
         /// </summary>
         [XmlIgnore]
-        public 攻击状态 AttactStatus = 攻击状态.准备中;
+        public 攻击状态枚举 攻击状态 = 攻击状态枚举.准备中;
         /// <summary>
         /// 战场位置
         /// </summary>
         [XmlIgnore]
-        public Engine.Utility.CardUtility.TargetPosition 战场位置;
+        public Engine.Utility.CardUtility.指定位置结构体 战场位置;
         /// <summary>
         /// 该单位受到战地的效果
         /// </summary>
         [XmlIgnore]
-        public List<Buff> 受战场效果 = new List<Buff>();
+        public List<光环结构体> 受战场效果 = new List<光环结构体>();
         /// <summary>
         /// 能否成为当前动作的对象
         /// </summary>
@@ -297,7 +297,7 @@ namespace Engine.Card
         {
             //初始状态
             生命值 = 生命值上限;
-            this.冰冻状态 = CardUtility.EffectTurn.无效果;
+            this.冰冻状态 = CardUtility.效果回合枚举.无效果;
             //攻击次数
             if (风怒特性)
             {
@@ -309,11 +309,11 @@ namespace Engine.Card
             }
             if (冲锋特性)
             {
-                this.AttactStatus = 攻击状态.可攻击;
+                this.攻击状态 = 攻击状态枚举.可攻击;
             }
             else
             {
-                this.AttactStatus = 攻击状态.准备中;
+                this.攻击状态 = 攻击状态枚举.准备中;
             }
         }
         /// <summary>
@@ -329,7 +329,7 @@ namespace Engine.Card
             {
                 剩余攻击次数 = 1;
             }
-            AttactStatus = 攻击状态.可攻击;
+            攻击状态 = 攻击状态枚举.可攻击;
         }
         /// <summary>
         /// 能否攻击
@@ -337,10 +337,10 @@ namespace Engine.Card
         /// <returns></returns>
         public Boolean CanAttack()
         {
-            if (冰冻状态 != CardUtility.EffectTurn.无效果) return false;
+            if (冰冻状态 != CardUtility.效果回合枚举.无效果) return false;
             if (无法攻击特性) return false;
             if (TotalAttack() == 0) return false;
-            return 剩余攻击次数 > 0 && AttactStatus == 攻击状态.可攻击;
+            return 剩余攻击次数 > 0 && 攻击状态 == 攻击状态枚举.可攻击;
         }
         /// <summary>
         /// 实际输出效果
@@ -351,7 +351,7 @@ namespace Engine.Card
             int rtnAttack = 攻击力;
             foreach (var buff in 受战场效果)
             {
-                rtnAttack += int.Parse(buff.BuffInfo.Split("/".ToCharArray())[0]);
+                rtnAttack += int.Parse(buff.信息.Split("/".ToCharArray())[0]);
             }
             //激怒效果
             if (!沉默状态 && 激怒状态)
@@ -359,7 +359,7 @@ namespace Engine.Card
                 if (!String.IsNullOrEmpty(激怒效果)) rtnAttack += int.Parse(激怒效果);
             }
             rtnAttack += 本回合攻击力加成;
-            if (特殊效果 == 特殊效果列表.攻击必死 && !沉默状态) rtnAttack = 999;
+            if (特殊效果 == 特殊效果枚举.攻击必死 && !沉默状态) rtnAttack = 999;
             return rtnAttack;
         }
         /// <summary>
@@ -371,7 +371,7 @@ namespace Engine.Card
             int BuffLife = 0;
             foreach (var buff in 受战场效果)
             {
-                BuffLife += int.Parse(buff.BuffInfo.Split("/".ToCharArray())[1]);
+                BuffLife += int.Parse(buff.信息.Split("/".ToCharArray())[1]);
             }
             return 生命值上限 + BuffLife + 本回合生命力加成;
         }
@@ -461,7 +461,7 @@ namespace Engine.Card
             //失去潜行
             潜行特性 = false;
             剩余攻击次数--;
-            if (剩余攻击次数 == 0) AttactStatus = MinionCard.攻击状态.攻击完毕;
+            if (剩余攻击次数 == 0) 攻击状态 = MinionCard.攻击状态枚举.攻击完毕;
         }
         /// <summary>
         /// 被攻击
@@ -484,7 +484,7 @@ namespace Engine.Card
             {
                 受过伤害 = true;
                 if (!String.IsNullOrEmpty(激怒效果)) 激怒状态 = true;
-                if (特殊效果 == 特殊效果列表.持续激怒 && !沉默状态) 攻击力 += 3;
+                if (特殊效果 == 特殊效果枚举.持续激怒 && !沉默状态) 攻击力 += 3;
                 return true;
             }
             else
@@ -518,10 +518,10 @@ namespace Engine.Card
             List<String> ActionLst = new List<string>();
             if (!沉默状态 && 自身事件效果.触发效果事件类型 == 事件.触发事件类型)
             {
-                if (自身事件效果.触发效果事件方向 != CardUtility.TargetSelectDirectEnum.双方)
+                if (自身事件效果.触发效果事件方向 != CardUtility.目标选择方向枚举.双方)
                 {
-                    if (自身事件效果.触发效果事件方向 == CardUtility.TargetSelectDirectEnum.本方 && (!事件.触发位置.本方对方标识)) return ActionLst;
-                    if (自身事件效果.触发效果事件方向 == CardUtility.TargetSelectDirectEnum.对方 && (事件.触发位置.本方对方标识)) return ActionLst;
+                    if (自身事件效果.触发效果事件方向 == CardUtility.目标选择方向枚举.本方 && (!事件.触发位置.本方对方标识)) return ActionLst;
+                    if (自身事件效果.触发效果事件方向 == CardUtility.目标选择方向枚举.对方 && (事件.触发位置.本方对方标识)) return ActionLst;
                 }
                 if (!String.IsNullOrEmpty(自身事件效果.限制信息) && !Engine.Utility.CardUtility.符合选择条件(this, 自身事件效果.限制信息))
                 {
@@ -546,7 +546,7 @@ namespace Engine.Card
                                        (风怒特性 ? "|风" : String.Empty) +
                                        (冲锋特性 ? "|冲" : String.Empty) +
                                        (潜行特性 ? "|潜" : String.Empty) +
-                                       (冰冻状态 != CardUtility.EffectTurn.无效果 ? "冻" : String.Empty));
+                                       (冰冻状态 != CardUtility.效果回合枚举.无效果 ? "冻" : String.Empty));
             Status.AppendLine("[实]" + 攻击力.ToString() + "/" + 生命值.ToString() +
                               "[总]" + TotalAttack().ToString() + "/" + 生命值.ToString());
             return Status.ToString();

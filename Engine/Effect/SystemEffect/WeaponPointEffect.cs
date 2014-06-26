@@ -21,10 +21,10 @@ namespace Engine.Effect
         /// </summary>
         /// <param name="role"></param>
         /// <param name="Ability"></param>
-        public List<string> RunEffect(GameStatus game, Utility.CardUtility.TargetSelectDirectEnum Direct)
+        public List<string> RunEffect(GameStatus game, Utility.CardUtility.目标选择方向枚举 Direct)
         {
             List<string> Result = new List<string>();
-            if (Direct == CardUtility.TargetSelectDirectEnum.本方)
+            if (Direct == CardUtility.目标选择方向枚举.本方)
             {
                 if (game.client.MyInfo.Weapon != null)
                 {

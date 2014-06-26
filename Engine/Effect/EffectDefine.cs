@@ -9,7 +9,7 @@ namespace Engine.Effect
         /// <summary>
         /// 对象选择器
         /// </summary>
-        public CardUtility.PositionSelectOption AbliltyPosPicker = new CardUtility.PositionSelectOption();
+        public CardUtility.位置选择用参数结构体 AbliltyPosPicker = new CardUtility.位置选择用参数结构体();
         /// <summary>
         /// 效果条件
         /// </summary>

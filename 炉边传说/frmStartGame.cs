@@ -158,7 +158,7 @@ namespace 炉边传说
             {
                 foreach (var item in GameManager.事件处理组件.事件池)
                 {
-                    if (item.触发事件类型 == Engine.Utility.CardUtility.事件类型列表.死亡 && item.触发位置.本方对方标识 == false)
+                    if (item.触发事件类型 == Engine.Utility.CardUtility.事件类型枚举.死亡 && item.触发位置.本方对方标识 == false)
                     {
                         x.client.MyInfo.LifePoint++;
                     }

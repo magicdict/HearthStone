@@ -18,17 +18,17 @@ namespace 炉边传说
         /// <summary>
         /// 位置选项
         /// </summary>
-        CardUtility.PositionSelectOption SelectOption;
+        CardUtility.位置选择用参数结构体 SelectOption;
         /// <summary>
         /// 选定位置
         /// </summary>
-        public CardUtility.TargetPosition Position = new CardUtility.TargetPosition();
+        public CardUtility.指定位置结构体 Position = new CardUtility.指定位置结构体();
         /// <summary>
         /// TargetSelect
         /// </summary>
         /// <param name="option"></param>
         /// <param name="mGame"></param>
-        public TargetSelect(CardUtility.PositionSelectOption option, GameStatus mGame)
+        public TargetSelect(CardUtility.位置选择用参数结构体 option, GameStatus mGame)
         {
             InitializeComponent();
             SelectOption = option;

@@ -42,7 +42,7 @@ namespace Engine.Effect
             {
                 GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
-                    触发事件类型 = CardUtility.事件类型列表.受伤,
+                    触发事件类型 = CardUtility.事件类型枚举.受伤,
                     触发位置 = PlayInfo.战场位置
                 });
             }
@@ -63,7 +63,7 @@ namespace Engine.Effect
             {
                 GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
-                    触发事件类型 = CardUtility.事件类型列表.受伤,
+                    触发事件类型 = CardUtility.事件类型枚举.受伤,
                     触发位置 = Minion.战场位置
                 });
             }

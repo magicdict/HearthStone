@@ -14,23 +14,23 @@ namespace Engine.Effect
         /// <param name="PosInfo"></param>
         /// <param name="RandSeed"></param>
         /// <returns></returns>
-        public static List<string> GetTargetList(CardUtility.PositionSelectOption SelectOpt, Client.GameStatus game, int RandSeed)
+        public static List<string> GetTargetList(CardUtility.位置选择用参数结构体 SelectOpt, Client.GameStatus game, int RandSeed)
         {
             List<string> Result = new List<string>();
             switch (SelectOpt.EffictTargetSelectMode)
             {
-                case CardUtility.TargetSelectModeEnum.随机:
+                case CardUtility.目标选择模式枚举.随机:
                     Random t = new Random(DateTime.Now.Millisecond + RandSeed);
                     switch (SelectOpt.EffectTargetSelectDirect)
                     {
-                        case CardUtility.TargetSelectDirectEnum.本方:
+                        case CardUtility.目标选择方向枚举.本方:
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
-                                case CardUtility.TargetSelectRoleEnum.随从:
+                                case CardUtility.目标选择角色枚举.随从:
                                     SelectOpt.SelectedPos.Postion = t.Next(1, game.client.MyInfo.BattleField.MinionCount + 1);
                                     SelectOpt.SelectedPos.本方对方标识 = true;
                                     break;
-                                case CardUtility.TargetSelectRoleEnum.所有角色:
+                                case CardUtility.目标选择角色枚举.所有角色:
                                     SelectOpt.SelectedPos.Postion = t.Next(Client.BattleFieldInfo.HeroPos, game.client.MyInfo.BattleField.MinionCount + 1);
                                     SelectOpt.SelectedPos.本方对方标识 = true;
                                     break;
@@ -38,14 +38,14 @@ namespace Engine.Effect
                             //ME#POS
                             Result.Add(CardUtility.strMe + CardUtility.strSplitMark + SelectOpt.SelectedPos.Postion.ToString("D1"));
                             break;
-                        case CardUtility.TargetSelectDirectEnum.对方:
+                        case CardUtility.目标选择方向枚举.对方:
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
-                                case CardUtility.TargetSelectRoleEnum.随从:
+                                case CardUtility.目标选择角色枚举.随从:
                                     SelectOpt.SelectedPos.Postion = t.Next(1, game.client.YourInfo.BattleField.MinionCount + 1);
                                     SelectOpt.SelectedPos.本方对方标识 = false;
                                     break;
-                                case CardUtility.TargetSelectRoleEnum.所有角色:
+                                case CardUtility.目标选择角色枚举.所有角色:
                                     SelectOpt.SelectedPos.Postion = t.Next(Client.BattleFieldInfo.HeroPos, game.client.YourInfo.BattleField.MinionCount + 1);
                                     SelectOpt.SelectedPos.本方对方标识 = false;
                                     break;
@@ -53,7 +53,7 @@ namespace Engine.Effect
                             //ME#POS
                             Result.Add(CardUtility.strYou + CardUtility.strSplitMark + SelectOpt.SelectedPos.Postion.ToString("D1"));
                             break;
-                        case CardUtility.TargetSelectDirectEnum.双方:
+                        case CardUtility.目标选择方向枚举.双方:
                             //本方对方
                             int MinionCount;
                             if (t.Next(1, 3) == 1)
@@ -68,10 +68,10 @@ namespace Engine.Effect
                             }
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
-                                case CardUtility.TargetSelectRoleEnum.随从:
+                                case CardUtility.目标选择角色枚举.随从:
                                     SelectOpt.SelectedPos.Postion = t.Next(1, MinionCount + 1);
                                     break;
-                                case CardUtility.TargetSelectRoleEnum.所有角色:
+                                case CardUtility.目标选择角色枚举.所有角色:
                                     SelectOpt.SelectedPos.Postion = t.Next(Client.BattleFieldInfo.HeroPos, MinionCount + 1);
                                     break;
                             }
@@ -82,50 +82,50 @@ namespace Engine.Effect
                             break;
                     }
                     break;
-                case CardUtility.TargetSelectModeEnum.全体:
-                case CardUtility.TargetSelectModeEnum.横扫:
+                case CardUtility.目标选择模式枚举.全体:
+                case CardUtility.目标选择模式枚举.横扫:
                     switch (SelectOpt.EffectTargetSelectDirect)
                     {
-                        case CardUtility.TargetSelectDirectEnum.本方:
+                        case CardUtility.目标选择方向枚举.本方:
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
-                                case CardUtility.TargetSelectRoleEnum.随从:
+                                case CardUtility.目标选择角色枚举.随从:
                                     Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.AllMinionPos.ToString("D1"));
                                     break;
-                                case CardUtility.TargetSelectRoleEnum.英雄:
+                                case CardUtility.目标选择角色枚举.英雄:
                                     Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                     break;
-                                case CardUtility.TargetSelectRoleEnum.所有角色:
+                                case CardUtility.目标选择角色枚举.所有角色:
                                     Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.AllRolePos.ToString("D1"));
                                     break;
                             }
                             break;
-                        case CardUtility.TargetSelectDirectEnum.对方:
+                        case CardUtility.目标选择方向枚举.对方:
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
-                                case CardUtility.TargetSelectRoleEnum.随从:
+                                case CardUtility.目标选择角色枚举.随从:
                                     Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.AllMinionPos.ToString("D1"));
                                     break;
-                                case CardUtility.TargetSelectRoleEnum.英雄:
+                                case CardUtility.目标选择角色枚举.英雄:
                                     Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                     break;
-                                case CardUtility.TargetSelectRoleEnum.所有角色:
+                                case CardUtility.目标选择角色枚举.所有角色:
                                     Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.AllRolePos.ToString("D1"));
                                     break;
                             }
                             break;
-                        case CardUtility.TargetSelectDirectEnum.双方:
+                        case CardUtility.目标选择方向枚举.双方:
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
-                                case CardUtility.TargetSelectRoleEnum.随从:
+                                case CardUtility.目标选择角色枚举.随从:
                                     Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.AllMinionPos.ToString("D1"));
                                     Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.AllMinionPos.ToString("D1"));
                                     break;
-                                case CardUtility.TargetSelectRoleEnum.英雄:
+                                case CardUtility.目标选择角色枚举.英雄:
                                     Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                     Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                     break;
-                                case CardUtility.TargetSelectRoleEnum.所有角色:
+                                case CardUtility.目标选择角色枚举.所有角色:
                                     Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.AllRolePos.ToString("D1"));
                                     Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.AllRolePos.ToString("D1"));
                                     break;
@@ -133,11 +133,11 @@ namespace Engine.Effect
                             break;
                     }
                     break;
-                case CardUtility.TargetSelectModeEnum.指定:
-                case CardUtility.TargetSelectModeEnum.继承:
+                case CardUtility.目标选择模式枚举.指定:
+                case CardUtility.目标选择模式枚举.继承:
                     Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + SelectOpt.SelectedPos.Postion.ToString("D1"));
                     break;
-                case CardUtility.TargetSelectModeEnum.相邻:
+                case CardUtility.目标选择模式枚举.相邻:
                     Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + SelectOpt.SelectedPos.Postion.ToString("D1"));
                     //左侧追加
                     if (SelectOpt.SelectedPos.Postion != 1)
@@ -154,18 +154,18 @@ namespace Engine.Effect
                             Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + (SelectOpt.SelectedPos.Postion + 1).ToString("D1"));
                     }
                     break;
-                case CardUtility.TargetSelectModeEnum.不用选择:
-                    if (SelectOpt.EffectTargetSelectRole == CardUtility.TargetSelectRoleEnum.英雄)
+                case CardUtility.目标选择模式枚举.不用选择:
+                    if (SelectOpt.EffectTargetSelectRole == CardUtility.目标选择角色枚举.英雄)
                     {
                         switch (SelectOpt.EffectTargetSelectDirect)
                         {
-                            case CardUtility.TargetSelectDirectEnum.本方:
+                            case CardUtility.目标选择方向枚举.本方:
                                 Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                 break;
-                            case CardUtility.TargetSelectDirectEnum.对方:
+                            case CardUtility.目标选择方向枚举.对方:
                                 Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                 break;
-                            case CardUtility.TargetSelectDirectEnum.双方:
+                            case CardUtility.目标选择方向枚举.双方:
                                 Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                 Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
                                 break;

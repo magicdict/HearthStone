@@ -18,11 +18,11 @@ namespace Engine.Client
         /// <summary>
         /// 战场位置
         /// </summary>
-        public Engine.Utility.CardUtility.TargetPosition 战场位置;
+        public Engine.Utility.CardUtility.指定位置结构体 战场位置;
         /// <summary>
         /// 是否为冰冻状态
         /// </summary>
-        public Engine.Utility.CardUtility.EffectTurn 冰冻状态 = CardUtility.EffectTurn.无效果;
+        public Engine.Utility.CardUtility.效果回合枚举 冰冻状态 = CardUtility.效果回合枚举.无效果;
         /// <summary>
         /// 生命力
         /// </summary>

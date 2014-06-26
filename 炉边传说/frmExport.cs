@@ -66,12 +66,12 @@ namespace 炉边传说
                 Secret.序列号 = worksheet.Cells(rowCount, 2).Text;
                 Secret.名称 = worksheet.Cells(rowCount, 3).Text;
                 Secret.描述 = worksheet.Cells(rowCount, 4).Text;
-                Secret.职业 = CardUtility.GetEnum<Engine.Utility.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.ClassEnum.中立);
-                Secret.使用成本 = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
+                Secret.职业 = CSharpUtility.GetEnum<Engine.Utility.CardUtility.职业枚举>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.职业枚举.中立);
+                Secret.使用成本 = CSharpUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
                 Secret.使用成本 = Secret.使用成本;
-                Secret.Rare = CardUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度.白色);
+                Secret.Rare = CSharpUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度枚举>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度枚举.白色);
                 Secret.是否启用 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
-                Secret.Condition = CardUtility.GetEnum<Engine.Card.SecretCard.SecretCondition>(worksheet.Cells(rowCount, 14).Text, SecretCard.SecretCondition.对方召唤随从);
+                Secret.Condition = CSharpUtility.GetEnum<Engine.Card.SecretCard.SecretCondition>(worksheet.Cells(rowCount, 14).Text, SecretCard.SecretCondition.对方召唤随从);
                 Secret.AdditionInfo = worksheet.Cells(rowCount, 15).Text;
                 XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.SecretCard));
                 String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Secret\\" + Secret.序列号 + ".xml";
@@ -100,13 +100,13 @@ namespace 炉边传说
                 Minion.序列号 = worksheet.Cells(rowCount, 2).Text;
                 Minion.名称 = worksheet.Cells(rowCount, 3).Text;
                 Minion.描述 = worksheet.Cells(rowCount, 4).Text;
-                Minion.职业 = CardUtility.GetEnum<Engine.Utility.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.ClassEnum.中立);
-                Minion.种族 = CardUtility.GetEnum<Engine.Utility.CardUtility.种族Enum>(worksheet.Cells(rowCount, 6).Text, Engine.Utility.CardUtility.种族Enum.无);
-                Minion.使用成本 = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
+                Minion.职业 = CSharpUtility.GetEnum<Engine.Utility.CardUtility.职业枚举>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.职业枚举.中立);
+                Minion.种族 = CSharpUtility.GetEnum<Engine.Utility.CardUtility.种族枚举>(worksheet.Cells(rowCount, 6).Text, Engine.Utility.CardUtility.种族枚举.无);
+                Minion.使用成本 = CSharpUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
 
-                Minion.攻击力 = CardUtility.GetInt(worksheet.Cells(rowCount, 8).Text);
-                Minion.生命值上限 = CardUtility.GetInt(worksheet.Cells(rowCount, 9).Text);
-                Minion.Rare = CardUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度.白色);
+                Minion.攻击力 = CSharpUtility.GetInt(worksheet.Cells(rowCount, 8).Text);
+                Minion.生命值上限 = CSharpUtility.GetInt(worksheet.Cells(rowCount, 9).Text);
+                Minion.Rare = CSharpUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度枚举>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度枚举.白色);
                 Minion.是否启用 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
 
                 Minion.嘲讽特性 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 14).Text);
@@ -129,25 +129,25 @@ namespace 炉边传说
                 }
                 if (HasBuff)
                 {
-                    Minion.光环效果.Name = Minion.名称;
-                    Minion.光环效果.Scope = CardUtility.GetEnum<Engine.Card.MinionCard.光环范围>(worksheet.Cells(rowCount, 22).Text, Engine.Card.MinionCard.光环范围.随从全体);
-                    Minion.光环效果.EffectType = CardUtility.GetEnum<Engine.Card.MinionCard.光环类型>(worksheet.Cells(rowCount, 23).Text, Engine.Card.MinionCard.光环类型.增加攻防);
-                    Minion.光环效果.BuffInfo = worksheet.Cells(rowCount, 24).Text;
+                    Minion.光环效果.来源 = Minion.名称;
+                    Minion.光环效果.范围 = CSharpUtility.GetEnum<Engine.Card.MinionCard.光环范围枚举>(worksheet.Cells(rowCount, 22).Text, Engine.Card.MinionCard.光环范围枚举.随从全体);
+                    Minion.光环效果.类型 = CSharpUtility.GetEnum<Engine.Card.MinionCard.光环类型枚举>(worksheet.Cells(rowCount, 23).Text, Engine.Card.MinionCard.光环类型枚举.增加攻防);
+                    Minion.光环效果.信息 = worksheet.Cells(rowCount, 24).Text;
                 }
                 Minion.战吼效果 = worksheet.Cells(rowCount, 25).Text;
-                Minion.战吼类型 = CardUtility.GetEnum<Engine.Card.MinionCard.战吼类型列表>(worksheet.Cells(rowCount, 26).Text, Engine.Card.MinionCard.战吼类型列表.默认);
+                Minion.战吼类型 = CSharpUtility.GetEnum<Engine.Card.MinionCard.战吼类型枚举>(worksheet.Cells(rowCount, 26).Text, Engine.Card.MinionCard.战吼类型枚举.默认);
 
                 Minion.亡语效果 = worksheet.Cells(rowCount, 27).Text;
                 Minion.激怒效果 = worksheet.Cells(rowCount, 28).Text;
                 Minion.连击效果 = worksheet.Cells(rowCount, 29).Text;
                 Minion.回合开始效果 = worksheet.Cells(rowCount, 30).Text;
                 Minion.回合结束效果 = worksheet.Cells(rowCount, 31).Text;
-                Minion.过载 = CardUtility.GetInt(worksheet.Cells(rowCount, 32).Text);
-                Minion.自身事件效果.触发效果事件类型 = CardUtility.GetEnum<Engine.Utility.CardUtility.事件类型列表>(worksheet.Cells(rowCount, 33).Text, Engine.Utility.CardUtility.事件类型列表.无);
+                Minion.过载 = CSharpUtility.GetInt(worksheet.Cells(rowCount, 32).Text);
+                Minion.自身事件效果.触发效果事件类型 = CSharpUtility.GetEnum<Engine.Utility.CardUtility.事件类型枚举>(worksheet.Cells(rowCount, 33).Text, Engine.Utility.CardUtility.事件类型枚举.无);
                 Minion.自身事件效果.效果编号 = worksheet.Cells(rowCount, 34).Text;
-                Minion.自身事件效果.触发效果事件方向 = CardUtility.GetEnum<Engine.Utility.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 35).Text, Engine.Utility.CardUtility.TargetSelectDirectEnum.本方);
+                Minion.自身事件效果.触发效果事件方向 = CSharpUtility.GetEnum<Engine.Utility.CardUtility.目标选择方向枚举>(worksheet.Cells(rowCount, 35).Text, Engine.Utility.CardUtility.目标选择方向枚举.本方);
                 Minion.自身事件效果.限制信息 = worksheet.Cells(rowCount, 36).Text;
-                Minion.特殊效果 = CardUtility.GetEnum<Engine.Card.MinionCard.特殊效果列表>(worksheet.Cells(rowCount, 37).Text, Engine.Card.MinionCard.特殊效果列表.无效果);
+                Minion.特殊效果 = CSharpUtility.GetEnum<Engine.Card.MinionCard.特殊效果枚举>(worksheet.Cells(rowCount, 37).Text, Engine.Card.MinionCard.特殊效果枚举.无效果);
 
                 XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.MinionCard));
                 String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Minion\\" + Minion.序列号 + ".xml";
@@ -178,13 +178,13 @@ namespace 炉边传说
                 Ability.序列号 = worksheet.Cells(rowCount, 2).Text;
                 Ability.名称 = worksheet.Cells(rowCount, 3).Text;
                 Ability.描述 = worksheet.Cells(rowCount, 4).Text;
-                Ability.职业 = CardUtility.GetEnum<Engine.Utility.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 9).Text, Engine.Utility.CardUtility.ClassEnum.中立);
-                Ability.使用成本 = CardUtility.GetInt(worksheet.Cells(rowCount, 10).Text);
-                Ability.过载 = CardUtility.GetInt(worksheet.Cells(rowCount, 11).Text);
+                Ability.职业 = CSharpUtility.GetEnum<Engine.Utility.CardUtility.职业枚举>(worksheet.Cells(rowCount, 9).Text, Engine.Utility.CardUtility.职业枚举.中立);
+                Ability.使用成本 = CSharpUtility.GetInt(worksheet.Cells(rowCount, 10).Text);
+                Ability.过载 = CSharpUtility.GetInt(worksheet.Cells(rowCount, 11).Text);
                 Ability.是否启用 = true;
                 rowCount++;
                 //当前行肯定是选择条件
-                Ability.效果选择类型 = CardUtility.GetEnum<AbilityCard.效果选择类型枚举>(worksheet.Cells(rowCount, 3).Text,
+                Ability.效果选择类型 = CSharpUtility.GetEnum<AbilityCard.效果选择类型枚举>(worksheet.Cells(rowCount, 3).Text,
                     Engine.Card.AbilityCard.效果选择类型枚举.无需选择);
                 Ability.FirstAbilityDefine.描述 = worksheet.Cells(rowCount, 4).Text;
                 Ability.SecondAbilityDefine.描述 = worksheet.Cells(rowCount, 5).Text;
@@ -236,16 +236,16 @@ namespace 炉边传说
             rowCount++;
             //当前行是第一效果的内容栏
             effect.AbliltyPosPicker.EffictTargetSelectMode =
-                CardUtility.GetEnum<Engine.Utility.CardUtility.TargetSelectModeEnum>(worksheet.Cells(rowCount, 3).Text, Engine.Utility.CardUtility.TargetSelectModeEnum.不用选择);
+                CSharpUtility.GetEnum<Engine.Utility.CardUtility.目标选择模式枚举>(worksheet.Cells(rowCount, 3).Text, Engine.Utility.CardUtility.目标选择模式枚举.不用选择);
             effect.AbliltyPosPicker.EffectTargetSelectDirect =
-                CardUtility.GetEnum<Engine.Utility.CardUtility.TargetSelectDirectEnum>(worksheet.Cells(rowCount, 4).Text, Engine.Utility.CardUtility.TargetSelectDirectEnum.双方);
+                CSharpUtility.GetEnum<Engine.Utility.CardUtility.目标选择方向枚举>(worksheet.Cells(rowCount, 4).Text, Engine.Utility.CardUtility.目标选择方向枚举.双方);
             effect.AbliltyPosPicker.EffectTargetSelectRole =
-                CardUtility.GetEnum<Engine.Utility.CardUtility.TargetSelectRoleEnum>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.TargetSelectRoleEnum.英雄);
+                CSharpUtility.GetEnum<Engine.Utility.CardUtility.目标选择角色枚举>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.目标选择角色枚举.英雄);
             effect.AbliltyPosPicker.EffectTargetSelectCondition = worksheet.Cells(rowCount, 6).Text;
-            effect.EffectCount = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
+            effect.EffectCount = CSharpUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
             effect.效果条件 = worksheet.Cells(rowCount, 8).Text;
             effect.TrueAtomicEffect.描述 = worksheet.Cells(rowCount, 9).Text;
-            effect.TrueAtomicEffect.AtomicEffectType = CardUtility.GetEnum<Engine.Effect.AtomicEffectDefine.AtomicEffectEnum>(worksheet.Cells(rowCount, 10).Text, Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.未定义);
+            effect.TrueAtomicEffect.AtomicEffectType = CSharpUtility.GetEnum<Engine.Effect.AtomicEffectDefine.AtomicEffectEnum>(worksheet.Cells(rowCount, 10).Text, Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.未定义);
 
             for (int i = 11; i < 15; i++)
             {
@@ -259,7 +259,7 @@ namespace 炉边传说
                 rowCount++;
                 //当前行是第二效果的内容栏
                 effect.FalseAtomicEffect.描述 = worksheet.Cells(rowCount, 9).Text;
-                effect.FalseAtomicEffect.AtomicEffectType = CardUtility.GetEnum<Engine.Effect.AtomicEffectDefine.AtomicEffectEnum>(worksheet.Cells(rowCount, 10).Text, Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.未定义);
+                effect.FalseAtomicEffect.AtomicEffectType = CSharpUtility.GetEnum<Engine.Effect.AtomicEffectDefine.AtomicEffectEnum>(worksheet.Cells(rowCount, 10).Text, Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.未定义);
                 for (int i = 11; i < 15; i++)
                 {
                     if (String.IsNullOrEmpty(worksheet.Cells(rowCount, i).Text)) break;
@@ -290,13 +290,13 @@ namespace 炉边传说
                 Weapon.序列号 = worksheet.Cells(rowCount, 2).Text;
                 Weapon.名称 = worksheet.Cells(rowCount, 3).Text;
                 Weapon.描述 = worksheet.Cells(rowCount, 4).Text;
-                Weapon.职业 = CardUtility.GetEnum<Engine.Utility.CardUtility.ClassEnum>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.ClassEnum.中立);
-                Weapon.使用成本 = CardUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
+                Weapon.职业 = CSharpUtility.GetEnum<Engine.Utility.CardUtility.职业枚举>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.职业枚举.中立);
+                Weapon.使用成本 = CSharpUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
                 Weapon.使用成本 = Weapon.使用成本;
 
-                Weapon.攻击力 = CardUtility.GetInt(worksheet.Cells(rowCount, 8).Text);
-                Weapon.耐久度 = CardUtility.GetInt(worksheet.Cells(rowCount, 9).Text);
-                Weapon.Rare = CardUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度.白色);
+                Weapon.攻击力 = CSharpUtility.GetInt(worksheet.Cells(rowCount, 8).Text);
+                Weapon.耐久度 = CSharpUtility.GetInt(worksheet.Cells(rowCount, 9).Text);
+                Weapon.Rare = CSharpUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度枚举>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度枚举.白色);
                 Weapon.是否启用 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
 
                 XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.WeaponCard));

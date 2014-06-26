@@ -121,7 +121,7 @@ namespace Engine.Server
         /// </summary>
         /// <param name="IsHost">主机</param>
         /// <param name="cards">套牌</param>
-        public CardUtility.CommandResult SetCardStack(Boolean IsHost, Stack<String> cards)
+        public CardUtility.返回值枚举 SetCardStack(Boolean IsHost, Stack<String> cards)
         {
             if ((IsHost && serverinfo.HostAsFirst) || (!IsHost && !serverinfo.HostAsFirst))
             {
@@ -132,7 +132,7 @@ namespace Engine.Server
             {
                 serverinfo.GuestCardDeck.Init(cards, DateTime.Now.Millisecond);
             }
-            return CardUtility.CommandResult.正常;
+            return CardUtility.返回值枚举.正常;
         }
         /// <summary>
         /// 抽牌

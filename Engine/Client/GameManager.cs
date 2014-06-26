@@ -76,8 +76,8 @@ namespace Engine.Client
             gameStatus.client.HostInfo.crystal.CurrentRemainPoint = 0;
             gameStatus.client.GuestInfo.crystal.CurrentFullPoint = 0;
             gameStatus.client.GuestInfo.crystal.CurrentRemainPoint = 0;
-            gameStatus.client.MyInfo.战场位置 = new CardUtility.TargetPosition() { 本方对方标识 = true, Postion = BattleFieldInfo.HeroPos };
-            gameStatus.client.YourInfo.战场位置 = new CardUtility.TargetPosition() { 本方对方标识 = false, Postion = BattleFieldInfo.HeroPos };
+            gameStatus.client.MyInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = true, Postion = BattleFieldInfo.HeroPos };
+            gameStatus.client.YourInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = false, Postion = BattleFieldInfo.HeroPos };
             gameStatus.client.MyInfo.BattleField.本方对方标识 = true;
             gameStatus.client.YourInfo.BattleField.本方对方标识 = false;
             //英雄技能：奥术飞弹
@@ -244,7 +244,7 @@ namespace Engine.Client
                 {
                     PlayInfo.BattleField.BattleMinions[i].本回合生命力加成 = 0;
                     PlayInfo.BattleField.BattleMinions[i].本回合攻击力加成 = 0;
-                    if (PlayInfo.BattleField.BattleMinions[i].特殊效果 == MinionCard.特殊效果列表.回合结束死亡)
+                    if (PlayInfo.BattleField.BattleMinions[i].特殊效果 == MinionCard.特殊效果枚举.回合结束死亡)
                     {
                         PlayInfo.BattleField.BattleMinions[i] = null;
                     }

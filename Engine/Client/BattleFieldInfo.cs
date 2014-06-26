@@ -141,7 +141,7 @@ namespace Engine.Client
             if (!String.IsNullOrEmpty(BattleMinions[MinionPos - 1].战吼效果))
             {
                 List<int> PosList = new List<int>();
-                if (BattleMinions[MinionPos - 1].战吼类型 == MinionCard.战吼类型列表.相邻)
+                if (BattleMinions[MinionPos - 1].战吼类型 == MinionCard.战吼类型枚举.相邻)
                 {
                     //相邻左边随从存在？
                     if (MinionPos != 1) PosList.Add(MinionPos - 1);
@@ -235,31 +235,31 @@ namespace Engine.Client
                 var minion = BattleMinions[i];
                 if (minion != null)
                 {
-                    if (!String.IsNullOrEmpty(minion.光环效果.BuffInfo))
+                    if (!String.IsNullOrEmpty(minion.光环效果.信息))
                     {
-                        switch (minion.光环效果.EffectType)
+                        switch (minion.光环效果.类型)
                         {
-                            case MinionCard.光环类型.增加攻防:
-                                switch (minion.光环效果.Scope)
+                            case MinionCard.光环类型枚举.增加攻防:
+                                switch (minion.光环效果.范围)
                                 {
-                                    case MinionCard.光环范围.随从全体:
+                                    case MinionCard.光环范围枚举.随从全体:
                                         for (int j = 0; j < BattleMinions.Length; j++)
                                         {
                                             if (BattleMinions[j] != null) BattleMinions[j].受战场效果.Add(minion.光环效果);
                                         }
                                         break;
-                                    case MinionCard.光环范围.相邻随从:
+                                    case MinionCard.光环范围枚举.相邻随从:
                                         break;
                                 }
                                 break;
-                            case MinionCard.光环类型.施法成本:
-                                AbilityCost += int.Parse(minion.光环效果.BuffInfo);
+                            case MinionCard.光环类型枚举.施法成本:
+                                AbilityCost += int.Parse(minion.光环效果.信息);
                                 break;
-                            case MinionCard.光环类型.法术效果:
-                                AbilityDamagePlus += int.Parse(minion.光环效果.BuffInfo);
+                            case MinionCard.光环类型枚举.法术效果:
+                                AbilityDamagePlus += int.Parse(minion.光环效果.信息);
                                 break;
-                            case MinionCard.光环类型.随从成本:
-                                MinionCost += int.Parse(minion.光环效果.BuffInfo);
+                            case MinionCard.光环类型枚举.随从成本:
+                                MinionCost += int.Parse(minion.光环效果.信息);
                                 break;
                             default:
                                 break;
@@ -280,13 +280,13 @@ namespace Engine.Client
                 {
                     switch (minion.冰冻状态)
                     {
-                        case CardUtility.EffectTurn.效果命中:
+                        case CardUtility.效果回合枚举.效果命中:
                             //如果上回合被命中的，这回合就是作用中
-                            minion.冰冻状态 = CardUtility.EffectTurn.效果作用;
+                            minion.冰冻状态 = CardUtility.效果回合枚举.效果作用;
                             break;
-                        case CardUtility.EffectTurn.效果作用:
+                        case CardUtility.效果回合枚举.效果作用:
                             //如果上回合作用中的，这回合就是解除
-                            minion.冰冻状态 = CardUtility.EffectTurn.无效果;
+                            minion.冰冻状态 = CardUtility.效果回合枚举.无效果;
                             break;
                     }
                 }
@@ -297,29 +297,29 @@ namespace Engine.Client
         /// </summary>
         /// <param name="SelectOption"></param>
         /// <param name="game"></param>
-        public static void SetTargetSelectEnable(CardUtility.PositionSelectOption SelectOption, GameStatus game)
+        public static void SetTargetSelectEnable(CardUtility.位置选择用参数结构体 SelectOption, GameStatus game)
         {
             switch (SelectOption.EffectTargetSelectDirect)
             {
-                case CardUtility.TargetSelectDirectEnum.本方:
+                case CardUtility.目标选择方向枚举.本方:
                     switch (SelectOption.EffectTargetSelectRole)
                     {
-                        case CardUtility.TargetSelectRoleEnum.随从:
-                        case CardUtility.TargetSelectRoleEnum.所有角色:
+                        case CardUtility.目标选择角色枚举.随从:
+                        case CardUtility.目标选择角色枚举.所有角色:
                             for (int i = 0; i < game.client.MyInfo.BattleField.MinionCount; i++)
                             {
                                 if (Engine.Utility.CardUtility.符合选择条件(game.client.MyInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
                                     game.client.MyInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
                                 game.client.MyInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.client.MyInfo.BattleField.BattleMinions[i].潜行特性;
                             }
-                            if (SelectOption.EffectTargetSelectRole == CardUtility.TargetSelectRoleEnum.所有角色) game.client.MyInfo.能否成为动作对象 = true;
+                            if (SelectOption.EffectTargetSelectRole == CardUtility.目标选择角色枚举.所有角色) game.client.MyInfo.能否成为动作对象 = true;
                             break;
-                        case CardUtility.TargetSelectRoleEnum.英雄:
+                        case CardUtility.目标选择角色枚举.英雄:
                             game.client.MyInfo.能否成为动作对象 = true;
                             break;
                     }
                     break;
-                case CardUtility.TargetSelectDirectEnum.对方:
+                case CardUtility.目标选择方向枚举.对方:
                     Boolean Has嘲讽 = false;
                     for (int i = 0; i < game.client.YourInfo.BattleField.MinionCount; i++)
                     {
@@ -333,11 +333,11 @@ namespace Engine.Client
                     }
                     switch (SelectOption.EffectTargetSelectRole)
                     {
-                        case CardUtility.TargetSelectRoleEnum.英雄:
+                        case CardUtility.目标选择角色枚举.英雄:
                             game.client.YourInfo.能否成为动作对象 = true;
                             break;
-                        case CardUtility.TargetSelectRoleEnum.随从:
-                        case CardUtility.TargetSelectRoleEnum.所有角色:
+                        case CardUtility.目标选择角色枚举.随从:
+                        case CardUtility.目标选择角色枚举.所有角色:
                             if (SelectOption.嘲讽限制 && Has嘲讽)
                             {
                                 game.client.YourInfo.能否成为动作对象 = false;
@@ -359,14 +359,14 @@ namespace Engine.Client
                                     game.client.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.client.YourInfo.BattleField.BattleMinions[i].潜行特性;
                                 }
                             }
-                            if (SelectOption.EffectTargetSelectRole == CardUtility.TargetSelectRoleEnum.所有角色) game.client.YourInfo.能否成为动作对象 = true;
+                            if (SelectOption.EffectTargetSelectRole == CardUtility.目标选择角色枚举.所有角色) game.client.YourInfo.能否成为动作对象 = true;
                             break;
                     }
                     break;
-                case CardUtility.TargetSelectDirectEnum.双方:
+                case CardUtility.目标选择方向枚举.双方:
                     switch (SelectOption.EffectTargetSelectRole)
                     {
-                        case CardUtility.TargetSelectRoleEnum.随从:
+                        case CardUtility.目标选择角色枚举.随从:
                             for (int i = 0; i < game.client.MyInfo.BattleField.MinionCount; i++)
                             {
                                 if (Engine.Utility.CardUtility.符合选择条件(game.client.MyInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
@@ -378,11 +378,11 @@ namespace Engine.Client
                                     game.client.YourInfo.BattleField.BattleMinions[i].能否成为动作对象 = true;
                             }
                             break;
-                        case CardUtility.TargetSelectRoleEnum.英雄:
+                        case CardUtility.目标选择角色枚举.英雄:
                             game.client.MyInfo.能否成为动作对象 = true;
                             game.client.YourInfo.能否成为动作对象 = true;
                             break;
-                        case CardUtility.TargetSelectRoleEnum.所有角色:
+                        case CardUtility.目标选择角色枚举.所有角色:
                             game.client.MyInfo.能否成为动作对象 = true;
                             game.client.YourInfo.能否成为动作对象 = true;
                             for (int i = 0; i < game.client.MyInfo.BattleField.MinionCount; i++)
@@ -428,7 +428,7 @@ namespace Engine.Client
                         DeadList.Add(BattleMinions[i]);
                         GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                         {
-                            触发事件类型 = CardUtility.事件类型列表.死亡,
+                            触发事件类型 = CardUtility.事件类型枚举.死亡,
                             触发位置 = BattleMinions[i].战场位置,
                         });
                     }

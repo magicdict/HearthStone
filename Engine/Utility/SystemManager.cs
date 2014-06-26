@@ -38,6 +38,10 @@ namespace Engine.Utility
         /// </summary>
         public const int MaxMinionCount = 7;
         /// <summary>
+        /// 最大水晶数
+        /// </summary>
+        public const int MaxCrystalPoint = 10;
+        /// <summary>
         /// 游戏类型
         /// </summary>
         public static GameType CurrentGameType = GameType.HTML版;

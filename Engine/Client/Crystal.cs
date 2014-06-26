@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Engine.Utility;
+using System;
 
 namespace Engine.Client
 {
+    /// <summary>
+    /// 水晶系统
+    /// </summary>
     public class Crystal
     {
-        /// <summary>
-        /// 最大水晶数
-        /// </summary>
-        public const int MaxPoint = 10;
         /// <summary>
         /// 当前满值水晶数
         /// </summary>
@@ -30,7 +30,7 @@ namespace Engine.Client
         /// <remarks>野性成长</remarks>
         public void AddFullPoint()
         {
-            if (CurrentFullPoint < MaxPoint) CurrentFullPoint++;
+            if (CurrentFullPoint < SystemManager.MaxCrystalPoint) CurrentFullPoint++;
         }
         /// <summary>
         /// 增加多个空水晶
@@ -39,14 +39,14 @@ namespace Engine.Client
         public void AddFullPoint(int Point)
         {
             CurrentFullPoint += Point;
-            if (CurrentFullPoint > MaxPoint) CurrentFullPoint = MaxPoint;
+            if (CurrentFullPoint > SystemManager.MaxCrystalPoint) CurrentFullPoint = SystemManager.MaxCrystalPoint;
         }
         /// <summary>
         /// 增加一个可用水晶
         /// </summary>
         public void AddCurrentPoint()
         {
-            if (CurrentRemainPoint < MaxPoint) CurrentRemainPoint++;
+            if (CurrentRemainPoint < SystemManager.MaxCrystalPoint) CurrentRemainPoint++;
         }
         /// <summary>
         /// 增加多个可用水晶
@@ -55,7 +55,7 @@ namespace Engine.Client
         public void AddCurrentPoint(int Point)
         {
             CurrentRemainPoint += Point;
-            if (CurrentRemainPoint > MaxPoint) CurrentRemainPoint = MaxPoint;
+            if (CurrentRemainPoint > SystemManager.MaxCrystalPoint) CurrentRemainPoint = SystemManager.MaxCrystalPoint;
         }
         /// <summary>
         /// 减少一个可用水晶
