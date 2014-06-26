@@ -2,6 +2,9 @@
 
 namespace Engine.Utility
 {
+    /// <summary>
+    /// C# 关联工具方法
+    /// </summary>
     public static class CSharpUtility
     {
 
@@ -12,7 +15,7 @@ namespace Engine.Utility
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <returns></returns>
-        public static T 深拷贝<T>(this T obj)
+        public static T DeepCopy<T>(this T obj)
         {
             System.Runtime.Serialization.Formatters.Binary.BinaryFormatter formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
             System.IO.MemoryStream ms = new System.IO.MemoryStream();

@@ -14,7 +14,7 @@ namespace Engine.Effect
             List<String> Result = new List<string>();
             if (game.client.MyInfo.BattleField.MinionCount != SystemManager.MaxMinionCount)
             {
-                game.client.MyInfo.BattleField.AppendToBattle(game.client.YourInfo.BattleField.BattleMinions[int.Parse(PosField) - 1].深拷贝());
+                game.client.MyInfo.BattleField.AppendToBattle(game.client.YourInfo.BattleField.BattleMinions[int.Parse(PosField) - 1].DeepCopy());
                 game.client.YourInfo.BattleField.BattleMinions[int.Parse(PosField) - 1] = null;
                 //CONTROL#1
                 Result.Add(Engine.Server.ActionCode.strControl + Engine.Utility.CardUtility.strSplitMark + PosField[1]);
@@ -28,7 +28,7 @@ namespace Engine.Effect
         /// <param name="actField"></param>
         public static void ReRunEffect(GameStatus game, String[] actField)
         {
-            game.client.YourInfo.BattleField.AppendToBattle(game.client.MyInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1].深拷贝());
+            game.client.YourInfo.BattleField.AppendToBattle(game.client.MyInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1].DeepCopy());
             game.client.MyInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1] = null;
         }
     }

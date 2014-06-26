@@ -48,7 +48,7 @@ namespace Engine.AI
             for (int i = 0; i < PlaySelfInfo.handCards.Count; i++)
             {
                 var card = PlaySelfInfo.handCards[i];
-                if (card.CardType == Card.CardBasicInfo.卡牌类型.随从 &&
+                if (card.卡牌种类 == Card.CardBasicInfo.卡牌类型枚举.随从 &&
                     PlayInfo.BattleField.MinionCount != SystemManager.MaxMinionCount)
                 {
                     if (card.使用成本 <= PlayInfo.crystal.CurrentRemainPoint)

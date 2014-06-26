@@ -5,18 +5,20 @@ using Engine.Utility;
 
 namespace Engine.Client
 {
+    /// <summary>
+    /// 处理对方的动作
+    /// </summary>
     public static class ProcessAction
     {
-        #region"处理对方的动作"
         /// <summary>
         /// 处理对方的动作
         /// </summary>
-        /// <param name="item"></param>
+        /// <param name="ActionCommand"></param>
         /// <param name="game"></param>
-        public static void Process(string item, GameStatus game)
+        public static void Process(string ActionCommand, GameStatus game)
         {
-            string[] actField = item.Split(CardUtility.strSplitMark.ToCharArray());
-            switch (Engine.Server.ActionCode.GetActionType(item))
+            string[] actField = ActionCommand.Split(CardUtility.strSplitMark.ToCharArray());
+            switch (Engine.Server.ActionCode.GetActionType(ActionCommand))
             {
                 case ActionCode.ActionType.Card:
                     CardEffect.ReRunEffect(game, actField);
@@ -80,7 +82,5 @@ namespace Engine.Client
                     break;
             }
         }
-        #endregion
-
     }
 }

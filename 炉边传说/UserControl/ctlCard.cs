@@ -16,9 +16,9 @@ namespace 炉边传说
             {
                 lblName.Text = value.名称;
                 lblDescription.Text = value.描述;
-                switch (value.CardType)
+                switch (value.卡牌种类)
                 {
-                    case Engine.Card.CardBasicInfo.卡牌类型.随从:
+                    case Engine.Card.CardBasicInfo.卡牌类型枚举.随从:
                         lblHealthPoint.Visible = true;
                         lblAttackPoint.Visible = true;
                         var minion = ((Engine.Card.MinionCard)value);
@@ -31,14 +31,14 @@ namespace 炉边传说
                            (minion.冰冻状态 != CardUtility.效果回合枚举.无效果 ? "冻" : String.Empty);
                         CanAttack = minion.能否成为动作对象;
                         break;
-                    case Engine.Card.CardBasicInfo.卡牌类型.法术:
+                    case Engine.Card.CardBasicInfo.卡牌类型枚举.法术:
                         lblHealthPoint.Visible = false;
                         lblAttackPoint.Visible = true;
                         lblAttackPoint.Text = ((Engine.Card.AbilityCard)value).使用成本.ToString();
                         break;
-                    case Engine.Card.CardBasicInfo.卡牌类型.奥秘:
+                    case Engine.Card.CardBasicInfo.卡牌类型枚举.奥秘:
                         break;
-                    case Engine.Card.CardBasicInfo.卡牌类型.武器:
+                    case Engine.Card.CardBasicInfo.卡牌类型枚举.武器:
                         lblHealthPoint.Visible = true;
                         lblAttackPoint.Visible = true;
                         lblAttackPoint.Text = ((Engine.Card.WeaponCard)value).攻击力.ToString();

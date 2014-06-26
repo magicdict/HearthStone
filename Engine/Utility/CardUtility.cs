@@ -60,14 +60,14 @@ namespace Engine.Utility
                 Status.AppendLine("==============");
                 Status.AppendLine("Description" + info.描述);
                 Status.AppendLine("StandardCostPoint" + info.使用成本);
-                Status.AppendLine("Type：" + info.CardType.ToString());
-                switch (info.CardType)
+                Status.AppendLine("Type：" + info.卡牌种类.ToString());
+                switch (info.卡牌种类)
                 {
-                    case CardBasicInfo.卡牌类型.随从:
+                    case CardBasicInfo.卡牌类型枚举.随从:
                         Status.AppendLine("攻击力：" + ((Engine.Card.MinionCard)info).攻击力.ToString());
                         Status.AppendLine("生命值：" + ((Engine.Card.MinionCard)info).生命值上限.ToString());
                         break;
-                    case CardBasicInfo.卡牌类型.武器:
+                    case CardBasicInfo.卡牌类型枚举.武器:
                         Status.AppendLine("攻击力：" + ((Engine.Card.WeaponCard)info).攻击力.ToString());
                         Status.AppendLine("耐久度：" + ((Engine.Card.WeaponCard)info).耐久度.ToString());
                         break;
@@ -89,8 +89,8 @@ namespace Engine.Utility
         {
             if (CardCollections.ContainsKey(SN))
             {
-                var c = CardCollections[SN].深拷贝();
-                if (c.CardType == CardBasicInfo.卡牌类型.随从) ((Engine.Card.MinionCard)c).初始化();
+                var c = CardCollections[SN].DeepCopy();
+                if (c.卡牌种类 == CardBasicInfo.卡牌类型枚举.随从) ((Engine.Card.MinionCard)c).初始化();
                 return c;
             }
             return null;
@@ -374,52 +374,79 @@ namespace Engine.Utility
             取消
         }
         /// <summary>
-        /// 效果回合
+        /// 效果回合[Turn Effect]
         /// </summary>
         public enum 效果回合枚举
         {
             /// <summary>
-            /// 无效果
+            /// 无效果[None]
             /// </summary>
             无效果,
             /// <summary>
-            /// 效果命中
+            /// 效果命中[Hit Turn]
             /// </summary>
             效果命中,
             /// <summary>
-            /// 效果作用
+            /// 效果作用[Effect Turn]
             /// </summary>
             效果作用
         }
         /// <summary>
-        /// 事件类型列表
+        /// 事件类型枚举[Event Enum]
         /// </summary>
         public enum 事件类型枚举
         {
+            /// <summary>
+            /// None
+            /// </summary>
             无,
+            /// <summary>
+            /// Run Ability
+            /// </summary>
             施法,
+            /// <summary>
+            /// Recover
+            /// </summary>
             治疗,
+            /// <summary>
+            /// Die
+            /// </summary>
             死亡,
+            /// <summary>
+            /// Hit Secret
+            /// </summary>
             奥秘命中,
+            /// <summary>
+            /// Damage
+            /// </summary>
             受伤,
+            /// <summary>
+            /// Summon
+            /// </summary>
             召唤,
+            /// <summary>
+            /// Draw Card
+            /// </summary>
             卡牌,
         }
         /// <summary>
-        /// 全局事件
+        /// 全局事件[Event]
         /// </summary>
         [Serializable]
         public struct 全局事件
         {
             /// <summary>
-            /// 事件名称
+            /// 触发事件类型[Event Type]
             /// </summary>
             public 事件类型枚举 触发事件类型;
             /// <summary>
-            /// 触发位置
+            /// 触发位置[Evnet Position]
             /// </summary>
             public 指定位置结构体 触发位置;
         }
+        /// <summary>
+        /// 事件效果结构体[Evnet Effect Struct]
+        /// </summary>
         [Serializable]
         public struct 事件效果结构体
         {

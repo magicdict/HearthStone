@@ -69,7 +69,7 @@ namespace 炉边传说
                 Secret.职业 = CSharpUtility.GetEnum<Engine.Utility.CardUtility.职业枚举>(worksheet.Cells(rowCount, 5).Text, Engine.Utility.CardUtility.职业枚举.中立);
                 Secret.使用成本 = CSharpUtility.GetInt(worksheet.Cells(rowCount, 7).Text);
                 Secret.使用成本 = Secret.使用成本;
-                Secret.Rare = CSharpUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度枚举>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度枚举.白色);
+                Secret.稀有程度 = CSharpUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度枚举>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度枚举.白色);
                 Secret.是否启用 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
                 Secret.Condition = CSharpUtility.GetEnum<Engine.Card.SecretCard.SecretCondition>(worksheet.Cells(rowCount, 14).Text, SecretCard.SecretCondition.对方召唤随从);
                 Secret.AdditionInfo = worksheet.Cells(rowCount, 15).Text;
@@ -106,7 +106,7 @@ namespace 炉边传说
 
                 Minion.攻击力 = CSharpUtility.GetInt(worksheet.Cells(rowCount, 8).Text);
                 Minion.生命值上限 = CSharpUtility.GetInt(worksheet.Cells(rowCount, 9).Text);
-                Minion.Rare = CSharpUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度枚举>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度枚举.白色);
+                Minion.稀有程度 = CSharpUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度枚举>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度枚举.白色);
                 Minion.是否启用 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
 
                 Minion.嘲讽特性 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 14).Text);
@@ -296,7 +296,7 @@ namespace 炉边传说
 
                 Weapon.攻击力 = CSharpUtility.GetInt(worksheet.Cells(rowCount, 8).Text);
                 Weapon.耐久度 = CSharpUtility.GetInt(worksheet.Cells(rowCount, 9).Text);
-                Weapon.Rare = CSharpUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度枚举>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度枚举.白色);
+                Weapon.稀有程度 = CSharpUtility.GetEnum<Engine.Card.CardBasicInfo.稀有程度枚举>(worksheet.Cells(rowCount, 12).Text, CardBasicInfo.稀有程度枚举.白色);
                 Weapon.是否启用 = !String.IsNullOrEmpty(worksheet.Cells(rowCount, 13).Text);
 
                 XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.WeaponCard));

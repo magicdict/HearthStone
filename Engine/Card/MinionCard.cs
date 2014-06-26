@@ -14,45 +14,45 @@ namespace Engine.Card
     {
         #region"结构枚举"
         /// <summary>
-        /// 光环范围
+        /// 光环范围[Buff Scope]
         /// </summary>
         public enum 光环范围枚举
         {
             /// <summary>
-            /// 随从全体
+            /// 随从全体[All Minions]
             /// </summary>
             随从全体,
             /// <summary>
-            /// 相邻随从
+            /// 相邻随从[]
             /// </summary>
             相邻随从,
             /// <summary>
-            /// 全局
+            /// 全局[]
             /// </summary>
             全局
         }
 
         /// <summary>
-        /// 攻击状态
+        /// 攻击状态[Attack Status]
         /// </summary>
         public enum 攻击状态枚举
         {
             /// <summary>
-            /// 新上场的随从
+            /// 新上场的随从[Sleeping]
             /// </summary>
             准备中,
             /// <summary>
-            /// 可以攻击
+            /// 可以攻击[Can Attack]
             /// </summary>
             可攻击,
             /// <summary>
-            /// 已经攻击完毕
+            /// 已经攻击完毕[Already Attacked]
             /// </summary>
             攻击完毕
         }
 
         /// <summary>
-        /// 光环类型
+        /// 光环类型[Buff Effect]
         /// </summary>
         public enum 光环类型枚举
         {
@@ -75,31 +75,31 @@ namespace Engine.Card
         }
 
         /// <summary>
-        /// 效果
+        /// 光环结构体[Buff struct]
         /// </summary>
         [Serializable]
         public struct 光环结构体
         {
             /// <summary>
-            /// 范围
+            /// 范围[Scope]
             /// </summary>
             public 光环范围枚举 范围;
             /// <summary>
-            /// 类型
+            /// 类型[Type]
             /// </summary>
             public 光环类型枚举 类型;
             /// <summary>
-            /// 信息
+            /// 信息[Information]
             /// </summary>
             public String 信息;
             /// <summary>
-            /// 来源
+            /// 来源[Buff Source]
             /// </summary>
             public String 来源;
         }
 
         /// <summary>
-        /// 战吼类型列表
+        /// 战吼类型枚举[Battlecry Type Enum]
         /// </summary>
         public enum 战吼类型枚举
         {
@@ -122,21 +122,26 @@ namespace Engine.Card
         }
 
         /// <summary>
-        /// 特殊效果列表
+        /// 特殊效果枚举[Special Effect Enum]
         /// </summary>
         public enum 特殊效果枚举
         {
+            /// <summary>
+            /// None
+            /// </summary>
             无效果,
             /// <summary>
             /// 古拉巴什狂暴者:每当该随从受到伤害时，获得+3攻击力。
+            /// [The Gurubashi Berserker: +3 When be attacked]
             /// </summary>
             持续激怒,
             /// <summary>
             /// 帝王眼镜蛇:消灭任何受到该随从伤害的随从。
+            /// [King Cobra:Destory Minion]
             /// </summary>
             攻击必死,
             /// <summary>
-            /// 回合结束时候死亡
+            /// 回合结束时候死亡[Die at the end of turn]
             /// </summary>
             回合结束死亡
         }
@@ -146,112 +151,112 @@ namespace Engine.Card
 
         #region"设计时状态"
         /// <summary>
-        /// 种族
+        /// 种族[]
         /// </summary>
         public CardUtility.种族枚举 种族 = CardUtility.种族枚举.无;
         /// <summary>
-        /// 攻击力
+        /// 攻击力[Basic Attack Point]
         /// </summary>
         public int 攻击力 = 0;
         /// <summary>
-        /// 生命值
+        /// 生命值[Health Point]
         /// </summary>
         public int 生命值 = 0;
         /// <summary>
-        /// 体力
+        /// 体力[Health Point Limit]
         /// </summary>
         public int 生命值上限 = 0;
         /// <summary>
-        /// 嘲讽
+        /// 嘲讽[Taunt]
         /// </summary>
         public Boolean 嘲讽特性 = false;
         /// <summary>
-        /// 冲锋
+        /// 冲锋[Charge]
         /// </summary>
         public Boolean 冲锋特性 = false;
         /// <summary>
-        /// 风怒
+        /// 风怒[Windfury]
         /// </summary>
         public Boolean 风怒特性 = false;
         /// <summary>
-        /// 是否初始为潜行状态
+        /// 潜行[Stealth]
         /// </summary>
         public Boolean 潜行特性 = false;
         /// <summary>
-        /// 是否初始为圣盾状态
+        /// 圣盾[Divine Shield]
         /// </summary>
         public Boolean 圣盾特性 = false;
         /// <summary>
-        /// 法术免疫
+        /// 法术免疫 [Ability Immune]
         /// </summary>
         public Boolean 法术免疫特性 = false;
         /// <summary>
-        /// 英雄技能免疫
+        /// 英雄技能免疫[Hero Skill Immune]
         /// </summary>
         public Boolean 英雄技能免疫特性 = false;
         /// <summary>
-        /// 不能攻击
+        /// 不能攻击[Can't Attack]
         /// </summary>
         public Boolean 无法攻击特性 = false;
         #endregion
 
         #region"效果"
         /// <summary>
-        /// 战吼(效果号码)
+        /// 战吼(效果号码)[Battlecry Effect]
         /// </summary>
         public String 战吼效果 = String.Empty;
         /// <summary>
-        /// 战吼类型
+        /// 战吼类型[Battlecry Type]
         /// </summary>
         public 战吼类型枚举 战吼类型 = 战吼类型枚举.默认;
         /// <summary>
-        /// 亡语(效果号码)
+        /// 亡语(效果号码)[DeathRattle Effect]
         /// </summary>
         public String 亡语效果 = String.Empty;
         /// <summary>
-        /// 激怒(效果号码)
+        /// 激怒(效果号码)[Enrage Effect]
         /// </summary>
         public String 激怒效果 = String.Empty;
         /// <summary>
-        /// 回合开始(效果号码)
+        /// 回合开始(效果号码)[Trun Start Effect]
         /// </summary>
         public String 回合开始效果 = String.Empty;
         /// <summary>
-        /// 回合结束(效果号码)
+        /// 回合结束(效果号码)[Trun End Effect]
         /// </summary>
         public String 回合结束效果 = String.Empty;
         /// <summary>
-        /// 该单位在战地时的效果
+        /// 光环效果 [Buff Effect]
         /// </summary>
         public 光环结构体 光环效果;
         /// <summary>
-        /// 特殊效果
+        /// 特殊效果 [Specical Effect]
         /// </summary>
         public 特殊效果枚举 特殊效果 = 特殊效果枚举.无效果;
         /// <summary>
-        /// 自身事件
+        /// 自身事件 [Event Effect]
         /// </summary>
         public Engine.Utility.CardUtility.事件效果结构体 自身事件效果 = new CardUtility.事件效果结构体();
         #endregion
 
         #region"运行时状态"
         /// <summary>
-        /// 受过伤害
+        /// 受过伤害[Damaged]
         /// </summary>
         [XmlIgnore]
         public Boolean 受过伤害 = false;
         /// <summary>
-        /// 沉默状态
+        /// 沉默状态[Slience Status]
         /// </summary>
         [XmlIgnore]
         public Boolean 沉默状态 = false;
         /// <summary>
-        /// 激怒状态
+        /// 激怒状态[Enrage Status]
         /// </summary>
         [XmlIgnore]
         public Boolean 激怒状态 = false;
         /// <summary>
-        /// 剩余攻击次数
+        /// 剩余攻击次数[Remain Attack Count]
         /// </summary>
         /// <remarks>
         /// 风怒的时候，回合开始为2次
@@ -260,17 +265,17 @@ namespace Engine.Card
         [XmlIgnore]
         public int 剩余攻击次数 = 1;
         /// <summary>
-        /// 战场位置
+        /// 战场位置[BattleFiled Position of the minion]
         /// </summary>
         [XmlIgnore]
         public Engine.Utility.CardUtility.指定位置结构体 战场位置;
         /// <summary>
-        /// 该单位受到战地的效果
+        /// 该单位受到战地的效果[Get Buff Effect]
         /// </summary>
         [XmlIgnore]
         public List<光环结构体> 受战场效果 = new List<光环结构体>();
         /// <summary>
-        /// 能否成为当前动作的对象
+        /// 能否成为当前动作的对象[Can be the target of action]
         /// </summary>
         [XmlIgnore]
         public Boolean 能否成为动作对象 = false;
@@ -283,7 +288,7 @@ namespace Engine.Card
         [XmlIgnore]
         public 攻击状态枚举 攻击状态 = 攻击状态枚举.准备中;
         /// <summary>
-        /// 是否为冰冻状态
+        /// 是否为冰冻状态[Freeze Status]
         /// </summary>
         [XmlIgnore]
         public Engine.Utility.CardUtility.效果回合枚举 冰冻状态 = CardUtility.效果回合枚举.无效果;

@@ -131,10 +131,10 @@ namespace Engine.Client
             }
         }
         /// <summary>
-        /// 发动战吼
-        /// 自身/相邻
+        /// 发动战吼[Run BattleCry Effect]
         /// </summary>
         /// <param name="MinionPos"></param>
+        ///<remarks>自身 相邻类型</remarks>
         public List<String> 发动战吼(int MinionPos, GameStatus game)
         {
             List<String> ActionCodeLst = new List<string>();
@@ -150,7 +150,7 @@ namespace Engine.Client
                 }
                 else
                 {
-                    //自身
+                    //Self
                     PosList.Add(MinionPos);
                 }
                 //处理状态和数值变化

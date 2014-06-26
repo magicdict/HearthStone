@@ -11,7 +11,7 @@ namespace Engine.Card
     {
         #region"基本"
         /// <summary>
-        /// 序列号
+        /// 序列号[Serial Number]
         /// </summary>
         /// <remarks>
         /// 该卡牌的统一序列号
@@ -19,7 +19,7 @@ namespace Engine.Card
         /// </remarks>
         public string 序列号;
         /// <summary>
-        /// 名称
+        /// 名称[Name]
         /// </summary>
         /// <remarks>
         /// 该卡牌的名称。例如：“山岭巨人”。
@@ -27,7 +27,7 @@ namespace Engine.Card
         /// </remarks>
         public string 名称;
         /// <summary>
-        /// 描述
+        /// 描述[Descrpition]
         /// </summary>
         /// <remarks>
         /// 该卡牌的描述。例如：“女猎手是暗夜精灵的卫士，她们出没于黑夜中”
@@ -35,40 +35,52 @@ namespace Engine.Card
         /// </remarks>
         public string 描述;
         /// <summary>
-        /// 稀有度
+        /// 稀有度[Rare]
         /// </summary>
         public enum 稀有程度枚举 : byte
         {
+            /// <summary>
+            /// White
+            /// </summary>
             白色,
+            /// <summary>
+            /// Green
+            /// </summary>
             绿色,
+            /// <summary>
+            /// Blue
+            /// </summary>
             蓝色,
+            /// <summary>
+            /// Puple
+            /// </summary>
             紫色,
+            /// <summary>
+            /// Orange
+            /// </summary>
             橙色
         }
         /// <summary>
-        /// 稀有度
+        /// 稀有度[Rare]
         /// </summary>
-        ///<remarks>
-        /// 该卡牌的稀有度
-        /// </remarks>
-        public 稀有程度枚举 Rare;
+        public 稀有程度枚举 稀有程度;
         /// <summary>
-        /// 获得卡牌种类
+        /// 卡牌种类
         /// </summary>
-        public 卡牌类型 CardType {
+        public 卡牌类型枚举 卡牌种类 {
             get {
                 switch (序列号.Substring(0,1))
                 {
                     case "A":
-                        return 卡牌类型.法术;
+                        return 卡牌类型枚举.法术;
                     case "W":
-                        return 卡牌类型.武器;
+                        return 卡牌类型枚举.武器;
                     case "M":
-                        return 卡牌类型.随从;
+                        return 卡牌类型枚举.随从;
                     case "S":
-                        return 卡牌类型.奥秘;
+                        return 卡牌类型枚举.奥秘;
                     default:
-                        return 卡牌类型.其他;
+                        return 卡牌类型枚举.其他;
                 }
             }
         }
@@ -82,32 +94,35 @@ namespace Engine.Card
             }
         }
         /// <summary>
-        /// 是否启用
+        /// 是否启用[Ready To Use]
         /// </summary>
         public Boolean 是否启用 = false;
         #endregion
 
         #region "炉石专用"
-        public enum 卡牌类型
+        /// <summary>
+        /// 卡牌类型枚举[Card Type Enum]
+        /// </summary>
+        public enum 卡牌类型枚举
         {
             /// <summary>
-            /// 随从
+            /// 随从[Minion]
             /// </summary>
             随从,
             /// <summary>
-            /// 法术
+            /// 法术[Ability]
             /// </summary>
             法术,
             /// <summary>
-            /// 武器
+            /// 武器[Weapon]
             /// </summary>
             武器,
             /// <summary>
-            /// 奥秘
+            /// 奥秘[Secret]
             /// </summary>
             奥秘,
             /// <summary>
-            /// 其他
+            /// 其他[Other]
             /// </summary>
             其他
         }
@@ -116,19 +131,19 @@ namespace Engine.Card
         /// </summary>
         public int 运行时的卡牌号码;
         /// <summary>
-        /// 过载
+        /// 过载[Overload]
         /// </summary>
         public int 过载;
         /// <summary>
-        /// 连击(效果号码)
+        /// 连击(效果号码)[Combo Effect]
         /// </summary>
         public String 连击效果 = String.Empty;
         /// <summary>
-        /// 职业
+        /// 职业[Class]
         /// </summary>
         public CardUtility.职业枚举 职业;
         /// <summary>
-        /// 使用成本
+        /// 使用成本[Cost]
         /// </summary>
         public int 使用成本;
         /// <summary>
@@ -152,7 +167,7 @@ namespace Engine.Card
             //        return Message;
             //    }
             //}
-            if (card.CardType == CardBasicInfo.卡牌类型.随从)
+            if (card.卡牌种类 == CardBasicInfo.卡牌类型枚举.随从)
             {
                 if (MyInfo.BattleField.MinionCount == SystemManager.MaxMinionCount)
                 {
@@ -170,9 +185,12 @@ namespace Engine.Card
         /// 获得信息
         /// </summary>
         /// <returns></returns>
-        public String GetInfo()
+        public String GetInfo
         {
-            return "[" + CardType.ToString() + "]" + 名称 + "[" + 使用成本 + "]";
+            get
+            {
+                return "[" + 卡牌种类.ToString() + "]" + 名称 + "[" + 使用成本 + "]";
+            }
         }
         #endregion
     }
