@@ -9,7 +9,7 @@ namespace Engine.Card
     public class WeaponCard : CardBasicInfo
     {
         /// <summary>
-        /// 攻击力（实际）
+        /// 攻击力
         /// </summary>
         public int 攻击力 = 0;
         /// <summary>
@@ -22,12 +22,14 @@ namespace Engine.Card
         /// </summary>
         public EffectDefine AdditionEffect = new EffectDefine();
         /// <summary>
-        /// 
+        /// 状态
         /// </summary>
         /// <returns></returns>
-        public new string GetInfo()
+        public string 状态
         {
-            return 名称 + "：" + 攻击力 + "/" + 耐久度;
+            get{
+                return 名称 + "：" + 攻击力 + "/" + 耐久度;
+            }
         }
     }
 }

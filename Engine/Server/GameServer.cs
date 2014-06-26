@@ -7,7 +7,6 @@ namespace Engine.Server
 {
     public static class GameServer
     {
-
         /// <summary>
         /// GameId
         /// </summary>
@@ -41,21 +40,18 @@ namespace Engine.Server
         /// <param name="GameId"></param>
         /// <param name="GuestNickName"></param>
         /// <returns> -1 表示失败</returns>
-        public static int JoinGame(int GameId, String GuestNickName)
+        public static CardUtility.返回值枚举 JoinGame(int GameId, String GuestNickName)
         {
             if (GameWaitGuest.ContainsKey(GameId))
             {
                 GameWaitGuest[GameId].serverinfo.GuestNickName = GuestNickName;
                 GameRunning.Add(GameId, GameWaitGuest[GameId]);
                 GameWaitGuest.Remove(GameId);
-                //套牌
-                //GameRunning[GameId].SetCardStack(true, CardDeck.GetRandomCardStack(0));
-                //GameRunning[GameId].SetCardStack(false, CardDeck.GetRandomCardStack(1));
-                return GameId;
+                return CardUtility.返回值枚举.正常;
             }
             else
             {
-                return -1;
+                return CardUtility.返回值枚举.异常;
             }
         }
         /// <summary>

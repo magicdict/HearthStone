@@ -80,6 +80,7 @@
     <Compile Include="Server\GameServer.cs" />
     <Compile Include="Server\RemoteGameManager.cs" />
     <Compile Include="Card\WeaponCard.cs" />
+    <Compile Include="Utility\WebSocket.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

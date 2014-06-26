@@ -55,21 +55,30 @@ namespace Engine.Card
         /// <summary>
         /// 获得卡牌种类
         /// </summary>
-        public CardTypeEnum CardType {
+        public 卡牌类型 CardType {
             get {
                 switch (序列号.Substring(0,1))
                 {
                     case "A":
-                        return CardTypeEnum.法术;
+                        return 卡牌类型.法术;
                     case "W":
-                        return CardTypeEnum.武器;
+                        return 卡牌类型.武器;
                     case "M":
-                        return CardTypeEnum.随从;
+                        return 卡牌类型.随从;
                     case "S":
-                        return CardTypeEnum.奥秘;
+                        return 卡牌类型.奥秘;
                     default:
-                        return CardTypeEnum.其他;
+                        return 卡牌类型.其他;
                 }
+            }
+        }
+        /// <summary>
+        /// 原生卡牌
+        /// </summary>
+        public Boolean 原生卡牌
+        {
+            get {
+                return 序列号.Substring(1, 1) == CardUtility.原生卡牌标识; 
             }
         }
         /// <summary>
@@ -79,7 +88,7 @@ namespace Engine.Card
         #endregion
 
         #region "炉石专用"
-        public enum CardTypeEnum
+        public enum 卡牌类型
         {
             /// <summary>
             /// 随从
@@ -143,7 +152,7 @@ namespace Engine.Card
             //        return Message;
             //    }
             //}
-            if (card.CardType == CardBasicInfo.CardTypeEnum.随从)
+            if (card.CardType == CardBasicInfo.卡牌类型.随从)
             {
                 if (MyInfo.BattleField.MinionCount == SystemManager.MaxMinionCount)
                 {
@@ -165,14 +174,6 @@ namespace Engine.Card
         {
             return "[" + CardType.ToString() + "]" + 名称 + "[" + 使用成本 + "]";
         }
-        /// <summary>
-        /// 初始化
-        /// </summary>
-        public void Init()
-        {
-
-        }
         #endregion
-
     }
 }

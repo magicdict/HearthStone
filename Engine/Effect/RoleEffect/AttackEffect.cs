@@ -59,7 +59,7 @@ namespace Engine.Effect
             int AttackPoint = ExpressHandler.GetEffectPoint(game, 伤害效果表达式);
             //调整伤害值
             if (伤害加成) AttackPoint += game.client.MyInfo.BattleField.AbilityDamagePlus;
-            if (Minion.AfterBeAttack(AttackPoint))
+            if (Minion.设置被攻击后状态(AttackPoint))
             {
                 GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
@@ -86,7 +86,7 @@ namespace Engine.Effect
                 }
                 else
                 {
-                    game.client.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeAttack(AttackPoint);
+                    game.client.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].设置被攻击后状态(AttackPoint);
                 }
             }
             else
@@ -98,7 +98,7 @@ namespace Engine.Effect
                 }
                 else
                 {
-                    game.client.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeAttack(AttackPoint);
+                    game.client.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].设置被攻击后状态(AttackPoint);
                 }
             }
         }

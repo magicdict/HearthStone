@@ -179,7 +179,7 @@ namespace Engine.Client
         {
             foreach (var card in handCards)
             {
-                if (card.CardType == CardBasicInfo.CardTypeEnum.法术)
+                if (card.CardType == CardBasicInfo.卡牌类型.法术)
                 {
                     card.使用成本 = card.使用成本 + game.client.MyInfo.BattleField.AbilityCost;
                     if (card.使用成本 < 0) card.使用成本 = 0;

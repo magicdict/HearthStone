@@ -41,20 +41,20 @@ namespace Engine.Client
             else
             {
                 //攻击次数的清算,潜行等去除(如果不是被攻击方的处理)
-                AttackInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterDoAttack();
+                AttackInfo.BattleField.BattleMinions[攻击方Pos - 1].设置攻击后状态();
             }
 
             //伤害计算(攻击方)
             var AttackedPoint = 0;
             if (被攻击方Pos != BattleFieldInfo.HeroPos)
             {
-                AttackedPoint = AttackedInfo.BattleField.BattleMinions[被攻击方Pos - 1].TotalAttack();
+                AttackedPoint = AttackedInfo.BattleField.BattleMinions[被攻击方Pos - 1].实际攻击值;
             }
 
             if (攻击方Pos != BattleFieldInfo.HeroPos)
             {
                 //圣盾不引发伤害事件
-                if (AttackInfo.BattleField.BattleMinions[攻击方Pos - 1].AfterBeAttack(AttackedPoint))
+                if (AttackInfo.BattleField.BattleMinions[攻击方Pos - 1].设置被攻击后状态(AttackedPoint))
                 {
                     GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
@@ -80,7 +80,7 @@ namespace Engine.Client
             var AttackPoint = 0;
             if (攻击方Pos != BattleFieldInfo.HeroPos)
             {
-                AttackPoint = AttackInfo.BattleField.BattleMinions[攻击方Pos - 1].TotalAttack();
+                AttackPoint = AttackInfo.BattleField.BattleMinions[攻击方Pos - 1].实际攻击值;
             }
             else
             {
@@ -89,7 +89,7 @@ namespace Engine.Client
             }
             if (被攻击方Pos != BattleFieldInfo.HeroPos)
             {
-                if (AttackedInfo.BattleField.BattleMinions[被攻击方Pos - 1].AfterBeAttack(AttackPoint))
+                if (AttackedInfo.BattleField.BattleMinions[被攻击方Pos - 1].设置被攻击后状态(AttackPoint))
                 {
                     GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {

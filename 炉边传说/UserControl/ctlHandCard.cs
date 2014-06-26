@@ -27,27 +27,27 @@ namespace 炉边传说
                 mHandCard = value;
                 switch (value.CardType)
                 {
-                    case Engine.Card.CardBasicInfo.CardTypeEnum.随从:
+                    case Engine.Card.CardBasicInfo.卡牌类型.随从:
                         lblHealthPoint.Visible = true;
                         lblHealthPoint.Text = ((Engine.Card.MinionCard)value).生命值上限.ToString();
                         lblAttackPoint.Visible = true;
                         lblAttackPoint.Text = ((Engine.Card.MinionCard)value).攻击力.ToString();
                         break;
-                    case Engine.Card.CardBasicInfo.CardTypeEnum.法术:
+                    case Engine.Card.CardBasicInfo.卡牌类型.法术:
                         lblHealthPoint.Visible = false;
                         lblAttackPoint.Visible = false;
                         break;
-                    case Engine.Card.CardBasicInfo.CardTypeEnum.武器:
+                    case Engine.Card.CardBasicInfo.卡牌类型.武器:
                         lblHealthPoint.Visible = true;
                         lblHealthPoint.Text = ((Engine.Card.WeaponCard)value).耐久度.ToString();
                         lblAttackPoint.Visible = true;
                         lblAttackPoint.Text = ((Engine.Card.WeaponCard)value).攻击力.ToString();
                         break;
-                    case Engine.Card.CardBasicInfo.CardTypeEnum.奥秘:
+                    case Engine.Card.CardBasicInfo.卡牌类型.奥秘:
                         lblHealthPoint.Visible = false;
                         lblAttackPoint.Visible = false;
                         break;
-                    case Engine.Card.CardBasicInfo.CardTypeEnum.其他:
+                    case Engine.Card.CardBasicInfo.卡牌类型.其他:
                         break;
                     default:
                         break;

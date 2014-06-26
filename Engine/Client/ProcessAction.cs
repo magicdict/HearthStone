@@ -24,7 +24,7 @@ namespace Engine.Client
                 case ActionCode.ActionType.UseMinion:
                     int Pos = int.Parse(actField[2]);
                     var minion = (Engine.Card.MinionCard)Engine.Utility.CardUtility.GetCardInfoBySN(actField[1]);
-                    minion.Init();
+                    minion.初始化();
                     game.client.YourInfo.BattleField.PutToBattle(Pos, minion);
                     game.client.YourInfo.BattleField.ResetBuff();
                     break;

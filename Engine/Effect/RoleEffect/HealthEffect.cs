@@ -49,7 +49,7 @@ namespace Engine.Effect
         String IAtomicEffect.DealMinion(Client.GameStatus game, Card.MinionCard Minion)
         {
             int HealthPoint = ExpressHandler.GetEffectPoint(game, 生命值回复表达式);
-            if (Minion.AfterBeHealth(HealthPoint))
+            if (Minion.设置被治疗后状态(HealthPoint))
             {
                 GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
@@ -81,7 +81,7 @@ namespace Engine.Effect
                 }
                 else
                 {
-                    game.client.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeHealth(HealthPoint);
+                    game.client.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].设置被治疗后状态(HealthPoint);
                 }
             }
             else
@@ -97,7 +97,7 @@ namespace Engine.Effect
                 }
                 else
                 {
-                    game.client.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].AfterBeHealth(HealthPoint);
+                    game.client.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].设置被治疗后状态(HealthPoint);
                 }
             }
         }

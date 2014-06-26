@@ -1,7 +1,5 @@
-﻿using Engine.Client;
-using Engine.Utility;
+﻿using Engine.Utility;
 using System;
-using System.Collections.Generic;
 
 namespace Engine.Server
 {
@@ -151,11 +149,11 @@ namespace Engine.Server
         /// </summary>
         public const string strSecret = "SECRET";
         /// <summary>
-        /// 奥秘(埋伏)
+        /// 奥秘(揭示)
         /// </summary>
         public const string strHitSecret = "HITSECRET";
         /// <summary>
-        /// 
+        /// 命中事件
         /// </summary>
         public const string strHitEvent = "HITEVENT";
         /// <summary>
@@ -180,32 +178,31 @@ namespace Engine.Server
         /// </summary>
         public static ActionType GetActionType(String ActionWord)
         {
-            ActionType t = ActionType.UnKnown;
+            ActionType actionType = ActionType.UnKnown;
             //动作
-            if (ActionWord.StartsWith(strWeapon + CardUtility.strSplitMark)) t = ActionType.UseWeapon;
-            if (ActionWord.StartsWith(strMinion + CardUtility.strSplitMark)) t = ActionType.UseMinion;
-            if (ActionWord.StartsWith(strAbility + CardUtility.strSplitMark)) t = ActionType.UseAbility;
+            if (ActionWord.StartsWith(strWeapon + CardUtility.strSplitMark)) actionType = ActionType.UseWeapon;
+            if (ActionWord.StartsWith(strMinion + CardUtility.strSplitMark)) actionType = ActionType.UseMinion;
+            if (ActionWord.StartsWith(strAbility + CardUtility.strSplitMark)) actionType = ActionType.UseAbility;
+            if (ActionWord.StartsWith(strHitSecret + CardUtility.strSplitMark)) actionType = ActionType.HitSecret;
+            if (ActionWord.StartsWith(strHitEvent + CardUtility.strSplitMark)) actionType = ActionType.HitEvent;
+            if (ActionWord.StartsWith(strFight + CardUtility.strSplitMark)) actionType = ActionType.Fight;
+            //法术效果
+            if (ActionWord.StartsWith(strTransform + CardUtility.strSplitMark)) actionType = ActionType.Transform;
+            if (ActionWord.StartsWith(strAttack + CardUtility.strSplitMark)) actionType = ActionType.Attack;
+            if (ActionWord.StartsWith(strStatus + CardUtility.strSplitMark)) actionType = ActionType.Status;
+            if (ActionWord.StartsWith(strHealth + CardUtility.strSplitMark)) actionType = ActionType.Health;
+            if (ActionWord.StartsWith(strCrystal + CardUtility.strSplitMark)) actionType = ActionType.Crystal;
+            if (ActionWord.StartsWith(strSummon + CardUtility.strSplitMark)) actionType = ActionType.Summon;
+            if (ActionWord.StartsWith(strCard + CardUtility.strSplitMark)) actionType = ActionType.Card;
+            if (ActionWord.StartsWith(strPoint + CardUtility.strSplitMark)) actionType = ActionType.Point;
+            if (ActionWord.StartsWith(strControl + CardUtility.strSplitMark)) actionType = ActionType.Control;
+            if (ActionWord.StartsWith(strWeaponPoint + CardUtility.strSplitMark)) actionType = ActionType.WeaponPoint;
             //服务器不发送具体奥秘内容
-            if (ActionWord.Equals(strSecret)) t = ActionType.UseSecret;
-            if (ActionWord.StartsWith(strHitSecret + CardUtility.strSplitMark)) t = ActionType.HitSecret;
-            if (ActionWord.StartsWith(strHitEvent + CardUtility.strSplitMark)) t = ActionType.HitEvent;
-
-            if (ActionWord.StartsWith(strFight + CardUtility.strSplitMark)) t = ActionType.Fight;
-            if (ActionWord.Equals(strSettle)) t = ActionType.Settle;
-            if (ActionWord.Equals(strEndTurn)) t = ActionType.EndTurn;
-            //效果
-            if (ActionWord.StartsWith(strTransform + CardUtility.strSplitMark)) t = ActionType.Transform;
-            if (ActionWord.StartsWith(strAttack + CardUtility.strSplitMark)) t = ActionType.Attack;
-            if (ActionWord.StartsWith(strStatus + CardUtility.strSplitMark)) t = ActionType.Status;
-            if (ActionWord.StartsWith(strHealth + CardUtility.strSplitMark)) t = ActionType.Health;
-            if (ActionWord.StartsWith(strCrystal + CardUtility.strSplitMark)) t = ActionType.Crystal;
-            if (ActionWord.StartsWith(strSummon + CardUtility.strSplitMark)) t = ActionType.Summon;
-            if (ActionWord.StartsWith(strCard + CardUtility.strSplitMark)) t = ActionType.Card;
-            if (ActionWord.StartsWith(strPoint + CardUtility.strSplitMark)) t = ActionType.Point;
-            if (ActionWord.StartsWith(strControl + CardUtility.strSplitMark)) t = ActionType.Control;
-            if (ActionWord.StartsWith(strWeaponPoint + CardUtility.strSplitMark)) t = ActionType.WeaponPoint;
+            if (ActionWord.Equals(strSecret)) actionType = ActionType.UseSecret;
+            if (ActionWord.Equals(strSettle)) actionType = ActionType.Settle;
+            if (ActionWord.Equals(strEndTurn)) actionType = ActionType.EndTurn;
             
-            return t;
+            return actionType;
         }
 
         #endregion

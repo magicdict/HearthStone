@@ -4,6 +4,38 @@ namespace Engine.Utility
 {
     public static class CSharpUtility
     {
+
+        #region"扩展方法"
+        /// <summary>
+        /// 深拷贝对象副本
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static T 深拷贝<T>(this T obj)
+        {
+            System.Runtime.Serialization.Formatters.Binary.BinaryFormatter formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            System.IO.MemoryStream ms = new System.IO.MemoryStream();
+            T copy = default(T);
+            try
+            {
+                formatter.Serialize(ms, obj);
+                ms.Seek(0, System.IO.SeekOrigin.Begin);
+                copy = (T)formatter.Deserialize(ms);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("深拷贝对象实例出错", ex);
+            }
+            finally
+            {
+                ms.Close();
+            }
+            return copy;
+        }
+        #endregion
+
+
         /// <summary>
         /// 随机打算数组
         /// </summary>

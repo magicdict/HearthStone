@@ -25,7 +25,7 @@ namespace 炉边传说
         private void btnCreateGame_Click(object sender, EventArgs e)
         {
             //新建游戏的时候，已经决定游戏的先后手
-            if (!String.IsNullOrEmpty(txtServerIP.Text)) ClientRequest.strIP = txtServerIP.Text;
+            if (!String.IsNullOrEmpty(txtServerIP.Text)) WebSocket.strIP = txtServerIP.Text;
             if (!String.IsNullOrEmpty(txtNickName.Text)) GameManager.gameStatus.client.PlayerNickName = txtNickName.Text;
             if (String.IsNullOrEmpty(cmbCardDeck.Text))
             {
@@ -38,7 +38,7 @@ namespace 炉边传说
             Engine.Utility.CardUtility.Init(txtCardPath.Text);
             GameManager.GameId = int.Parse(GameId);
             var CardList = GetCardDeckList();
-            Engine.Client.ClientRequest.SendDeck(int.Parse(GameId), GameManager.gameStatus.client.IsHost, CardList);
+            Engine.Client.ClientRequest.SendDeck(GameManager.GameId.ToString(GameServer.GameIdFormat), GameManager.gameStatus.client.IsHost, CardList);
             btnJoinGame.Enabled = false;
             btnRefresh.Enabled = false;
             btnCreateGame.Enabled = false;
@@ -81,7 +81,7 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnJoinGame_Click(object sender, EventArgs e)
         {
-            if (!String.IsNullOrEmpty(txtServerIP.Text)) ClientRequest.strIP = txtServerIP.Text;
+            if (!String.IsNullOrEmpty(txtServerIP.Text)) WebSocket.strIP = txtServerIP.Text;
             if (!String.IsNullOrEmpty(txtNickName.Text)) GameManager.gameStatus.client.PlayerNickName = txtNickName.Text;
             if (lstWaitGuest.SelectedItems.Count != 1) return;
             if (String.IsNullOrEmpty(cmbCardDeck.Text))
@@ -92,12 +92,12 @@ namespace 炉边传说
             GameManager.游戏类型 = Engine.Utility.SystemManager.GameType.客户端服务器版;
             GameManager.gameStatus.client.IsHost = false;
             var strWait = lstWaitGuest.SelectedItem.ToString();
-            String GameId = Engine.Client.ClientRequest.JoinGame(int.Parse(strWait.Substring(0, strWait.IndexOf("("))), GameManager.gameStatus.client.PlayerNickName);
-            GameManager.GameId = int.Parse(GameId);
+            GameManager.GameId = int.Parse(strWait.Substring(0, strWait.IndexOf("(")));
+            Engine.Client.ClientRequest.JoinGame(GameManager.GameId.ToString(GameServer.GameIdFormat), GameManager.gameStatus.client.PlayerNickName);
             GameManager.gameStatus.client.IsFirst = Engine.Client.ClientRequest.IsFirst(GameManager.GameId.ToString(GameServer.GameIdFormat), GameManager.gameStatus.client.IsHost);
             Engine.Utility.CardUtility.Init(txtCardPath.Text);
             var CardList = GetCardDeckList();
-            Engine.Client.ClientRequest.SendDeck(int.Parse(GameId), GameManager.gameStatus.client.IsHost, CardList);
+            Engine.Client.ClientRequest.SendDeck(GameManager.GameId.ToString(GameServer.GameIdFormat), GameManager.gameStatus.client.IsHost, CardList);
             GameManager.IsStart = true;
             this.Close();
         }

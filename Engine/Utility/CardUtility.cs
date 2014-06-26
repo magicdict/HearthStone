@@ -63,11 +63,11 @@ namespace Engine.Utility
                 Status.AppendLine("Type：" + info.CardType.ToString());
                 switch (info.CardType)
                 {
-                    case CardBasicInfo.CardTypeEnum.随从:
+                    case CardBasicInfo.卡牌类型.随从:
                         Status.AppendLine("攻击力：" + ((Engine.Card.MinionCard)info).攻击力.ToString());
                         Status.AppendLine("生命值：" + ((Engine.Card.MinionCard)info).生命值上限.ToString());
                         break;
-                    case CardBasicInfo.CardTypeEnum.武器:
+                    case CardBasicInfo.卡牌类型.武器:
                         Status.AppendLine("攻击力：" + ((Engine.Card.WeaponCard)info).攻击力.ToString());
                         Status.AppendLine("耐久度：" + ((Engine.Card.WeaponCard)info).耐久度.ToString());
                         break;
@@ -90,11 +90,7 @@ namespace Engine.Utility
             if (CardCollections.ContainsKey(SN))
             {
                 var c = CardCollections[SN].深拷贝();
-                c.Init();
-                if (c.CardType == CardBasicInfo.CardTypeEnum.随从) ((Engine.Card.MinionCard)c).Init();
-                if (c.CardType == CardBasicInfo.CardTypeEnum.法术) ((Engine.Card.AbilityCard)c).Init();
-                if (c.CardType == CardBasicInfo.CardTypeEnum.武器) ((Engine.Card.WeaponCard)c).Init();
-                if (c.CardType == CardBasicInfo.CardTypeEnum.奥秘) ((Engine.Card.SecretCard)c).Init();
+                if (c.CardType == CardBasicInfo.卡牌类型.随从) ((Engine.Card.MinionCard)c).初始化();
                 return c;
             }
             return null;
@@ -141,6 +137,10 @@ namespace Engine.Utility
 
         #region"常数"
         /// <summary>
+        /// 原生法术
+        /// </summary>
+        public const String 原生卡牌标识 = "0";
+        /// <summary>
         /// 真
         /// </summary>
         public const String strTrue = "1";
@@ -177,6 +177,7 @@ namespace Engine.Utility
         /// </summary>
         public const int Max = 999;
         #endregion
+        
         #region"枚举值"
         /// <summary>
         /// 职业
@@ -464,7 +465,6 @@ namespace Engine.Utility
         }
         #endregion
 
-
         #region"委托"
         /// <summary>
         /// 抉择
@@ -496,35 +496,6 @@ namespace Engine.Utility
         /// <returns></returns>
         public delegate int delegateGetPutPos(Engine.Client.GameStatus game);
         #endregion
-        #region"扩展方法"
 
-        /// <summary>
-        /// 深拷贝对象副本
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static T 深拷贝<T>(this T obj)
-        {
-            System.Runtime.Serialization.Formatters.Binary.BinaryFormatter formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-            System.IO.MemoryStream ms = new System.IO.MemoryStream();
-            T copy = default(T);
-            try
-            {
-                formatter.Serialize(ms, obj);
-                ms.Seek(0, System.IO.SeekOrigin.Begin);
-                copy = (T)formatter.Deserialize(ms);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("深拷贝对象实例出错", ex);
-            }
-            finally
-            {
-                ms.Close();
-            }
-            return copy;
-        }
-        #endregion
     }
 }

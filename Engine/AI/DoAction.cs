@@ -48,7 +48,7 @@ namespace Engine.AI
             for (int i = 0; i < PlaySelfInfo.handCards.Count; i++)
             {
                 var card = PlaySelfInfo.handCards[i];
-                if (card.CardType == Card.CardBasicInfo.CardTypeEnum.随从 &&
+                if (card.CardType == Card.CardBasicInfo.卡牌类型.随从 &&
                     PlayInfo.BattleField.MinionCount != SystemManager.MaxMinionCount)
                 {
                     if (card.使用成本 <= PlayInfo.crystal.CurrentRemainPoint)
@@ -69,7 +69,7 @@ namespace Engine.AI
             //能攻击的随从都攻击，优先攻击英雄
             for (int i = 0; i < PlayInfo.BattleField.MinionCount; i++)
             {
-                if (PlayInfo.BattleField.BattleMinions[i].CanAttack())
+                if (PlayInfo.BattleField.BattleMinions[i].能否攻击)
                 {
                     return i + 1;
                 }

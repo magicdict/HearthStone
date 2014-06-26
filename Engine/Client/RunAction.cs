@@ -35,17 +35,16 @@ namespace Engine.Client
             PublicInfo PlayInfo = IsMyAction ? game.client.MyInfo : game.client.YourInfo;
             switch (card.CardType)
             {
-                case CardBasicInfo.CardTypeEnum.法术:
+                case CardBasicInfo.卡牌类型.法术:
                     ActionCodeLst.Add(ActionCode.strAbility + CardUtility.strSplitMark + CardSn);
                     //初始化 Buff效果等等
                     Engine.Card.AbilityCard ablity = (Engine.Card.AbilityCard)CardUtility.GetCardInfoBySN(CardSn);
-                    ablity.Init();
                     var ResultArg = ablity.UseAbility(game, IsMyAction);
                     if (ResultArg.Count != 0)
                     {
                         ActionCodeLst.AddRange(ResultArg);
                         //英雄技能等的时候，不算[本方施法] 
-                        if (CardSn.Substring(1, 1) == Engine.Card.AbilityCard.原生法术)
+                        if (card.原生卡牌)
                             GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                             {
                                 触发事件类型 = CardUtility.事件类型枚举.施法,
@@ -57,7 +56,7 @@ namespace Engine.Client
                         ActionCodeLst.Clear();
                     }
                     break;
-                case CardBasicInfo.CardTypeEnum.随从:
+                case CardBasicInfo.卡牌类型.随从:
                     int MinionPos = 1;
                     if (PlayInfo.BattleField.MinionCount != 0)
                     {
@@ -75,7 +74,7 @@ namespace Engine.Client
                         ActionCodeLst.Add(ActionCode.strMinion + CardUtility.strSplitMark + CardSn + CardUtility.strSplitMark + MinionPos.ToString("D1"));
                         var minion = (Engine.Card.MinionCard)card;
                         //初始化
-                        minion.Init();
+                        minion.初始化();
                         //必须在放入之前做得原因是，被放入的随从不能被触发这个事件
                         GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                         {
@@ -127,11 +126,11 @@ namespace Engine.Client
                         ActionCodeLst.Clear();
                     }
                     break;
-                case CardBasicInfo.CardTypeEnum.武器:
+                case CardBasicInfo.卡牌类型.武器:
                     ActionCodeLst.Add(ActionCode.strWeapon + CardUtility.strSplitMark + CardSn);
                     PlayInfo.Weapon = (Engine.Card.WeaponCard)card;
                     break;
-                case CardBasicInfo.CardTypeEnum.奥秘:
+                case CardBasicInfo.卡牌类型.奥秘:
                     ActionCodeLst.Add(ActionCode.strSecret + CardUtility.strSplitMark + CardSn);
                     game.client.MySelfInfo.奥秘列表.Add((Engine.Card.SecretCard)card);
                     PlayInfo.SecretCount = game.client.MySelfInfo.奥秘列表.Count;
@@ -140,7 +139,7 @@ namespace Engine.Client
                     break;
             }
             //随从卡牌的连击效果启动
-            if (card.CardType != CardBasicInfo.CardTypeEnum.法术 && PlayInfo.连击状态)
+            if (card.CardType != CardBasicInfo.卡牌类型.法术 && PlayInfo.连击状态)
             {
                 if (!String.IsNullOrEmpty(card.连击效果))
                 {
@@ -148,13 +147,12 @@ namespace Engine.Client
                     Engine.Card.AbilityCard ablity = (Engine.Card.AbilityCard)CardUtility.GetCardInfoBySN(card.连击效果);
                     if (ablity != null)
                     {
-                        ablity.Init();
                         var ResultArg = ablity.UseAbility(game, IsMyAction);
                         if (ResultArg.Count != 0)
                         {
                             ActionCodeLst.AddRange(ResultArg);
                             //英雄技能等的时候，不算[本方施法] 
-                            if (CardSn.Substring(1, 1) == Engine.Card.AbilityCard.原生法术)
+                            if (card.原生卡牌)
                                 GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                                 {
                                     触发事件类型 = CardUtility.事件类型枚举.施法,

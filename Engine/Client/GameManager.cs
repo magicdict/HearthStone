@@ -226,7 +226,7 @@ namespace Engine.Client
             //原因是剩余攻击回数和状态有关！
             foreach (var minion in PlayInfo.BattleField.BattleMinions)
             {
-                if (minion != null) minion.ResetAttackTimes();
+                if (minion != null) minion.重置剩余攻击次数();
             }
         }
         /// <summary>

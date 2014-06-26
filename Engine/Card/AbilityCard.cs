@@ -13,10 +13,6 @@ namespace Engine.Card
     public class AbilityCard : CardBasicInfo
     {
         /// <summary>
-        /// 原生法术
-        /// </summary>
-        public const String 原生法术 = "0";
-        /// <summary>
         /// 幸运币
         /// </summary>
         public const String SN幸运币 = "A900001";
@@ -81,7 +77,7 @@ namespace Engine.Card
             /// </summary>
             public String AppendEffectCondition;
             /// <summary>
-            /// 初始化
+            /// 初始化[未被使用]
             /// </summary>
             public void Init()
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Engine.Utility;
+using System;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
@@ -22,7 +23,7 @@ namespace 炉边传说
             btnStart.Enabled = false;
             btnStop.Enabled = true;
             Engine.Utility.SystemManager.Init();
-            ServerThread = new Thread(Engine.Server.ServerResponse.StartServer);
+            ServerThread = new Thread(WebSocket.StartServer);
             ServerThread.IsBackground = true;
             ServerThread.Start();
         }

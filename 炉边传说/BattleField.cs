@@ -175,7 +175,7 @@ namespace 炉边传说
                     ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CardInfo = myMinion;
                     Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Left = LeftPos;
                     LeftPos += btnMe1.Width + Megrate;
-                    if (myMinion.CanAttack())
+                    if (myMinion.能否攻击)
                     {
                         if (GameManager.gameStatus.client.IsMyTurn) ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CanAttack = true;
                     }
