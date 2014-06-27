@@ -15,10 +15,21 @@ namespace Engine.Client
         /// <param name="IsHost">是否为主机</param>
         /// <param name="CardSn">卡牌序列号</param>
         /// <returns></returns>
-        public static String UseHandCard(String GameId, Boolean IsHost, String CardSn)
+        public static Boolean UseHandCard(String GameId, Boolean IsHost, String CardSn)
         {
             String requestInfo = Engine.Server.ServerResponse.RequestType.使用手牌.GetHashCode().ToString("D3") + GameId + IsHost + CardSn;
-            return WebSocket.Request(requestInfo, WebSocket.strIP);
+            return WebSocket.Request(requestInfo, WebSocket.strIP) == CardUtility.strTrue;
+        }
+        /// <summary>
+        /// 获得游戏状态
+        /// </summary>
+        /// <param name="GameId"></param>
+        /// <returns></returns>
+        public static GameStatus GetGameStatus(String GameId)
+        {
+            String requestInfo = Engine.Server.ServerResponse.RequestType.战场状态.GetHashCode().ToString("D3") + GameId;
+            //return WebSocket.Request(requestInfo, WebSocket.strIP);
+            return null;
         }
         /// <summary>
         /// 传送套牌
@@ -80,7 +91,7 @@ namespace Engine.Client
         /// <param name="NickName"></param>
         public static Boolean IsFirst(String GameId, Boolean IsHost)
         {
-            String requestInfo = Engine.Server.ServerResponse.RequestType.先后手状态.GetHashCode().ToString("D3") + GameId + 
+            String requestInfo = Engine.Server.ServerResponse.RequestType.先后手状态.GetHashCode().ToString("D3") + GameId +
                 (IsHost ? CardUtility.strTrue : CardUtility.strFalse);
             return WebSocket.Request(requestInfo, WebSocket.strIP) == CardUtility.strTrue;
         }
@@ -93,7 +104,7 @@ namespace Engine.Client
         /// <returns></returns>
         public static List<String> DrawCard(String GameId, bool IsFirst, int CardCount)
         {
-            String requestInfo = Engine.Server.ServerResponse.RequestType.抽牌.GetHashCode().ToString("D3") + GameId + 
+            String requestInfo = Engine.Server.ServerResponse.RequestType.抽牌.GetHashCode().ToString("D3") + GameId +
                 (IsFirst ? CardUtility.strTrue : CardUtility.strFalse) + CardCount.ToString("D1");
             List<String> CardList = new List<string>();
             foreach (var card in WebSocket.Request(requestInfo, WebSocket.strIP).Split(Engine.Utility.CardUtility.strSplitArrayMark.ToArray()))
@@ -108,9 +119,9 @@ namespace Engine.Client
         /// <param name="GameId"></param>
         public static void TurnEnd(String GameId)
         {
-            var t =  new List<String>();
+            var t = new List<String>();
             t.Add(ActionCode.strEndTurn);
-            WriteAction(GameId,t);
+            WriteAction(GameId, t);
         }
         /// <summary>
         /// 添加指令
@@ -141,7 +152,7 @@ namespace Engine.Client
         /// 是否触发了奥秘
         /// </summary>
         /// <returns></returns>
-        public static String IsSecretHit(String GameId, bool IsFirst,List<String> Actionlst)
+        public static String IsSecretHit(String GameId, bool IsFirst, List<String> Actionlst)
         {
             String Transform = String.Empty;
             foreach (var item in Actionlst)

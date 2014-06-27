@@ -1,7 +1,6 @@
 ﻿using Engine.Card;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
@@ -506,11 +505,6 @@ namespace Engine.Utility
         /// <param name="IsFirst">先后手区分</param>
         /// <param name="Ability">法术定义</param>
         public delegate List<String> delegateDrawCard(Boolean IsFirst, int DrawCount);
-        /// <summary>
-        /// 获得图片
-        /// </summary>
-        /// <returns></returns>
-        public delegate Image delegateGetImage(String ImageKey);
         /// <summary>
         /// 获得位置
         /// </summary>

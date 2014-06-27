@@ -62,6 +62,10 @@ namespace Engine.Server
                 case RequestType.使用手牌:
                     Response = GameServer.UseHandCard(int.Parse(Request.Substring(3, 5)), Request.Substring(8, 1) == CardUtility.strTrue, Request.Substring(9));
                     break;
+                case RequestType.战场状态:
+                    int gameId = int.Parse(Request.Substring(3, 5));
+                    Response = GameServer.GameRunning[gameId].BSgamestatus.ToJson();
+                    break;
                 default:
                     break;
             }
@@ -123,7 +127,11 @@ namespace Engine.Server
             /// <summary>
             /// 使用手牌
             /// </summary>
-            使用手牌
+            使用手牌,
+            /// <summary>
+            /// 战场状态
+            /// </summary>
+            战场状态
         }
     }
 }

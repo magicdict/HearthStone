@@ -1,5 +1,5 @@
 ﻿using System;
-
+using Newtonsoft.Json;
 namespace Engine.Utility
 {
     /// <summary>
@@ -7,6 +7,15 @@ namespace Engine.Utility
     /// </summary>
     public static class CSharpUtility
     {
+        /// <summary>
+        /// 转JSON
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static String ToJson(this Object obj)
+        {
+            return JsonConvert.SerializeObject(obj);
+        }
         #region"扩展方法"
         /// <summary>
         /// 深拷贝对象副本
