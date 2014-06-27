@@ -222,6 +222,25 @@ namespace Engine.Server
             return lstAction;
         }
         /// <summary>
+        /// 使用手牌[服务器]
+        /// </summary>
+        /// <param name="IsHost"></param>
+        /// <param name="CardSN"></param>
+        /// <returns></returns>
+        public CardUtility.返回值枚举 UseHandCard(Boolean IsHost, String CardSN)
+        {
+            // 在HTML版本中，约定Host为本方
+            var Result = RunAction.StartAction(BSgamestatus, CardSN, IsHost);
+            if (Result.Count == 0)
+            {
+                return CardUtility.返回值枚举.异常;
+            }
+            else
+            {
+                return CardUtility.返回值枚举.正常;
+            }
+        }
+        /// <summary>
         /// 是否HIT对方奥秘
         /// </summary>
         /// <param name="IsFirst">是否为先手</param>

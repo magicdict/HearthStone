@@ -9,6 +9,18 @@ namespace Engine.Client
     public static class ClientRequest
     {
         /// <summary>
+        /// 使用手牌
+        /// </summary>
+        /// <param name="GameID">游戏ID</param>
+        /// <param name="IsHost">是否为主机</param>
+        /// <param name="CardSn">卡牌序列号</param>
+        /// <returns></returns>
+        public static String UseHandCard(String GameId, Boolean IsHost, String CardSn)
+        {
+            String requestInfo = Engine.Server.ServerResponse.RequestType.使用手牌.GetHashCode().ToString("D3") + GameId + IsHost + CardSn;
+            return WebSocket.Request(requestInfo, WebSocket.strIP);
+        }
+        /// <summary>
         /// 传送套牌
         /// </summary>
         /// <param name="NickName"></param>

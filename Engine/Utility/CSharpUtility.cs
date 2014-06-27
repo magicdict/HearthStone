@@ -7,7 +7,6 @@ namespace Engine.Utility
     /// </summary>
     public static class CSharpUtility
     {
-
         #region"扩展方法"
         /// <summary>
         /// 深拷贝对象副本

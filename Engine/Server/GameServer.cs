@@ -142,5 +142,24 @@ namespace Engine.Server
         {
             return GameRunning[GameId].SecretHitCheck(ActionList, IsFirst);
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="GameId"></param>
+        /// <param name="IsHost"></param>
+        /// <param name="CardSn"></param>
+        /// <returns></returns>
+        public static string UseHandCard(int GameId, bool IsHost, string CardSn)
+        {
+            var result = GameRunning[GameId].UseHandCard(IsHost, CardSn);
+            if (result == CardUtility.返回值枚举.正常)
+            {
+                return CardUtility.strTrue;
+            }
+            else
+            {
+                return CardUtility.strFalse;
+            }
+        }
     }
 }

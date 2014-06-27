@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>ExternalDLL\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -44,6 +47,7 @@
     <Compile Include="Client\EventHandler.cs" />
     <Compile Include="Client\FightHandler.cs" />
     <Compile Include="Client\GameManager.cs" />
+    <Compile Include="Client\HtmlBattle.cs" />
     <Compile Include="Utility\CSharpUtility.cs" />
     <Compile Include="Utility\ExpressHandler.cs" />
     <Compile Include="Effect\AtomicEffectDefine.cs" />

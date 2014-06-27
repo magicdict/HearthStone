@@ -21,7 +21,10 @@ namespace Engine.Client
         /// </summary>
         /// <param name="game"></param>
         /// <param name="CardSn"></param>
-        /// <param name="IsMyAction">动作的发起方，默认是本方</param>
+        /// <param name="IsMyAction">
+        /// 动作的发起方，默认是本方
+        /// 在HTML版本中，约定Host为本方
+        /// </param>
         /// <param name="AIParm">AI决定的参数</param>
         /// <returns></returns>
         public static List<String> StartAction(GameStatus game, String CardSn, Boolean IsMyAction, String[] AIParm = null)
