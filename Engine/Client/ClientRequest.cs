@@ -18,7 +18,7 @@ namespace Engine.Client
         public static Boolean UseHandCard(String GameId, Boolean IsHost, String CardSn)
         {
             String requestInfo = Engine.Server.ServerResponse.RequestType.使用手牌.GetHashCode().ToString("D3") + GameId + IsHost + CardSn;
-            return WebSocket.Request(requestInfo, WebSocket.strIP) == CardUtility.strTrue;
+            return TcpSocketServer.Request(requestInfo, TcpSocketServer.strIP) == CardUtility.strTrue;
         }
         /// <summary>
         /// 获得游戏状态
@@ -45,7 +45,7 @@ namespace Engine.Client
             info = info.TrimEnd(CardUtility.strSplitArrayMark.ToCharArray());
             String requestInfo = Engine.Server.ServerResponse.RequestType.传送套牌.GetHashCode().ToString("D3") + GameId +
                 (IsHost ? CardUtility.strTrue : CardUtility.strFalse) + info;
-            return WebSocket.Request(requestInfo, WebSocket.strIP) == CardUtility.strTrue;
+            return TcpSocketServer.Request(requestInfo, TcpSocketServer.strIP) == CardUtility.strTrue;
         }
         /// <summary>
         /// 新建游戏
@@ -54,7 +54,7 @@ namespace Engine.Client
         public static String CreateGame(String NickName)
         {
             String requestInfo = Engine.Server.ServerResponse.RequestType.新建游戏.GetHashCode().ToString("D3") + NickName;
-            return WebSocket.Request(requestInfo, WebSocket.strIP);
+            return TcpSocketServer.Request(requestInfo, TcpSocketServer.strIP);
         }
         /// <summary>
         /// 加入游戏
@@ -65,7 +65,7 @@ namespace Engine.Client
         public static String JoinGame(String GameId, String NickName)
         {
             String requestInfo = Engine.Server.ServerResponse.RequestType.加入游戏.GetHashCode().ToString("D3") + GameId + NickName;
-            return WebSocket.Request(requestInfo, WebSocket.strIP);
+            return TcpSocketServer.Request(requestInfo, TcpSocketServer.strIP);
         }
         /// <summary>
         /// 等待游戏列表
@@ -74,7 +74,7 @@ namespace Engine.Client
         public static String GetWatiGameList()
         {
             String requestInfo = Engine.Server.ServerResponse.RequestType.等待游戏列表.GetHashCode().ToString("D3");
-            return WebSocket.Request(requestInfo, WebSocket.strIP);
+            return TcpSocketServer.Request(requestInfo, TcpSocketServer.strIP);
         }
         /// <summary>
         /// 确认游戏状态
@@ -83,7 +83,7 @@ namespace Engine.Client
         public static Boolean IsGameStart(String GameId)
         {
             String requestInfo = Engine.Server.ServerResponse.RequestType.游戏启动状态.GetHashCode().ToString("D3") + GameId;
-            return WebSocket.Request(requestInfo, WebSocket.strIP) == CardUtility.strTrue;
+            return TcpSocketServer.Request(requestInfo, TcpSocketServer.strIP) == CardUtility.strTrue;
         }
         /// <summary>
         /// 确认先后手
@@ -93,7 +93,7 @@ namespace Engine.Client
         {
             String requestInfo = Engine.Server.ServerResponse.RequestType.先后手状态.GetHashCode().ToString("D3") + GameId +
                 (IsHost ? CardUtility.strTrue : CardUtility.strFalse);
-            return WebSocket.Request(requestInfo, WebSocket.strIP) == CardUtility.strTrue;
+            return TcpSocketServer.Request(requestInfo, TcpSocketServer.strIP) == CardUtility.strTrue;
         }
         /// <summary>
         /// 抽牌
@@ -107,7 +107,7 @@ namespace Engine.Client
             String requestInfo = Engine.Server.ServerResponse.RequestType.抽牌.GetHashCode().ToString("D3") + GameId +
                 (IsFirst ? CardUtility.strTrue : CardUtility.strFalse) + CardCount.ToString("D1");
             List<String> CardList = new List<string>();
-            foreach (var card in WebSocket.Request(requestInfo, WebSocket.strIP).Split(Engine.Utility.CardUtility.strSplitArrayMark.ToArray()))
+            foreach (var card in TcpSocketServer.Request(requestInfo, TcpSocketServer.strIP).Split(Engine.Utility.CardUtility.strSplitArrayMark.ToArray()))
             {
                 CardList.Add(card);
             }
@@ -136,7 +136,7 @@ namespace Engine.Client
             }
             Transform = Transform.TrimEnd(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
             String requestInfo = Engine.Server.ServerResponse.RequestType.写入行动.GetHashCode().ToString("D3") + GameId + Transform;
-            WebSocket.Request(requestInfo, WebSocket.strIP);
+            TcpSocketServer.Request(requestInfo, TcpSocketServer.strIP);
         }
         /// <summary>
         /// 读取行动
@@ -146,7 +146,7 @@ namespace Engine.Client
         public static String ReadAction(String GameId)
         {
             String requestInfo = Engine.Server.ServerResponse.RequestType.读取行动.GetHashCode().ToString("D3") + GameId;
-            return WebSocket.Request(requestInfo, WebSocket.strIP);
+            return TcpSocketServer.Request(requestInfo, TcpSocketServer.strIP);
         }
         /// <summary>
         /// 是否触发了奥秘
@@ -162,7 +162,7 @@ namespace Engine.Client
             Transform = Transform.TrimEnd(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
             String requestInfo = Engine.Server.ServerResponse.RequestType.奥秘判定.GetHashCode().ToString("D3") + GameId +
                 (IsFirst ? CardUtility.strTrue : CardUtility.strFalse) + Transform;
-            return WebSocket.Request(requestInfo, WebSocket.strIP);
+            return TcpSocketServer.Request(requestInfo, TcpSocketServer.strIP);
         }
     }
 }

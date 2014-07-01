@@ -573,7 +573,7 @@ namespace Engine.Card
                     return ActionLst;
                 }
                 ActionLst.Add(Engine.Server.ActionCode.strHitEvent + CardUtility.strSplitMark);
-                ActionLst.AddRange(((Card.AbilityCard)CardUtility.GetCardInfoBySN(自身事件效果.效果编号)).UseAbility(game, false));
+                ActionLst.AddRange(((Card.SpellCard)CardUtility.GetCardInfoBySN(自身事件效果.效果编号)).UseAbility(game, false));
                 潜行特性 = false;
             }
             return ActionLst;

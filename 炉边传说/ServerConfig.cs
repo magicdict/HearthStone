@@ -20,10 +20,10 @@ namespace 炉边传说
         private void btnStart_Click(object sender, EventArgs e)
         {
             Engine.Utility.CardUtility.Init(txtCardPath.Text);
-            btnStart.Enabled = false;
-            btnStop.Enabled = true;
+            btnStartTcp.Enabled = false;
+            btnStopTcp.Enabled = true;
             Engine.Utility.SystemManager.Init();
-            ServerThread = new Thread(WebSocket.StartServer);
+            ServerThread = new Thread(TcpSocketServer.StartTcpServer);
             ServerThread.IsBackground = true;
             ServerThread.Start();
         }
@@ -38,6 +38,25 @@ namespace 炉边传说
             ServerThread = null;
             Engine.Utility.SystemManager.Terminate();
             GC.Collect();
+        }
+        private void btnStartHttp_Click(object sender, EventArgs e)
+        {
+            Engine.Utility.CardUtility.Init(txtCardPath.Text);
+            btnStartHttp.Enabled = false;
+            btnStopHttp.Enabled = true;
+            Engine.Utility.SystemManager.Init();
+            WebSocketServer.Start();
+            //ServerThread = new Thread(WebSocketServer.Start);
+            //ServerThread.IsBackground = true;
+            //ServerThread.Start();
+        }
+        private void btnStopHttp_Click(object sender, EventArgs e)
+        {
+            WebSocketServer.Stop();
+            //ServerThread.Abort();
+            //ServerThread = null;
+            //Engine.Utility.SystemManager.Terminate();
+            //GC.Collect();
         }
         /// <summary>
         /// 选择卡牌目录
@@ -64,5 +83,9 @@ namespace 炉边传说
             IPAddress[] hostipspool = Dns.GetHostAddresses("");
             if (hostipspool.Length >3) lblIP.Text = "IP Address:" + hostipspool[3];
         }
+
+
+
+
     }
 }

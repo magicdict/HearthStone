@@ -41,7 +41,7 @@ namespace Engine.Client
                 case CardBasicInfo.卡牌类型枚举.法术:
                     ActionCodeLst.Add(ActionCode.strAbility + CardUtility.strSplitMark + CardSn);
                     //初始化 Buff效果等等
-                    Engine.Card.AbilityCard ablity = (Engine.Card.AbilityCard)CardUtility.GetCardInfoBySN(CardSn);
+                    Engine.Card.SpellCard ablity = (Engine.Card.SpellCard)CardUtility.GetCardInfoBySN(CardSn);
                     var ResultArg = ablity.UseAbility(game, IsMyAction);
                     if (ResultArg.Count != 0)
                     {
@@ -147,7 +147,7 @@ namespace Engine.Client
                 if (!String.IsNullOrEmpty(card.连击效果))
                 {
                     //初始化 Buff效果等等
-                    Engine.Card.AbilityCard ablity = (Engine.Card.AbilityCard)CardUtility.GetCardInfoBySN(card.连击效果);
+                    Engine.Card.SpellCard ablity = (Engine.Card.SpellCard)CardUtility.GetCardInfoBySN(card.连击效果);
                     if (ablity != null)
                     {
                         var ResultArg = ablity.UseAbility(game, IsMyAction);

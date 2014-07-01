@@ -25,7 +25,7 @@ namespace 炉边传说
         private void btnCreateGame_Click(object sender, EventArgs e)
         {
             //新建游戏的时候，已经决定游戏的先后手
-            if (!String.IsNullOrEmpty(txtServerIP.Text)) WebSocket.strIP = txtServerIP.Text;
+            if (!String.IsNullOrEmpty(txtServerIP.Text)) TcpSocketServer.strIP = txtServerIP.Text;
             if (!String.IsNullOrEmpty(txtNickName.Text)) GameManager.gameStatus.client.PlayerNickName = txtNickName.Text;
             if (String.IsNullOrEmpty(cmbCardDeck.Text))
             {
@@ -81,7 +81,7 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnJoinGame_Click(object sender, EventArgs e)
         {
-            if (!String.IsNullOrEmpty(txtServerIP.Text)) WebSocket.strIP = txtServerIP.Text;
+            if (!String.IsNullOrEmpty(txtServerIP.Text)) TcpSocketServer.strIP = txtServerIP.Text;
             if (!String.IsNullOrEmpty(txtNickName.Text)) GameManager.gameStatus.client.PlayerNickName = txtNickName.Text;
             if (lstWaitGuest.SelectedItems.Count != 1) return;
             if (String.IsNullOrEmpty(cmbCardDeck.Text))

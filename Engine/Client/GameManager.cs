@@ -81,8 +81,8 @@ namespace Engine.Client
             gameStatus.client.MyInfo.BattleField.本方对方标识 = true;
             gameStatus.client.YourInfo.BattleField.本方对方标识 = false;
             //英雄技能：奥术飞弹
-            gameStatus.client.MyInfo.HeroAbility = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
-            gameStatus.client.YourInfo.HeroAbility = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
+            gameStatus.client.MyInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
+            gameStatus.client.YourInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
 
             if (游戏模式 == SystemManager.GameMode.塔防)
             {
@@ -111,7 +111,7 @@ namespace Engine.Client
             }
             else
             {
-                gameStatus.client.MySelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.AbilityCard.SN幸运币));
+                gameStatus.client.MySelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.SpellCard.SN幸运币));
                 gameStatus.client.MyInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 4;
                 gameStatus.client.YourInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 3;
                 gameStatus.client.MyInfo.HandCardCount = PublicInfo.BasicHandCardCount + 1 + 1;
@@ -137,7 +137,7 @@ namespace Engine.Client
                 }
                 if (!SimulateServer.serverinfo.IsFirst(IsHost))
                 {
-                    gameStatus.client.HostSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.AbilityCard.SN幸运币));
+                    gameStatus.client.HostSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.SpellCard.SN幸运币));
                     gameStatus.client.HostInfo.HandCardCount++;
                 }
             }
@@ -151,7 +151,7 @@ namespace Engine.Client
                 }
                 if (!SimulateServer.serverinfo.IsFirst(IsHost))
                 {
-                    gameStatus.client.GuestSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.AbilityCard.SN幸运币));
+                    gameStatus.client.GuestSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.SpellCard.SN幸运币));
                     gameStatus.client.GuestInfo.HandCardCount++;
                 }
             }

@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace Engine.Utility
 {
-    public static class WebSocket
+    public static class TcpSocketServer
     {
         /// <summary>
         /// 本地IP地址
@@ -21,20 +21,20 @@ namespace Engine.Utility
         /// <summary>
         /// 开启服务器
         /// </summary>
-        public static void StartServer()
+        public static void StartTcpServer()
         {
             TcpListener server = null;
             try
             {
                 Int32 port = 13000;
-                IPAddress localAddr = IPAddress.Parse(WebSocket.LocalHost);
+                IPAddress localAddr = IPAddress.Parse(TcpSocketServer.LocalHost);
                 server = new TcpListener(localAddr, port);
                 server.Start();
                 while (true)
                 {
                     //对于每个请求创建一个线程，线程的参数是TcpClient对象
                     TcpClient client = server.AcceptTcpClient();
-                    ParameterizedThreadStart ParStart = WebSocket.Response;
+                    ParameterizedThreadStart ParStart = TcpSocketServer.Response;
                     var t = new Thread(ParStart);
                     t.Start(client);
                 }
@@ -69,6 +69,7 @@ namespace Engine.Utility
             {
                 Request = Encoding.ASCII.GetString(bytes, 0, ActualSize);
             }
+            ///Tcp
             ServerResponse.RequestType requestType = (ServerResponse.RequestType)Enum.Parse(typeof(ServerResponse.RequestType), Request.Substring(0, 3));
             String Response = ServerResponse.ProcessRequest(Request, requestType);
             bytes = Encoding.ASCII.GetBytes(Response);

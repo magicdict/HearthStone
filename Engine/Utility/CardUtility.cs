@@ -104,8 +104,8 @@ namespace Engine.Utility
             //法术
             foreach (var AbilityXml in Directory.GetFiles(CardXmlFolder + "\\Ability\\"))
             {
-                XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.AbilityCard));
-                Engine.Card.AbilityCard ability = (AbilityCard)xml.Deserialize(new StreamReader(AbilityXml));
+                XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.SpellCard));
+                Engine.Card.SpellCard ability = (SpellCard)xml.Deserialize(new StreamReader(AbilityXml));
                 CardCollections.Add(ability.序列号, ability);
             }
             //随从

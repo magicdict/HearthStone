@@ -137,7 +137,7 @@ namespace Engine.Utility
         /// <param name="game"></param>
         /// <param name="Ability"></param>
         /// <returns></returns>
-        internal static bool AppendAbilityCondition(Client.GameStatus game, Card.AbilityCard.AbilityDefine Ability)
+        internal static bool AppendAbilityCondition(Client.GameStatus game, Card.SpellCard.AbilityDefine Ability)
         {
             if (Ability.AppendEffectCondition == CardUtility.strIgnore)
             {

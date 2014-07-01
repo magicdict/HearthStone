@@ -154,7 +154,7 @@ namespace Engine.Client
                     PosList.Add(MinionPos);
                 }
                 //处理状态和数值变化
-                var 战吼效果 = (Engine.Card.AbilityCard)Engine.Utility.CardUtility.GetCardInfoBySN(BattleMinions[MinionPos - 1].战吼效果);
+                var 战吼效果 = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN(BattleMinions[MinionPos - 1].战吼效果);
                 if (战吼效果 != null)
                 {
                     foreach (int PosInfo in PosList)

@@ -1,6 +1,7 @@
 ﻿using Engine.Utility;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Engine.Server
 {
@@ -24,6 +25,28 @@ namespace Engine.Server
                     //返回GameId
                     Response = GameServer.CreateNewGame(Request.Substring(3)).ToString(GameServer.GameIdFormat);
                     break;
+                case RequestType.加入游戏:
+                    Response = GameServer.JoinGame(int.Parse(Request.Substring(3, 5)), Request.Substring(8)).ToString();
+                    break;
+                case RequestType.开始游戏:
+                    int GameId;
+                    String IsHost;
+                    String IsFirst;
+                    if (GameServer.GameWaitGuest.Count == 0)
+                    {
+                        GameId = GameServer.CreateNewGame(Request.Substring(3));
+                        IsHost = CardUtility.strTrue;
+                        IsFirst = GameServer.GameWaitGuest[GameId].serverinfo.HostAsFirst ? CardUtility.strTrue : CardUtility.strFalse;
+                    }
+                    else
+                    {
+                        GameId = GameServer.JoinGame(GameServer.GameWaitGuest.Keys.ToList()[0], String.Empty);
+                        IsHost = CardUtility.strFalse;
+                        IsFirst = GameServer.GameRunning[GameId].serverinfo.HostAsFirst ? CardUtility.strFalse : CardUtility.strTrue;
+                    }
+                    // GameId + IsHost + IsFirst
+                    Response = GameId.ToString(GameServer.GameIdFormat) + IsHost + IsFirst;
+                    break;
                 case RequestType.传送套牌:
                     Stack<String> Deck = new Stack<string>();
                     foreach (var card in Request.Substring(9).Split(CardUtility.strSplitArrayMark.ToCharArray()))
@@ -35,9 +58,6 @@ namespace Engine.Server
                     break;
                 case RequestType.等待游戏列表:
                     Response = GameServer.GetWaitGameList();
-                    break;
-                case RequestType.加入游戏:
-                    Response = GameServer.JoinGame(int.Parse(Request.Substring(3, 5)), Request.Substring(8)).ToString();
                     break;
                 case RequestType.游戏启动状态:
                     Response = GameServer.IsGameStart(int.Parse(Request.Substring(3, 5))).ToString();
@@ -131,7 +151,13 @@ namespace Engine.Server
             /// <summary>
             /// 战场状态
             /// </summary>
-            战场状态
+            战场状态,
+            /// <summary>
+            /// 开始一个游戏
+            /// 如果没有等待中的游戏，则新建
+            /// 不然就加入一个游戏
+            /// </summary>
+            开始游戏,
         }
     }
 }

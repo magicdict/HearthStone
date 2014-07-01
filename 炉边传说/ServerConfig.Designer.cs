@@ -32,12 +32,14 @@
             this.lbl英雄生命值上限 = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.btnStart = new System.Windows.Forms.Button();
-            this.btnStop = new System.Windows.Forms.Button();
+            this.btnStartTcp = new System.Windows.Forms.Button();
+            this.btnStopTcp = new System.Windows.Forms.Button();
             this.btnPickCard = new System.Windows.Forms.Button();
             this.txtCardPath = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.lblIP = new System.Windows.Forms.Label();
+            this.btnStartHttp = new System.Windows.Forms.Button();
+            this.btnStopHttp = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
@@ -74,26 +76,26 @@
             this.numericUpDown2.Size = new System.Drawing.Size(54, 20);
             this.numericUpDown2.TabIndex = 3;
             // 
-            // btnStart
+            // btnStartTcp
             // 
-            this.btnStart.Location = new System.Drawing.Point(18, 146);
-            this.btnStart.Name = "btnStart";
-            this.btnStart.Size = new System.Drawing.Size(75, 23);
-            this.btnStart.TabIndex = 4;
-            this.btnStart.Text = "启动服务";
-            this.btnStart.UseVisualStyleBackColor = true;
-            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            this.btnStartTcp.Location = new System.Drawing.Point(18, 146);
+            this.btnStartTcp.Name = "btnStartTcp";
+            this.btnStartTcp.Size = new System.Drawing.Size(135, 23);
+            this.btnStartTcp.TabIndex = 4;
+            this.btnStartTcp.Text = "启动服务TCP";
+            this.btnStartTcp.UseVisualStyleBackColor = true;
+            this.btnStartTcp.Click += new System.EventHandler(this.btnStart_Click);
             // 
-            // btnStop
+            // btnStopTcp
             // 
-            this.btnStop.Enabled = false;
-            this.btnStop.Location = new System.Drawing.Point(108, 146);
-            this.btnStop.Name = "btnStop";
-            this.btnStop.Size = new System.Drawing.Size(75, 23);
-            this.btnStop.TabIndex = 5;
-            this.btnStop.Text = "停止服务";
-            this.btnStop.UseVisualStyleBackColor = true;
-            this.btnStop.Click += new System.EventHandler(this.btnStop_Click);
+            this.btnStopTcp.Enabled = false;
+            this.btnStopTcp.Location = new System.Drawing.Point(169, 146);
+            this.btnStopTcp.Name = "btnStopTcp";
+            this.btnStopTcp.Size = new System.Drawing.Size(135, 23);
+            this.btnStopTcp.TabIndex = 5;
+            this.btnStopTcp.Text = "停止服务TCP";
+            this.btnStopTcp.UseVisualStyleBackColor = true;
+            this.btnStopTcp.Click += new System.EventHandler(this.btnStop_Click);
             // 
             // btnPickCard
             // 
@@ -130,18 +132,41 @@
             this.lblIP.TabIndex = 10;
             this.lblIP.Text = "IP Address:";
             // 
+            // btnStartHttp
+            // 
+            this.btnStartHttp.Location = new System.Drawing.Point(18, 192);
+            this.btnStartHttp.Name = "btnStartHttp";
+            this.btnStartHttp.Size = new System.Drawing.Size(135, 23);
+            this.btnStartHttp.TabIndex = 11;
+            this.btnStartHttp.Text = "启动服务HTTP";
+            this.btnStartHttp.UseVisualStyleBackColor = true;
+            this.btnStartHttp.Click += new System.EventHandler(this.btnStartHttp_Click);
+            // 
+            // btnStopHttp
+            // 
+            this.btnStopHttp.Enabled = false;
+            this.btnStopHttp.Location = new System.Drawing.Point(169, 192);
+            this.btnStopHttp.Name = "btnStopHttp";
+            this.btnStopHttp.Size = new System.Drawing.Size(135, 23);
+            this.btnStopHttp.TabIndex = 12;
+            this.btnStopHttp.Text = "停止服务HTTP";
+            this.btnStopHttp.UseVisualStyleBackColor = true;
+            this.btnStopHttp.Click += new System.EventHandler(this.btnStopHttp_Click);
+            // 
             // ServerConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(352, 181);
+            this.ClientSize = new System.Drawing.Size(352, 227);
+            this.Controls.Add(this.btnStopHttp);
+            this.Controls.Add(this.btnStartHttp);
             this.Controls.Add(this.lblIP);
             this.Controls.Add(this.btnPickCard);
             this.Controls.Add(this.txtCardPath);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnStop);
-            this.Controls.Add(this.btnStart);
+            this.Controls.Add(this.btnStopTcp);
+            this.Controls.Add(this.btnStartTcp);
             this.Controls.Add(this.numericUpDown2);
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.lbl英雄生命值上限);
@@ -163,11 +188,13 @@
         private System.Windows.Forms.Label lbl英雄生命值上限;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.Button btnStart;
-        private System.Windows.Forms.Button btnStop;
+        private System.Windows.Forms.Button btnStartTcp;
+        private System.Windows.Forms.Button btnStopTcp;
         private System.Windows.Forms.Button btnPickCard;
         private System.Windows.Forms.TextBox txtCardPath;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblIP;
+        private System.Windows.Forms.Button btnStartHttp;
+        private System.Windows.Forms.Button btnStopHttp;
     }
 }

@@ -170,11 +170,11 @@ namespace 炉边传说
             //法术的导入
             dynamic worksheet = workbook.Sheets(2);
             int rowCount = 4;
-            Engine.Card.AbilityCard Ability;
+            Engine.Card.SpellCard Ability;
             while (!String.IsNullOrEmpty(worksheet.Cells(rowCount, 2).Text))
             {
                 //当前行肯定是卡牌基本情报
-                Ability = new AbilityCard();
+                Ability = new SpellCard();
                 Ability.序列号 = worksheet.Cells(rowCount, 2).Text;
                 Ability.名称 = worksheet.Cells(rowCount, 3).Text;
                 Ability.描述 = worksheet.Cells(rowCount, 4).Text;
@@ -184,19 +184,19 @@ namespace 炉边传说
                 Ability.是否启用 = true;
                 rowCount++;
                 //当前行肯定是选择条件
-                Ability.效果选择类型 = CSharpUtility.GetEnum<AbilityCard.效果选择类型枚举>(worksheet.Cells(rowCount, 3).Text,
-                    Engine.Card.AbilityCard.效果选择类型枚举.无需选择);
+                Ability.效果选择类型 = CSharpUtility.GetEnum<SpellCard.效果选择类型枚举>(worksheet.Cells(rowCount, 3).Text,
+                    Engine.Card.SpellCard.效果选择类型枚举.无需选择);
                 Ability.FirstAbilityDefine.描述 = worksheet.Cells(rowCount, 4).Text;
                 Ability.SecondAbilityDefine.描述 = worksheet.Cells(rowCount, 5).Text;
                 rowCount++;
                 GetAbilityDefine(ref Ability.FirstAbilityDefine, worksheet, ref rowCount);
-                if (Ability.效果选择类型 != Engine.Card.AbilityCard.效果选择类型枚举.无需选择)
+                if (Ability.效果选择类型 != Engine.Card.SpellCard.效果选择类型枚举.无需选择)
                 {
                     rowCount++;
                     //当前行是第一效果的标题栏
                     GetAbilityDefine(ref Ability.SecondAbilityDefine, worksheet, ref rowCount);
                 }
-                XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.AbilityCard));
+                XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.SpellCard));
                 String XmlFilename = XmlFolderPicker.SelectedPathOrFileName + "\\Ability\\" + Ability.序列号 + ".xml";
                 xml.Serialize(new StreamWriter(XmlFilename), Ability);
                 rowCount++;
@@ -208,7 +208,7 @@ namespace 炉边传说
         /// <param name="worksheet"></param>
         /// <param name="rowCount"></param>
         /// <returns></returns>
-        private static void GetAbilityDefine(ref AbilityCard.AbilityDefine Ability, dynamic worksheet, ref int rowCount)
+        private static void GetAbilityDefine(ref SpellCard.AbilityDefine Ability, dynamic worksheet, ref int rowCount)
         {
             Ability.MainAbilityDefine = GetEffectDefine(worksheet, ref rowCount);
             //追加效果

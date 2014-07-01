@@ -40,18 +40,18 @@ namespace Engine.Server
         /// <param name="GameId"></param>
         /// <param name="GuestNickName"></param>
         /// <returns> -1 表示失败</returns>
-        public static CardUtility.返回值枚举 JoinGame(int GameId, String GuestNickName)
+        public static int JoinGame(int GameId, String GuestNickName)
         {
             if (GameWaitGuest.ContainsKey(GameId))
             {
                 GameWaitGuest[GameId].serverinfo.GuestNickName = GuestNickName;
                 GameRunning.Add(GameId, GameWaitGuest[GameId]);
                 GameWaitGuest.Remove(GameId);
-                return CardUtility.返回值枚举.正常;
+                return GameId;
             }
             else
             {
-                return CardUtility.返回值枚举.异常;
+                return -1;
             }
         }
         /// <summary>

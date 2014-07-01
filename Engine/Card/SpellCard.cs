@@ -10,7 +10,7 @@ namespace Engine.Card
     /// 法术卡牌
     /// </summary>
     [Serializable]
-    public class AbilityCard : CardBasicInfo
+    public class SpellCard : CardBasicInfo
     {
         /// <summary>
         /// 幸运币
@@ -109,7 +109,7 @@ namespace Engine.Card
                     break;
             }
             List<EffectDefine> SingleEffectList = new List<EffectDefine>();
-            AbilityCard.AbilityDefine ability;
+            SpellCard.AbilityDefine ability;
             if (PickEffectResult == CardUtility.抉择枚举.第一效果)
             {
                 ability = FirstAbilityDefine;
@@ -124,12 +124,11 @@ namespace Engine.Card
         /// <summary>
         /// 运行法术
         /// </summary>
-        /// <param name="ability"></param>
+        /// <param name="game"></param>
         /// <param name="IsMyAction"></param>
         /// <param name="Ability"></param>
-        /// <param name="TargetPosInfo"></param>
         /// <returns></returns>
-        private List<String> RunAbilityEffect(GameStatus game, Boolean IsMyAction, AbilityCard.AbilityDefine Ability)
+        private List<String> RunAbilityEffect(GameStatus game, Boolean IsMyAction, SpellCard.AbilityDefine Ability)
         {
             List<String> Result = new List<string>();
 
@@ -192,6 +191,7 @@ namespace Engine.Card
                         break;
                 }
                 GameManager.RandomSeed++;
+                //是否每次结算？这里的逻辑需要确认！
                 Result.AddRange(GameManager.Settle());
             }
             //追加条件计算

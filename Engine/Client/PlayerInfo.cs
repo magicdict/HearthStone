@@ -66,7 +66,7 @@ namespace Engine.Client
         /// <summary>
         /// 英雄技能
         /// </summary>
-        public AbilityCard HeroAbility = new AbilityCard();
+        public SpellCard HeroAbility = new SpellCard();
         /// <summary>
         /// 英雄技能是否已经使用
         /// </summary>

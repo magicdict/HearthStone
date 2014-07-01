@@ -34,7 +34,7 @@ namespace 炉边传说
                     case Engine.Card.CardBasicInfo.卡牌类型枚举.法术:
                         lblHealthPoint.Visible = false;
                         lblAttackPoint.Visible = true;
-                        lblAttackPoint.Text = ((Engine.Card.AbilityCard)value).使用成本.ToString();
+                        lblAttackPoint.Text = ((Engine.Card.SpellCard)value).使用成本.ToString();
                         break;
                     case Engine.Card.CardBasicInfo.卡牌类型枚举.奥秘:
                         break;
