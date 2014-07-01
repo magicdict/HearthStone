@@ -32,7 +32,7 @@ namespace Engine.Server
         /// </summary>
         public static Dictionary<int, GameManager> GameRunning_BS = new Dictionary<int, GameManager>();
         /// <summary>
-        /// 新建游戏
+        /// 新建游戏[CS]
         /// </summary>
         /// <returns></returns>
         public static int CreateNewGame_CS(String hostNickName)
@@ -42,15 +42,24 @@ namespace Engine.Server
             GameWaitGuest_CS.Add(GameId, new RemoteGameManager(GameId, hostNickName, SystemManager.CurrentGameType));
             return GameId;
         }
-        public static int CreateNewGame_BS(String hostNickName)
+        /// <summary>
+        /// 新建游戏[BS]
+        /// </summary>
+        /// <param name="HostNickName"></param>
+        /// <returns></returns>
+        public static int CreateNewGame_BS(String HostNickName)
         {
             GameId++;
             //新建游戏的同时决定游戏的先后手
-            GameWaitGuest_BS.Add(GameId, new GameManager());
+            GameWaitGuest_BS.Add(GameId, new GameManager() { 
+                GameId = GameId, 
+                SimulateServer = new RemoteGameManager(GameId, HostNickName, SystemManager.GameType.HTML版) 
+            });
+            GameWaitGuest_BS[GameId].SimulateServer.serverinfo.HostNickName = HostNickName;
             return GameId;
         }
         /// <summary>
-        /// 加入游戏
+        /// 加入游戏[CS]
         /// </summary>
         /// <param name="GameId"></param>
         /// <param name="GuestNickName"></param>
@@ -70,7 +79,7 @@ namespace Engine.Server
             }
         }
         /// <summary>
-        /// 加入游戏
+        /// 加入游戏[BS]
         /// </summary>
         /// <param name="GameId"></param>
         /// <param name="GuestNickName"></param>
@@ -80,6 +89,7 @@ namespace Engine.Server
             if (GameWaitGuest_BS.ContainsKey(GameId))
             {
                 GameRunning_BS.Add(GameId, GameWaitGuest_BS[GameId]);
+                GameRunning_BS[GameId].SimulateServer.serverinfo.GuestNickName = GuestNickName;
                 GameWaitGuest_BS.Remove(GameId);
                 return GameId;
             }
@@ -131,11 +141,25 @@ namespace Engine.Server
             //网络版的时候，要向两个客户端发送开始游戏的下一步指令
             if (IsHost)
             {
-                GameWaitGuest_CS[GameId].SetCardStack(IsHost, card);
+                if (SystemManager.CurrentGameType == SystemManager.GameType.客户端服务器版)
+                {
+                    GameWaitGuest_CS[GameId].SetCardStack(IsHost, card);
+                }
+                else
+                {
+                    GameWaitGuest_BS[GameId].SimulateServer.SetCardStack(IsHost, card);
+                }
             }
             else
             {
-                GameRunning_CS[GameId].SetCardStack(IsHost, card);
+                if (SystemManager.CurrentGameType == SystemManager.GameType.客户端服务器版)
+                {
+                    GameRunning_CS[GameId].SetCardStack(IsHost, card);
+                }
+                else
+                {
+                    GameRunning_BS[GameId].SimulateServer.SetCardStack(IsHost, card);
+                }
             }
         }
         /// <summary>

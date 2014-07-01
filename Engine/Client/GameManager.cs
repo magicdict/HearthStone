@@ -11,7 +11,7 @@ namespace Engine.Client
         /// <summary>
         /// 游戏编号
         /// </summary>
-        public static int GameId;
+        public int GameId;
         /// <summary>
         /// 游戏类型
         /// </summary>
@@ -33,15 +33,6 @@ namespace Engine.Client
         /// </summary>
         public static Engine.Utility.CardUtility.delegatePickEffect PickEffect;
         /// <summary>
-        /// 游戏状态
-        /// </summary>
-        public GameStatus gameStatus = new GameStatus();
-        /// <summary>
-        /// 单机版的模拟服务器
-        /// HTML版的远程服务器
-        /// </summary>
-        public RemoteGameManager SimulateServer;
-        /// <summary>
         /// 全局随机种子
         /// </summary>
         public static int RandomSeed = 1;
@@ -53,6 +44,15 @@ namespace Engine.Client
         /// 事件处理组件
         /// </summary>
         public static EventHandler 事件处理组件 = new EventHandler();
+        /// <summary>
+        /// 游戏状态
+        /// </summary>
+        public GameStatus gameStatus = new GameStatus();
+        /// <summary>
+        /// 单机版的模拟服务器
+        /// HTML版的远程服务器
+        /// </summary>
+        public RemoteGameManager SimulateServer;
         /// <summary>
         /// 初始化
         /// </summary>

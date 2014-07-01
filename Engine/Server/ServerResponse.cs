@@ -33,17 +33,17 @@ namespace Engine.Server
                     int GameId;
                     String IsHost;
                     String IsFirst;
-                    if (GameServer.GameWaitGuest_CS.Count == 0)
+                    if (GameServer.GameWaitGuest_BS.Count == 0)
                     {
-                        GameId = GameServer.CreateNewGame_CS(Request.Substring(3));
+                        GameId = GameServer.CreateNewGame_BS(Request.Substring(3));
                         IsHost = CardUtility.strTrue;
-                        IsFirst = GameServer.GameWaitGuest_CS[GameId].serverinfo.HostAsFirst ? CardUtility.strTrue : CardUtility.strFalse;
+                        IsFirst = GameServer.GameWaitGuest_BS[GameId].SimulateServer.serverinfo.HostAsFirst ? CardUtility.strTrue : CardUtility.strFalse;
                     }
                     else
                     {
-                        GameId = GameServer.JoinGame_CS(GameServer.GameWaitGuest_CS.Keys.ToList()[0], String.Empty);
+                        GameId = GameServer.JoinGame_BS(GameServer.GameWaitGuest_BS.Keys.ToList()[0], String.Empty);
                         IsHost = CardUtility.strFalse;
-                        IsFirst = GameServer.GameRunning_CS[GameId].serverinfo.HostAsFirst ? CardUtility.strFalse : CardUtility.strTrue;
+                        IsFirst = GameServer.GameRunning_BS[GameId].SimulateServer.serverinfo.HostAsFirst ? CardUtility.strFalse : CardUtility.strTrue;
                     }
                     // GameId + IsHost + IsFirst
                     Response = GameId.ToString(GameServer.GameIdFormat) + IsHost + IsFirst;

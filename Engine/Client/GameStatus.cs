@@ -13,6 +13,10 @@ namespace Engine.Client
     public class GameStatus
     {
         /// <summary>
+        /// GameId[抽牌魔法的时候，BS/CS都需要知道GameID]
+        /// </summary>
+        public int GameId;
+        /// <summary>
         /// 客户信息
         /// </summary>
         public ClientInfo client = new ClientInfo();

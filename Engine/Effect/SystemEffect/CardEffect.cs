@@ -29,7 +29,7 @@ namespace Engine.Effect
                     //#CARD#ME#M000001
                     if (String.IsNullOrEmpty(指定卡牌编号) || 指定卡牌编号 == CardUtility.strIgnore)
                     {
-                        var drawCards = Engine.Client.ClientRequest.DrawCard(GameManager.GameId.ToString(GameServer.GameIdFormat), true, 1);
+                        var drawCards = Engine.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), true, 1);
                         if (drawCards.Count == 1)
                         {
                             game.client.MySelfInfo.handCards.Add(Engine.Utility.CardUtility.GetCardInfoBySN(drawCards[0]));
@@ -64,7 +64,7 @@ namespace Engine.Effect
                 case CardUtility.目标选择方向枚举.双方:
                     if (String.IsNullOrEmpty(指定卡牌编号) || 指定卡牌编号 == CardUtility.strIgnore)
                     {
-                        var drawCards = Engine.Client.ClientRequest.DrawCard(GameManager.GameId.ToString(GameServer.GameIdFormat), true, 1);
+                        var drawCards = Engine.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), true, 1);
                         if (drawCards.Count == 1)
                         {
                             game.client.MySelfInfo.handCards.Add(Engine.Utility.CardUtility.GetCardInfoBySN(drawCards[0]));
@@ -114,7 +114,7 @@ namespace Engine.Effect
                 }
                 else
                 {
-                    var drawCards = Engine.Client.ClientRequest.DrawCard(GameManager.GameId.ToString(GameServer.GameIdFormat), true, 1);
+                    var drawCards = Engine.Client.ClientRequest.DrawCard(game.GameId.ToString(GameServer.GameIdFormat), true, 1);
                     game.client.MySelfInfo.handCards.Add(Engine.Utility.CardUtility.GetCardInfoBySN(drawCards[0]));
                     game.client.MyInfo.HandCardCount++;
                     game.client.MyInfo.RemainCardDeckCount--;

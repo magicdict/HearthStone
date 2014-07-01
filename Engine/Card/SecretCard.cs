@@ -96,7 +96,7 @@ namespace Engine.Card
             //对方（Fight也需要）
             if (game.client.YourInfo.SecretCount != 0)
             {
-                var HitCard = Engine.Client.ClientRequest.IsSecretHit(GameManager.GameId.ToString(GameServer.GameIdFormat), true, actionlst);
+                var HitCard = Engine.Client.ClientRequest.IsSecretHit(game.GameId.ToString(GameServer.GameIdFormat), true, actionlst);
                 if (!String.IsNullOrEmpty(HitCard))
                 {
                     var HitCardList = HitCard.Split(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
