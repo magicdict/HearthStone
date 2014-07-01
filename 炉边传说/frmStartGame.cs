@@ -17,6 +17,7 @@ namespace 炉边传说
         {
             InitializeComponent();
         }
+        public GameManager MyGameManager = new GameManager();
         /// <summary>
         /// 开始游戏的请求
         /// </summary>
@@ -26,19 +27,19 @@ namespace 炉边传说
         {
             //新建游戏的时候，已经决定游戏的先后手
             if (!String.IsNullOrEmpty(txtServerIP.Text)) TcpSocketServer.strIP = txtServerIP.Text;
-            if (!String.IsNullOrEmpty(txtNickName.Text)) GameManager.gameStatus.client.PlayerNickName = txtNickName.Text;
+            if (!String.IsNullOrEmpty(txtNickName.Text)) MyGameManager.gameStatus.client.PlayerNickName = txtNickName.Text;
             if (String.IsNullOrEmpty(cmbCardDeck.Text))
             {
                 MessageBox.Show("请选择套牌");
                 return;
             }
             GameManager.游戏类型 = Engine.Utility.SystemManager.GameType.客户端服务器版;
-            GameManager.gameStatus.client.IsHost = true;
-            String GameId = Engine.Client.ClientRequest.CreateGame(GameManager.gameStatus.client.PlayerNickName);
+            MyGameManager.gameStatus.client.IsHost = true;
+            String GameId = Engine.Client.ClientRequest.CreateGame(MyGameManager.gameStatus.client.PlayerNickName);
             Engine.Utility.CardUtility.Init(txtCardPath.Text);
             GameManager.GameId = int.Parse(GameId);
             var CardList = GetCardDeckList();
-            Engine.Client.ClientRequest.SendDeck(GameManager.GameId.ToString(GameServer.GameIdFormat), GameManager.gameStatus.client.IsHost, CardList);
+            Engine.Client.ClientRequest.SendDeck(GameManager.GameId.ToString(GameServer.GameIdFormat), MyGameManager.gameStatus.client.IsHost, CardList);
             btnJoinGame.Enabled = false;
             btnRefresh.Enabled = false;
             btnCreateGame.Enabled = false;
@@ -54,7 +55,7 @@ namespace 炉边传说
             }
             else
             {
-                GameManager.gameStatus.client.IsFirst = Engine.Client.ClientRequest.IsFirst(GameManager.GameId.ToString(GameServer.GameIdFormat), true);
+                MyGameManager.gameStatus.client.IsFirst = Engine.Client.ClientRequest.IsFirst(GameManager.GameId.ToString(GameServer.GameIdFormat), true);
                 GameManager.IsStart = true;
                 this.Close();
             }
@@ -82,7 +83,7 @@ namespace 炉边传说
         private void btnJoinGame_Click(object sender, EventArgs e)
         {
             if (!String.IsNullOrEmpty(txtServerIP.Text)) TcpSocketServer.strIP = txtServerIP.Text;
-            if (!String.IsNullOrEmpty(txtNickName.Text)) GameManager.gameStatus.client.PlayerNickName = txtNickName.Text;
+            if (!String.IsNullOrEmpty(txtNickName.Text)) MyGameManager.gameStatus.client.PlayerNickName = txtNickName.Text;
             if (lstWaitGuest.SelectedItems.Count != 1) return;
             if (String.IsNullOrEmpty(cmbCardDeck.Text))
             {
@@ -90,14 +91,14 @@ namespace 炉边传说
                 return;
             }
             GameManager.游戏类型 = Engine.Utility.SystemManager.GameType.客户端服务器版;
-            GameManager.gameStatus.client.IsHost = false;
+            MyGameManager.gameStatus.client.IsHost = false;
             var strWait = lstWaitGuest.SelectedItem.ToString();
             GameManager.GameId = int.Parse(strWait.Substring(0, strWait.IndexOf("(")));
-            Engine.Client.ClientRequest.JoinGame(GameManager.GameId.ToString(GameServer.GameIdFormat), GameManager.gameStatus.client.PlayerNickName);
-            GameManager.gameStatus.client.IsFirst = Engine.Client.ClientRequest.IsFirst(GameManager.GameId.ToString(GameServer.GameIdFormat), GameManager.gameStatus.client.IsHost);
+            Engine.Client.ClientRequest.JoinGame(GameManager.GameId.ToString(GameServer.GameIdFormat), MyGameManager.gameStatus.client.PlayerNickName);
+            MyGameManager.gameStatus.client.IsFirst = Engine.Client.ClientRequest.IsFirst(GameManager.GameId.ToString(GameServer.GameIdFormat), MyGameManager.gameStatus.client.IsHost);
             Engine.Utility.CardUtility.Init(txtCardPath.Text);
             var CardList = GetCardDeckList();
-            Engine.Client.ClientRequest.SendDeck(GameManager.GameId.ToString(GameServer.GameIdFormat), GameManager.gameStatus.client.IsHost, CardList);
+            Engine.Client.ClientRequest.SendDeck(GameManager.GameId.ToString(GameServer.GameIdFormat), MyGameManager.gameStatus.client.IsHost, CardList);
             GameManager.IsStart = true;
             this.Close();
         }
@@ -116,25 +117,25 @@ namespace 炉边传说
             Engine.Utility.CardUtility.Init(txtCardPath.Text);
             GameManager.游戏类型 = Engine.Utility.SystemManager.GameType.单机版;
             GameManager.游戏模式 = Engine.Utility.SystemManager.GameMode.标准;
-            GameManager.gameStatus.client.IsHost = true;
-            GameManager.SimulateServer = new RemoteGameManager(0, txtNickName.Text, Engine.Utility.SystemManager.GameType.单机版);
-            GameManager.SimulateServer.serverinfo.Init();
-            GameManager.SimulateServer.serverinfo.HostAsFirst = (DateTime.Now.Millisecond % 2) == 0;
-            GameManager.gameStatus.client.IsFirst = GameManager.SimulateServer.serverinfo.HostAsFirst;
+            MyGameManager.gameStatus.client.IsHost = true;
+            MyGameManager.SimulateServer = new RemoteGameManager(0, txtNickName.Text, Engine.Utility.SystemManager.GameType.单机版);
+            MyGameManager.SimulateServer.serverinfo.Init();
+            MyGameManager.SimulateServer.serverinfo.HostAsFirst = (DateTime.Now.Millisecond % 2) == 0;
+            MyGameManager.gameStatus.client.IsFirst = MyGameManager.SimulateServer.serverinfo.HostAsFirst;
             var CardList = GetCardDeckList();
             var CardStackFirst = new Stack<String>();
             foreach (String card in CardList)
             {
                 CardStackFirst.Push(card);
             }
-            GameManager.SimulateServer.SetCardStack(true, CardStackFirst);
+            MyGameManager.SimulateServer.SetCardStack(true, CardStackFirst);
 
             var CardStackSecond = new Stack<String>();
             foreach (String card in CardList)
             {
                 CardStackSecond.Push(card);
             }
-            GameManager.SimulateServer.SetCardStack(false, CardStackSecond);
+            MyGameManager.SimulateServer.SetCardStack(false, CardStackSecond);
             GameManager.IsStart = true;
             this.Close();
         }
@@ -149,11 +150,11 @@ namespace 炉边传说
             Engine.Utility.CardUtility.Init(txtCardPath.Text);
             GameManager.游戏类型 = Engine.Utility.SystemManager.GameType.单机版;
             GameManager.游戏模式 = Engine.Utility.SystemManager.GameMode.塔防;
-            GameManager.gameStatus.client.IsHost = true;
-            GameManager.SimulateServer = new RemoteGameManager(0, txtNickName.Text, Engine.Utility.SystemManager.GameType.单机版);
-            GameManager.SimulateServer.serverinfo.Init();
-            GameManager.SimulateServer.serverinfo.HostAsFirst = true;
-            GameManager.gameStatus.client.IsFirst = true;
+            MyGameManager.gameStatus.client.IsHost = true;
+            MyGameManager.SimulateServer = new RemoteGameManager(0, txtNickName.Text, Engine.Utility.SystemManager.GameType.单机版);
+            MyGameManager.SimulateServer.serverinfo.Init();
+            MyGameManager.SimulateServer.serverinfo.HostAsFirst = true;
+            MyGameManager.gameStatus.client.IsFirst = true;
             GameManager.事件处理组件.事件特殊处理 += (x) =>
             {
                 foreach (var item in GameManager.事件处理组件.事件池)
@@ -173,7 +174,7 @@ namespace 炉边传说
                 }
             }
             //不随机
-            GameManager.SimulateServer.serverinfo.GuestCardDeck.CardList = CardStackSecond;
+            MyGameManager.SimulateServer.serverinfo.GuestCardDeck.CardList = CardStackSecond;
             var CardStackFirst = new Stack<String>();
             for (int i = 0; i < 20; i++)
             {
@@ -182,7 +183,7 @@ namespace 炉边传说
                     if (card.Substring(1, 1) == "0") CardStackFirst.Push(card);
                 }
             }
-            GameManager.SimulateServer.SetCardStack(true, CardStackFirst);
+            MyGameManager.SimulateServer.SetCardStack(true, CardStackFirst);
             GameManager.IsStart = true;
             this.Close();
         }
@@ -282,10 +283,10 @@ namespace 炉边传说
         private void btnTestCrystal_Click(object sender, EventArgs e)
         {
             //DEBUG START
-            GameManager.gameStatus.client.HostInfo.crystal.CurrentFullPoint = (int)crystalCount.Value;
-            GameManager.gameStatus.client.HostInfo.crystal.CurrentRemainPoint = (int)crystalCount.Value;
-            GameManager.gameStatus.client.GuestInfo.crystal.CurrentFullPoint = (int)crystalCount.Value;
-            GameManager.gameStatus.client.GuestInfo.crystal.CurrentRemainPoint = (int)crystalCount.Value;
+            MyGameManager.gameStatus.client.HostInfo.crystal.CurrentFullPoint = (int)crystalCount.Value;
+            MyGameManager.gameStatus.client.HostInfo.crystal.CurrentRemainPoint = (int)crystalCount.Value;
+            MyGameManager.gameStatus.client.GuestInfo.crystal.CurrentFullPoint = (int)crystalCount.Value;
+            MyGameManager.gameStatus.client.GuestInfo.crystal.CurrentRemainPoint = (int)crystalCount.Value;
             //DEBUG END
         }
         /// <summary>
@@ -295,7 +296,7 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnTestHandCard_Click(object sender, EventArgs e)
         {
-            GameManager.gameStatus.client.HostSelfInfo.handCards.Add(Engine.Utility.CardUtility.GetCardInfoBySN(cmbHandCard.Text.Substring(0, 7)));
+            MyGameManager.gameStatus.client.HostSelfInfo.handCards.Add(Engine.Utility.CardUtility.GetCardInfoBySN(cmbHandCard.Text.Substring(0, 7)));
         }
 
 

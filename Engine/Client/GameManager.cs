@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace Engine.Client
 {
-    public static class GameManager
+    public class GameManager
     {
         /// <summary>
         /// 游戏编号
@@ -35,11 +35,12 @@ namespace Engine.Client
         /// <summary>
         /// 游戏状态
         /// </summary>
-        public static GameStatus gameStatus = new GameStatus();
+        public GameStatus gameStatus = new GameStatus();
         /// <summary>
         /// 单机版的模拟服务器
+        /// HTML版的远程服务器
         /// </summary>
-        public static RemoteGameManager SimulateServer;
+        public RemoteGameManager SimulateServer;
         /// <summary>
         /// 全局随机种子
         /// </summary>
@@ -55,7 +56,7 @@ namespace Engine.Client
         /// <summary>
         /// 初始化
         /// </summary>
-        public static void InitPlayInfo()
+        public void InitPlayInfo()
         {
             gameStatus.client.Init();
             if (gameStatus.client.IsHost)
@@ -95,7 +96,7 @@ namespace Engine.Client
         /// 初始化手牌(CS)
         /// </summary>
         /// <param name="IsHost"></param>
-        public static void InitHandCard()
+        public void InitHandCard()
         {
             int DrawCardCnt = gameStatus.client.IsFirst ? PublicInfo.BasicHandCardCount : (PublicInfo.BasicHandCardCount + 1);
             foreach (var card in Engine.Client.ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), gameStatus.client.IsFirst, DrawCardCnt))
@@ -122,7 +123,7 @@ namespace Engine.Client
         /// 初始化手牌(Single)
         /// </summary>
         /// <param name="IsHost"></param>
-        public static void InitHandCard(Boolean IsHost)
+        public void InitHandCard(Boolean IsHost)
         {
             if (!IsHost && 游戏模式 == SystemManager.GameMode.塔防) return;
 
@@ -159,7 +160,7 @@ namespace Engine.Client
         /// <summary>
         /// 新的回合
         /// </summary>
-        public static void TurnStart(Boolean IsMyTurn)
+        public void TurnStart(Boolean IsMyTurn)
         {
             PublicInfo PlayInfo = IsMyTurn ? gameStatus.client.MyInfo : gameStatus.client.YourInfo;
             PrivateInfo SelfInfo = IsMyTurn ? gameStatus.client.MySelfInfo : gameStatus.client.YourSelfInfo;
@@ -232,7 +233,7 @@ namespace Engine.Client
         /// <summary>
         /// 对手回合结束的清场
         /// </summary>
-        public static List<String> TurnEnd(Boolean IsMyTurn)
+        public List<String> TurnEnd(Boolean IsMyTurn)
         {
             PublicInfo PlayInfo = IsMyTurn ? gameStatus.client.MyInfo : gameStatus.client.YourInfo;
             List<String> ActionLst = new List<string>();
@@ -251,7 +252,7 @@ namespace Engine.Client
                 }
             }
             PlayInfo.BattleField.ClearDead(gameStatus, false);
-            ActionLst.AddRange(Settle());
+            ActionLst.AddRange(Settle(gameStatus));
             ActionLst.AddRange(事件处理组件.事件处理(gameStatus));
             return ActionLst;
         }
@@ -259,7 +260,7 @@ namespace Engine.Client
         /// 清算(核心方法)
         /// </summary>
         /// <returns></returns>
-        public static List<String> Settle()
+        public static List<String> Settle(GameStatus gameStatus)
         {
             //每次原子操作后进行一次清算
             //将亡语效果也发送给对方

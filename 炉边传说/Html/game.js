@@ -34,30 +34,22 @@ function onclose() {
 }
 
 var LastRequest;
-
+var data;
 function onmessage(evt) {
-    var data = evt.data;
+    data = evt.data;
     if (!data) return;
-    if (LastRequest == RequestType.开始游戏) {
-        GameId = data.toString().substr(0, 5);
-        IsHost = data.toString().substr(5, 1) == strTrue;
-        IsFirst = data.toString().substr(6, 1) == strTrue;
-        var gameInfo = GameId;
-        if (IsHost) {
-            gameInfo = gameInfo + "Host";
-        } else {
-            gameInfo = gameInfo + "Guest";
-        }
-        if (IsFirst) {
-            gameInfo = gameInfo + "First";
-        } else {
-            gameInfo = gameInfo + "Second";
-        }
-        document.getElementById("GameId").innerHTML = gameInfo;
+    switch (LastRequest) {
+        case RequestType.开始游戏:
+            CreateGameResponse();
+            break;
+        case RequestType.传送套牌:
+            SendDeckResponse();
+            break;
     }
 }
 
 var strTrue = "1";
+var strFalse = "0";
 var RequestType = {
     新建游戏: "000",
     传送套牌: "001",
@@ -79,4 +71,38 @@ var RequestType = {
 function CreateGame() {
     LastRequest = RequestType.开始游戏;
     socket.send(RequestType.开始游戏);
+}
+
+function CreateGameResponse() {
+    GameId = data.toString().substr(0, 5);
+    IsHost = data.toString().substr(5, 1) == strTrue;
+    IsFirst = data.toString().substr(6, 1) == strTrue;
+    var gameInfo = GameId;
+    if (IsHost) {
+        gameInfo = gameInfo + "Host";
+    } else {
+        gameInfo = gameInfo + "Guest";
+    }
+    if (IsFirst) {
+        gameInfo = gameInfo + "First";
+    } else {
+        gameInfo = gameInfo + "Second";
+    }
+    document.getElementById("GameId").innerHTML = gameInfo;
+    SendDeck();
+}
+
+function SendDeck() {
+    LastRequest = RequestType.传送套牌;
+    var strHost;
+    if (IsHost) {
+        strHost = strTrue;
+    } else {
+        strHost = strFalse;
+    }
+    var message = RequestType.传送套牌 + GameId + strHost + "M000017|M000018|M000021|M000003|M000024|M000026|M000027|M000035|M000037|M000047|M000043|M000041|M000040|M000059|M000058|M000057|M000054|M000061|M000064|M000065|M000067|M000076|M000077|M000082|M000088|M000087|M000085|M000084|M000068|M000076";
+    socket.send(message);
+}
+function SendDeckResponse() {
+    alert("传送套牌" + data.toString());
 }

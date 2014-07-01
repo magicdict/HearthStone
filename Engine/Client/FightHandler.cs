@@ -13,19 +13,19 @@ namespace Engine.Client
         /// <param name="被攻击方Pos">对方</param>
         /// <param name="IsMyAction">被动攻击</param>
         /// <returns></returns>
-        public static List<String> Fight(int 攻击方Pos, int 被攻击方Pos, GameStatus game, Boolean IsMyAction)
+        public static List<String> Fight(int 攻击方Pos, int 被攻击方Pos, GameStatus gameStatus, Boolean IsMyAction)
         {
             PublicInfo AttackInfo;
             PublicInfo AttackedInfo;
             if (IsMyAction)
             {
-                AttackInfo = GameManager.gameStatus.client.MyInfo;
-                AttackedInfo = GameManager.gameStatus.client.YourInfo;
+                AttackInfo = gameStatus.client.MyInfo;
+                AttackedInfo = gameStatus.client.YourInfo;
             }
             else
             {
-                AttackInfo = GameManager.gameStatus.client.YourInfo;
-                AttackedInfo = GameManager.gameStatus.client.MyInfo;
+                AttackInfo = gameStatus.client.YourInfo;
+                AttackedInfo = gameStatus.client.MyInfo;
             }
             List<String> Result = new List<string>();
             //主动攻击方的状态变化
@@ -115,12 +115,12 @@ namespace Engine.Client
             if (IsMyAction)
             {
                 //将亡语效果放入结果
-                Result.AddRange(GameManager.Settle());
+                Result.AddRange(GameManager.Settle(gameStatus));
             }
             else
             {
                 //对方已经发送亡语效果，本方不用重复模拟了
-                GameManager.Settle();
+                GameManager.Settle(gameStatus);
             }
             return Result;
         }

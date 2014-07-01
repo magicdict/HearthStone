@@ -169,7 +169,7 @@ namespace Engine.Card
             //法术伤害对于攻击型效果的加成
             if (Ability.MainAbilityDefine.效果条件 == CardUtility.strIgnore && Ability.MainAbilityDefine.EffectCount > 1)
             {
-                Ability.MainAbilityDefine.EffectCount += GameManager.gameStatus.client.MyInfo.BattleField.AbilityDamagePlus;
+                Ability.MainAbilityDefine.EffectCount += game.client.MyInfo.BattleField.AbilityDamagePlus;
             }
             //按照回数执行效果
             for (int cnt = 0; cnt < Ability.MainAbilityDefine.EffectCount; cnt++)
@@ -192,7 +192,7 @@ namespace Engine.Card
                 }
                 GameManager.RandomSeed++;
                 //是否每次结算？这里的逻辑需要确认！
-                Result.AddRange(GameManager.Settle());
+                Result.AddRange(GameManager.Settle(game));
             }
             //追加条件计算
             if (Ability.AppendAbilityDefine == null || (!ExpressHandler.AppendAbilityCondition(game, Ability)))
@@ -222,7 +222,7 @@ namespace Engine.Card
                         break;
                 }
                 GameManager.RandomSeed++;
-                Result.AddRange(GameManager.Settle());
+                Result.AddRange(GameManager.Settle(game));
             }
             return Result;
         }

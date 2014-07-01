@@ -109,7 +109,7 @@ namespace Engine.Card
                 }
             }
             //奥秘计算 END
-            Result.AddRange(GameManager.Settle());
+            Result.AddRange(GameManager.Settle(game));
             return Result;
         }
         /// <summary>

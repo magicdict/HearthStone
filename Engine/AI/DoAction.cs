@@ -8,31 +8,31 @@ namespace Engine.AI
 {
     public static class DoAction
     {
-        public static List<String> Run()
+        public static List<String> Run(GameStatus gameStatus)
         {
-            PublicInfo PlayInfo = GameManager.gameStatus.client.YourInfo;
-            PrivateInfo PlaySelfInfo = GameManager.gameStatus.client.YourSelfInfo;
+            PublicInfo PlayInfo = gameStatus.client.YourInfo;
+            PrivateInfo PlaySelfInfo = gameStatus.client.YourSelfInfo;
 
             List<String> Result = new List<string>();
             //能上场的随从都上场
-            int HandCardIndex = HasBattleMinion();
+            int HandCardIndex = HasBattleMinion(gameStatus);
             while (HandCardIndex != -1)
             {
                 int newPos = PlayInfo.BattleField.MinionCount + 1;
                 var card = PlaySelfInfo.handCards[HandCardIndex];
-                RunAction.StartAction(GameManager.gameStatus, card.序列号, false, new string[] { newPos.ToString() });
+                RunAction.StartAction(gameStatus, card.序列号, false, new string[] { newPos.ToString() });
                 PlayInfo.crystal.CurrentRemainPoint -= card.使用成本;
                 PlaySelfInfo.RemoveUsedCard(card.序列号);
                 PlayInfo.HandCardCount = PlaySelfInfo.handCards.Count;
-                HandCardIndex = HasBattleMinion();
+                HandCardIndex = HasBattleMinion(gameStatus);
             }
             //能攻击的随从都攻击，优先攻击英雄
-            int AttackPos = HasAttackMinion();
+            int AttackPos = HasAttackMinion(gameStatus);
             while (AttackPos != -1)
             {
-                int BeAttackedPos = GetAttackTarget();
-                RunAction.Fight(GameManager.gameStatus, AttackPos, BeAttackedPos, false);
-                AttackPos = HasAttackMinion();
+                int BeAttackedPos = GetAttackTarget(gameStatus);
+                RunAction.Fight(gameStatus, AttackPos, BeAttackedPos, false);
+                AttackPos = HasAttackMinion(gameStatus);
             }
             Result.Add(ActionCode.strEndTurn);
             return Result;
@@ -41,10 +41,10 @@ namespace Engine.AI
         /// 能上场的随从
         /// </summary>
         /// <returns></returns>
-        private static int HasBattleMinion()
+        private static int HasBattleMinion(GameStatus gameStatus)
         {
-            PrivateInfo PlaySelfInfo = GameManager.gameStatus.client.YourSelfInfo;
-            PublicInfo PlayInfo = GameManager.gameStatus.client.YourInfo;
+            PrivateInfo PlaySelfInfo = gameStatus.client.YourSelfInfo;
+            PublicInfo PlayInfo = gameStatus.client.YourInfo;
             for (int i = 0; i < PlaySelfInfo.handCards.Count; i++)
             {
                 var card = PlaySelfInfo.handCards[i];
@@ -63,9 +63,9 @@ namespace Engine.AI
         /// 是否拥有可以攻击的随从
         /// </summary>
         /// <returns></returns>
-        private static int HasAttackMinion()
+        private static int HasAttackMinion(GameStatus gameStatus)
         {
-            PublicInfo PlayInfo = GameManager.gameStatus.client.YourInfo;
+            PublicInfo PlayInfo = gameStatus.client.YourInfo;
             //能攻击的随从都攻击，优先攻击英雄
             for (int i = 0; i < PlayInfo.BattleField.MinionCount; i++)
             {
@@ -80,9 +80,9 @@ namespace Engine.AI
         /// 获得打击目标
         /// </summary>
         /// <returns></returns>
-        private static int GetAttackTarget()
+        private static int GetAttackTarget(GameStatus gameStatus)
         {
-            PublicInfo PlayInfo = GameManager.gameStatus.client.MyInfo;
+            PublicInfo PlayInfo = gameStatus.client.MyInfo;
             for (int i = 0; i < PlayInfo.BattleField.MinionCount; i++)
             {
                 if (PlayInfo.BattleField.BattleMinions[i].嘲讽特性) return i + 1;

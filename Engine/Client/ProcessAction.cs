@@ -78,7 +78,7 @@ namespace Engine.Client
                     WeaponPointEffect.ReRunEffect(game, actField);
                     break;
                 case ActionCode.ActionType.Settle:
-                    GameManager.Settle();
+                    GameManager.Settle(game);
                     break;
             }
         }
