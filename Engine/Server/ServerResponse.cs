@@ -1,4 +1,5 @@
-﻿using Engine.Utility;
+﻿using Engine.Client;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,11 @@ namespace Engine.Server
         public static string ProcessRequest(String Request, RequestType requestType)
         {
             String Response = String.Empty;
+            int GameId;
+            String IsHostStr;
+            String IsFirstStr;
+            Boolean IsHost;
+            Boolean IsFirst;
             switch (requestType)
             {
                 case RequestType.新建游戏:
@@ -30,23 +36,20 @@ namespace Engine.Server
                     break;
                 case RequestType.开始游戏:
                     //[BS]
-                    int GameId;
-                    String IsHost;
-                    String IsFirst;
                     if (GameServer.GameWaitGuest_BS.Count == 0)
                     {
                         GameId = GameServer.CreateNewGame_BS(Request.Substring(3));
-                        IsHost = CardUtility.strTrue;
-                        IsFirst = GameServer.GameWaitGuest_BS[GameId].SimulateServer.serverinfo.HostAsFirst ? CardUtility.strTrue : CardUtility.strFalse;
+                        IsHostStr = CardUtility.strTrue;
+                        IsFirstStr = GameServer.GameWaitGuest_BS[GameId].SimulateServer.serverinfo.HostAsFirst ? CardUtility.strTrue : CardUtility.strFalse;
                     }
                     else
                     {
                         GameId = GameServer.JoinGame_BS(GameServer.GameWaitGuest_BS.Keys.ToList()[0], String.Empty);
-                        IsHost = CardUtility.strFalse;
-                        IsFirst = GameServer.GameRunning_BS[GameId].SimulateServer.serverinfo.HostAsFirst ? CardUtility.strFalse : CardUtility.strTrue;
+                        IsHostStr = CardUtility.strFalse;
+                        IsFirstStr = GameServer.GameRunning_BS[GameId].SimulateServer.serverinfo.HostAsFirst ? CardUtility.strFalse : CardUtility.strTrue;
                     }
                     // GameId + IsHost + IsFirst
-                    Response = GameId.ToString(GameServer.GameIdFormat) + IsHost + IsFirst;
+                    Response = GameId.ToString(GameServer.GameIdFormat) + IsHostStr + IsFirstStr;
                     break;
                 case RequestType.传送套牌:
                     Stack<String> Deck = new Stack<string>();
@@ -59,6 +62,8 @@ namespace Engine.Server
                     break;
                 case RequestType.初始化状态:
                     //[BS]
+                    GameId = int.Parse(Request.Substring(3, 5));
+                    GameServer.GameRunning_BS[GameId].InitPlayInfoBS();
                     Response = CardUtility.strTrue;
                     break;
                 case RequestType.等待游戏列表:
@@ -89,7 +94,10 @@ namespace Engine.Server
                     break;
                 case RequestType.战场状态:
                     int gameId = int.Parse(Request.Substring(3, 5));
-                    Response = GameServer.GameRunning_CS[gameId].BSgamestatus.ToJson();
+                    IsHost = Request.Substring(8, 1) == CardUtility.strTrue;
+                    MinimizeBattleInfo info = new MinimizeBattleInfo();
+                    info.Init(GameServer.GameRunning_BS[gameId].gameStatus, IsHost);
+                    Response = info.ToJson();
                     break;
                 default:
                     break;

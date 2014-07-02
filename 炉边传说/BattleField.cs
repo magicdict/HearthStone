@@ -32,7 +32,7 @@ namespace 炉边传说
         {
             RunAction.GetPutPos = GetPutPos;
             GameManager.GetSelectTarget = SelectPanel;
-            MyGameManager.InitPlayInfo();
+            MyGameManager.InitPlayInfoCS();
             switch (GameManager.游戏类型)
             {
                 case SystemManager.GameType.单机版:

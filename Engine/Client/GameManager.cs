@@ -56,9 +56,10 @@ namespace Engine.Client
         /// <summary>
         /// 初始化
         /// </summary>
-        public void InitPlayInfo()
+        public void InitPlayInfoCS()
         {
             gameStatus.client.Init();
+
             if (gameStatus.client.IsHost)
             {
                 gameStatus.client.MyInfo = gameStatus.client.HostInfo;
@@ -73,10 +74,12 @@ namespace Engine.Client
                 gameStatus.client.MySelfInfo = gameStatus.client.GuestSelfInfo;
                 gameStatus.client.YourSelfInfo = gameStatus.client.HostSelfInfo;
             }
-            gameStatus.client.HostInfo.crystal.CurrentFullPoint = 0;
-            gameStatus.client.HostInfo.crystal.CurrentRemainPoint = 0;
-            gameStatus.client.GuestInfo.crystal.CurrentFullPoint = 0;
-            gameStatus.client.GuestInfo.crystal.CurrentRemainPoint = 0;
+
+            gameStatus.client.MyInfo.crystal.CurrentFullPoint = 0;
+            gameStatus.client.MyInfo.crystal.CurrentRemainPoint = 0;
+            gameStatus.client.YourInfo.crystal.CurrentFullPoint = 0;
+            gameStatus.client.YourInfo.crystal.CurrentRemainPoint = 0;
+
             gameStatus.client.MyInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = true, Postion = BattleFieldInfo.HeroPos };
             gameStatus.client.YourInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = false, Postion = BattleFieldInfo.HeroPos };
             gameStatus.client.MyInfo.BattleField.本方对方标识 = true;
@@ -87,9 +90,69 @@ namespace Engine.Client
 
             if (游戏模式 == SystemManager.GameMode.塔防)
             {
-                gameStatus.client.YourInfo.LifePoint = CardUtility.Max;
+                gameStatus.client.GuestInfo.LifePoint = CardUtility.Max;
                 gameStatus.client.HostInfo.crystal.CurrentFullPoint = 10;
                 gameStatus.client.HostInfo.crystal.CurrentRemainPoint = 10;
+            }
+        }
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        public void InitPlayInfoBS()
+        {
+            gameStatus.client.Init();
+            //位置
+            gameStatus.client.HostInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = true, Postion = BattleFieldInfo.HeroPos };
+            gameStatus.client.GuestInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = false, Postion = BattleFieldInfo.HeroPos };
+            gameStatus.client.HostInfo.BattleField.本方对方标识 = true;
+            gameStatus.client.GuestInfo.BattleField.本方对方标识 = false;
+            //水晶
+            gameStatus.client.HostInfo.crystal.CurrentFullPoint = 0;
+            gameStatus.client.HostInfo.crystal.CurrentRemainPoint = 0;
+            gameStatus.client.GuestInfo.crystal.CurrentFullPoint = 0;
+            gameStatus.client.GuestInfo.crystal.CurrentRemainPoint = 0;
+            //英雄技能：奥术飞弹
+            gameStatus.client.HostInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
+            gameStatus.client.GuestInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
+            //初始化双方手牌
+            int DrawCardCnt = 0;
+            if (SimulateServer.serverinfo.HostAsFirst)
+            {
+                DrawCardCnt = PublicInfo.BasicHandCardCount;
+                foreach (var card in SimulateServer.DrawCard(true, DrawCardCnt))
+                {
+                    gameStatus.client.HostSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(card));
+                }
+                DrawCardCnt = PublicInfo.BasicHandCardCount + 1;
+                foreach (var card in SimulateServer.DrawCard(false, DrawCardCnt))
+                {
+                    gameStatus.client.GuestSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(card));
+                }
+                gameStatus.client.GuestSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.SpellCard.SN幸运币));
+
+                gameStatus.client.HostInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 3;
+                gameStatus.client.GuestInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 4;
+                gameStatus.client.HostInfo.HandCardCount = PublicInfo.BasicHandCardCount;
+                gameStatus.client.GuestInfo.HandCardCount = PublicInfo.BasicHandCardCount + 1 + 1;
+            }
+            else
+            {
+                DrawCardCnt = PublicInfo.BasicHandCardCount + 1;
+                foreach (var card in SimulateServer.DrawCard(true, DrawCardCnt))
+                {
+                    gameStatus.client.HostSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(card));
+                }
+                gameStatus.client.HostSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.SpellCard.SN幸运币));
+
+                DrawCardCnt = PublicInfo.BasicHandCardCount;
+                foreach (var card in SimulateServer.DrawCard(false, DrawCardCnt))
+                {
+                    gameStatus.client.GuestSelfInfo.handCards.Add(CardUtility.GetCardInfoBySN(card));
+                }
+                gameStatus.client.HostInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 4;
+                gameStatus.client.GuestInfo.RemainCardDeckCount = Engine.Client.CardDeck.MaxCards - 3;
+                gameStatus.client.HostInfo.HandCardCount = PublicInfo.BasicHandCardCount + 1 + 1;
+                gameStatus.client.GuestInfo.HandCardCount = PublicInfo.BasicHandCardCount;
             }
         }
         /// <summary>

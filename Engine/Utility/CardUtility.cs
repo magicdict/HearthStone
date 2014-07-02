@@ -474,6 +474,7 @@ namespace Engine.Utility
         {
             /// <summary>
             /// 本方/对方
+            /// HOST/GUEST
             /// </summary>
             public Boolean 本方对方标识;
             /// <summary>

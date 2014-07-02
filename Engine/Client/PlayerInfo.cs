@@ -12,10 +12,6 @@ namespace Engine.Client
     public class PublicInfo
     {
         /// <summary>
-        /// 是否为先手
-        /// </summary>
-        public Boolean IsFirst;
-        /// <summary>
         /// 战场位置
         /// </summary>
         public Engine.Utility.CardUtility.指定位置结构体 战场位置;

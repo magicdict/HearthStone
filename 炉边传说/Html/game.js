@@ -35,6 +35,8 @@ function onclose() {
 
 var LastRequest;
 var data;
+var BattleInfo;
+
 function onmessage(evt) {
     data = evt.data;
     if (!data) return;
@@ -44,6 +46,12 @@ function onmessage(evt) {
             break;
         case RequestType.传送套牌:
             SendDeckResponse();
+            break;
+        case RequestType.初始化状态:
+            InitPlayInfoResponse();
+            break;
+        case RequestType.战场状态:
+            BattleInfoResponse();
             break;
     }
 }
@@ -65,7 +73,8 @@ var RequestType = {
     奥秘判定: "011",
     使用手牌: "012",
     战场状态: "013",
-    开始游戏: "014"
+    开始游戏: "014",
+    初始化状态: "015"
 };
 
 function CreateGame() {
@@ -103,6 +112,36 @@ function SendDeck() {
     var message = RequestType.传送套牌 + GameId + strHost + "M000017|M000018|M000021|M000003|M000024|M000026|M000027|M000035|M000037|M000047|M000043|M000041|M000040|M000059|M000058|M000057|M000054|M000061|M000064|M000065|M000067|M000076|M000077|M000082|M000088|M000087|M000085|M000084|M000068|M000076";
     socket.send(message);
 }
+
 function SendDeckResponse() {
-    alert("传送套牌" + data.toString());
+    //alert("传送套牌:[" + data.toString() + "]");
+    LastRequest = RequestType.初始化状态;
+    if (!IsHost) {
+        var message = RequestType.初始化状态 + GameId;
+        socket.send(message);
+    }
+}
+
+function InitPlayInfoResponse() {
+    //alert("初始化状态:[" + data.toString() + "]");
+    LastRequest = RequestType.战场状态;
+    if (IsHost) {
+        strHost = strTrue;
+    } else {
+        strHost = strFalse;
+    }
+    var message = RequestType.战场状态 + GameId + strHost;
+    socket.send(message);
+}
+//暂时不考虑验证
+function BattleInfoResponse() {
+    BattleInfo = JSON.parse(data);
+    //for (var i = 0; i < BattleInfo.MyInfo.手牌.length; i++) {
+    //    alert(BattleInfo.MyInfo.手牌[i]);
+    //}
+    var divHtml = "BattleInfo<br>";
+    for (var i = 0; i < BattleInfo.MyInfo.手牌.length; i++) {
+        divHtml += "手牌:" + BattleInfo.MyInfo.手牌[i] + "<br>";
+    }
+    document.getElementById("BattleInfo").innerHTML = divHtml;
 }

@@ -49,7 +49,7 @@
     <Compile Include="Client\EventHandler.cs" />
     <Compile Include="Client\FightHandler.cs" />
     <Compile Include="Client\GameManager.cs" />
-    <Compile Include="Client\HtmlBattle.cs" />
+    <Compile Include="Client\MinimizeBattleInfo.cs" />
     <Compile Include="Utility\CSharpUtility.cs" />
     <Compile Include="Utility\ExpressHandler.cs" />
     <Compile Include="Effect\AtomicEffectDefine.cs" />
