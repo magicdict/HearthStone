@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Engine.Client;
+using System;
 using System.Windows.Forms;
 
 namespace 炉边传说
 {
     public partial class ctlCrystalBar : UserControl
     {
-        public Engine.Client.Crystal CrystalInfo
+        public Crystal CrystalInfo
         {
             set
             {

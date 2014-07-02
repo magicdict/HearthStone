@@ -25,7 +25,7 @@ namespace Engine.Client
         /// </summary>
         /// <param name="GameId"></param>
         /// <returns></returns>
-        public static GameStatus GetGameStatus(String GameId)
+        public static ClientPlayerInfo GetGameStatus(String GameId)
         {
             String requestInfo = Engine.Server.ServerResponse.RequestType.战场状态.GetHashCode().ToString("D3") + GameId;
             //return WebSocket.Request(requestInfo, WebSocket.strIP);
@@ -99,13 +99,13 @@ namespace Engine.Client
         /// 抽牌
         /// </summary>
         /// <param name="GameId"></param>
-        /// <param name="IsFirst"></param>
+        /// <param name="IsHost"></param>
         /// <param name="CardCount"></param>
         /// <returns></returns>
-        public static List<String> DrawCard(String GameId, bool IsFirst, int CardCount)
+        public static List<String> DrawCard(String GameId, bool IsHost, int CardCount)
         {
             String requestInfo = Engine.Server.ServerResponse.RequestType.抽牌.GetHashCode().ToString("D3") + GameId +
-                (IsFirst ? CardUtility.strTrue : CardUtility.strFalse) + CardCount.ToString("D1");
+                (IsHost ? CardUtility.strTrue : CardUtility.strFalse) + CardCount.ToString("D1");
             List<String> CardList = new List<string>();
             foreach (var card in TcpSocketServer.Request(requestInfo, TcpSocketServer.strIP).Split(Engine.Utility.CardUtility.strSplitArrayMark.ToArray()))
             {

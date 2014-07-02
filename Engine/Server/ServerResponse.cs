@@ -24,7 +24,6 @@ namespace Engine.Server
             String IsHostStr;
             String IsFirstStr;
             Boolean IsHost;
-            Boolean IsFirst;
             switch (requestType)
             {
                 case RequestType.新建游戏:
@@ -40,13 +39,13 @@ namespace Engine.Server
                     {
                         GameId = GameServer.CreateNewGame_BS(Request.Substring(3));
                         IsHostStr = CardUtility.strTrue;
-                        IsFirstStr = GameServer.GameWaitGuest_BS[GameId].SimulateServer.serverinfo.HostAsFirst ? CardUtility.strTrue : CardUtility.strFalse;
+                        IsFirstStr = GameServer.GameWaitGuest_BS[GameId].SimulateServer.serverInfo.HostAsFirst ? CardUtility.strTrue : CardUtility.strFalse;
                     }
                     else
                     {
                         GameId = GameServer.JoinGame_BS(GameServer.GameWaitGuest_BS.Keys.ToList()[0], String.Empty);
                         IsHostStr = CardUtility.strFalse;
-                        IsFirstStr = GameServer.GameRunning_BS[GameId].SimulateServer.serverinfo.HostAsFirst ? CardUtility.strFalse : CardUtility.strTrue;
+                        IsFirstStr = GameServer.GameRunning_BS[GameId].SimulateServer.serverInfo.HostAsFirst ? CardUtility.strFalse : CardUtility.strTrue;
                     }
                     // GameId + IsHost + IsFirst
                     Response = GameId.ToString(GameServer.GameIdFormat) + IsHostStr + IsFirstStr;
@@ -96,7 +95,7 @@ namespace Engine.Server
                     int gameId = int.Parse(Request.Substring(3, 5));
                     IsHost = Request.Substring(8, 1) == CardUtility.strTrue;
                     MinimizeBattleInfo info = new MinimizeBattleInfo();
-                    info.Init(GameServer.GameRunning_BS[gameId].gameStatus, IsHost);
+                    info.Init(GameServer.GameRunning_BS[gameId].myStatus, IsHost);
                     Response = info.ToJson();
                     break;
                 default:

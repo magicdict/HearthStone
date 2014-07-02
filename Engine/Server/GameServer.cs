@@ -1,4 +1,5 @@
 ﻿using Engine.Client;
+using Engine.Control;
 using Engine.Utility;
 using System;
 using System.Collections.Generic;
@@ -18,28 +19,28 @@ namespace Engine.Server
         /// <summary>
         /// 等待玩家游戏[CS]
         /// </summary>
-        public static Dictionary<int, RemoteGameManager> GameWaitGuest_CS = new Dictionary<int, RemoteGameManager>();
+        public static Dictionary<int, ServerManager> GameWaitGuest_CS = new Dictionary<int, ServerManager>();
         /// <summary>
         /// 进行中游戏[CS]
         /// </summary>
-        public static Dictionary<int, RemoteGameManager> GameRunning_CS = new Dictionary<int, RemoteGameManager>();
+        public static Dictionary<int, ServerManager> GameRunning_CS = new Dictionary<int, ServerManager>();
         /// <summary>
         /// 等待玩家游戏[BS]
         /// </summary>
-        public static Dictionary<int, GameManager> GameWaitGuest_BS = new Dictionary<int, GameManager>();
+        public static Dictionary<int, FullServerManager> GameWaitGuest_BS = new Dictionary<int, FullServerManager>();
         /// <summary>
         /// 进行中游戏[BS]
         /// </summary>
-        public static Dictionary<int, GameManager> GameRunning_BS = new Dictionary<int, GameManager>();
+        public static Dictionary<int, FullServerManager> GameRunning_BS = new Dictionary<int, FullServerManager>();
         /// <summary>
         /// 新建游戏[CS]
         /// </summary>
         /// <returns></returns>
-        public static int CreateNewGame_CS(String hostNickName)
+        public static int CreateNewGame_CS(String HostNickName)
         {
             GameId++;
             //新建游戏的同时决定游戏的先后手
-            GameWaitGuest_CS.Add(GameId, new RemoteGameManager(GameId, hostNickName, SystemManager.CurrentGameType));
+            GameWaitGuest_CS.Add(GameId, new ServerManager(GameId, HostNickName));
             return GameId;
         }
         /// <summary>
@@ -51,11 +52,7 @@ namespace Engine.Server
         {
             GameId++;
             //新建游戏的同时决定游戏的先后手
-            GameWaitGuest_BS.Add(GameId, new GameManager() { 
-                GameId = GameId, 
-                SimulateServer = new RemoteGameManager(GameId, HostNickName, SystemManager.GameType.HTML版) 
-            });
-            GameWaitGuest_BS[GameId].SimulateServer.serverinfo.HostNickName = HostNickName;
+            GameWaitGuest_BS.Add(GameId, new FullServerManager(GameId, HostNickName));
             return GameId;
         }
         /// <summary>
@@ -68,7 +65,7 @@ namespace Engine.Server
         {
             if (GameWaitGuest_CS.ContainsKey(GameId))
             {
-                GameWaitGuest_CS[GameId].serverinfo.GuestNickName = GuestNickName;
+                GameWaitGuest_CS[GameId].GuestStatus.NickName = GuestNickName;
                 GameRunning_CS.Add(GameId, GameWaitGuest_CS[GameId]);
                 GameWaitGuest_CS.Remove(GameId);
                 return GameId;
@@ -89,7 +86,7 @@ namespace Engine.Server
             if (GameWaitGuest_BS.ContainsKey(GameId))
             {
                 GameRunning_BS.Add(GameId, GameWaitGuest_BS[GameId]);
-                GameRunning_BS[GameId].SimulateServer.serverinfo.GuestNickName = GuestNickName;
+                GameRunning_BS[GameId].GuestStatus.NickName = GuestNickName;
                 GameWaitGuest_BS.Remove(GameId);
                 return GameId;
             }
@@ -107,7 +104,7 @@ namespace Engine.Server
             String WaitGame = String.Empty;
             foreach (var item in GameWaitGuest_CS)
             {
-                WaitGame += item.Key + "(" + item.Value.serverinfo.HostNickName + ")|";
+                WaitGame += item.Key + "(" + item.Value.HostStatus.NickName + ")|";
             }
             WaitGame = WaitGame.TrimEnd(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
             return WaitGame;
@@ -128,7 +125,7 @@ namespace Engine.Server
         /// <returns></returns>
         public static Boolean IsFirst(int GameId, bool IsHost)
         {
-            return ((IsHost && GameRunning_CS[GameId].serverinfo.HostAsFirst) || (!IsHost && !GameRunning_CS[GameId].serverinfo.HostAsFirst));
+            return ((IsHost && GameRunning_CS[GameId].HostAsFirst) || (!IsHost && !GameRunning_CS[GameId].HostAsFirst));
         }
         /// <summary>
         /// 向服务器发送套牌
@@ -141,24 +138,24 @@ namespace Engine.Server
             //网络版的时候，要向两个客户端发送开始游戏的下一步指令
             if (IsHost)
             {
-                if (SystemManager.CurrentGameType == SystemManager.GameType.客户端服务器版)
+                if (SystemManager.游戏类型 == SystemManager.GameType.客户端服务器版)
                 {
                     GameWaitGuest_CS[GameId].SetCardStack(IsHost, card);
                 }
                 else
                 {
-                    GameWaitGuest_BS[GameId].SimulateServer.SetCardStack(IsHost, card);
+                    GameWaitGuest_BS[GameId].SetCardStack(IsHost, card);
                 }
             }
             else
             {
-                if (SystemManager.CurrentGameType == SystemManager.GameType.客户端服务器版)
+                if (SystemManager.游戏类型 == SystemManager.GameType.客户端服务器版)
                 {
                     GameRunning_CS[GameId].SetCardStack(IsHost, card);
                 }
                 else
                 {
-                    GameRunning_BS[GameId].SimulateServer.SetCardStack(IsHost, card);
+                    GameRunning_BS[GameId].SetCardStack(IsHost, card);
                 }
             }
         }
@@ -169,9 +166,9 @@ namespace Engine.Server
         /// <param name="IsFirst"></param>
         /// <param name="Count"></param>
         /// <returns></returns>
-        public static List<string> DrawCard(int GameId, bool IsFirst, int Count)
+        public static List<string> DrawCard(int GameId, bool IsHost, int Count)
         {
-            return GameRunning_CS[GameId].DrawCard(IsFirst, Count);
+            return GameRunning_CS[GameId].DrawCard(IsHost, Count);
         }
         /// <summary>
         /// 写入动作
@@ -198,7 +195,8 @@ namespace Engine.Server
         /// <returns></returns>
         public static String SecretHit(int GameId, bool IsFirst, String ActionList)
         {
-            return GameRunning_CS[GameId].SecretHitCheck(ActionList, IsFirst);
+            return String.Empty;
+            //return GameRunning_CS[GameId].SecretHitCheck(ActionList, IsFirst);
         }
         /// <summary>
         /// 
@@ -209,15 +207,7 @@ namespace Engine.Server
         /// <returns></returns>
         public static string UseHandCard(int GameId, bool IsHost, string CardSn)
         {
-            var result = GameRunning_CS[GameId].UseHandCard(IsHost, CardSn);
-            if (result == CardUtility.返回值枚举.正常)
-            {
-                return CardUtility.strTrue;
-            }
-            else
-            {
-                return CardUtility.strFalse;
-            }
+            return String.Empty;
         }
     }
 }

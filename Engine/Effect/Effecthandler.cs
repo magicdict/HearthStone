@@ -1,4 +1,5 @@
-﻿using Engine.Utility;
+﻿using Engine.Client;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 
@@ -14,7 +15,7 @@ namespace Engine.Effect
         /// <param name="PosInfo"></param>
         /// <param name="RandSeed"></param>
         /// <returns></returns>
-        public static List<string> GetTargetList(CardUtility.位置选择用参数结构体 SelectOpt, Client.GameStatus game, int RandSeed)
+        public static List<string> GetTargetList(CardUtility.位置选择用参数结构体 SelectOpt, Client.ClientPlayerInfo game, int RandSeed)
         {
             List<string> Result = new List<string>();
             switch (SelectOpt.EffictTargetSelectMode)
@@ -27,11 +28,11 @@ namespace Engine.Effect
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.目标选择角色枚举.随从:
-                                    SelectOpt.SelectedPos.Postion = t.Next(1, game.client.MyInfo.BattleField.MinionCount + 1);
+                                    SelectOpt.SelectedPos.Postion = t.Next(1, game.BasicInfo.BattleField.MinionCount + 1);
                                     SelectOpt.SelectedPos.本方对方标识 = true;
                                     break;
                                 case CardUtility.目标选择角色枚举.所有角色:
-                                    SelectOpt.SelectedPos.Postion = t.Next(Client.BattleFieldInfo.HeroPos, game.client.MyInfo.BattleField.MinionCount + 1);
+                                    SelectOpt.SelectedPos.Postion = t.Next(Client.BattleFieldInfo.HeroPos, game.BasicInfo.BattleField.MinionCount + 1);
                                     SelectOpt.SelectedPos.本方对方标识 = true;
                                     break;
                             }
@@ -42,11 +43,11 @@ namespace Engine.Effect
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.目标选择角色枚举.随从:
-                                    SelectOpt.SelectedPos.Postion = t.Next(1, game.client.YourInfo.BattleField.MinionCount + 1);
+                                    SelectOpt.SelectedPos.Postion = t.Next(1, game.YourInfo.BattleField.MinionCount + 1);
                                     SelectOpt.SelectedPos.本方对方标识 = false;
                                     break;
                                 case CardUtility.目标选择角色枚举.所有角色:
-                                    SelectOpt.SelectedPos.Postion = t.Next(Client.BattleFieldInfo.HeroPos, game.client.YourInfo.BattleField.MinionCount + 1);
+                                    SelectOpt.SelectedPos.Postion = t.Next(Client.BattleFieldInfo.HeroPos, game.YourInfo.BattleField.MinionCount + 1);
                                     SelectOpt.SelectedPos.本方对方标识 = false;
                                     break;
                             }
@@ -59,12 +60,12 @@ namespace Engine.Effect
                             if (t.Next(1, 3) == 1)
                             {
                                 SelectOpt.SelectedPos.本方对方标识 = true;
-                                MinionCount = game.client.MyInfo.BattleField.MinionCount;
+                                MinionCount = game.BasicInfo.BattleField.MinionCount;
                             }
                             else
                             {
                                 SelectOpt.SelectedPos.本方对方标识 = false;
-                                MinionCount = game.client.YourInfo.BattleField.MinionCount;
+                                MinionCount = game.YourInfo.BattleField.MinionCount;
                             }
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
@@ -145,12 +146,12 @@ namespace Engine.Effect
                     //右侧追加
                     if (SelectOpt.SelectedPos.本方对方标识)
                     {
-                        if (SelectOpt.SelectedPos.Postion != game.client.MyInfo.BattleField.MinionCount)
+                        if (SelectOpt.SelectedPos.Postion != game.BasicInfo.BattleField.MinionCount)
                             Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + (SelectOpt.SelectedPos.Postion + 1).ToString("D1"));
                     }
                     else
                     {
-                        if (SelectOpt.SelectedPos.Postion != game.client.YourInfo.BattleField.MinionCount)
+                        if (SelectOpt.SelectedPos.Postion != game.YourInfo.BattleField.MinionCount)
                             Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + (SelectOpt.SelectedPos.Postion + 1).ToString("D1"));
                     }
                     break;
@@ -184,7 +185,7 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="RandomSeed"></param>
         /// <returns></returns>
-        public static List<String> RunSingleEffect(EffectDefine singleEffect, Engine.Client.GameStatus game, int RandomSeed)
+        public static List<String> RunSingleEffect(EffectDefine singleEffect, ClientPlayerInfo game, int RandomSeed)
         {
             List<String> Result = new List<string>();
             List<String> PosList = GetTargetList(singleEffect.AbliltyPosPicker, game, RandomSeed);
@@ -196,24 +197,24 @@ namespace Engine.Effect
                 {
                     switch (int.Parse(PosField[1]))
                     {
-                        case Engine.Client.BattleFieldInfo.HeroPos:
-                            Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1")).DealHero(game, game.client.MyInfo));
+                        case BattleFieldInfo.HeroPos:
+                            Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1")).DealHero(game, game.BasicInfo));
                             break;
-                        case Engine.Client.BattleFieldInfo.AllMinionPos:
-                            for (int i = 0; i < game.client.MyInfo.BattleField.MinionCount; i++)
+                        case BattleFieldInfo.AllMinionPos:
+                            for (int i = 0; i < game.BasicInfo.BattleField.MinionCount; i++)
                             {
-                                Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString("D1")).DealMinion(game, game.client.MyInfo.BattleField.BattleMinions[i]));
+                                Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString("D1")).DealMinion(game, game.BasicInfo.BattleField.BattleMinions[i]));
                             }
                             break;
-                        case Engine.Client.BattleFieldInfo.AllRolePos:
-                            Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1")).DealHero(game, game.client.MyInfo));
-                            for (int i = 0; i < game.client.MyInfo.BattleField.MinionCount; i++)
+                        case BattleFieldInfo.AllRolePos:
+                            Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1")).DealHero(game, game.BasicInfo));
+                            for (int i = 0; i < game.BasicInfo.BattleField.MinionCount; i++)
                             {
-                                Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString("D1")).DealMinion(game, game.client.MyInfo.BattleField.BattleMinions[i]));
+                                Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString("D1")).DealMinion(game, game.BasicInfo.BattleField.BattleMinions[i]));
                             }
                             break;
                         default:
-                            Result.Add(GetEffectHandler(singleEffect, game, PosInfo).DealMinion(game, game.client.MyInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1]));
+                            Result.Add(GetEffectHandler(singleEffect, game, PosInfo).DealMinion(game, game.BasicInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1]));
                             break;
                     }
                 }
@@ -221,24 +222,24 @@ namespace Engine.Effect
                 {
                     switch (int.Parse(PosField[1]))
                     {
-                        case Engine.Client.BattleFieldInfo.HeroPos:
-                            Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1")).DealHero(game, game.client.YourInfo));
+                        case BattleFieldInfo.HeroPos:
+                            Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1")).DealHero(game, game.YourInfo));
                             break;
-                        case Engine.Client.BattleFieldInfo.AllMinionPos:
-                            for (int i = 0; i < game.client.YourInfo.BattleField.MinionCount; i++)
+                        case BattleFieldInfo.AllMinionPos:
+                            for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                             {
-                                Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1")).DealMinion(game, game.client.YourInfo.BattleField.BattleMinions[i]));
+                                Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1")).DealMinion(game, game.YourInfo.BattleField.BattleMinions[i]));
                             }
                             break;
-                        case Engine.Client.BattleFieldInfo.AllRolePos:
-                            Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1")).DealHero(game, game.client.YourInfo));
-                            for (int i = 0; i < game.client.YourInfo.BattleField.MinionCount; i++)
+                        case BattleFieldInfo.AllRolePos:
+                            Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1")).DealHero(game, game.YourInfo));
+                            for (int i = 0; i < game.YourInfo.BattleField.MinionCount; i++)
                             {
-                                Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1")).DealMinion(game, game.client.YourInfo.BattleField.BattleMinions[i]));
+                                Result.Add(GetEffectHandler(singleEffect, game, CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1")).DealMinion(game, game.YourInfo.BattleField.BattleMinions[i]));
                             }
                             break;
                         default:
-                            Result.Add(GetEffectHandler(singleEffect, game, PosInfo).DealMinion(game, game.client.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1]));
+                            Result.Add(GetEffectHandler(singleEffect, game, PosInfo).DealMinion(game, game.YourInfo.BattleField.BattleMinions[int.Parse(PosField[1]) - 1]));
                             break;
                     }
                 }
@@ -252,7 +253,7 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="PosInfo"></param>
         /// <returns></returns>
-        private static IAtomicEffect GetEffectHandler(EffectDefine singleEffect, Engine.Client.GameStatus game, String PosInfo)
+        private static IAtomicEffect GetEffectHandler(EffectDefine singleEffect, ClientPlayerInfo game, String PosInfo)
         {
             AtomicEffectDefine atomic;
             if (String.IsNullOrEmpty(singleEffect.效果条件) ||

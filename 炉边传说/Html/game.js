@@ -113,6 +113,12 @@ function SendDeck() {
     socket.send(message);
 }
 
+function UserHandCard(CardSN) {
+    LastRequest = RequestType.使用手牌;
+    var message = RequestType.使用手牌 + GameId + strHost + CardSN;
+    socket.send(message);
+}
+
 function SendDeckResponse() {
     //alert("传送套牌:[" + data.toString() + "]");
     LastRequest = RequestType.初始化状态;
@@ -140,8 +146,8 @@ function BattleInfoResponse() {
     //    alert(BattleInfo.MyInfo.手牌[i]);
     //}
     var divHtml = "BattleInfo<br>";
-    for (var i = 0; i < BattleInfo.MyInfo.手牌.length; i++) {
-        divHtml += "手牌:" + BattleInfo.MyInfo.手牌[i] + "<br>";
+    for (var i = 0; i < BattleInfo.HandCard.length; i++) {
+        divHtml += "手牌:" + BattleInfo.HandCard[i].名称 + "<input type=\"button\" onclick=\"UserHandCard(\'" + BattleInfo.HandCard[i].序列号 + "\')\" value=\"使用\" />" + "<br>";
     }
     document.getElementById("BattleInfo").innerHTML = divHtml;
 }

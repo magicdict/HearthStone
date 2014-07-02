@@ -9,13 +9,13 @@ namespace Engine.Effect
     /// </summary>
     public class ControlEffect
     {
-        public static List<string> RunEffect(Client.GameStatus game, String PosField)
+        public static List<string> RunEffect(Client.ClientPlayerInfo game, String PosField)
         {
             List<String> Result = new List<string>();
-            if (game.client.MyInfo.BattleField.MinionCount != SystemManager.MaxMinionCount)
+            if (game.BasicInfo.BattleField.MinionCount != SystemManager.MaxMinionCount)
             {
-                game.client.MyInfo.BattleField.AppendToBattle(game.client.YourInfo.BattleField.BattleMinions[int.Parse(PosField) - 1].DeepCopy());
-                game.client.YourInfo.BattleField.BattleMinions[int.Parse(PosField) - 1] = null;
+                game.BasicInfo.BattleField.AppendToBattle(game.YourInfo.BattleField.BattleMinions[int.Parse(PosField) - 1].DeepCopy());
+                game.YourInfo.BattleField.BattleMinions[int.Parse(PosField) - 1] = null;
                 //CONTROL#1
                 Result.Add(Engine.Server.ActionCode.strControl + Engine.Utility.CardUtility.strSplitMark + PosField[1]);
             }
@@ -26,10 +26,10 @@ namespace Engine.Effect
         /// </summary>
         /// <param name="game"></param>
         /// <param name="actField"></param>
-        public static void ReRunEffect(GameStatus game, String[] actField)
+        public static void ReRunEffect(ClientPlayerInfo game, String[] actField)
         {
-            game.client.YourInfo.BattleField.AppendToBattle(game.client.MyInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1].DeepCopy());
-            game.client.MyInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1] = null;
+            game.YourInfo.BattleField.AppendToBattle(game.BasicInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1].DeepCopy());
+            game.BasicInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1] = null;
         }
     }
 }

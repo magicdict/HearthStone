@@ -48,8 +48,10 @@
     <Compile Include="AI\DoAction.cs" />
     <Compile Include="Client\EventHandler.cs" />
     <Compile Include="Client\FightHandler.cs" />
-    <Compile Include="Client\GameManager.cs" />
+    <Compile Include="Control\ClientManager.cs" />
     <Compile Include="Client\MinimizeBattleInfo.cs" />
+    <Compile Include="Control\FullServerManager.cs" />
+    <Compile Include="Control\GameManager.cs" />
     <Compile Include="Utility\CSharpUtility.cs" />
     <Compile Include="Utility\ExpressHandler.cs" />
     <Compile Include="Effect\AtomicEffectDefine.cs" />
@@ -70,8 +72,8 @@
     <Compile Include="Effect\SystemEffect\CrystalEffect.cs" />
     <Compile Include="Effect\EffectDefine.cs" />
     <Compile Include="Effect\RoleEffect\TransformEffect.cs" />
-    <Compile Include="Client\GameStatus.cs" />
-    <Compile Include="Client\PlayerInfo.cs" />
+    <Compile Include="Control\Info\StatusInfo.cs" />
+    <Compile Include="Control\Info\PlayerInfo.cs" />
     <Compile Include="Card\CardBasicInfo.cs" />
     <Compile Include="Client\CardDeck.cs" />
     <Compile Include="Card\SpellCard.cs" />
@@ -84,7 +86,7 @@
     <Compile Include="Client\ClientRequest.cs" />
     <Compile Include="Server\ServerResponse.cs" />
     <Compile Include="Server\GameServer.cs" />
-    <Compile Include="Server\RemoteGameManager.cs" />
+    <Compile Include="Control\ServerManager.cs" />
     <Compile Include="Card\WeaponCard.cs" />
     <Compile Include="Utility\WebSocketServer.cs" />
     <Compile Include="Utility\TcpSocketServer.cs" />

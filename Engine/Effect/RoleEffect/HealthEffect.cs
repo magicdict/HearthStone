@@ -24,14 +24,14 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="PlayInfo"></param>
         /// <returns></returns>
-        String IAtomicEffect.DealHero(Client.GameStatus game, Client.PublicInfo PlayInfo)
+        String IAtomicEffect.DealHero(Client.ClientPlayerInfo game, Client.PublicInfo PlayInfo)
         {
             int ShieldPoint = ExpressHandler.GetEffectPoint(game, 护甲回复表达式);
             int HealthPoint = ExpressHandler.GetEffectPoint(game, 生命值回复表达式);
             PlayInfo.AfterBeShield(ShieldPoint);
             if (PlayInfo.AfterBeHealth(HealthPoint))
             {
-                GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                ClientManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
                     触发事件类型 = CardUtility.事件类型枚举.治疗,
                     触发位置 = PlayInfo.战场位置
@@ -46,12 +46,12 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="Minion"></param>
         /// <returns></returns>
-        String IAtomicEffect.DealMinion(Client.GameStatus game, Card.MinionCard Minion)
+        String IAtomicEffect.DealMinion(Client.ClientPlayerInfo game, Card.MinionCard Minion)
         {
             int HealthPoint = ExpressHandler.GetEffectPoint(game, 生命值回复表达式);
             if (Minion.设置被治疗后状态(HealthPoint))
             {
-                GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                ClientManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
                     触发事件类型 = CardUtility.事件类型枚举.治疗,
                     触发位置 = Minion.战场位置
@@ -65,7 +65,7 @@ namespace Engine.Effect
         /// </summary>
         /// <param name="game"></param>
         /// <param name="actField"></param>
-        void IAtomicEffect.ReRunEffect(Client.GameStatus game, string[] actField)
+        void IAtomicEffect.ReRunEffect(Client.ClientPlayerInfo game, string[] actField)
         {
             int HealthPoint = int.Parse(actField[3]);
             if (actField[1] == CardUtility.strYou)
@@ -73,15 +73,15 @@ namespace Engine.Effect
                 //MyInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.client.MyInfo.AfterBeHealth(HealthPoint);
+                    game.BasicInfo.AfterBeHealth(HealthPoint);
                     if (actField.Length == 5)
                     {
-                        game.client.MyInfo.AfterBeShield(int.Parse(actField[4]));
+                        game.BasicInfo.AfterBeShield(int.Parse(actField[4]));
                     }
                 }
                 else
                 {
-                    game.client.MyInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].设置被治疗后状态(HealthPoint);
+                    game.BasicInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].设置被治疗后状态(HealthPoint);
                 }
             }
             else
@@ -89,15 +89,15 @@ namespace Engine.Effect
                 //YourInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.client.YourInfo.AfterBeHealth(HealthPoint);
+                    game.YourInfo.AfterBeHealth(HealthPoint);
                     if (actField.Length == 5)
                     {
-                        game.client.YourInfo.AfterBeShield(int.Parse(actField[4]));
+                        game.YourInfo.AfterBeShield(int.Parse(actField[4]));
                     }
                 }
                 else
                 {
-                    game.client.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].设置被治疗后状态(HealthPoint);
+                    game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].设置被治疗后状态(HealthPoint);
                 }
             }
         }

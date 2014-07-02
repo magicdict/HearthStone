@@ -44,7 +44,11 @@ namespace Engine.Utility
         /// <summary>
         /// 游戏类型
         /// </summary>
-        public static GameType CurrentGameType = GameType.HTML版;
+        public static SystemManager.GameType 游戏类型 = SystemManager.GameType.HTML版;
+        /// <summary>
+        /// 游戏模式
+        /// </summary>
+        public static SystemManager.GameMode 游戏模式 = SystemManager.GameMode.标准;
         /// <summary>
         /// 日志
         /// </summary>

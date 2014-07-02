@@ -1,4 +1,5 @@
 ﻿using Engine.Card;
+using Engine.Client;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -516,7 +517,7 @@ namespace Engine.Utility
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public delegate int delegateGetPutPos(Engine.Client.GameStatus game);
+        public delegate int delegateGetPutPos(ClientPlayerInfo game);
         #endregion
 
     }

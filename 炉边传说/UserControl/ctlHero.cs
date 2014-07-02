@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Engine.Client;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 namespace 炉边传说
@@ -6,7 +7,7 @@ namespace 炉边传说
     public partial class ctlHero : UserControl
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
-        public Engine.Client.PublicInfo Hero
+        public PublicInfo Hero
         {
             set
             {

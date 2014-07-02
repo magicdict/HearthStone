@@ -1,5 +1,6 @@
 ﻿using System;
 using Engine.Utility;
+using Engine.Card;
 
 namespace Engine.Client
 {
@@ -33,6 +34,9 @@ namespace Engine.Client
                 状态列表 = minion.状态;
             }
         }
+        /// <summary>
+        /// 公开信息
+        /// </summary>
         public struct PlayerInfo
         {
             /// <summary>
@@ -44,50 +48,81 @@ namespace Engine.Client
             /// </summary>
             public int 生命力;
             /// <summary>
-            /// 手牌
-            /// </summary>
-            public string[] 手牌;
-            /// <summary>
             /// 
             /// </summary>
             /// <param name="pubInfo"></param>
             /// <param name="priInfo"></param>
-            public void Init(PublicInfo pubInfo, PrivateInfo priInfo)
+            public void Init(PublicInfo pubInfo)
             {
                 护盾值 = pubInfo.ShieldPoint;
                 生命力 = pubInfo.LifePoint;
-                手牌 = new string[priInfo.handCards.Count];
-                for (int i = 0; i < priInfo.handCards.Count; i++)
-                {
-                    手牌[i] = priInfo.handCards[i].名称;
-                }
+            }
+        }
+        public struct HandCardInfo
+        {
+            /// <summary>
+            /// 序列号
+            /// </summary>
+            public String 序列号;
+            /// <summary>
+            /// 名称
+            /// </summary>
+            public String 名称;
+            /// <summary>
+            /// 成本
+            /// </summary>
+            public int 使用成本;
+            /// <summary>
+            /// 初始化
+            /// </summary>
+            /// <param name="card"></param>
+            public void Init(CardBasicInfo card)
+            {
+                序列号 = card.序列号;
+                名称 = card.名称;
+                使用成本 = card.使用成本;
             }
         }
         public Minion[] HostBattle;
-        public Minion[] GuestBattle; 
+        public Minion[] GuestBattle;
+        public HandCardInfo[] HandCard;
         public PlayerInfo MyInfo = new PlayerInfo();
-        public void Init(GameStatus status, Boolean IsHost)
+        public void Init(ClientPlayerInfo status, Boolean IsHost)
         {
             if (IsHost)
             {
-                MyInfo.Init(status.client.HostInfo, status.client.HostSelfInfo);
+                MyInfo.Init(status.HostInfo);
+                HandCard = new HandCardInfo[status.HostSelfInfo.handCards.Count];
+                for (int i = 0; i < status.HostSelfInfo.handCards.Count; i++)
+                {
+                    HandCardInfo t = new HandCardInfo();
+                    t.Init(status.HostSelfInfo.handCards[i]);
+                    HandCard[i] = t;
+                }
             }
             else
             {
-                MyInfo.Init(status.client.GuestInfo, status.client.GuestSelfInfo);
+                HandCard = new HandCardInfo[status.GuestSelfInfo.handCards.Count];
+                for (int i = 0; i < status.GuestSelfInfo.handCards.Count; i++)
+                {
+                    HandCardInfo t = new HandCardInfo();
+                    t.Init(status.GuestSelfInfo.handCards[i]);
+                    HandCard[i] = t;
+                }
+                MyInfo.Init(status.GuestInfo);
             }
-            HostBattle = new Minion[status.client.HostInfo.BattleField.MinionCount];
-            for (int i = 0; i < status.client.HostInfo.BattleField.MinionCount; i++)
+            HostBattle = new Minion[status.HostInfo.BattleField.MinionCount];
+            for (int i = 0; i < status.HostInfo.BattleField.MinionCount; i++)
             {
                 Minion t = new Minion();
-                t.Init(status.client.HostInfo.BattleField.BattleMinions[i]);
+                t.Init(status.HostInfo.BattleField.BattleMinions[i]);
                 HostBattle[i] = t;
             }
-            GuestBattle = new Minion[status.client.GuestInfo.BattleField.MinionCount];
-            for (int i = 0; i < status.client.GuestInfo.BattleField.MinionCount; i++)
+            GuestBattle = new Minion[status.GuestInfo.BattleField.MinionCount];
+            for (int i = 0; i < status.GuestInfo.BattleField.MinionCount; i++)
             {
                 Minion t = new Minion();
-                t.Init(status.client.GuestInfo.BattleField.BattleMinions[i]);
+                t.Init(status.GuestInfo.BattleField.BattleMinions[i]);
                 GuestBattle[i] = t;
             }
         }

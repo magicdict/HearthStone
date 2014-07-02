@@ -7,7 +7,7 @@ using System.Text;
 namespace Engine.Client
 {
     /// <summary>
-    /// 共通情报
+    /// 公共情报
     /// </summary>
     public class PublicInfo
     {
@@ -156,7 +156,7 @@ namespace Engine.Client
         }
     }
     /// <summary>
-    /// 本方情报
+    /// 私有情报
     /// </summary>
     public class PrivateInfo
     {
@@ -171,13 +171,13 @@ namespace Engine.Client
         /// <summary>
         /// 手牌消耗重置
         /// </summary>
-        public void ResetHandCardCost(GameStatus game)
+        public void ResetHandCardCost(ClientPlayerInfo game)
         {
             foreach (var card in handCards)
             {
                 if (card.卡牌种类 == CardBasicInfo.卡牌类型枚举.法术)
                 {
-                    card.使用成本 = card.使用成本 + game.client.MyInfo.BattleField.AbilityCost;
+                    card.使用成本 = card.使用成本 + game.BasicInfo.BattleField.AbilityCost;
                     if (card.使用成本 < 0) card.使用成本 = 0;
                 }
             }

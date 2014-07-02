@@ -15,26 +15,26 @@ namespace Engine.Client
         /// </summary>
         /// <param name="ActionCommand"></param>
         /// <param name="game"></param>
-        public static void Process(string ActionCommand, GameStatus game)
+        public static void Process(string ActionCommand, ClientPlayerInfo game)
         {
             string[] actField = ActionCommand.Split(CardUtility.strSplitMark.ToCharArray());
             switch (Engine.Server.ActionCode.GetActionType(ActionCommand))
             {
                 case ActionCode.ActionType.Card:
-                    CardEffect.ReRunEffect(game, actField);
+                    CardEffect.ReRunEffect(1,game, actField);
                     break;
                 case ActionCode.ActionType.UseMinion:
                     int Pos = int.Parse(actField[2]);
                     var minion = (Engine.Card.MinionCard)Engine.Utility.CardUtility.GetCardInfoBySN(actField[1]);
                     minion.初始化();
-                    game.client.YourInfo.BattleField.PutToBattle(Pos, minion);
-                    game.client.YourInfo.BattleField.ResetBuff();
+                    game.YourInfo.BattleField.PutToBattle(Pos, minion);
+                    game.YourInfo.BattleField.ResetBuff();
                     break;
                 case ActionCode.ActionType.UseWeapon:
-                    game.client.YourInfo.Weapon = (Engine.Card.WeaponCard)Engine.Utility.CardUtility.GetCardInfoBySN(actField[1]);
+                    game.YourInfo.Weapon = (Engine.Card.WeaponCard)Engine.Utility.CardUtility.GetCardInfoBySN(actField[1]);
                     break;
                 case ActionCode.ActionType.UseSecret:
-                    game.client.YourInfo.SecretCount++; ;
+                    game.YourInfo.SecretCount++; ;
                     break;
                 case ActionCode.ActionType.UseAbility:
                     break;
@@ -78,7 +78,7 @@ namespace Engine.Client
                     WeaponPointEffect.ReRunEffect(game, actField);
                     break;
                 case ActionCode.ActionType.Settle:
-                    GameManager.Settle(game);
+                    ClientManager.Settle(game);
                     break;
             }
         }

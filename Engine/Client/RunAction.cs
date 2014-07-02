@@ -27,15 +27,23 @@ namespace Engine.Client
         /// </param>
         /// <param name="AIParm">AI决定的参数</param>
         /// <returns></returns>
-        public static List<String> StartAction(GameStatus game, String CardSn, Boolean IsMyAction, String[] AIParm = null)
+        public static List<String> StartAction(ClientPlayerInfo game, String CardSn, Boolean IsMyAction, String[] AIParm = null)
         {
             //清除事件池，注意，事件将在动作结束后整体结算
-            GameManager.事件处理组件.事件池.Clear();
+            ClientManager.事件处理组件.事件池.Clear();
             Engine.Card.CardBasicInfo card = Engine.Utility.CardUtility.GetCardInfoBySN(CardSn);
             List<String> ActionCodeLst = new List<string>();
             //未知的异常，卡牌资料缺失
             if (card == null) return ActionCodeLst;
-            PublicInfo PlayInfo = IsMyAction ? game.client.MyInfo : game.client.YourInfo;
+            PublicInfo PlayInfo;
+            if (SystemManager.游戏类型 == SystemManager.GameType.HTML版)
+            {
+                PlayInfo = IsMyAction ? game.HostInfo : game.GuestInfo;
+            }
+            else
+            {
+                PlayInfo = IsMyAction ? game.BasicInfo : game.YourInfo;
+            }
             switch (card.卡牌种类)
             {
                 case CardBasicInfo.卡牌类型枚举.法术:
@@ -48,7 +56,7 @@ namespace Engine.Client
                         ActionCodeLst.AddRange(ResultArg);
                         //英雄技能等的时候，不算[本方施法] 
                         if (card.原生卡牌)
-                            GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                            ClientManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                             {
                                 触发事件类型 = CardUtility.事件类型枚举.施法,
                                 触发位置 = PlayInfo.战场位置
@@ -79,7 +87,7 @@ namespace Engine.Client
                         //初始化
                         minion.初始化();
                         //必须在放入之前做得原因是，被放入的随从不能被触发这个事件
-                        GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                        ClientManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                         {
                             触发事件类型 = CardUtility.事件类型枚举.召唤,
                             触发位置 = new CardUtility.指定位置结构体()
@@ -135,8 +143,8 @@ namespace Engine.Client
                     break;
                 case CardBasicInfo.卡牌类型枚举.奥秘:
                     ActionCodeLst.Add(ActionCode.strSecret + CardUtility.strSplitMark + CardSn);
-                    game.client.MySelfInfo.奥秘列表.Add((Engine.Card.SecretCard)card);
-                    PlayInfo.SecretCount = game.client.MySelfInfo.奥秘列表.Count;
+                    game.SelfInfo.奥秘列表.Add((Engine.Card.SecretCard)card);
+                    PlayInfo.SecretCount = game.SelfInfo.奥秘列表.Count;
                     break;
                 default:
                     break;
@@ -156,7 +164,7 @@ namespace Engine.Client
                             ActionCodeLst.AddRange(ResultArg);
                             //英雄技能等的时候，不算[本方施法] 
                             if (card.原生卡牌)
-                                GameManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                                ClientManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                                 {
                                     触发事件类型 = CardUtility.事件类型枚举.施法,
                                     触发位置 = PlayInfo.战场位置
@@ -168,7 +176,7 @@ namespace Engine.Client
             if (ActionCodeLst.Count != 0)
             {
                 PlayInfo.连击状态 = true;
-                ActionCodeLst.AddRange(GameManager.事件处理组件.事件处理(game));
+                ActionCodeLst.AddRange(ClientManager.事件处理组件.事件处理(game));
             }
             return ActionCodeLst;
         }
@@ -181,15 +189,15 @@ namespace Engine.Client
         /// <param name="YourPos">被攻击方</param>
         /// <param name="IsMyAction">动作发起方</param>
         /// <returns></returns>
-        public static List<String> Fight(GameStatus game, int MyPos, int YourPos, Boolean IsMyAction)
+        public static List<String> Fight(ClientPlayerInfo game, int MyPos, int YourPos, Boolean IsMyAction)
         {
-            GameManager.事件处理组件.事件池.Clear();
+            ClientManager.事件处理组件.事件池.Clear();
             //FIGHT#1#2
             String actionCode = ActionCode.strFight + CardUtility.strSplitMark + MyPos + CardUtility.strSplitMark + YourPos;
             List<String> ActionCodeLst = new List<string>();
             ActionCodeLst.Add(actionCode);
             ActionCodeLst.AddRange(FightHandler.Fight(MyPos, YourPos, game, IsMyAction));
-            ActionCodeLst.AddRange(GameManager.事件处理组件.事件处理(game));
+            ActionCodeLst.AddRange(ClientManager.事件处理组件.事件处理(game));
             return ActionCodeLst;
         }
         #endregion
