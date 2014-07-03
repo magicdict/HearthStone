@@ -1,4 +1,6 @@
-﻿using Engine.Utility;
+﻿using Engine.Action;
+using Engine.Control;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 
@@ -13,19 +15,19 @@ namespace Engine.Client
         /// <param name="被攻击方Pos">对方</param>
         /// <param name="IsMyAction">被动攻击</param>
         /// <returns></returns>
-        public static List<String> Fight(int 攻击方Pos, int 被攻击方Pos, ClientPlayerInfo gameStatus, Boolean IsMyAction)
+        public static List<String> Fight(int 攻击方Pos, int 被攻击方Pos, ActionStatus gameStatus, Boolean IsMyAction)
         {
             PublicInfo AttackInfo;
             PublicInfo AttackedInfo;
             if (IsMyAction)
             {
-                AttackInfo = gameStatus.BasicInfo;
-                AttackedInfo = gameStatus.YourInfo;
+                AttackInfo = gameStatus.AllRole.MyPublicInfo;
+                AttackedInfo = gameStatus.AllRole.YourPublicInfo;
             }
             else
             {
-                AttackInfo = gameStatus.YourInfo;
-                AttackedInfo = gameStatus.BasicInfo;
+                AttackInfo = gameStatus.AllRole.YourPublicInfo;
+                AttackedInfo = gameStatus.AllRole.MyPublicInfo;
             }
             List<String> Result = new List<string>();
             //主动攻击方的状态变化
@@ -56,7 +58,7 @@ namespace Engine.Client
                 //圣盾不引发伤害事件
                 if (AttackInfo.BattleField.BattleMinions[攻击方Pos - 1].设置被攻击后状态(AttackedPoint))
                 {
-                    ClientManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    gameStatus.eventhandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型枚举.受伤,
                         触发位置 = AttackInfo.BattleField.BattleMinions[攻击方Pos - 1].战场位置
@@ -68,7 +70,7 @@ namespace Engine.Client
                 //护甲不引发伤害事件
                 if (AttackInfo.AfterBeAttack(AttackedPoint))
                 {
-                    ClientManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    gameStatus.eventhandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型枚举.受伤,
                         触发位置 = AttackInfo.战场位置
@@ -91,7 +93,7 @@ namespace Engine.Client
             {
                 if (AttackedInfo.BattleField.BattleMinions[被攻击方Pos - 1].设置被攻击后状态(AttackPoint))
                 {
-                    ClientManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    gameStatus.eventhandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型枚举.受伤,
                         触发位置 = AttackedInfo.BattleField.BattleMinions[被攻击方Pos - 1].战场位置
@@ -103,7 +105,7 @@ namespace Engine.Client
                 //护甲不引发伤害事件
                 if (AttackedInfo.AfterBeAttack(AttackPoint))
                 {
-                    ClientManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    gameStatus.eventhandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型枚举.受伤,
                         触发位置 = AttackedInfo.战场位置
@@ -115,12 +117,12 @@ namespace Engine.Client
             if (IsMyAction)
             {
                 //将亡语效果放入结果
-                Result.AddRange(ClientManager.Settle(gameStatus));
+                Result.AddRange(ActionStatus.Settle(gameStatus));
             }
             else
             {
                 //对方已经发送亡语效果，本方不用重复模拟了
-                ClientManager.Settle(gameStatus);
+                ActionStatus.Settle(gameStatus);
             }
             return Result;
         }

@@ -46,12 +46,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\DoAction.cs" />
-    <Compile Include="Client\EventHandler.cs" />
+    <Compile Include="Client\BattleEventHandler.cs" />
     <Compile Include="Client\FightHandler.cs" />
     <Compile Include="Control\ClientManager.cs" />
     <Compile Include="Client\MinimizeBattleInfo.cs" />
     <Compile Include="Control\FullServerManager.cs" />
-    <Compile Include="Control\GameManager.cs" />
+    <Compile Include="Action\ActionStatus.cs" />
     <Compile Include="Utility\CSharpUtility.cs" />
     <Compile Include="Utility\ExpressHandler.cs" />
     <Compile Include="Effect\AtomicEffectDefine.cs" />
@@ -64,6 +64,7 @@
     <Compile Include="Effect\RoleEffect\StatusEffect.cs" />
     <Compile Include="Effect\SystemEffect\SummonEffect.cs" />
     <Compile Include="Effect\SystemEffect\WeaponPointEffect.cs" />
+    <Compile Include="Utility\SelectUtility.cs" />
     <Compile Include="Utility\SystemManager.cs" />
     <Compile Include="Client\BattleFieldInfo.cs" />
     <Compile Include="Client\Crystal.cs" />
@@ -72,13 +73,13 @@
     <Compile Include="Effect\SystemEffect\CrystalEffect.cs" />
     <Compile Include="Effect\EffectDefine.cs" />
     <Compile Include="Effect\RoleEffect\TransformEffect.cs" />
-    <Compile Include="Control\Info\StatusInfo.cs" />
-    <Compile Include="Control\Info\PlayerInfo.cs" />
+    <Compile Include="Info\StatusInfo.cs" />
+    <Compile Include="Info\PlayerInfo.cs" />
     <Compile Include="Card\CardBasicInfo.cs" />
     <Compile Include="Client\CardDeck.cs" />
     <Compile Include="Card\SpellCard.cs" />
-    <Compile Include="Client\ProcessAction.cs" />
-    <Compile Include="Client\RunAction.cs" />
+    <Compile Include="Action\ProcessAction.cs" />
+    <Compile Include="Action\RunAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility\CardUtility.cs" />
     <Compile Include="Card\SecretCard.cs" />

@@ -1,4 +1,6 @@
-﻿using Engine.Client;
+﻿using Engine.Action;
+using Engine.Client;
+using Engine.Control;
 using Engine.Server;
 using Engine.Utility;
 using System;
@@ -8,10 +10,10 @@ namespace Engine.AI
 {
     public static class DoAction
     {
-        public static List<String> Run(ClientPlayerInfo gameStatus)
+        public static List<String> Run(ActionStatus gameStatus)
         {
-            PublicInfo PlayInfo = gameStatus.YourInfo;
-            PrivateInfo PlaySelfInfo = gameStatus.YourSelfInfo;
+            PublicInfo PlayInfo = gameStatus.AllRole.YourPublicInfo;
+            PrivateInfo PlaySelfInfo = gameStatus.AllRole.YourPrivateInfo;
 
             List<String> Result = new List<string>();
             //能上场的随从都上场
@@ -41,10 +43,10 @@ namespace Engine.AI
         /// 能上场的随从
         /// </summary>
         /// <returns></returns>
-        private static int HasBattleMinion(ClientPlayerInfo gameStatus)
+        private static int HasBattleMinion(ActionStatus gameStatus)
         {
-            PrivateInfo PlaySelfInfo = gameStatus.YourSelfInfo;
-            PublicInfo PlayInfo = gameStatus.YourInfo;
+            PrivateInfo PlaySelfInfo = gameStatus.AllRole.YourPrivateInfo;
+            PublicInfo PlayInfo = gameStatus.AllRole.YourPublicInfo;
             for (int i = 0; i < PlaySelfInfo.handCards.Count; i++)
             {
                 var card = PlaySelfInfo.handCards[i];
@@ -63,9 +65,9 @@ namespace Engine.AI
         /// 是否拥有可以攻击的随从
         /// </summary>
         /// <returns></returns>
-        private static int HasAttackMinion(ClientPlayerInfo gameStatus)
+        private static int HasAttackMinion(ActionStatus gameStatus)
         {
-            PublicInfo PlayInfo = gameStatus.YourInfo;
+            PublicInfo PlayInfo = gameStatus.AllRole.YourPublicInfo;
             //能攻击的随从都攻击，优先攻击英雄
             for (int i = 0; i < PlayInfo.BattleField.MinionCount; i++)
             {
@@ -80,9 +82,9 @@ namespace Engine.AI
         /// 获得打击目标
         /// </summary>
         /// <returns></returns>
-        private static int GetAttackTarget(ClientPlayerInfo gameStatus)
+        private static int GetAttackTarget(ActionStatus gameStatus)
         {
-            PublicInfo PlayInfo = gameStatus.BasicInfo;
+            PublicInfo PlayInfo = gameStatus.AllRole.MyPublicInfo;
             for (int i = 0; i < PlayInfo.BattleField.MinionCount; i++)
             {
                 if (PlayInfo.BattleField.BattleMinions[i].嘲讽特性) return i + 1;

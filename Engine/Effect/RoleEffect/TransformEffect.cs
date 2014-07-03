@@ -1,4 +1,6 @@
-﻿using Engine.Utility;
+﻿using Engine.Action;
+using Engine.Control;
+using Engine.Utility;
 using System;
 
 namespace Engine.Effect
@@ -15,7 +17,7 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="PlayInfo"></param>
         /// <returns></returns>
-        String IAtomicEffect.DealHero(Client.ClientPlayerInfo game, Client.PublicInfo PlayInfo)
+        String IAtomicEffect.DealHero(ActionStatus game, Client.PublicInfo PlayInfo)
         {
             return String.Empty;
         }
@@ -25,7 +27,7 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="Minion"></param>
         /// <returns></returns>
-        String IAtomicEffect.DealMinion(Client.ClientPlayerInfo game, Card.MinionCard Minion)
+        String IAtomicEffect.DealMinion(ActionStatus game, Card.MinionCard Minion)
         {
             var Summon = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(变形目标卡牌编号);
             //一定要初始化，不然的话，生命值是0；
@@ -40,16 +42,16 @@ namespace Engine.Effect
         /// </summary>
         /// <param name="game"></param>
         /// <param name="actField"></param>
-        void IAtomicEffect.ReRunEffect(Client.ClientPlayerInfo game, string[] actField)
+        void IAtomicEffect.ReRunEffect(ActionStatus game, string[] actField)
         {
             if (actField[1] == CardUtility.strYou)
             {
                 //MyInfo
-                game.BasicInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1] = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(actField[3]);
+                game.AllRole.MyPublicInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1] = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(actField[3]);
             }
             else
             {
-                game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1] = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(actField[3]);
+                game.AllRole.YourPublicInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1] = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(actField[3]);
             }
         }
         /// <summary>

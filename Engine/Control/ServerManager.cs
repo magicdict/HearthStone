@@ -38,7 +38,7 @@ namespace Engine.Control
         /// <summary>
         /// 事件处理组件
         /// </summary>
-        public Engine.Client.EventHandler 事件处理组件 = new Engine.Client.EventHandler();
+        public Engine.Client.BattleEventHandler 事件处理组件 = new Engine.Client.BattleEventHandler();
         /// <summary>
         /// 主机信息
         /// </summary>

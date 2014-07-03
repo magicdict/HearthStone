@@ -1,5 +1,7 @@
-﻿using Engine.Card;
+﻿using Engine.Action;
+using Engine.Card;
 using Engine.Client;
+using Engine.Control;
 using System;
 using System.Collections.Generic;
 
@@ -12,21 +14,21 @@ namespace Engine.Effect
         /// </summary>
         /// <param name="game"></param>
         /// <param name="actField"></param>
-        void ReRunEffect(ClientPlayerInfo game, String[] actField);
+        void ReRunEffect(ActionStatus game, String[] actField);
         /// <summary>
         /// 对英雄动作
         /// </summary>
         /// <param name="game"></param>
         /// <param name="PlayInfo"></param>
         /// <returns></returns>
-        String DealHero(Client.ClientPlayerInfo game, PublicInfo PlayInfo);
+        String DealHero(ActionStatus game, PublicInfo PlayInfo);
         /// <summary>
         /// 对随从动作
         /// </summary>
         /// <param name="game"></param>
         /// <param name="Minion"></param>
         /// <returns></returns>
-        String DealMinion(Client.ClientPlayerInfo game, MinionCard Minion);
+        String DealMinion(ActionStatus game, MinionCard Minion);
         /// <summary>
         /// 获得效果信息
         /// </summary>

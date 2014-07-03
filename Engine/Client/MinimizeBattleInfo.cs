@@ -1,6 +1,8 @@
 ﻿using System;
 using Engine.Utility;
 using Engine.Card;
+using Engine.Control;
+using Engine.Action;
 
 namespace Engine.Client
 {
@@ -87,42 +89,42 @@ namespace Engine.Client
         public Minion[] GuestBattle;
         public HandCardInfo[] HandCard;
         public PlayerInfo MyInfo = new PlayerInfo();
-        public void Init(ClientPlayerInfo status, Boolean IsHost)
+        public void Init(ActionStatus status, Boolean IsHost)
         {
             if (IsHost)
             {
-                MyInfo.Init(status.HostInfo);
-                HandCard = new HandCardInfo[status.HostSelfInfo.handCards.Count];
-                for (int i = 0; i < status.HostSelfInfo.handCards.Count; i++)
+                MyInfo.Init(status.AllRole.MyPublicInfo);
+                HandCard = new HandCardInfo[status.AllRole.MyPrivateInfo.handCards.Count];
+                for (int i = 0; i < status.AllRole.MyPrivateInfo.handCards.Count; i++)
                 {
                     HandCardInfo t = new HandCardInfo();
-                    t.Init(status.HostSelfInfo.handCards[i]);
+                    t.Init(status.AllRole.MyPrivateInfo.handCards[i]);
                     HandCard[i] = t;
                 }
             }
             else
             {
-                HandCard = new HandCardInfo[status.GuestSelfInfo.handCards.Count];
-                for (int i = 0; i < status.GuestSelfInfo.handCards.Count; i++)
+                MyInfo.Init(status.AllRole.YourPublicInfo);
+                HandCard = new HandCardInfo[status.AllRole.YourPrivateInfo.handCards.Count];
+                for (int i = 0; i < status.AllRole.YourPrivateInfo.handCards.Count; i++)
                 {
                     HandCardInfo t = new HandCardInfo();
-                    t.Init(status.GuestSelfInfo.handCards[i]);
+                    t.Init(status.AllRole.YourPrivateInfo.handCards[i]);
                     HandCard[i] = t;
                 }
-                MyInfo.Init(status.GuestInfo);
             }
-            HostBattle = new Minion[status.HostInfo.BattleField.MinionCount];
-            for (int i = 0; i < status.HostInfo.BattleField.MinionCount; i++)
+            HostBattle = new Minion[status.AllRole.MyPublicInfo.BattleField.MinionCount];
+            for (int i = 0; i < status.AllRole.MyPublicInfo.BattleField.MinionCount; i++)
             {
                 Minion t = new Minion();
-                t.Init(status.HostInfo.BattleField.BattleMinions[i]);
+                t.Init(status.AllRole.MyPublicInfo.BattleField.BattleMinions[i]);
                 HostBattle[i] = t;
             }
-            GuestBattle = new Minion[status.GuestInfo.BattleField.MinionCount];
-            for (int i = 0; i < status.GuestInfo.BattleField.MinionCount; i++)
+            GuestBattle = new Minion[status.AllRole.YourPublicInfo.BattleField.MinionCount];
+            for (int i = 0; i < status.AllRole.YourPublicInfo.BattleField.MinionCount; i++)
             {
                 Minion t = new Minion();
-                t.Init(status.GuestInfo.BattleField.BattleMinions[i]);
+                t.Init(status.AllRole.YourPublicInfo.BattleField.BattleMinions[i]);
                 GuestBattle[i] = t;
             }
         }

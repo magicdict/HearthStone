@@ -1,4 +1,6 @@
-﻿using Engine.Card;
+﻿using Engine.Action;
+using Engine.Card;
+using Engine.Control;
 using Engine.Utility;
 using System;
 using System.Collections.Generic;
@@ -48,7 +50,7 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="PlayInfo"></param>
         /// <returns></returns>
-        String IAtomicEffect.DealHero(Client.ClientPlayerInfo game, Client.PublicInfo PlayInfo)
+        String IAtomicEffect.DealHero(ActionStatus game, Client.PublicInfo PlayInfo)
         {
             switch (施加状态)
             {
@@ -66,7 +68,7 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="Minion"></param>
         /// <returns></returns>
-        String IAtomicEffect.DealMinion(Client.ClientPlayerInfo game, Card.MinionCard Minion)
+        String IAtomicEffect.DealMinion(ActionStatus game, Card.MinionCard Minion)
         {
             ChangeStatus(Minion, 施加状态);
             return Server.ActionCode.strStatus + CardUtility.strSplitMark + Minion.战场位置.ToString() + CardUtility.strSplitMark + 施加状态;
@@ -111,7 +113,7 @@ namespace Engine.Effect
         /// </summary>
         /// <param name="game"></param>
         /// <param name="actField"></param>
-        void IAtomicEffect.ReRunEffect(Client.ClientPlayerInfo game, string[] actField)
+        void IAtomicEffect.ReRunEffect(ActionStatus game, string[] actField)
         {
             String 新状态 = actField[3];
             if (actField[1] == CardUtility.strYou)
@@ -119,10 +121,10 @@ namespace Engine.Effect
                 //MyInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.BasicInfo.冰冻状态 = CardUtility.效果回合枚举.效果命中;                }
+                    game.AllRole.MyPublicInfo.冰冻状态 = CardUtility.效果回合枚举.效果命中;                }
                 else
                 {
-                    ChangeStatus(game.BasicInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1],新状态);
+                    ChangeStatus(game.AllRole.MyPublicInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1],新状态);
                 }
             }
             else
@@ -130,11 +132,11 @@ namespace Engine.Effect
                 //YourInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.YourInfo.冰冻状态 = CardUtility.效果回合枚举.效果作用;
+                    game.AllRole.YourPublicInfo.冰冻状态 = CardUtility.效果回合枚举.效果作用;
                 }
                 else
                 {
-                    ChangeStatus(game.YourInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1], 新状态);
+                    ChangeStatus(game.AllRole.YourPublicInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1], 新状态);
                 }
             }
         }

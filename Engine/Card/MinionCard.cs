@@ -1,4 +1,6 @@
-﻿using Engine.Client;
+﻿using Engine.Action;
+using Engine.Client;
+using Engine.Control;
 using Engine.Utility;
 using System;
 using System.Collections.Generic;
@@ -426,7 +428,7 @@ namespace Engine.Card
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public List<String> 发动战吼(ClientPlayerInfo game, Boolean IsMyAction)
+        public List<String> 发动战吼(ActionStatus game, Boolean IsMyAction)
         {
             List<String> ActionCodeLst = new List<string>();
             //战吼效果
@@ -446,7 +448,7 @@ namespace Engine.Card
         /// <param name="game"></param>
         /// <param name="IsMyAction"></param>
         /// <returns></returns>
-        public List<String> 发动亡语(ClientPlayerInfo game, Boolean IsMyAction)
+        public List<String> 发动亡语(ActionStatus game, Boolean IsMyAction)
         {
             List<String> ActionCodeLst = new List<string>();
             //亡语效果
@@ -464,7 +466,7 @@ namespace Engine.Card
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public List<String> 回合开始(ClientPlayerInfo game)
+        public List<String> 回合开始(ActionStatus game)
         {
             List<String> ActionCodeLst = new List<string>();
             //回合开始效果
@@ -483,7 +485,7 @@ namespace Engine.Card
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public List<String> 回合结束(ClientPlayerInfo game)
+        public List<String> 回合结束(ActionStatus game)
         {
             List<String> ActionCodeLst = new List<string>();
             //回合结束效果
@@ -558,7 +560,7 @@ namespace Engine.Card
         /// <param name="事件"></param>
         /// <param name="game"></param>
         /// <returns></returns>
-        public List<String> 事件处理方法(Engine.Utility.CardUtility.全局事件 事件, ClientPlayerInfo game)
+        public List<String> 事件处理方法(Engine.Utility.CardUtility.全局事件 事件, ActionStatus game)
         {
             List<String> ActionLst = new List<string>();
             if (!沉默状态 && 自身事件效果.触发效果事件类型 == 事件.触发事件类型)
@@ -573,7 +575,7 @@ namespace Engine.Card
                     return ActionLst;
                 }
                 ActionLst.Add(Engine.Server.ActionCode.strHitEvent + CardUtility.strSplitMark);
-                ActionLst.AddRange(((Card.SpellCard)CardUtility.GetCardInfoBySN(自身事件效果.效果编号)).UseAbility(game, false));
+                ActionLst.AddRange(((Card.SpellCard)CardUtility.GetCardInfoBySN(自身事件效果.效果编号)).UseSpell(game, false));
                 潜行特性 = false;
             }
             return ActionLst;

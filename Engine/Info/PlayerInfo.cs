@@ -1,4 +1,6 @@
-﻿using Engine.Card;
+﻿using Engine.Action;
+using Engine.Card;
+using Engine.Control;
 using Engine.Utility;
 using System;
 using System.Collections.Generic;
@@ -171,13 +173,13 @@ namespace Engine.Client
         /// <summary>
         /// 手牌消耗重置
         /// </summary>
-        public void ResetHandCardCost(ClientPlayerInfo game)
+        public void ResetHandCardCost(ActionStatus game)
         {
             foreach (var card in handCards)
             {
                 if (card.卡牌种类 == CardBasicInfo.卡牌类型枚举.法术)
                 {
-                    card.使用成本 = card.使用成本 + game.BasicInfo.BattleField.AbilityCost;
+                    card.使用成本 = card.使用成本 + game.AllRole.YourPublicInfo.BattleField.AbilityCost;
                     if (card.使用成本 < 0) card.使用成本 = 0;
                 }
             }

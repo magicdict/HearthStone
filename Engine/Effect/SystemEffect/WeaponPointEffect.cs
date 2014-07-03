@@ -1,4 +1,6 @@
-﻿using Engine.Client;
+﻿using Engine.Action;
+using Engine.Client;
+using Engine.Control;
 using Engine.Server;
 using Engine.Utility;
 using System;
@@ -21,24 +23,24 @@ namespace Engine.Effect
         /// </summary>
         /// <param name="role"></param>
         /// <param name="Ability"></param>
-        public List<string> RunEffect(ClientPlayerInfo game, Utility.CardUtility.目标选择方向枚举 Direct)
+        public List<string> RunEffect(ActionStatus game, Utility.CardUtility.目标选择方向枚举 Direct)
         {
             List<string> Result = new List<string>();
             if (Direct == CardUtility.目标选择方向枚举.本方)
             {
-                if (game.BasicInfo.Weapon != null)
+                if (game.AllRole.MyPublicInfo.Weapon != null)
                 {
-                    game.BasicInfo.Weapon.攻击力 += int.Parse(攻击力);
-                    game.BasicInfo.Weapon.耐久度 += int.Parse(耐久度);
+                    game.AllRole.MyPublicInfo.Weapon.攻击力 += int.Parse(攻击力);
+                    game.AllRole.MyPublicInfo.Weapon.耐久度 += int.Parse(耐久度);
                     Result.Add(ActionCode.strWeaponPoint + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark);
                 }
             }
             else
             {
-                if (game.YourInfo.Weapon != null)
+                if (game.AllRole.YourPublicInfo.Weapon != null)
                 {
-                    game.YourInfo.Weapon.攻击力 += int.Parse(攻击力);
-                    game.YourInfo.Weapon.耐久度 += int.Parse(耐久度);
+                    game.AllRole.YourPublicInfo.Weapon.攻击力 += int.Parse(攻击力);
+                    game.AllRole.YourPublicInfo.Weapon.耐久度 += int.Parse(耐久度);
                     Result.Add(ActionCode.strWeaponPoint + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark);
                 }
             }
@@ -49,20 +51,20 @@ namespace Engine.Effect
         /// </summary>
         /// <param name="game"></param>
         /// <param name="actField"></param>
-        public static void ReRunEffect(ClientPlayerInfo game, String[] actField)
+        public static void ReRunEffect(ActionStatus game, String[] actField)
         {
             //WeaponPoint#ME#+0/+0
             //Me代表对方 YOU代表自己，必须反过来
             string[] Op = actField[2].Split("/".ToCharArray());
             if (actField[1] == CardUtility.strMe)
             {
-                game.BasicInfo.Weapon.攻击力 += int.Parse(Op[0]);
-                game.BasicInfo.Weapon.耐久度 += int.Parse(Op[1]);
+                game.AllRole.MyPublicInfo.Weapon.攻击力 += int.Parse(Op[0]);
+                game.AllRole.MyPublicInfo.Weapon.耐久度 += int.Parse(Op[1]);
             }
             else
             {
-                game.YourInfo.Weapon.攻击力 += int.Parse(Op[0]);
-                game.YourInfo.Weapon.耐久度 += int.Parse(Op[1]);
+                game.AllRole.YourPublicInfo.Weapon.攻击力 += int.Parse(Op[0]);
+                game.AllRole.YourPublicInfo.Weapon.耐久度 += int.Parse(Op[1]);
             }
         }
         /// <summary>

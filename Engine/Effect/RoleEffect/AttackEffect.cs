@@ -1,4 +1,6 @@
-﻿using Engine.Client;
+﻿using Engine.Action;
+using Engine.Client;
+using Engine.Control;
 using Engine.Utility;
 using System;
 using System.Collections.Generic;
@@ -33,14 +35,14 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="PlayInfo"></param>
         /// <returns></returns>
-        String IAtomicEffect.DealHero(Client.ClientPlayerInfo game, Client.PublicInfo PlayInfo)
+        String IAtomicEffect.DealHero(ActionStatus game, Client.PublicInfo PlayInfo)
         {
             int AttackPoint = ExpressHandler.GetEffectPoint(game, 伤害效果表达式);
             //调整伤害值
-            if (伤害加成) AttackPoint += game.BasicInfo.BattleField.AbilityDamagePlus;
+            if (伤害加成) AttackPoint += game.AllRole.MyPublicInfo.BattleField.AbilityDamagePlus;
             if (PlayInfo.AfterBeAttack(AttackPoint))
             {
-                ClientManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                game.eventhandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
                     触发事件类型 = CardUtility.事件类型枚举.受伤,
                     触发位置 = PlayInfo.战场位置
@@ -54,14 +56,14 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="Minion"></param>
         /// <returns></returns>
-        String IAtomicEffect.DealMinion(Client.ClientPlayerInfo game, Card.MinionCard Minion)
+        String IAtomicEffect.DealMinion(ActionStatus game, Card.MinionCard Minion)
         {
             int AttackPoint = ExpressHandler.GetEffectPoint(game, 伤害效果表达式);
             //调整伤害值
-            if (伤害加成) AttackPoint += game.BasicInfo.BattleField.AbilityDamagePlus;
+            if (伤害加成) AttackPoint += game.AllRole.MyPublicInfo.BattleField.AbilityDamagePlus;
             if (Minion.设置被攻击后状态(AttackPoint))
             {
-                ClientManager.事件处理组件.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                game.eventhandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
                     触发事件类型 = CardUtility.事件类型枚举.受伤,
                     触发位置 = Minion.战场位置
@@ -74,7 +76,7 @@ namespace Engine.Effect
         /// </summary>
         /// <param name="game"></param>
         /// <param name="actField"></param>
-        void IAtomicEffect.ReRunEffect(Client.ClientPlayerInfo game, string[] actField)
+        void IAtomicEffect.ReRunEffect(ActionStatus game, string[] actField)
         {
             int AttackPoint = int.Parse(actField[3]);
             if (actField[1] == CardUtility.strYou)
@@ -82,11 +84,11 @@ namespace Engine.Effect
                 //MyInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.BasicInfo.AfterBeAttack(AttackPoint);
+                    game.AllRole.MyPublicInfo.AfterBeAttack(AttackPoint);
                 }
                 else
                 {
-                    game.BasicInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].设置被攻击后状态(AttackPoint);
+                    game.AllRole.MyPublicInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].设置被攻击后状态(AttackPoint);
                 }
             }
             else
@@ -94,11 +96,11 @@ namespace Engine.Effect
                 //YourInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.BasicInfo.AfterBeAttack(AttackPoint);
+                    game.AllRole.MyPublicInfo.AfterBeAttack(AttackPoint);
                 }
                 else
                 {
-                    game.BasicInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].设置被攻击后状态(AttackPoint);
+                    game.AllRole.MyPublicInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1].设置被攻击后状态(AttackPoint);
                 }
             }
         }

@@ -1,5 +1,7 @@
-﻿using Engine.Card;
+﻿using Engine.Action;
+using Engine.Card;
 using Engine.Client;
+using Engine.Control;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -517,7 +519,7 @@ namespace Engine.Utility
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public delegate int delegateGetPutPos(ClientPlayerInfo game);
+        public delegate int delegateGetPutPos(ActionStatus game);
         #endregion
 
     }

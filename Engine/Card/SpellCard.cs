@@ -1,4 +1,6 @@
-﻿using Engine.Client;
+﻿using Engine.Action;
+using Engine.Client;
+using Engine.Control;
 using Engine.Effect;
 using Engine.Utility;
 using System;
@@ -90,27 +92,27 @@ namespace Engine.Card
         /// </summary>
         /// <param name="game"></param>
         /// <param name="IsMyAction">对象方向转换</param>
-        public List<String> UseAbility(ClientPlayerInfo game, Boolean IsMyAction)
+        public List<String> UseSpell(ActionStatus game, Boolean IsMyAction)
         {
             List<String> Result = new List<string>();
-            Engine.Utility.CardUtility.抉择枚举 PickEffectResult = CardUtility.抉择枚举.第一效果;
+            Engine.Utility.CardUtility.抉择枚举 PickAbilityResult = CardUtility.抉择枚举.第一效果;
             switch (效果选择类型)
             {
                 case 效果选择类型枚举.无需选择:
                     break;
                 case 效果选择类型枚举.主动选择:
-                    PickEffectResult = ClientManager.PickEffect(FirstAbilityDefine.描述, SecondAbilityDefine.描述);
-                    if (PickEffectResult == CardUtility.抉择枚举.取消) return new List<string>();
+                    PickAbilityResult = ActionStatus.PickEffect(FirstAbilityDefine.描述, SecondAbilityDefine.描述);
+                    if (PickAbilityResult == CardUtility.抉择枚举.取消) return new List<string>();
                     break;
                 case 效果选择类型枚举.自动判定:
-                    if (!ExpressHandler.AbilityPickCondition(game, 效果选择条件)) PickEffectResult = CardUtility.抉择枚举.第二效果;
+                    if (!ExpressHandler.AbilityPickCondition(game, 效果选择条件)) PickAbilityResult = CardUtility.抉择枚举.第二效果;
                     break;
                 default:
                     break;
             }
             List<EffectDefine> SingleEffectList = new List<EffectDefine>();
             SpellCard.AbilityDefine ability;
-            if (PickEffectResult == CardUtility.抉择枚举.第一效果)
+            if (PickAbilityResult == CardUtility.抉择枚举.第一效果)
             {
                 ability = FirstAbilityDefine;
             }
@@ -118,7 +120,7 @@ namespace Engine.Card
             {
                 ability = SecondAbilityDefine;
             }
-            Result.AddRange(RunAbilityEffect(game, IsMyAction, ability));
+            Result.AddRange(RunAbility(game, IsMyAction, ability));
             return Result;
         }
         /// <summary>
@@ -128,7 +130,7 @@ namespace Engine.Card
         /// <param name="IsMyAction"></param>
         /// <param name="Ability"></param>
         /// <returns></returns>
-        private List<String> RunAbilityEffect(ClientPlayerInfo game, Boolean IsMyAction, SpellCard.AbilityDefine Ability)
+        private List<String> RunAbility(ActionStatus game, Boolean IsMyAction, SpellCard.AbilityDefine Ability)
         {
             List<String> Result = new List<string>();
 
@@ -137,7 +139,7 @@ namespace Engine.Card
                 Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.横扫 ||
                 Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.相邻)
             {
-                Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = ClientManager.GetSelectTarget(Ability.MainAbilityDefine.AbliltyPosPicker);
+                Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = ActionStatus.GetSelectTarget(Ability.MainAbilityDefine.AbliltyPosPicker);
             }
             else
             {
@@ -169,7 +171,7 @@ namespace Engine.Card
             //法术伤害对于攻击型效果的加成
             if (Ability.MainAbilityDefine.效果条件 == CardUtility.strIgnore && Ability.MainAbilityDefine.EffectCount > 1)
             {
-                Ability.MainAbilityDefine.EffectCount += game.BasicInfo.BattleField.AbilityDamagePlus;
+                Ability.MainAbilityDefine.EffectCount += game.AllRole.MyPublicInfo.BattleField.AbilityDamagePlus;
             }
             //按照回数执行效果
             for (int cnt = 0; cnt < Ability.MainAbilityDefine.EffectCount; cnt++)
@@ -187,12 +189,12 @@ namespace Engine.Card
                         Result.AddRange(ControlEffect.RunEffect(game, Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
                         break;
                     default:
-                        Result.AddRange(Effecthandler.RunSingleEffect(Ability.MainAbilityDefine, game, ClientManager.RandomSeed));
+                        Result.AddRange(Effecthandler.RunSingleEffect(Ability.MainAbilityDefine, game, ActionStatus.RandomSeed));
                         break;
                 }
-                ClientManager.RandomSeed++;
+                ActionStatus.RandomSeed++;
                 //是否每次结算？这里的逻辑需要确认！
-                Result.AddRange(ClientManager.Settle(game));
+                Result.AddRange(ActionStatus.Settle(game));
             }
             //追加条件计算
             if (Ability.AppendAbilityDefine == null || (!ExpressHandler.AppendAbilityCondition(game, Ability)))
@@ -218,11 +220,11 @@ namespace Engine.Card
                         Result.AddRange(ControlEffect.RunEffect(game, Ability.AppendAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
                         break;
                     default:
-                        Result.AddRange(Effecthandler.RunSingleEffect(Ability.AppendAbilityDefine, game, ClientManager.RandomSeed));
+                        Result.AddRange(Effecthandler.RunSingleEffect(Ability.AppendAbilityDefine, game, ActionStatus.RandomSeed));
                         break;
                 }
-                ClientManager.RandomSeed++;
-                Result.AddRange(ClientManager.Settle(game));
+                ActionStatus.RandomSeed++;
+                Result.AddRange(ActionStatus.Settle(game));
             }
             return Result;
         }
@@ -233,7 +235,7 @@ namespace Engine.Card
         /// <param name="ConvertPosDirect"></param>
         /// <param name="Ability"></param>
         /// <returns></returns>
-        private List<string> RunGameSystemEffect(ClientPlayerInfo game, AtomicEffectDefine effect, CardUtility.位置选择用参数结构体 Option)
+        private List<string> RunGameSystemEffect(ActionStatus game, AtomicEffectDefine effect, CardUtility.位置选择用参数结构体 Option)
         {
             List<string> Result = new List<string>();
             switch (effect.AtomicEffectType)
@@ -241,7 +243,7 @@ namespace Engine.Card
                 case AtomicEffectDefine.AtomicEffectEnum.卡牌:
                     CardEffect CardAtomic = new CardEffect();
                     CardAtomic.GetField(effect.InfoArray);
-                    return CardAtomic.RunEffect(1,game, Option.EffectTargetSelectDirect);
+                    return CardAtomic.RunEffect(game, Option.EffectTargetSelectDirect);
                 case AtomicEffectDefine.AtomicEffectEnum.水晶:
                     CrystalEffect CrystalAtomic = new CrystalEffect();
                     CrystalAtomic.GetField(effect.InfoArray);

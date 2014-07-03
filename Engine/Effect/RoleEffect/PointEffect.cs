@@ -1,4 +1,6 @@
-﻿using Engine.Utility;
+﻿using Engine.Action;
+using Engine.Control;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 
@@ -27,7 +29,7 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="PlayInfo"></param>
         /// <returns></returns>
-        String IAtomicEffect.DealHero(Client.ClientPlayerInfo game, Client.PublicInfo PlayInfo)
+        String IAtomicEffect.DealHero(ActionStatus game, Client.PublicInfo PlayInfo)
         {
             return String.Empty;
         }
@@ -37,7 +39,7 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="Minion"></param>
         /// <returns></returns>
-        String IAtomicEffect.DealMinion(Client.ClientPlayerInfo game, Card.MinionCard Minion)
+        String IAtomicEffect.DealMinion(ActionStatus game, Card.MinionCard Minion)
         {
             int TurnCount = int.Parse(持续回合);
             if (TurnCount == CardUtility.Max)
@@ -62,10 +64,10 @@ namespace Engine.Effect
         /// </summary>
         /// <param name="game"></param>
         /// <param name="actField"></param>
-        void IAtomicEffect.ReRunEffect(Client.ClientPlayerInfo game, string[] actField)
+        void IAtomicEffect.ReRunEffect(ActionStatus game, string[] actField)
         {
             int HealthPoint = int.Parse(actField[3]);
-            Client.PublicInfo info = actField[1] == CardUtility.strYou ? game.BasicInfo : game.YourInfo;
+            Client.PublicInfo info = actField[1] == CardUtility.strYou ? game.AllRole.MyPublicInfo : game.AllRole.YourPublicInfo;
             if (actField.Length == 6)
             {
                 info.BattleField.BattleMinions[int.Parse(actField[2]) - 1].攻击力 = int.Parse(actField[3]);
