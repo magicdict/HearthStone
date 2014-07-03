@@ -519,7 +519,7 @@ namespace Engine.Utility
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public delegate int delegateGetPutPos(ActionStatus game);
+        public delegate int delegateGetPutPos(BattleFieldInfo battleInfo);
         #endregion
 
     }

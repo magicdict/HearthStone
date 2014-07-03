@@ -1,4 +1,5 @@
-﻿using Engine.Client;
+﻿using Engine.Action;
+using Engine.Client;
 using Engine.Utility;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,36 @@ namespace Engine.Control
         /// </summary>
         public FullPlayInfo GuestStatus = new FullPlayInfo();
         /// <summary>
+        /// 获得动作数据包
+        /// </summary>
+        /// <param name="IsHost"></param>
+        /// <returns></returns>
+        public ActionStatus gameStatus(Boolean IsHost)
+        {
+            ActionStatus actionStatus = new ActionStatus()
+            {
+                GameId = GameId,
+                eventhandler = 事件处理组件,
+                IsHost = IsHost
+            };
+            if (IsHost)
+            {
+                actionStatus.AllRole.MyPublicInfo = HostStatus.BasicInfo;
+                actionStatus.AllRole.MyPrivateInfo = HostStatus.SelfInfo;
+                actionStatus.AllRole.YourPublicInfo = GuestStatus.BasicInfo;
+                actionStatus.AllRole.YourPrivateInfo = GuestStatus.SelfInfo;
+            }
+            else
+            {
+                actionStatus.AllRole.MyPublicInfo = GuestStatus.BasicInfo;
+                actionStatus.AllRole.MyPrivateInfo = GuestStatus.SelfInfo;
+                actionStatus.AllRole.YourPublicInfo = HostStatus.BasicInfo;
+                actionStatus.AllRole.YourPrivateInfo = HostStatus.SelfInfo;
+            }
+            return actionStatus;
+        }
+
+        /// <summary>
         /// 当前是否为主机回合
         /// </summary>
         /// <returns></returns>
@@ -52,6 +83,11 @@ namespace Engine.Control
             if (!HostAsFirst && !上下半局) return true;
             return false;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="newGameId"></param>
+        /// <param name="hostNickName"></param>
         public FullServerManager(int newGameId, String hostNickName)
         {
             this.GameId = newGameId;

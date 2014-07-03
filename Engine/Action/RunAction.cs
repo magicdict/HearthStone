@@ -66,7 +66,7 @@ namespace Engine.Action
                     {
                         if (IsMyAction)
                         {
-                            MinionPos = GetPutPos(game);
+                            MinionPos = GetPutPos(game.AllRole.MyPublicInfo.BattleField);
                         }
                         else
                         {

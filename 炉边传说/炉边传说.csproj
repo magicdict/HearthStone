@@ -62,6 +62,7 @@
     <Compile Include="CardDeck.Designer.cs">
       <DependentUpon>CardDeck.cs</DependentUpon>
     </Compile>
+    <Compile Include="GameManager.cs" />
     <Compile Include="ServerConfig.cs">
       <SubType>Form</SubType>
     </Compile>

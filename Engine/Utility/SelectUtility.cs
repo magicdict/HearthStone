@@ -15,7 +15,7 @@ namespace Engine.Utility
         /// </summary>
         /// <param name="SelectOption"></param>
         /// <param name="game"></param>
-        public static void SetTargetSelectEnable(CardUtility.位置选择用参数结构体 SelectOption, ActionStatus game, Boolean IsHost)
+        public static void SetTargetSelectEnable(CardUtility.位置选择用参数结构体 SelectOption, ActionStatus game)
         {
             switch (SelectOption.EffectTargetSelectDirect)
             {
