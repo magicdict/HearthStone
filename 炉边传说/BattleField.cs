@@ -1,7 +1,6 @@
 ﻿using Engine.Action;
 using Engine.Card;
 using Engine.Client;
-using Engine.Control;
 using Engine.Server;
 using Engine.Utility;
 using System;
@@ -389,7 +388,7 @@ namespace 炉边传说
                 MessageBox.Show(msg);
                 return;
             }
-            var actionlst = RunAction.StartAction(GameManager.MyClientManager.actionStatus, UseHandCard.序列号, true);
+            var actionlst = RunAction.StartAction(GameManager.MyClientManager.actionStatus, UseHandCard.序列号);
             if (actionlst.Count != 0)
             {
                 if ((sender.GetType()) == typeof(Button))

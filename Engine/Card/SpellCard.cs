@@ -92,7 +92,7 @@ namespace Engine.Card
         /// </summary>
         /// <param name="game"></param>
         /// <param name="IsMyAction">对象方向转换</param>
-        public List<String> UseSpell(ActionStatus game, Boolean IsMyAction)
+        public List<String> UseSpell(ActionStatus game)
         {
             List<String> Result = new List<string>();
             Engine.Utility.CardUtility.抉择枚举 PickAbilityResult = CardUtility.抉择枚举.第一效果;
@@ -120,7 +120,7 @@ namespace Engine.Card
             {
                 ability = SecondAbilityDefine;
             }
-            Result.AddRange(RunAbility(game, IsMyAction, ability));
+            Result.AddRange(RunAbility(game, ability));
             return Result;
         }
         /// <summary>
@@ -130,7 +130,7 @@ namespace Engine.Card
         /// <param name="IsMyAction"></param>
         /// <param name="Ability"></param>
         /// <returns></returns>
-        private List<String> RunAbility(ActionStatus game, Boolean IsMyAction, SpellCard.AbilityDefine Ability)
+        private List<String> RunAbility(ActionStatus game, SpellCard.AbilityDefine Ability)
         {
             List<String> Result = new List<string>();
 
@@ -140,25 +140,6 @@ namespace Engine.Card
                 Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.相邻)
             {
                 Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = ActionStatus.GetSelectTarget(Ability.MainAbilityDefine.AbliltyPosPicker);
-            }
-            else
-            {
-                if (!IsMyAction)
-                {
-                    switch (Ability.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectDirect)
-                    {
-                        case CardUtility.目标选择方向枚举.本方:
-                            Ability.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectDirect = CardUtility.目标选择方向枚举.对方;
-                            break;
-                        case CardUtility.目标选择方向枚举.对方:
-                            Ability.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectDirect = CardUtility.目标选择方向枚举.本方;
-                            break;
-                        case CardUtility.目标选择方向枚举.双方:
-                            break;
-                        default:
-                            break;
-                    }
-                }
             }
 
             //取消处理
@@ -183,7 +164,7 @@ namespace Engine.Card
                     case AtomicEffectDefine.AtomicEffectEnum.水晶:
                     case AtomicEffectDefine.AtomicEffectEnum.召唤:
                     case AtomicEffectDefine.AtomicEffectEnum.武器:
-                        Result.AddRange(RunGameSystemEffect(game,Ability.MainAbilityDefine.TrueAtomicEffect, Ability.MainAbilityDefine.AbliltyPosPicker));
+                        Result.AddRange(RunGameSystemEffect(game, Ability.MainAbilityDefine.TrueAtomicEffect, Ability.MainAbilityDefine.AbliltyPosPicker));
                         break;
                     case AtomicEffectDefine.AtomicEffectEnum.控制:
                         Result.AddRange(ControlEffect.RunEffect(game, Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));

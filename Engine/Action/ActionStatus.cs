@@ -1,8 +1,6 @@
 ﻿using Engine.Client;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Engine.Action
 {
@@ -26,8 +24,8 @@ namespace Engine.Action
         public struct BattleRoles
         {
             public PublicInfo MyPublicInfo;
-            public PublicInfo YourPublicInfo;
             public PrivateInfo MyPrivateInfo;
+            public PublicInfo YourPublicInfo;
             public PrivateInfo YourPrivateInfo;
         }
         /// <summary>
@@ -45,7 +43,19 @@ namespace Engine.Action
         /// <summary>
         /// 实际处理
         /// </summary>
-        public Engine.Client.BattleEventHandler eventhandler = new Engine.Client.BattleEventHandler(); 
+        public Engine.Client.BattleEventHandler eventhandler = new Engine.Client.BattleEventHandler();
+        /// <summary>
+        /// 倒置
+        /// </summary>
+        public void Reverse()
+        {
+            PublicInfo TempPublic = AllRole.MyPublicInfo;
+            PrivateInfo TempPrivate = AllRole.MyPrivateInfo;
+            AllRole.MyPublicInfo = AllRole.YourPublicInfo;
+            AllRole.MyPrivateInfo = AllRole.YourPrivateInfo;
+            AllRole.YourPublicInfo = TempPublic;
+            AllRole.YourPrivateInfo = TempPrivate;
+        }
         /// <summary>
         /// 清算(核心方法)
         /// </summary>
@@ -69,13 +79,15 @@ namespace Engine.Action
             foreach (var minion in MyDeadMinion)
             {
                 //亡语的时候，本方无需倒置方向
-                actionlst.AddRange(minion.发动亡语(game, false));
+                actionlst.AddRange(minion.发动亡语(game));
             }
+            //互换本方对方
+            game.Reverse();
             foreach (var minion in YourDeadMinion)
             {
                 //亡语的时候，对方需要倒置方向
                 //例如，亡语为 本方召唤一个随从，敌人亡语，变为敌方召唤一个随从
-                actionlst.AddRange(minion.发动亡语(game, true));
+                actionlst.AddRange(minion.发动亡语(game));
             }
             return actionlst;
         }
