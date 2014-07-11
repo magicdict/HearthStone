@@ -151,7 +151,7 @@ namespace Engine.Action
                 if (spell.FirstAbilityDefine.IsNeedTargetSelect)
                 {
                     //这种类型的战吼，直接转换为施法
-                    game.Interrupt.Step = 4;
+                    game.Interrupt.Step = 3;
                     game.Interrupt.ActionName = "SPELLPOSITION";
                     return;
                 }

@@ -36,6 +36,7 @@ function onclose() {
 var data;
 var ResponseCode;
 var BattleInfo;
+var ActiveCardSN;
 
 function onmessage(evt) {
     data = evt.data;
@@ -58,6 +59,9 @@ function onmessage(evt) {
         case RequestType.战场状态:
             BattleInfoResponse();
             break;
+        case RequestType.中断续行:
+            ResumeResponse();
+            break;
     }
 }
 
@@ -79,7 +83,8 @@ var RequestType = {
     使用手牌: "012",
     战场状态: "013",
     开始游戏: "014",
-    初始化状态: "015"
+    初始化状态: "015",
+    中断续行: "016"
 };
 
 function CreateGame() {
@@ -117,6 +122,7 @@ function SendDeck() {
 }
 
 function UserHandCard(CardSN) {
+    ActiveCardSN = CardSN;
     var message = RequestType.使用手牌 + GameId + strHost + CardSN;
     socket.send(message);
 }
@@ -148,11 +154,22 @@ function UserHandCardResponse() {
             var message = RequestType.战场状态 + GameId + strHost;
             socket.send(message);
             break;
+        case "MINIONPOSITION":
+            var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + "2" + ActiveCardSN + "1";
+            socket.send(message);
+            break;
         case "SPELLPOSITION":
+            var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + "3" + ActiveCardSN + "1";
+            socket.send(message);
             break;
     }
 }
-
+function ResumeResponse() {
+    if (data == "OK") {
+        var message = RequestType.战场状态 + GameId + strHost;
+        socket.send(message);
+    }
+}
 //暂时不考虑验证
 function BattleInfoResponse() {
     BattleInfo = JSON.parse(data);

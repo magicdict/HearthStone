@@ -50,6 +50,7 @@ namespace Engine.Utility
                         ServerResponse.RequestType requestType = (ServerResponse.RequestType)Enum.Parse(typeof(ServerResponse.RequestType), Request.Substring(0, 3));
                         String Response = ServerResponse.ProcessRequest(Request, requestType);
                         String GameId = String.Empty;
+                        requestType = (ServerResponse.RequestType)Enum.Parse(typeof(ServerResponse.RequestType), Response.Substring(0, 3));
                         switch (requestType)
                         {
                             case ServerResponse.RequestType.开始游戏:
@@ -59,6 +60,7 @@ namespace Engine.Utility
                             case ServerResponse.RequestType.初始化状态:
                                 //初始化状态是后手发起的，结果需要推送给双方
                                 GameId = Request.Substring(3, 5);
+                                SendToBoth(GameId, Response);
                                 break;
                             case ServerResponse.RequestType.使用手牌:
                                 GameId = Request.Substring(3, 5);

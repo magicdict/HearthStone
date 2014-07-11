@@ -201,21 +201,28 @@ namespace Engine.Server
             //return GameRunning_CS[GameId].SecretHitCheck(ActionList, IsFirst);
         }
         /// <summary>
-        /// 
+        /// 使用手牌
         /// </summary>
         /// <param name="GameId"></param>
         /// <param name="IsHost"></param>
         /// <param name="CardSn"></param>
         /// <returns></returns>
-        public static String UseHandCard(int GameId, bool IsHost, string CardSn)
+        public static FullServerManager.Interrupt UseHandCard(int GameId, bool IsHost, string CardSn, int Step,String SessionData)
         {
             var gamestatus = GameRunning_BS[GameId].gameStatus(IsHost);
             gamestatus.Interrupt.IsHost = IsHost;
             gamestatus.Interrupt.GameId = GameId.ToString(GameServer.GameIdFormat);
             gamestatus.GameId = GameId;
-            gamestatus.Interrupt.Step = 1;
+            gamestatus.Interrupt.Step = Step;
+            gamestatus.Interrupt.SessionData = SessionData;
             RunAction.StartAction(gamestatus, CardSn);
-            return gamestatus.Interrupt.ActionName;
+            if (gamestatus.Interrupt.ActionName == CardUtility.strOK)
+            {
+                gamestatus.AllRole.MyPublicInfo.crystal.CurrentRemainPoint -= CardUtility.GetCardInfoBySN(CardSn).使用成本;
+                gamestatus.AllRole.MyPublicInfo.HandCardCount--;
+                gamestatus.AllRole.MyPrivateInfo.RemoveUsedCard(CardSn);
+            }
+            return gamestatus.Interrupt;
         }
     }
 }

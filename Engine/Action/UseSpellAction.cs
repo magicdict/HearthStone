@@ -18,20 +18,31 @@ namespace Engine.Action
         {
             List<String> Result = new List<string>();
             SpellCard spell = (SpellCard)CardUtility.GetCardInfoBySN(CardSn);
+            //Step1
             Engine.Utility.CardUtility.抉择枚举 PickAbilityResult = CardUtility.抉择枚举.第一效果;
-            switch (spell.效果选择类型)
+            if (game.Interrupt.Step == 1)
             {
-                case Engine.Card.SpellCard.效果选择类型枚举.无需选择:
-                    break;
-                case Engine.Card.SpellCard.效果选择类型枚举.主动选择:
-                    PickAbilityResult = ActionStatus.PickEffect(spell.FirstAbilityDefine.描述, spell.SecondAbilityDefine.描述);
-                    break;
-                case Engine.Card.SpellCard.效果选择类型枚举.自动判定:
-                    if (!ExpressHandler.AbilityPickCondition(game, spell.效果选择条件)) PickAbilityResult = CardUtility.抉择枚举.第二效果;
-                    break;
-                default:
-                    break;
+                switch (spell.效果选择类型)
+                {
+                    case Engine.Card.SpellCard.效果选择类型枚举.无需选择:
+                        break;
+                    case Engine.Card.SpellCard.效果选择类型枚举.主动选择:
+                        if (game.AllRole.MyPublicInfo.BattleField.MinionCount != 0)
+                        {
+                            game.Interrupt.Step = 2;
+                            game.Interrupt.ActionName = "SPELLDECIDE";
+                            return;
+                        }
+                        break;
+                    case Engine.Card.SpellCard.效果选择类型枚举.自动判定:
+                        if (!ExpressHandler.AbilityPickCondition(game, spell.效果选择条件)) PickAbilityResult = CardUtility.抉择枚举.第二效果;
+                        break;
+                    default:
+                        break;
+                }
+                game.Interrupt.Step = 2;
             }
+            //Step2
             if (PickAbilityResult != CardUtility.抉择枚举.取消)
             {
                 List<EffectDefine> SingleEffectList = new List<EffectDefine>();
@@ -57,7 +68,8 @@ namespace Engine.Action
                         本方对方标识 = true
                     }
                 });
-
+            game.Interrupt.Step = 99;
+            game.Interrupt.ActionName = CardUtility.strOK;
         }
     }
 }
