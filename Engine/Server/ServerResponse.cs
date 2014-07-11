@@ -20,6 +20,7 @@ namespace Engine.Server
         public static string ProcessRequest(String Request, RequestType requestType)
         {
             String Response = String.Empty;
+            MinimizeBattleInfo info = new MinimizeBattleInfo();
             int GameId;
             String IsHostStr;
             String IsFirstStr;
@@ -51,6 +52,7 @@ namespace Engine.Server
                     Response = GameId.ToString(GameServer.GameIdFormat) + IsHostStr + IsFirstStr;
                     break;
                 case RequestType.传送套牌:
+                    //[BS/CS]
                     Stack<String> Deck = new Stack<string>();
                     foreach (var card in Request.Substring(9).Split(CardUtility.strSplitArrayMark.ToCharArray()))
                     {
@@ -89,18 +91,26 @@ namespace Engine.Server
                     Response = GameServer.SecretHit(int.Parse(Request.Substring(3, 5)), Request.Substring(8, 1) == CardUtility.strTrue, Request.Substring(9));
                     break;
                 case RequestType.使用手牌:
-                    Response = GameServer.UseHandCard(int.Parse(Request.Substring(3, 5)), Request.Substring(8, 1) == CardUtility.strTrue, Request.Substring(9));
+                    GameId = int.Parse(Request.Substring(3, 5));
+                    IsHost = Request.Substring(8, 1) == CardUtility.strTrue;
+                    //这里可能产生中断
+                    Response = GameServer.UseHandCard(GameId, IsHost, Request.Substring(9));
                     break;
                 case RequestType.战场状态:
-                    int gameId = int.Parse(Request.Substring(3, 5));
+                    GameId = int.Parse(Request.Substring(3, 5));
                     IsHost = Request.Substring(8, 1) == CardUtility.strTrue;
-                    MinimizeBattleInfo info = new MinimizeBattleInfo();
-                    //info.Init(GameServer.GameRunning_BS[gameId], IsHost);
+                    //WebSocket将会同时将信息发送给双方，所以这里发送以HOST为主视角的战场信息
+                    info.Init(GameServer.GameRunning_BS[GameId].gameStatus(IsHost));
                     Response = info.ToJson();
+                    break;
+                case RequestType.中断续行:
+                    GameId = int.Parse(Request.Substring(3, 5));
+                    IsHost = Request.Substring(8, 1) == CardUtility.strTrue;
                     break;
                 default:
                     break;
             }
+            if (SystemManager.游戏类型 == SystemManager.GameType.HTML版) Response = requestType.GetHashCode().ToString("D3") + Response;
             return Response;
         }
         /// <summary>
@@ -173,7 +183,11 @@ namespace Engine.Server
             /// <summary>
             /// 初始化状态[BS]
             /// </summary>
-            初始化状态
+            初始化状态,
+            /// <summary>
+            /// 中断续行[BS]
+            /// </summary>
+            中断续行
         }
     }
 }

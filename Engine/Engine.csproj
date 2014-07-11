@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Action\UseMinionAction.cs" />
+    <Compile Include="Action\UseSpellAction.cs" />
     <Compile Include="AI\DoAction.cs" />
     <Compile Include="Client\BattleEventHandler.cs" />
     <Compile Include="Client\FightHandler.cs" />
@@ -89,8 +91,8 @@
     <Compile Include="Server\GameServer.cs" />
     <Compile Include="Control\ServerManager.cs" />
     <Compile Include="Card\WeaponCard.cs" />
-    <Compile Include="Utility\WebSocketServer.cs" />
-    <Compile Include="Utility\TcpSocketServer.cs" />
+    <Compile Include="Server\WebSocketServer.cs" />
+    <Compile Include="Server\TcpSocketServer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

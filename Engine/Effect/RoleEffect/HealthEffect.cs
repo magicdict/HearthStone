@@ -33,7 +33,7 @@ namespace Engine.Effect
             PlayInfo.AfterBeShield(ShieldPoint);
             if (PlayInfo.AfterBeHealth(HealthPoint))
             {
-                game.eventhandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                game.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
                     触发事件类型 = CardUtility.事件类型枚举.治疗,
                     触发位置 = PlayInfo.战场位置
@@ -53,7 +53,7 @@ namespace Engine.Effect
             int HealthPoint = ExpressHandler.GetEffectPoint(game, 生命值回复表达式);
             if (Minion.设置被治疗后状态(HealthPoint))
             {
-                game.eventhandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                game.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
                     触发事件类型 = CardUtility.事件类型枚举.治疗,
                     触发位置 = Minion.战场位置

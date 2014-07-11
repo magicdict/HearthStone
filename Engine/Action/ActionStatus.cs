@@ -1,4 +1,5 @@
 ﻿using Engine.Client;
+using Engine.Utility;
 using System;
 using System.Collections.Generic;
 
@@ -41,9 +42,13 @@ namespace Engine.Action
         /// </summary>
         public Boolean IsHost;
         /// <summary>
-        /// 实际处理
+        /// 事件处理
         /// </summary>
-        public Engine.Client.BattleEventHandler eventhandler = new Engine.Client.BattleEventHandler();
+        public Engine.Client.BattleEventHandler battleEvenetHandler = new Engine.Client.BattleEventHandler();
+        /// <summary>
+        /// 当前中断
+        /// </summary>
+        public Engine.Control.FullServerManager.Interrupt Interrupt;
         /// <summary>
         /// 倒置
         /// </summary>
@@ -66,8 +71,8 @@ namespace Engine.Action
             //将亡语效果也发送给对方
             List<String> actionlst = new List<string>();
             //1.检查需要移除的对象
-            var MyDeadMinion = game.AllRole.MyPublicInfo.BattleField.ClearDead(game.eventhandler, true);
-            var YourDeadMinion = game.AllRole.YourPublicInfo.BattleField.ClearDead(game.eventhandler, false);
+            var MyDeadMinion = game.AllRole.MyPublicInfo.BattleField.ClearDead(game.battleEvenetHandler, true);
+            var YourDeadMinion = game.AllRole.YourPublicInfo.BattleField.ClearDead(game.battleEvenetHandler, false);
             //2.重新计算Buff
             game.AllRole.MyPublicInfo.BattleField.ResetBuff();
             game.AllRole.YourPublicInfo.BattleField.ResetBuff();

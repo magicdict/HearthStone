@@ -14,6 +14,10 @@ namespace Engine.Client
         public struct Minion
         {
             /// <summary>
+            /// 名称
+            /// </summary>
+            public String 名称;
+            /// <summary>
             /// 攻击力
             /// </summary>
             public int 攻击力;
@@ -31,6 +35,7 @@ namespace Engine.Client
             /// <param name="minion"></param>
             public void Init(Card.MinionCard minion)
             {
+                名称 = minion.名称;
                 攻击力 = minion.实际攻击值;
                 生命力 = minion.生命值;
                 状态列表 = minion.状态;
@@ -89,29 +94,16 @@ namespace Engine.Client
         public Minion[] GuestBattle;
         public HandCardInfo[] HandCard;
         public PlayerInfo MyInfo = new PlayerInfo();
-        public void Init(ActionStatus status, Boolean IsHost)
+        public void Init(ActionStatus status)
         {
-            if (IsHost)
+            //ActionStatus在获取的过程中，已经知道IsHost信息，所以这里的无需做Host到My的转换了
+            MyInfo.Init(status.AllRole.MyPublicInfo);
+            HandCard = new HandCardInfo[status.AllRole.MyPrivateInfo.handCards.Count];
+            for (int i = 0; i < status.AllRole.MyPrivateInfo.handCards.Count; i++)
             {
-                MyInfo.Init(status.AllRole.MyPublicInfo);
-                HandCard = new HandCardInfo[status.AllRole.MyPrivateInfo.handCards.Count];
-                for (int i = 0; i < status.AllRole.MyPrivateInfo.handCards.Count; i++)
-                {
-                    HandCardInfo t = new HandCardInfo();
-                    t.Init(status.AllRole.MyPrivateInfo.handCards[i]);
-                    HandCard[i] = t;
-                }
-            }
-            else
-            {
-                MyInfo.Init(status.AllRole.YourPublicInfo);
-                HandCard = new HandCardInfo[status.AllRole.YourPrivateInfo.handCards.Count];
-                for (int i = 0; i < status.AllRole.YourPrivateInfo.handCards.Count; i++)
-                {
-                    HandCardInfo t = new HandCardInfo();
-                    t.Init(status.AllRole.YourPrivateInfo.handCards[i]);
-                    HandCard[i] = t;
-                }
+                HandCardInfo t = new HandCardInfo();
+                t.Init(status.AllRole.MyPrivateInfo.handCards[i]);
+                HandCard[i] = t;
             }
             HostBattle = new Minion[status.AllRole.MyPublicInfo.BattleField.MinionCount];
             for (int i = 0; i < status.AllRole.MyPublicInfo.BattleField.MinionCount; i++)

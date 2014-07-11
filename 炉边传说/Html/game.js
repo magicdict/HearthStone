@@ -33,14 +33,16 @@ function onclose() {
     log("Close a web socket.");
 }
 
-var LastRequest;
 var data;
+var ResponseCode;
 var BattleInfo;
 
 function onmessage(evt) {
     data = evt.data;
     if (!data) return;
-    switch (LastRequest) {
+    ResponseCode = data.toString().substr(0, 3);
+    data = data.toString().substr(3);
+    switch (ResponseCode) {
         case RequestType.开始游戏:
             CreateGameResponse();
             break;
@@ -49,6 +51,9 @@ function onmessage(evt) {
             break;
         case RequestType.初始化状态:
             InitPlayInfoResponse();
+            break;
+        case RequestType.使用手牌:
+            UserHandCardResponse();
             break;
         case RequestType.战场状态:
             BattleInfoResponse();
@@ -78,7 +83,6 @@ var RequestType = {
 };
 
 function CreateGame() {
-    LastRequest = RequestType.开始游戏;
     socket.send(RequestType.开始游戏);
 }
 
@@ -102,7 +106,6 @@ function CreateGameResponse() {
 }
 
 function SendDeck() {
-    LastRequest = RequestType.传送套牌;
     var strHost;
     if (IsHost) {
         strHost = strTrue;
@@ -114,23 +117,17 @@ function SendDeck() {
 }
 
 function UserHandCard(CardSN) {
-    LastRequest = RequestType.使用手牌;
     var message = RequestType.使用手牌 + GameId + strHost + CardSN;
     socket.send(message);
 }
 
 function SendDeckResponse() {
-    //alert("传送套牌:[" + data.toString() + "]");
-    LastRequest = RequestType.初始化状态;
     if (!IsHost) {
         var message = RequestType.初始化状态 + GameId;
         socket.send(message);
     }
 }
-
 function InitPlayInfoResponse() {
-    //alert("初始化状态:[" + data.toString() + "]");
-    LastRequest = RequestType.战场状态;
     if (IsHost) {
         strHost = strTrue;
     } else {
@@ -139,15 +136,37 @@ function InitPlayInfoResponse() {
     var message = RequestType.战场状态 + GameId + strHost;
     socket.send(message);
 }
+
+function UserHandCardResponse() {
+    if (IsHost) {
+        strHost = strTrue;
+    } else {
+        strHost = strFalse;
+    }
+    switch (data) {
+        case "OK":
+            var message = RequestType.战场状态 + GameId + strHost;
+            socket.send(message);
+            break;
+        case "SPELLPOSITION":
+            break;
+    }
+}
+
 //暂时不考虑验证
 function BattleInfoResponse() {
     BattleInfo = JSON.parse(data);
-    //for (var i = 0; i < BattleInfo.MyInfo.手牌.length; i++) {
-    //    alert(BattleInfo.MyInfo.手牌[i]);
-    //}
-    var divHtml = "BattleInfo<br>";
+    var divHtml = "战场信息<br>";
     for (var i = 0; i < BattleInfo.HandCard.length; i++) {
         divHtml += "手牌:" + BattleInfo.HandCard[i].名称 + "<input type=\"button\" onclick=\"UserHandCard(\'" + BattleInfo.HandCard[i].序列号 + "\')\" value=\"使用\" />" + "<br>";
+    }
+    divHtml += "本方随从<br>"
+    for (var i = 0; i < BattleInfo.HostBattle.length; i++) {
+        divHtml += "随从:" + BattleInfo.HostBattle[i].名称 + BattleInfo.HostBattle[i].攻击力 + "/" + BattleInfo.HostBattle[i].生命力 + "<br>";
+    }
+    divHtml += "对方随从<br>"
+    for (var i = 0; i < BattleInfo.GuestBattle.length; i++) {
+        divHtml += "随从:" + BattleInfo.GuestBattle[i].名称 + BattleInfo.GuestBattle[i].攻击力 + "/" + BattleInfo.GuestBattle[i].生命力 + "<br>";
     }
     document.getElementById("BattleInfo").innerHTML = divHtml;
 }

@@ -1,4 +1,5 @@
-﻿using Engine.Client;
+﻿using Engine.Action;
+using Engine.Client;
 using Engine.Control;
 using Engine.Utility;
 using System;
@@ -52,7 +53,8 @@ namespace Engine.Server
         {
             GameId++;
             //新建游戏的同时决定游戏的先后手
-            GameWaitGuest_BS.Add(GameId, new FullServerManager(GameId, HostNickName));
+            var server = new FullServerManager(GameId, HostNickName);
+            GameWaitGuest_BS.Add(GameId, server);
             return GameId;
         }
         /// <summary>
@@ -205,9 +207,15 @@ namespace Engine.Server
         /// <param name="IsHost"></param>
         /// <param name="CardSn"></param>
         /// <returns></returns>
-        public static string UseHandCard(int GameId, bool IsHost, string CardSn)
+        public static String UseHandCard(int GameId, bool IsHost, string CardSn)
         {
-            return String.Empty;
+            var gamestatus = GameRunning_BS[GameId].gameStatus(IsHost);
+            gamestatus.Interrupt.IsHost = IsHost;
+            gamestatus.Interrupt.GameId = GameId.ToString(GameServer.GameIdFormat);
+            gamestatus.GameId = GameId;
+            gamestatus.Interrupt.Step = 1;
+            RunAction.StartAction(gamestatus, CardSn);
+            return gamestatus.Interrupt.ActionName;
         }
     }
 }

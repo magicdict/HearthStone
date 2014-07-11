@@ -86,6 +86,16 @@ namespace Engine.Card
                 MainAbilityDefine = new EffectDefine();
                 AppendAbilityDefine = new EffectDefine();
             }
+            /// <summary>
+            /// 是否需要位置选择
+            /// </summary>
+            public Boolean IsNeedTargetSelect
+            {
+                get
+                {
+                    return MainAbilityDefine.IsNeedTargetSelect || AppendAbilityDefine.IsNeedTargetSelect;
+                }
+            }
         }
         /// <summary>
         /// 使用法术
@@ -102,7 +112,10 @@ namespace Engine.Card
                     break;
                 case 效果选择类型枚举.主动选择:
                     PickAbilityResult = ActionStatus.PickEffect(FirstAbilityDefine.描述, SecondAbilityDefine.描述);
-                    if (PickAbilityResult == CardUtility.抉择枚举.取消) return new List<string>();
+                    if (PickAbilityResult == CardUtility.抉择枚举.取消)
+                    {
+                        return new List<string>(); 
+                    }
                     break;
                 case 效果选择类型枚举.自动判定:
                     if (!ExpressHandler.AbilityPickCondition(game, 效果选择条件)) PickAbilityResult = CardUtility.抉择枚举.第二效果;
@@ -130,18 +143,14 @@ namespace Engine.Card
         /// <param name="IsMyAction"></param>
         /// <param name="Ability"></param>
         /// <returns></returns>
-        private List<String> RunAbility(ActionStatus game, SpellCard.AbilityDefine Ability)
+        public static List<String> RunAbility(ActionStatus game, SpellCard.AbilityDefine Ability)
         {
             List<String> Result = new List<string>();
-
             //对象选择处理
-            if (Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.指定 ||
-                Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.横扫 ||
-                Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.相邻)
+            if (Ability.MainAbilityDefine.IsNeedTargetSelect)
             {
                 Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = ActionStatus.GetSelectTarget(Ability.MainAbilityDefine.AbliltyPosPicker);
             }
-
             //取消处理
             if (Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.Postion == -1)
             {
@@ -216,7 +225,7 @@ namespace Engine.Card
         /// <param name="ConvertPosDirect"></param>
         /// <param name="Ability"></param>
         /// <returns></returns>
-        private List<string> RunGameSystemEffect(ActionStatus game, AtomicEffectDefine effect, CardUtility.位置选择用参数结构体 Option)
+        public static List<string> RunGameSystemEffect(ActionStatus game, AtomicEffectDefine effect, CardUtility.位置选择用参数结构体 Option)
         {
             List<string> Result = new List<string>();
             switch (effect.AtomicEffectType)

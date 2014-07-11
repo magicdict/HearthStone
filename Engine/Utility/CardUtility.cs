@@ -178,6 +178,10 @@ namespace Engine.Utility
         /// 最大值
         /// </summary>
         public const int Max = 999;
+        /// <summary>
+        /// OK
+        /// </summary>
+        public const String strOK = "OK";
         #endregion
         
         #region"枚举值"
@@ -519,7 +523,12 @@ namespace Engine.Utility
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        public delegate int delegateGetPutPos(BattleFieldInfo battleInfo);
+        public delegate int delegateGetMinionPos(BattleFieldInfo battleInfo);
+        /// <summary>
+        /// 中断处理
+        /// </summary>
+        /// <param name="interrupt"></param>
+        public delegate void delegateInterrupt(FullServerManager.Interrupt interrupt);
         #endregion
 
     }

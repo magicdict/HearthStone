@@ -42,7 +42,7 @@ namespace Engine.Effect
             if (伤害加成) AttackPoint += game.AllRole.MyPublicInfo.BattleField.AbilityDamagePlus;
             if (PlayInfo.AfterBeAttack(AttackPoint))
             {
-                game.eventhandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                game.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
                     触发事件类型 = CardUtility.事件类型枚举.受伤,
                     触发位置 = PlayInfo.战场位置
@@ -63,7 +63,7 @@ namespace Engine.Effect
             if (伤害加成) AttackPoint += game.AllRole.MyPublicInfo.BattleField.AbilityDamagePlus;
             if (Minion.设置被攻击后状态(AttackPoint))
             {
-                game.eventhandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                game.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
                     触发事件类型 = CardUtility.事件类型枚举.受伤,
                     触发位置 = Minion.战场位置

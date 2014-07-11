@@ -27,9 +27,10 @@ namespace 炉边传说
         /// </summary>
         private void InitGame()
         {
-            RunAction.GetPutPos = GetPutPos;
-            ActionStatus.GetSelectTarget = SelectPanel;
+            UseMinionAction.GetMinionPos = GetMinionPos;
             GameManager.MyClientManager.InitPlayInfo();
+            ActionStatus.GetSelectTarget = SelectPanel;
+            ActionStatus.PickEffect = PickEffect;
             switch (SystemManager.游戏类型)
             {
                 case SystemManager.GameType.单机版:
@@ -85,7 +86,7 @@ namespace 炉边传说
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
-        private int GetPutPos(BattleFieldInfo battleInfo)
+        private int GetMinionPos(BattleFieldInfo battleInfo)
         {
             var frm = new PutMinion(battleInfo);
             frm.ShowDialog();

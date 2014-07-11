@@ -136,7 +136,7 @@ namespace Engine.Client
         /// 发动战吼[Run BattleCry Effect]
         /// </summary>
         /// <param name="MinionPos"></param>
-        ///<remarks>自身 相邻类型</remarks>
+        ///<remarks>自身/相邻类型</remarks>
         public List<String> 发动战吼(int MinionPos, ActionStatus game)
         {
             List<String> ActionCodeLst = new List<string>();

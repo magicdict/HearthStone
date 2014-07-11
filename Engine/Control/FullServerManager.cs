@@ -6,7 +6,10 @@ using System.Collections.Generic;
 
 namespace Engine.Control
 {
-    public class FullServerManager 
+    /// <summary>
+    /// FullServerManager
+    /// </summary>
+    public class FullServerManager
     {
         /// <summary>
         /// 游戏编号
@@ -44,6 +47,41 @@ namespace Engine.Control
         /// </summary>
         public FullPlayInfo GuestStatus = new FullPlayInfo();
         /// <summary>
+        /// 中断信息
+        /// HTML页面和服务器端交互
+        /// </summary>
+        public struct Interrupt
+        {
+            /// <summary>
+            /// 
+            /// </summary>
+            public String GameId;
+            /// <summary>
+            /// 
+            /// </summary>
+            public Boolean IsHost;
+            /// <summary>
+            /// 中断步骤
+            /// </summary>
+            public int Step;
+            /// <summary>
+            /// 中断理由
+            /// </summary>
+            public String ActionName;
+            /// <summary>
+            /// 附加情报
+            /// </summary>
+            public String ResumeInfo;
+            /// <summary>
+            /// 会话数据
+            /// </summary>
+            public String SessionData;
+        }
+        /// <summary>
+        /// 当前中断
+        /// </summary>
+        public Interrupt CurrentInterrupt = new Interrupt();
+        /// <summary>
         /// 获得动作数据包
         /// </summary>
         /// <param name="IsHost"></param>
@@ -53,8 +91,9 @@ namespace Engine.Control
             ActionStatus actionStatus = new ActionStatus()
             {
                 GameId = GameId,
-                eventhandler = 事件处理组件,
-                IsHost = IsHost
+                battleEvenetHandler = 事件处理组件,
+                IsHost = IsHost,
+                Interrupt = CurrentInterrupt,
             };
             if (IsHost)
             {
@@ -84,7 +123,7 @@ namespace Engine.Control
             return false;
         }
         /// <summary>
-        /// 
+        /// FullServerManager
         /// </summary>
         /// <param name="newGameId"></param>
         /// <param name="hostNickName"></param>
