@@ -1,7 +1,4 @@
 ﻿using Engine.Card;
-using Engine.Client;
-using Engine.Server;
-using Engine.Utility;
 using System;
 using System.Collections.Generic;
 
@@ -10,11 +7,10 @@ namespace Engine.Action
     public static class TurnAction
     {
         /// <summary>
-        /// 新的回合
+        /// 新的回合[不包含抽手牌]
         /// </summary>
         public static void TurnStart(ActionStatus gameStatus)
         {
-            gameStatus.AllRole.MyPrivateInfo.handCards.Add(CardUtility.GetCardInfoBySN(ClientRequest.DrawCard(gameStatus.GameId.ToString(GameServer.GameIdFormat), gameStatus.IsHost, 1)[0]));
             //过载的清算
             if (gameStatus.AllRole.MyPublicInfo.OverloadPoint != 0)
             {

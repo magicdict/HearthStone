@@ -158,7 +158,15 @@ namespace Engine.Action
                 else
                 {
                     //注意：发动战吼的方法自身或者相邻的类型，所以肯定不需要做目标选择
-                    game.AllRole.MyPublicInfo.BattleField.发动战吼(MinionPos, game);
+                    if (spell.FirstAbilityDefine.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.相邻 ||
+                        spell.FirstAbilityDefine.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.继承)
+                    {
+                        game.AllRole.MyPublicInfo.BattleField.发动战吼(MinionPos, game);
+                    }
+                    else
+                    {
+                        game.Interrupt.Step = 4;
+                    }
                 }
             }
             if (game.Interrupt.Step == 4)

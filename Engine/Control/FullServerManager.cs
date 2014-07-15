@@ -181,11 +181,10 @@ namespace Engine.Control
             //英雄技能：奥术飞弹
             HostStatus.BasicInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
             GuestStatus.BasicInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
-
-            //TEST Begin
-            //HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M000054"));
-            //HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("A000005"));
-            //TEST End
+            
+            //TEST START
+            HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M000059"));
+            //TEST END
 
             //初始化双方手牌
             int DrawCardCnt = 0;
@@ -207,6 +206,7 @@ namespace Engine.Control
                 GuestStatus.BasicInfo.RemainCardDeckCount = CardDeck.MaxCards - 4;
                 HostStatus.BasicInfo.HandCardCount = PublicInfo.BasicHandCardCount;
                 GuestStatus.BasicInfo.HandCardCount = PublicInfo.BasicHandCardCount + 1 + 1;
+                TurnStart(true);
             }
             else
             {
@@ -226,16 +226,26 @@ namespace Engine.Control
                 GuestStatus.BasicInfo.RemainCardDeckCount = CardDeck.MaxCards - 3;
                 HostStatus.BasicInfo.HandCardCount = PublicInfo.BasicHandCardCount + 1 + 1;
                 GuestStatus.BasicInfo.HandCardCount = PublicInfo.BasicHandCardCount;
+                TurnStart(false);
             }
         }
         /// <summary>
         /// 开始回合
         /// </summary>
         /// <param name="IsHost"></param>
-        public void StartTurn(Boolean IsHost)
+        public void TurnStart(Boolean IsHost)
         {
-
+            gameStatus(IsHost).AllRole.MyPrivateInfo.handCards.Add(CardUtility.GetCardInfoBySN(DrawCard(IsHost, 1)[0]));
+            TurnAction.TurnStart(gameStatus(IsHost));
         }
-
+        /// <summary>
+        /// 结束回合
+        /// </summary>
+        /// <param name="IsHost"></param>
+        public void TurnEnd(Boolean IsHost)
+        {
+            TurnAction.TurnEnd(gameStatus(IsHost));
+            TurnStart(!IsHost);
+        }
     }
 }

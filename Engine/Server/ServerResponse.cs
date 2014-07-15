@@ -81,6 +81,18 @@ namespace Engine.Server
                     Response = String.Join(Engine.Utility.CardUtility.strSplitArrayMark, Cardlist.ToArray());
                     break;
                 case RequestType.回合结束:
+                    if (SystemManager.游戏类型 == SystemManager.GameType.HTML版)
+                    {
+                        GameId = int.Parse(Request.Substring(3, 5));
+                        IsHost = Request.Substring(8, 1) == CardUtility.strTrue;
+                        GameServer.GameRunning_BS[GameId].TurnEnd(IsHost);
+                        Response = IsHost ? CardUtility.strTrue : CardUtility.strFalse;
+                    }
+                    else
+                    {
+                        GameServer.WriteAction(int.Parse(Request.Substring(3, 5)), Request.Substring(8));
+                    }
+                    break;
                 case RequestType.写入行动:
                     GameServer.WriteAction(int.Parse(Request.Substring(3, 5)), Request.Substring(8));
                     break;

@@ -1,5 +1,4 @@
 ﻿using Engine.Client;
-using Engine.Utility;
 using System;
 using System.Collections.Generic;
 
@@ -10,11 +9,11 @@ namespace Engine.Action
         /// <summary>
         /// 获得目标对象
         /// </summary>
-        public static Engine.Utility.CardUtility.deleteGetTargetPosition GetSelectTarget;
+        public static Utility.CardUtility.deleteGetTargetPosition GetSelectTarget;
         /// <summary>
         /// 抉择卡牌
         /// </summary>
-        public static Engine.Utility.CardUtility.delegatePickEffect PickEffect;
+        public static Utility.CardUtility.delegatePickEffect PickEffect;
         /// <summary>
         /// 全局随机种子
         /// </summary>
@@ -40,15 +39,15 @@ namespace Engine.Action
         /// <summary>
         /// 动作发起方是否为Host
         /// </summary>
-        public Boolean IsHost;
+        public bool IsHost;
         /// <summary>
         /// 事件处理
         /// </summary>
-        public Engine.Client.BattleEventHandler battleEvenetHandler = new Engine.Client.BattleEventHandler();
+        public BattleEventHandler battleEvenetHandler = new BattleEventHandler();
         /// <summary>
         /// 当前中断
         /// </summary>
-        public Engine.Control.FullServerManager.Interrupt Interrupt;
+        public Control.FullServerManager.Interrupt Interrupt;
         /// <summary>
         /// 倒置
         /// </summary>
@@ -65,11 +64,11 @@ namespace Engine.Action
         /// 清算(核心方法)
         /// </summary>
         /// <returns></returns>
-        public static List<String> Settle(ActionStatus game)
+        public static List<string> Settle(ActionStatus game)
         {
             //每次原子操作后进行一次清算
             //将亡语效果也发送给对方
-            List<String> actionlst = new List<string>();
+            List<string> actionlst = new List<string>();
             //1.检查需要移除的对象
             var MyDeadMinion = game.AllRole.MyPublicInfo.BattleField.ClearDead(game.battleEvenetHandler, true);
             var YourDeadMinion = game.AllRole.YourPublicInfo.BattleField.ClearDead(game.battleEvenetHandler, false);

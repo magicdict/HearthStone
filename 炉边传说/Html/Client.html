@@ -15,7 +15,8 @@
 <body onload="init()">
     <form>
         <div id="GameId">00000</div>
-        <input type="button" onclick="CreateGame()" value="新建游戏" />
+        <input type="button" onclick="CreateGame()" value="新建游戏" id="btnCreateGame" />
+        <input type="button" onclick="EndTrun()" value="结束回合" disabled="disabled" id="btnEndTurn" />
         <div id="BattleInfo">战场情报</div>
     </form>
 </body>

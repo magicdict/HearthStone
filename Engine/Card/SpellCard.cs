@@ -93,7 +93,7 @@ namespace Engine.Card
             {
                 get
                 {
-                    return MainAbilityDefine.IsNeedTargetSelect || AppendAbilityDefine.IsNeedTargetSelect;
+                    return MainAbilityDefine.IsNeedTargetSelect || (AppendAbilityDefine != null && AppendAbilityDefine.IsNeedTargetSelect);
                 }
             }
         }

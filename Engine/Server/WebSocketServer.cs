@@ -58,6 +58,7 @@ namespace Engine.Utility
                                 allGames.Add(Response.Substring(3, 6), MyConn);
                                 break;
                             case ServerResponse.RequestType.初始化状态:
+                            case ServerResponse.RequestType.回合结束:
                                 //初始化状态是后手发起的，结果需要推送给双方
                                 GameId = Request.Substring(3, 5);
                                 SendToBoth(GameId, Response);

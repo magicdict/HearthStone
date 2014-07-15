@@ -36,8 +36,10 @@ function onclose() {
 var data;
 var ResponseCode;
 var BattleInfo;
+var IsMyTurn;
 var Interrupt;
 var ActiveCardSN;
+var strHost;
 
 function onmessage(evt) {
     data = evt.data;
@@ -47,6 +49,9 @@ function onmessage(evt) {
     switch (ResponseCode) {
         case RequestType.开始游戏:
             CreateGameResponse();
+            break;
+        case RequestType.回合结束:
+            EndTrunResponse();
             break;
         case RequestType.传送套牌:
             SendDeckResponse();
@@ -89,6 +94,7 @@ var RequestType = {
 };
 
 function CreateGame() {
+    document.getElementById("btnCreateGame").disabled = "disabled";
     socket.send(RequestType.开始游戏);
 }
 
@@ -111,8 +117,22 @@ function CreateGameResponse() {
     SendDeck();
 }
 
+function EndTrun() {
+    IsMyTurn = false;
+    var message = RequestType.回合结束 + GameId + strHost;
+    socket.send(message);
+}
+
+function EndTrunResponse() {
+    var IsHostEnd = data.toString().substr(0, 1) == strTrue;
+    var message = RequestType.战场状态 + GameId + strHost;
+    socket.send(message);
+    if (IsHostEnd != IsHost) {
+        IsMyTurn = true;
+    }
+}
+
 function SendDeck() {
-    var strHost;
     if (IsHost) {
         strHost = strTrue;
     } else {
@@ -142,6 +162,7 @@ function InitPlayInfoResponse() {
     }
     var message = RequestType.战场状态 + GameId + strHost;
     socket.send(message);
+    if (IsFirst) IsMyTurn = true;
 }
 
 function UserHandCardResponse() {
@@ -207,10 +228,16 @@ function ResumeResponse() {
 function BattleInfoResponse() {
     BattleInfo = JSON.parse(data);
     var divHtml = "战场信息<br>";
-    
+    if (IsMyTurn) {
+        divHtml += "本方回合<br>"
+        document.getElementById("btnEndTurn").disabled = "";
+
+    } else {
+        divHtml += "对方回合<br>"
+        document.getElementById("btnEndTurn").disabled = "disabled";
+    }
     divHtml += "生命力：" + BattleInfo.MyInfo.生命力 + "护盾值：" + BattleInfo.MyInfo.护盾值;
     divHtml += "可用水晶：" + BattleInfo.MyInfo.可用水晶 + "总体水晶：" + BattleInfo.MyInfo.总体水晶 + "<br>";
-
     for (var i = 0; i < BattleInfo.HandCard.length; i++) {
         divHtml += "手牌:" + BattleInfo.HandCard[i].名称 + "<input type=\"button\" onclick=\"UserHandCard(\'" + BattleInfo.HandCard[i].序列号 + "\')\" value=\"使用\" />" + "<br>";
     }

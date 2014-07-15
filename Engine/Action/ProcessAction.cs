@@ -19,20 +19,20 @@ namespace Engine.Action
         public static void Process(string ActionCommand, ActionStatus game)
         {
             string[] actField = ActionCommand.Split(CardUtility.strSplitMark.ToCharArray());
-            switch (Engine.Server.ActionCode.GetActionType(ActionCommand))
+            switch (ActionCode.GetActionType(ActionCommand))
             {
                 case ActionCode.ActionType.Card:
-                    CardEffect.ReRunEffect(1,game, actField);
+                    CardEffect.ReRunEffect(1, game, actField);
                     break;
                 case ActionCode.ActionType.UseMinion:
                     int Pos = int.Parse(actField[2]);
-                    var minion = (Engine.Card.MinionCard)Engine.Utility.CardUtility.GetCardInfoBySN(actField[1]);
+                    var minion = (MinionCard)CardUtility.GetCardInfoBySN(actField[1]);
                     minion.初始化();
                     game.AllRole.YourPublicInfo.BattleField.PutToBattle(Pos, minion);
                     game.AllRole.YourPublicInfo.BattleField.ResetBuff();
                     break;
                 case ActionCode.ActionType.UseWeapon:
-                    game.AllRole.YourPublicInfo.Weapon = (Engine.Card.WeaponCard)Engine.Utility.CardUtility.GetCardInfoBySN(actField[1]);
+                    game.AllRole.YourPublicInfo.Weapon = (WeaponCard)CardUtility.GetCardInfoBySN(actField[1]);
                     break;
                 case ActionCode.ActionType.UseSecret:
                     game.AllRole.YourPublicInfo.SecretCount++; ;
