@@ -30,31 +30,31 @@ namespace Engine.Effect
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.目标选择角色枚举.随从:
-                                    SelectOpt.SelectedPos.Postion = t.Next(1,game.AllRole.MyPublicInfo.BattleField.MinionCount + 1);
+                                    SelectOpt.SelectedPos.位置 = t.Next(1,game.AllRole.MyPublicInfo.BattleField.MinionCount + 1);
                                     SelectOpt.SelectedPos.本方对方标识 = true;
                                     break;
                                 case CardUtility.目标选择角色枚举.所有角色:
-                                    SelectOpt.SelectedPos.Postion = t.Next(Client.BattleFieldInfo.HeroPos,game.AllRole.MyPublicInfo.BattleField.MinionCount + 1);
+                                    SelectOpt.SelectedPos.位置 = t.Next(Client.BattleFieldInfo.HeroPos,game.AllRole.MyPublicInfo.BattleField.MinionCount + 1);
                                     SelectOpt.SelectedPos.本方对方标识 = true;
                                     break;
                             }
                             //ME#POS
-                            Result.Add(CardUtility.strMe + CardUtility.strSplitMark + SelectOpt.SelectedPos.Postion.ToString("D1"));
+                            Result.Add(CardUtility.strMe + CardUtility.strSplitMark + SelectOpt.SelectedPos.位置.ToString("D1"));
                             break;
                         case CardUtility.目标选择方向枚举.对方:
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.目标选择角色枚举.随从:
-                                    SelectOpt.SelectedPos.Postion = t.Next(1,game.AllRole.YourPublicInfo.BattleField.MinionCount + 1);
+                                    SelectOpt.SelectedPos.位置 = t.Next(1,game.AllRole.YourPublicInfo.BattleField.MinionCount + 1);
                                     SelectOpt.SelectedPos.本方对方标识 = false;
                                     break;
                                 case CardUtility.目标选择角色枚举.所有角色:
-                                    SelectOpt.SelectedPos.Postion = t.Next(Client.BattleFieldInfo.HeroPos,game.AllRole.YourPublicInfo.BattleField.MinionCount + 1);
+                                    SelectOpt.SelectedPos.位置 = t.Next(Client.BattleFieldInfo.HeroPos,game.AllRole.YourPublicInfo.BattleField.MinionCount + 1);
                                     SelectOpt.SelectedPos.本方对方标识 = false;
                                     break;
                             }
                             //ME#POS
-                            Result.Add(CardUtility.strYou + CardUtility.strSplitMark + SelectOpt.SelectedPos.Postion.ToString("D1"));
+                            Result.Add(CardUtility.strYou + CardUtility.strSplitMark + SelectOpt.SelectedPos.位置.ToString("D1"));
                             break;
                         case CardUtility.目标选择方向枚举.双方:
                             //本方对方
@@ -72,14 +72,14 @@ namespace Engine.Effect
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.目标选择角色枚举.随从:
-                                    SelectOpt.SelectedPos.Postion = t.Next(1, MinionCount + 1);
+                                    SelectOpt.SelectedPos.位置 = t.Next(1, MinionCount + 1);
                                     break;
                                 case CardUtility.目标选择角色枚举.所有角色:
-                                    SelectOpt.SelectedPos.Postion = t.Next(Client.BattleFieldInfo.HeroPos, MinionCount + 1);
+                                    SelectOpt.SelectedPos.位置 = t.Next(Client.BattleFieldInfo.HeroPos, MinionCount + 1);
                                     break;
                             }
                             //ME#POS
-                            Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + SelectOpt.SelectedPos.Postion.ToString("D1"));
+                            Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + SelectOpt.SelectedPos.位置.ToString("D1"));
                             break;
                         default:
                             break;
@@ -138,23 +138,23 @@ namespace Engine.Effect
                     break;
                 case CardUtility.目标选择模式枚举.指定:
                 case CardUtility.目标选择模式枚举.继承:
-                    Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + SelectOpt.SelectedPos.Postion.ToString("D1"));
+                    Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + SelectOpt.SelectedPos.位置.ToString("D1"));
                     break;
                 case CardUtility.目标选择模式枚举.相邻:
-                    Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + SelectOpt.SelectedPos.Postion.ToString("D1"));
+                    Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + SelectOpt.SelectedPos.位置.ToString("D1"));
                     //左侧追加
-                    if (SelectOpt.SelectedPos.Postion != 1)
-                        Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + (SelectOpt.SelectedPos.Postion - 1).ToString("D1"));
+                    if (SelectOpt.SelectedPos.位置 != 1)
+                        Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + (SelectOpt.SelectedPos.位置 - 1).ToString("D1"));
                     //右侧追加
                     if (SelectOpt.SelectedPos.本方对方标识)
                     {
-                        if (SelectOpt.SelectedPos.Postion !=game.AllRole.MyPublicInfo.BattleField.MinionCount)
-                            Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + (SelectOpt.SelectedPos.Postion + 1).ToString("D1"));
+                        if (SelectOpt.SelectedPos.位置 !=game.AllRole.MyPublicInfo.BattleField.MinionCount)
+                            Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + (SelectOpt.SelectedPos.位置 + 1).ToString("D1"));
                     }
                     else
                     {
-                        if (SelectOpt.SelectedPos.Postion !=game.AllRole.YourPublicInfo.BattleField.MinionCount)
-                            Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + (SelectOpt.SelectedPos.Postion + 1).ToString("D1"));
+                        if (SelectOpt.SelectedPos.位置 !=game.AllRole.YourPublicInfo.BattleField.MinionCount)
+                            Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + (SelectOpt.SelectedPos.位置 + 1).ToString("D1"));
                     }
                     break;
                 case CardUtility.目标选择模式枚举.不用选择:

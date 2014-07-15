@@ -128,7 +128,7 @@ namespace Engine.Client
             }
             for (int i = 0; i < MinionCount; i++)
             {
-                BattleMinions[i].战场位置.Postion = i + 1;
+                BattleMinions[i].战场位置.位置 = i + 1;
                 BattleMinions[i].战场位置.本方对方标识 = 本方对方标识;
             }
         }
@@ -214,7 +214,7 @@ namespace Engine.Client
             BattleMinions[SystemManager.MaxMinionCount - 1] = null;
             for (int i = 0; i < MinionCount; i++)
             {
-                BattleMinions[i].战场位置.Postion = i + 1;
+                BattleMinions[i].战场位置.位置 = i + 1;
                 BattleMinions[i].战场位置.本方对方标识 = 本方对方标识;
             }
         }
@@ -330,7 +330,7 @@ namespace Engine.Client
             BattleMinions = CloneMinions;
             for (int i = 0; i < MinionCount; i++)
             {
-                BattleMinions[i].战场位置.Postion = i + 1;
+                BattleMinions[i].战场位置.位置 = i + 1;
                 BattleMinions[i].战场位置.本方对方标识 = 本方对方标识;
             }
             return DeadList;

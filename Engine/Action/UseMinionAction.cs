@@ -56,7 +56,7 @@ namespace Engine.Action
                     触发事件类型 = CardUtility.事件类型枚举.召唤,
                     触发位置 = new CardUtility.指定位置结构体()
                     {
-                        Postion = MinionPos,
+                        位置 = MinionPos,
                         本方对方标识 = true
                     }
                 });
@@ -110,7 +110,7 @@ namespace Engine.Action
         public static void RunBS(ActionStatus game, String CardSn)
         {
             int MinionPos = -1;
-            MinionCard minion = null;
+            MinionCard minion = minion = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(CardSn);
             //Step1
             if (game.Interrupt.Step == 1)
             {
@@ -127,7 +127,6 @@ namespace Engine.Action
             if (game.Interrupt.Step == 2)
             {
                 if (MinionPos == -1) MinionPos = int.Parse(game.Interrupt.SessionData);
-                minion = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(CardSn);
                 //初始化
                 minion.初始化();
                 //随从入场
@@ -138,7 +137,7 @@ namespace Engine.Action
                     触发事件类型 = CardUtility.事件类型枚举.召唤,
                     触发位置 = new CardUtility.指定位置结构体()
                     {
-                        Postion = MinionPos,
+                        位置 = MinionPos,
                         本方对方标识 = game.IsHost
                     }
                 });
@@ -150,9 +149,10 @@ namespace Engine.Action
                 SpellCard spell = (SpellCard)CardUtility.GetCardInfoBySN(minion.战吼效果);
                 if (spell.FirstAbilityDefine.IsNeedTargetSelect)
                 {
-                    //这种类型的战吼，直接转换为施法
-                    game.Interrupt.Step = 3;
-                    game.Interrupt.ActionName = "SPELLPOSITION";
+                    SelectUtility.SetTargetSelectEnable(spell.FirstAbilityDefine.MainAbilityDefine.AbliltyPosPicker, game);
+                    game.Interrupt.ExternalInfo = SelectUtility.GetTargetList(game);
+                    game.Interrupt.Step = 4;
+                    game.Interrupt.ActionName = "BATTLECRYPOSITION";
                     return;
                 }
                 else
@@ -160,6 +160,15 @@ namespace Engine.Action
                     //注意：发动战吼的方法自身或者相邻的类型，所以肯定不需要做目标选择
                     game.AllRole.MyPublicInfo.BattleField.发动战吼(MinionPos, game);
                 }
+            }
+            if (game.Interrupt.Step == 4)
+            {
+                //法术位置信息包含在SessionData中，传递下去
+                //这种类型的战吼，直接转换为施法
+                //这里约定：战吼是无需抉择的
+                game.Interrupt.ActionName = "RUNBATTLECRY";
+                game.Interrupt.Step = 1;
+                UseSpellAction.RunBS(game, minion.战吼效果);
             }
             game.Interrupt.Step = 99;
             game.Interrupt.ActionName = CardUtility.strOK;

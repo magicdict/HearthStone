@@ -29,7 +29,7 @@ namespace 炉边传说
             InitializeComponent();
             SelectOption = option;
             actionStatus = _actionStatus;
-            Position.Postion = -1;
+            Position.位置 = -1;
             ctlUsageCard.CardInfo = GameManager.MyClientManager.CurrentActiveCard;
             ctlUsageCard.Enabled = false;
             ctlUsageCard.Visible = true;
@@ -41,7 +41,7 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            Position.Postion = -1;
+            Position.位置 = -1;
             this.Close();
         }
         /// <summary>
@@ -66,7 +66,7 @@ namespace 炉边传说
                 {
                     Position.本方对方标识 = true;
                     //这里千万不能使用 i ,每次 i 都是固定值
-                    Position.Postion = int.Parse(((Button)x).Parent.Name.Substring("btnMe".Length));
+                    Position.位置 = int.Parse(((Button)x).Parent.Name.Substring("btnMe".Length));
                     this.Close();
                 };
                 LeftPos += btnMe1.Width + Megrate;
@@ -83,7 +83,7 @@ namespace 炉边传说
                     Position.本方对方标识 = false;
                     //这里千万不能使用 i ,每次 i 都是固定值
                     //pos.Postion = i + 1;
-                    Position.Postion = int.Parse(((Button)x).Parent.Name.Substring("btnYou".Length));
+                    Position.位置 = int.Parse(((Button)x).Parent.Name.Substring("btnYou".Length));
                     this.Close();
                 };
                 LeftPos += btnMe1.Width + Megrate;
@@ -93,7 +93,7 @@ namespace 炉边传说
             btnMyHero.Click += (x, y) =>
             {
                 Position.本方对方标识 = true;
-                Position.Postion = 0;
+                Position.位置 = 0;
                 this.Close();
             };
             btnYourHero.Enabled = actionStatus.AllRole.YourPublicInfo.能否成为动作对象; ;
@@ -101,7 +101,7 @@ namespace 炉边传说
             btnYourHero.Click += (x, y) =>
             {
                 Position.本方对方标识 = false;
-                Position.Postion = 0;
+                Position.位置 = 0;
                 this.Close();
             };
         }

@@ -94,7 +94,8 @@ namespace Engine.Server
                     GameId = int.Parse(Request.Substring(3, 5));
                     IsHost = Request.Substring(8, 1) == CardUtility.strTrue;
                     //这里可能产生中断
-                    Response = GameServer.UseHandCard(GameId, IsHost, Request.Substring(9), 1, String.Empty).ActionName;
+                    var interrput = GameServer.UseHandCard(GameId, IsHost, Request.Substring(9), 1, String.Empty);
+                    Response = interrput.ToJson();
                     break;
                 case RequestType.战场状态:
                     GameId = int.Parse(Request.Substring(3, 5));
@@ -111,7 +112,8 @@ namespace Engine.Server
                     String CardSN = Request.Substring(13, 7);
                     if (ResumeType == RequestType.使用手牌)
                     {
-                        Response = GameServer.UseHandCard(GameId, IsHost, CardSN, Step, Request.Substring(20)).ActionName;
+                        var resume = GameServer.UseHandCard(GameId, IsHost, CardSN, Step, Request.Substring(20));
+                        Response = resume.ToJson();
                     }
                     requestType = ResumeType;
                     break;

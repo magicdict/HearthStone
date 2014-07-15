@@ -36,6 +36,7 @@ function onclose() {
 var data;
 var ResponseCode;
 var BattleInfo;
+var Interrupt;
 var ActiveCardSN;
 
 function onmessage(evt) {
@@ -149,23 +150,55 @@ function UserHandCardResponse() {
     } else {
         strHost = strFalse;
     }
-    switch (data) {
+    Interrupt = JSON.parse(data);
+    var Step;
+    var SessionData;
+    var SpellDecide;
+    switch (Interrupt.ActionName) {
         case "OK":
             var message = RequestType.战场状态 + GameId + strHost;
             socket.send(message);
             break;
         case "MINIONPOSITION":
-            var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + "2" + ActiveCardSN + "1";
+            alert("随从位置的选择:" + Interrupt.ExternalInfo)
+            SessionData = "1";
+
+            Step = "2";
+            var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + Step + ActiveCardSN + SessionData
+            socket.send(message);
+            break;
+        case "BATTLECRYPOSITION":
+            SpellDecide = "1";
+            alert("战吼施放对象的选择:" + Interrupt.ExternalInfo)
+            SessionData = SpellDecide + "ME#1";
+
+            Step = "4";
+            var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + Step + ActiveCardSN + SessionData;
             socket.send(message);
             break;
         case "SPELLPOSITION":
-            var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + "3" + ActiveCardSN + "1";
+            SpellDecide = Interrupt.ExternalInfo.toString().substr(0, 1);
+            alert("法术施放对象的选择:" + Interrupt.ExternalInfo)
+            SessionData = SpellDecide + "ME#1";
+
+            Step = "2";
+            var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + Step + ActiveCardSN + SessionData;
+            socket.send(message);
+            break;
+        case "SPELLDECIDE":
+            alert("法术卡牌抉择:" + Interrupt.ExternalInfo)
+            SpellDecide = "1"
+
+            Step = "2";
+            SessionData = SpellDecide;
+            var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + Step + ActiveCardSN + SessionData;
             socket.send(message);
             break;
     }
 }
 function ResumeResponse() {
-    if (data == "OK") {
+    Interrupt = JSON.parse(data);
+    if (Interrupt.ActionName == "OK") {
         var message = RequestType.战场状态 + GameId + strHost;
         socket.send(message);
     }
@@ -174,6 +207,10 @@ function ResumeResponse() {
 function BattleInfoResponse() {
     BattleInfo = JSON.parse(data);
     var divHtml = "战场信息<br>";
+    
+    divHtml += "生命力：" + BattleInfo.MyInfo.生命力 + "护盾值：" + BattleInfo.MyInfo.护盾值;
+    divHtml += "可用水晶：" + BattleInfo.MyInfo.可用水晶 + "总体水晶：" + BattleInfo.MyInfo.总体水晶 + "<br>";
+
     for (var i = 0; i < BattleInfo.HandCard.length; i++) {
         divHtml += "手牌:" + BattleInfo.HandCard[i].名称 + "<input type=\"button\" onclick=\"UserHandCard(\'" + BattleInfo.HandCard[i].序列号 + "\')\" value=\"使用\" />" + "<br>";
     }

@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Action\TurnAction.cs" />
     <Compile Include="Action\UseMinionAction.cs" />
     <Compile Include="Action\UseSpellAction.cs" />
     <Compile Include="AI\DoAction.cs" />

@@ -207,16 +207,7 @@ namespace Engine.Card
                     }
                 }
             }
-            String strRtn = String.Empty;
-            if (HITCardList.Count != 0)
-            {
-                foreach (var card in HITCardList)
-                {
-                    strRtn += card + Engine.Utility.CardUtility.strSplitArrayMark;
-                }
-                strRtn = strRtn.TrimEnd(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
-            }
-            return strRtn;
+            return HITCardList.ToListString();
         }
         /// <summary>
         /// 

@@ -53,11 +53,11 @@ namespace Engine.Control
         public struct Interrupt
         {
             /// <summary>
-            /// 
+            /// 游戏ID
             /// </summary>
             public String GameId;
             /// <summary>
-            /// 
+            /// 是否为主机
             /// </summary>
             public Boolean IsHost;
             /// <summary>
@@ -65,15 +65,15 @@ namespace Engine.Control
             /// </summary>
             public int Step;
             /// <summary>
-            /// 中断理由
+            /// 中断步骤名称
             /// </summary>
             public String ActionName;
             /// <summary>
             /// 附加情报
             /// </summary>
-            public String ResumeInfo;
+            public String ExternalInfo;
             /// <summary>
-            /// 会话数据
+            /// 客户端数据
             /// </summary>
             public String SessionData;
         }
@@ -169,8 +169,8 @@ namespace Engine.Control
         public void InitPlayInfo()
         {
             //位置
-            HostStatus.BasicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = true, Postion = BattleFieldInfo.HeroPos };
-            GuestStatus.BasicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = false, Postion = BattleFieldInfo.HeroPos };
+            HostStatus.BasicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = true, 位置 = BattleFieldInfo.HeroPos };
+            GuestStatus.BasicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = false, 位置 = BattleFieldInfo.HeroPos };
             HostStatus.BasicInfo.BattleField.本方对方标识 = true;
             GuestStatus.BasicInfo.BattleField.本方对方标识 = false;
             //水晶
@@ -181,6 +181,12 @@ namespace Engine.Control
             //英雄技能：奥术飞弹
             HostStatus.BasicInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
             GuestStatus.BasicInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
+
+            //TEST Begin
+            //HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M000054"));
+            //HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("A000005"));
+            //TEST End
+
             //初始化双方手牌
             int DrawCardCnt = 0;
             if (HostAsFirst)
@@ -222,5 +228,14 @@ namespace Engine.Control
                 GuestStatus.BasicInfo.HandCardCount = PublicInfo.BasicHandCardCount;
             }
         }
+        /// <summary>
+        /// 开始回合
+        /// </summary>
+        /// <param name="IsHost"></param>
+        public void StartTurn(Boolean IsHost)
+        {
+
+        }
+
     }
 }

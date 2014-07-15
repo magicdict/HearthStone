@@ -149,15 +149,21 @@ namespace Engine.Card
             //对象选择处理
             if (Ability.MainAbilityDefine.IsNeedTargetSelect)
             {
-                Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = ActionStatus.GetSelectTarget(Ability.MainAbilityDefine.AbliltyPosPicker);
+                //如果是BS的话，可以通过game的上下文数据获得位置信息
+                if (SystemManager.游戏类型 == SystemManager.GameType.HTML版)
+                {
+                    Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = Engine.Utility.CardUtility.指定位置结构体.FromString(game.Interrupt.SessionData.Substring(1));
+                }
+                else {
+                    Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = ActionStatus.GetSelectTarget(Ability.MainAbilityDefine.AbliltyPosPicker);
+                }
             }
             //取消处理
-            if (Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.Postion == -1)
+            if (Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.位置 == -1)
             {
                 Result.Clear();
                 return Result;
             }
-
             //法术伤害对于攻击型效果的加成
             if (Ability.MainAbilityDefine.效果条件 == CardUtility.strIgnore && Ability.MainAbilityDefine.EffectCount > 1)
             {

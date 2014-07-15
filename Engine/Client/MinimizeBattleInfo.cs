@@ -55,6 +55,14 @@ namespace Engine.Client
             /// </summary>
             public int 生命力;
             /// <summary>
+            /// 可用水晶
+            /// </summary>
+            public int 可用水晶;
+            /// <summary>
+            /// 总体水晶
+            /// </summary>
+            public int 总体水晶;
+            /// <summary>
             /// 
             /// </summary>
             /// <param name="pubInfo"></param>
@@ -63,6 +71,8 @@ namespace Engine.Client
             {
                 护盾值 = pubInfo.ShieldPoint;
                 生命力 = pubInfo.LifePoint;
+                可用水晶 = pubInfo.crystal.CurrentRemainPoint;
+                总体水晶 = pubInfo.crystal.CurrentFullPoint;
             }
         }
         public struct HandCardInfo

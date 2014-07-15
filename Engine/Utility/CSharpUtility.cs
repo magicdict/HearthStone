@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 namespace Engine.Utility
 {
     /// <summary>
@@ -15,6 +16,21 @@ namespace Engine.Utility
         public static String ToJson(this Object obj)
         {
             return JsonConvert.SerializeObject(obj);
+        }
+        /// <summary>
+        /// 字符串列表转字符串
+        /// </summary>
+        /// <param name="StringList"></param>
+        /// <returns></returns>
+        public static String ToListString(this List<String> StringList)
+        {
+            if (StringList.Count == 0) return String.Empty;
+            var rtn = String.Empty;
+            for (int i = 0; i < StringList.Count; i++)
+            {
+                rtn += StringList[i] + CardUtility.strSplitArrayMark;
+            }
+            return rtn.TrimEnd(CardUtility.strSplitArrayMark.ToCharArray());
         }
         #region"扩展方法"
         /// <summary>

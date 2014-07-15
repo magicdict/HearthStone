@@ -487,14 +487,26 @@ namespace Engine.Utility
             /// <summary>
             /// 0 - 英雄，1-7 随从位置
             /// </summary>
-            public int Postion;
+            public int 位置;
             /// <summary>
             /// ToString(重载)
             /// </summary>
             /// <returns></returns>
             public override string ToString()
             {
-                return (本方对方标识 ? strMe : strYou) + strSplitMark + Postion.ToString("D1");
+                return (本方对方标识 ? strMe : strYou) + strSplitMark + 位置.ToString("D1");
+            }
+            /// <summary>
+            /// 将文字转换为位置信息
+            /// </summary>
+            /// <param name="Info"></param>
+            /// <returns></returns>
+            public static 指定位置结构体 FromString(String Info)
+            {
+                指定位置结构体 PosInfo = new 指定位置结构体();
+                PosInfo.本方对方标识 = Info.Split(strSplitMark.ToCharArray())[0] == strMe;
+                PosInfo.位置 = int.Parse(Info.Split(strSplitMark.ToCharArray())[1]);
+                return PosInfo;
             }
         }
         #endregion

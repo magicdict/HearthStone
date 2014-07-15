@@ -426,7 +426,7 @@ namespace 炉边传说
             SelectOpt.嘲讽限制 = true;
             GameManager.MyClientManager.CurrentActiveCard = GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.BattleField.BattleMinions[MyPos - 1];
             var YourPos = SelectPanel(SelectOpt);
-            List<String> actionlst = RunAction.Fight(GameManager.MyClientManager.actionStatus, MyPos, YourPos.Postion, true);
+            List<String> actionlst = RunAction.Fight(GameManager.MyClientManager.actionStatus, MyPos, YourPos.位置, true);
             actionlst.AddRange(SecretCard.奥秘计算(actionlst, GameManager.MyClientManager.actionStatus, GameManager.MyClientManager.GameId));
             GameManager.MyClientManager.actionStatus.AllRole.MyPrivateInfo.ResetHandCardCost(GameManager.MyClientManager.actionStatus);
             if (SystemManager.游戏类型 != SystemManager.GameType.单机版) ClientRequest.WriteAction(GameManager.MyClientManager.GameId.ToString(GameServer.GameIdFormat), actionlst);

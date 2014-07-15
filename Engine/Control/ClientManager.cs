@@ -57,8 +57,8 @@ namespace Engine.Control
             actionStatus.AllRole.YourPublicInfo.crystal.CurrentFullPoint = 0;
             actionStatus.AllRole.YourPublicInfo.crystal.CurrentRemainPoint = 0;
 
-            actionStatus.AllRole.MyPublicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = true, Postion = BattleFieldInfo.HeroPos };
-            actionStatus.AllRole.YourPublicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = false, Postion = BattleFieldInfo.HeroPos };
+            actionStatus.AllRole.MyPublicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = true,  位置 = BattleFieldInfo.HeroPos };
+            actionStatus.AllRole.YourPublicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = false, 位置 = BattleFieldInfo.HeroPos };
             actionStatus.AllRole.MyPublicInfo.BattleField.本方对方标识 = true;
             actionStatus.AllRole.YourPublicInfo.BattleField.本方对方标识 = false;
             //英雄技能：奥术飞弹
