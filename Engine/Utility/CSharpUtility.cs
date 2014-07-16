@@ -18,6 +18,44 @@ namespace Engine.Utility
             return JsonConvert.SerializeObject(obj);
         }
         /// <summary>
+        /// 文字列[最后带有分隔符]转字典
+        /// </summary>
+        /// <param name="DicString"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> ToStringDictionary(this String DicString)
+        {
+            Dictionary<string, string> RtnDic = new Dictionary<string, string>();
+            if (!String.IsNullOrEmpty(DicString))
+            {
+                String[] DicItem = DicString.TrimEnd(CardUtility.strSplitArrayMark.ToCharArray()).Split(CardUtility.strSplitArrayMark.ToCharArray());
+                foreach (var item in DicItem)
+                {
+                    var t = item.Split(CardUtility.strSplitKeyValueMark.ToCharArray());
+                    RtnDic.Add(t[0], t[1]);
+                }
+            }
+            return RtnDic;
+        }
+        /// <summary>
+        /// 字典转文字列[最后带有分隔符]
+        /// </summary>
+        /// <param name="Dic"></param>
+        /// <returns></returns>
+        public static String FromStringDictionary(this Dictionary<String, String> Dic)
+        {
+            String Rtn = String.Empty;
+            List<String> t = new List<string>();
+            if (t.Count != 0)
+            {
+                foreach (var item in Dic)
+                {
+                    t.Add(item.Key + CardUtility.strSplitKeyValueMark + item.Value);
+                }
+                Rtn = t.ToListString() + CardUtility.strSplitArrayMark;
+            }
+            return Rtn;
+        }
+        /// <summary>
         /// 字符串列表转字符串
         /// </summary>
         /// <param name="StringList"></param>

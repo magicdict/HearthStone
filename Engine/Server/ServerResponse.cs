@@ -17,14 +17,14 @@ namespace Engine.Server
         /// <param name="Request"></param>
         /// <param name="requestType"></param>
         /// <returns></returns>
-        public static string ProcessRequest(String Request, RequestType requestType)
+        public static string ProcessRequest(string Request, RequestType requestType)
         {
-            String Response = String.Empty;
+            string Response = string.Empty;
             MinimizeBattleInfo info = new MinimizeBattleInfo();
             int GameId;
-            String IsHostStr;
-            String IsFirstStr;
-            Boolean IsHost;
+            string IsHostStr;
+            string IsFirstStr;
+            bool IsHost;
             switch (requestType)
             {
                 case RequestType.新建游戏:
@@ -44,7 +44,7 @@ namespace Engine.Server
                     }
                     else
                     {
-                        GameId = GameServer.JoinGame_BS(GameServer.GameWaitGuest_BS.Keys.ToList()[0], String.Empty);
+                        GameId = GameServer.JoinGame_BS(GameServer.GameWaitGuest_BS.Keys.ToList()[0], string.Empty);
                         IsHostStr = CardUtility.strFalse;
                         IsFirstStr = GameServer.GameRunning_BS[GameId].HostAsFirst ? CardUtility.strFalse : CardUtility.strTrue;
                     }
@@ -53,7 +53,7 @@ namespace Engine.Server
                     break;
                 case RequestType.传送套牌:
                     //[BS/CS]
-                    Stack<String> Deck = new Stack<string>();
+                    Stack<string> Deck = new Stack<string>();
                     foreach (var card in Request.Substring(9).Split(CardUtility.strSplitArrayMark.ToCharArray()))
                     {
                         Deck.Push(card);
@@ -78,7 +78,7 @@ namespace Engine.Server
                     break;
                 case RequestType.抽牌:
                     var Cardlist = GameServer.DrawCard(int.Parse(Request.Substring(3, 5)), Request.Substring(8, 1) == CardUtility.strTrue, int.Parse(Request.Substring(9, 1)));
-                    Response = String.Join(Engine.Utility.CardUtility.strSplitArrayMark, Cardlist.ToArray());
+                    Response = string.Join(CardUtility.strSplitArrayMark, Cardlist.ToArray());
                     break;
                 case RequestType.回合结束:
                     if (SystemManager.游戏类型 == SystemManager.GameType.HTML版)
@@ -108,6 +108,10 @@ namespace Engine.Server
                     //这里可能产生中断
                     var interrput = GameServer.UseHandCard(GameId, IsHost, Request.Substring(9), 1, String.Empty);
                     Response = interrput.ToJson();
+                    if (interrput.ActionName == CardUtility.strOK)
+                    {
+                        Response = CardUtility.strOK + Response;
+                    }
                     break;
                 case RequestType.战场状态:
                     GameId = int.Parse(Request.Substring(3, 5));
@@ -119,13 +123,17 @@ namespace Engine.Server
                 case RequestType.中断续行:
                     GameId = int.Parse(Request.Substring(3, 5));
                     IsHost = Request.Substring(8, 1) == CardUtility.strTrue;
-                    ServerResponse.RequestType ResumeType = (ServerResponse.RequestType)Enum.Parse(typeof(ServerResponse.RequestType), Request.Substring(9, 3));
+                    RequestType ResumeType = (RequestType)Enum.Parse(typeof(RequestType), Request.Substring(9, 3));
                     int Step = int.Parse(Request.Substring(12, 1));
-                    String CardSN = Request.Substring(13, 7);
+                    string CardSN = Request.Substring(13, 7);
                     if (ResumeType == RequestType.使用手牌)
                     {
                         var resume = GameServer.UseHandCard(GameId, IsHost, CardSN, Step, Request.Substring(20));
                         Response = resume.ToJson();
+                        if (resume.ActionName == CardUtility.strOK)
+                        {
+                            Response = CardUtility.strOK + Response;
+                        }
                     }
                     requestType = ResumeType;
                     break;

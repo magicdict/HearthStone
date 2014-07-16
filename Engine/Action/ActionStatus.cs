@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 namespace Engine.Action
 {
+    /// <summary>
+    /// 动作用状态集合
+    /// </summary>
     public class ActionStatus
     {
         /// <summary>
@@ -29,7 +32,7 @@ namespace Engine.Action
             public PrivateInfo YourPrivateInfo;
         }
         /// <summary>
-        /// 
+        /// 全部角色
         /// </summary>
         public BattleRoles AllRole = new BattleRoles();
         /// <summary>
@@ -93,6 +96,8 @@ namespace Engine.Action
                 //例如，亡语为 本方召唤一个随从，敌人亡语，变为敌方召唤一个随从
                 actionlst.AddRange(minion.发动亡语(game));
             }
+            //保持本方对方
+            game.Reverse();
             return actionlst;
         }
     }

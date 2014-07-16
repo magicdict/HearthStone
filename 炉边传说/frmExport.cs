@@ -6,7 +6,6 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
 
 namespace 炉边传说
 {

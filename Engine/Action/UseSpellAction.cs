@@ -17,9 +17,9 @@ namespace Engine.Action
         /// </summary>
         /// <param name="game"></param>
         /// <param name="IsMyAction">对象方向转换</param>
-        public static void RunBS(ActionStatus game, String CardSn)
+        public static void RunBS(ActionStatus game, string CardSn)
         {
-            List<String> Result = new List<string>();
+            List<string> Result = new List<string>();
             SpellCard spell = (SpellCard)CardUtility.GetCardInfoBySN(CardSn);
             //Step1
             CardUtility.抉择枚举 PickAbilityResult = CardUtility.抉择枚举.第一效果;
@@ -27,15 +27,15 @@ namespace Engine.Action
             {
                 switch (spell.效果选择类型)
                 {
-                    case Engine.Card.SpellCard.效果选择类型枚举.无需选择:
+                    case SpellCard.效果选择类型枚举.无需选择:
                         game.Interrupt.ExternalInfo = "1";
                         break;
-                    case Engine.Card.SpellCard.效果选择类型枚举.主动选择:
+                    case SpellCard.效果选择类型枚举.主动选择:
                         game.Interrupt.Step = 2;
                         game.Interrupt.ActionName = "SPELLDECIDE";
                         game.Interrupt.ExternalInfo = spell.FirstAbilityDefine.描述 + CardUtility.strSplitMark + spell.SecondAbilityDefine.描述;
                         return;
-                    case Engine.Card.SpellCard.效果选择类型枚举.自动判定:
+                    case SpellCard.效果选择类型枚举.自动判定:
                         game.Interrupt.ExternalInfo = "1";
                         if (!ExpressHandler.AbilityPickCondition(game, spell.效果选择条件))
                         {
@@ -53,7 +53,7 @@ namespace Engine.Action
             {
                 if (spell.效果选择类型 == SpellCard.效果选择类型枚举.主动选择 && SystemManager.游戏类型 == SystemManager.GameType.HTML版)
                 {
-                    switch (game.Interrupt.SessionData.Substring(0,1))
+                    switch (game.Interrupt.SessionDic["SPELLDECIDE"])
                     {
                         case "1":
                             PickAbilityResult = CardUtility.抉择枚举.第一效果;
@@ -80,11 +80,11 @@ namespace Engine.Action
                     }
                     if (ability.IsNeedTargetSelect())
                     {
-                        if (game.Interrupt.ActionName != "RUNBATTLECRY" && game.Interrupt.SessionData.Length == 1)
+                        if (!(game.Interrupt.ActionName == "RUNBATTLECRY" || game.Interrupt.SessionDic.ContainsKey("SPELLPOSITION")))
                         {
                             //运行战吼的时候，前面已经获得了位置
                             SelectUtility.SetTargetSelectEnable(ability.MainAbilityDefine.AbliltyPosPicker, game);
-                            game.Interrupt.ExternalInfo = game.Interrupt.SessionData.Substring(0,1) + SelectUtility.GetTargetList(game);
+                            game.Interrupt.ExternalInfo = SelectUtility.GetTargetList(game);
                             game.Interrupt.Step = 2;
                             game.Interrupt.ActionName = "SPELLPOSITION";
                             return;
@@ -98,7 +98,7 @@ namespace Engine.Action
                 }
             }
             if (spell.原生卡牌)
-                game.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                game.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
                 {
                     触发事件类型 = CardUtility.事件类型枚举.施法,
                     触发位置 = new CardUtility.指定位置结构体()

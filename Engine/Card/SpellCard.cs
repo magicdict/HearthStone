@@ -1,6 +1,4 @@
 ﻿using Engine.Action;
-using Engine.Client;
-using Engine.Control;
 using Engine.Effect;
 using Engine.Utility;
 using System;
@@ -91,7 +89,8 @@ namespace Engine.Card
             /// </summary>
             public Boolean IsNeedTargetSelect()
             {
-                return MainAbilityDefine.IsNeedTargetSelect || (AppendAbilityDefine != null && AppendAbilityDefine.IsNeedTargetSelect);
+                return MainAbilityDefine.AbliltyPosPicker.IsNeedTargetSelect() || 
+                      (AppendAbilityDefine != null && AppendAbilityDefine.AbliltyPosPicker.IsNeedTargetSelect());
             }
         }
         /// <summary>
@@ -144,12 +143,12 @@ namespace Engine.Card
         {
             List<String> Result = new List<string>();
             //对象选择处理
-            if (Ability.MainAbilityDefine.IsNeedTargetSelect)
+            if (Ability.MainAbilityDefine.AbliltyPosPicker.IsNeedTargetSelect())
             {
                 //如果是BS的话，可以通过game的上下文数据获得位置信息
                 if (SystemManager.游戏类型 == SystemManager.GameType.HTML版)
                 {
-                    Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = Engine.Utility.CardUtility.指定位置结构体.FromString(game.Interrupt.SessionData.Substring(1));
+                    Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = Engine.Utility.CardUtility.指定位置结构体.FromString(game.Interrupt.SessionDic["SPELLPOSITION"]);
                 }
                 else {
                     Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = ActionStatus.GetSelectTarget(Ability.MainAbilityDefine.AbliltyPosPicker);

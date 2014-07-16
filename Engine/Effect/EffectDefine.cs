@@ -26,16 +26,5 @@ namespace Engine.Effect
         /// 效果回数
         /// </summary>
         public int EffectCount = 1;
-        /// <summary>
-        /// 是否需要位置选择
-        /// </summary>
-        public Boolean IsNeedTargetSelect
-        {
-            get{
-                return AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.指定 ||
-                       AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.横扫 ||
-                       AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.相邻;
-            }
-        }
     }
 }

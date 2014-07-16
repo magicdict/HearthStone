@@ -65,10 +65,10 @@ namespace Engine.Utility
                                 break;
                             case ServerResponse.RequestType.使用手牌:
                                 GameId = Request.Substring(3, 5);
-                                if (Response.Substring(3) == CardUtility.strOK)
+                                if (Response.Substring(3,2) == CardUtility.strOK)
                                 {
                                     //使用动作完成
-                                    SendToBoth(GameId, Response);
+                                    SendToBoth(GameId, Response.Substring(0,3) + Response.Substring(5));
                                 }
                                 else
                                 {

@@ -1,5 +1,4 @@
-﻿using Engine.Action;
-using Engine.Card;
+﻿using Engine.Card;
 using Engine.Client;
 using Engine.Control;
 using System;
@@ -19,11 +18,11 @@ namespace Engine.Utility
         /// <summary>
         /// CardXML文件夹
         /// </summary>
-        public static String CardXmlFolder = String.Empty;
+        public static string CardXmlFolder = string.Empty;
         /// <summary>
         /// 初始化
         /// </summary>
-        public static void Init(String mCardXmlFolder)
+        public static void Init(string mCardXmlFolder)
         {
             CardXmlFolder = mCardXmlFolder;
             //从配置文件中获得卡牌的SN和名称的联系
@@ -38,13 +37,13 @@ namespace Engine.Utility
         /// <summary>
         /// 序列号和卡牌名称对应关系表格(可用状态)
         /// </summary>
-        public static Dictionary<String, String> ReadyCardDic = new Dictionary<string, string>();
+        public static Dictionary<string, string> ReadyCardDic = new Dictionary<string, string>();
         /// <summary>
         /// 通过卡牌序列号获得卡牌名称
         /// </summary>
         /// <param name="SN"></param>
         /// <returns></returns>
-        public static String GetCardNameBySN(String SN)
+        public static string GetCardNameBySN(string SN)
         {
             if (ReadyCardDic.ContainsKey(SN)) return ReadyCardDic[SN];
             return "UnKnow";
@@ -54,12 +53,12 @@ namespace Engine.Utility
         /// </summary>
         /// <param name="CardSn"></param>
         /// <returns></returns>
-        public static String GetCardInfo(String CardSn)
+        public static string GetCardInfo(string CardSn)
         {
             StringBuilder Status = new StringBuilder();
-            if (Engine.Utility.CardUtility.GetCardInfoBySN(CardSn) != null)
+            if (GetCardInfoBySN(CardSn) != null)
             {
-                Engine.Card.CardBasicInfo info = Engine.Utility.CardUtility.GetCardInfoBySN(CardSn);
+                CardBasicInfo info = GetCardInfoBySN(CardSn);
                 Status.AppendLine("==============");
                 Status.AppendLine("Description" + info.描述);
                 Status.AppendLine("StandardCostPoint" + info.使用成本);
@@ -67,12 +66,12 @@ namespace Engine.Utility
                 switch (info.卡牌种类)
                 {
                     case CardBasicInfo.卡牌类型枚举.随从:
-                        Status.AppendLine("攻击力：" + ((Engine.Card.MinionCard)info).攻击力.ToString());
-                        Status.AppendLine("生命值：" + ((Engine.Card.MinionCard)info).生命值上限.ToString());
+                        Status.AppendLine("攻击力：" + ((MinionCard)info).攻击力.ToString());
+                        Status.AppendLine("生命值：" + ((MinionCard)info).生命值上限.ToString());
                         break;
                     case CardBasicInfo.卡牌类型枚举.武器:
-                        Status.AppendLine("攻击力：" + ((Engine.Card.WeaponCard)info).攻击力.ToString());
-                        Status.AppendLine("耐久度：" + ((Engine.Card.WeaponCard)info).耐久度.ToString());
+                        Status.AppendLine("攻击力：" + ((WeaponCard)info).攻击力.ToString());
+                        Status.AppendLine("耐久度：" + ((WeaponCard)info).耐久度.ToString());
                         break;
                 }
                 Status.AppendLine("==============");
@@ -82,18 +81,18 @@ namespace Engine.Utility
         /// <summary>
         /// 卡牌组合
         /// </summary>
-        public static Dictionary<String, CardBasicInfo> CardCollections = new Dictionary<String, CardBasicInfo>();
+        public static Dictionary<string, CardBasicInfo> CardCollections = new Dictionary<string, CardBasicInfo>();
         /// <summary>
         /// 通过卡牌序列号获得卡牌名称
         /// </summary>
         /// <param name="SN"></param>
         /// <returns></returns>
-        public static CardBasicInfo GetCardInfoBySN(String SN)
+        public static CardBasicInfo GetCardInfoBySN(string SN)
         {
             if (CardCollections.ContainsKey(SN))
             {
                 var c = CardCollections[SN].DeepCopy();
-                if (c.卡牌种类 == CardBasicInfo.卡牌类型枚举.随从) ((Engine.Card.MinionCard)c).初始化();
+                if (c.卡牌种类 == CardBasicInfo.卡牌类型枚举.随从) ((MinionCard)c).初始化();
                 return c;
             }
             return null;
@@ -110,32 +109,29 @@ namespace Engine.Utility
                     //法术
                     foreach (var AbilityXml in Directory.GetFiles(CardXmlFolder + "\\Ability\\"))
                     {
-                        XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.SpellCard));
-                        Engine.Card.SpellCard ability = (SpellCard)xml.Deserialize(new StreamReader(AbilityXml));
+                        XmlSerializer xml = new XmlSerializer(typeof(SpellCard));
+                        SpellCard ability = (SpellCard)xml.Deserialize(new StreamReader(AbilityXml));
                         CardCollections.Add(ability.序列号, ability);
                     }
                     //随从
                     foreach (var MinionXml in Directory.GetFiles(CardXmlFolder + "\\Minion\\"))
                     {
-                        XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.MinionCard));
-                        Engine.Card.MinionCard Minio = (MinionCard)xml.Deserialize(new StreamReader(MinionXml));
-                        Minio.使用成本 = Minio.使用成本;
+                        XmlSerializer xml = new XmlSerializer(typeof(MinionCard));
+                        MinionCard Minio = (MinionCard)xml.Deserialize(new StreamReader(MinionXml));
                         CardCollections.Add(Minio.序列号, Minio);
                     }
                     //武器
                     foreach (var WeaponXml in Directory.GetFiles(CardXmlFolder + "\\Weapon\\"))
                     {
-                        XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.WeaponCard));
-                        Engine.Card.WeaponCard Weapon = (WeaponCard)xml.Deserialize(new StreamReader(WeaponXml));
-                        Weapon.使用成本 = Weapon.使用成本;
+                        XmlSerializer xml = new XmlSerializer(typeof(WeaponCard));
+                        WeaponCard Weapon = (WeaponCard)xml.Deserialize(new StreamReader(WeaponXml));
                         CardCollections.Add(Weapon.序列号, Weapon);
                     }
                     //奥秘
                     foreach (var SecretXml in Directory.GetFiles(CardXmlFolder + "\\Secret\\"))
                     {
-                        XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.SecretCard));
-                        Engine.Card.SecretCard Secret = (SecretCard)xml.Deserialize(new StreamReader(SecretXml));
-                        Secret.使用成本 = Secret.使用成本;
+                        XmlSerializer xml = new XmlSerializer(typeof(SecretCard));
+                        SecretCard Secret = (SecretCard)xml.Deserialize(new StreamReader(SecretXml));
                         CardCollections.Add(Secret.序列号, Secret);
                     }
                     break;
@@ -143,25 +139,25 @@ namespace Engine.Utility
                     //法术
                     foreach (var AbilityXml in Directory.GetFiles(CardXmlFolder + "\\Ability\\"))
                     {
-                        Engine.Card.SpellCard ability = (SpellCard)JsonSerializer.Create().Deserialize(new StreamReader(AbilityXml), typeof(Engine.Card.SpellCard));
+                        SpellCard ability = (SpellCard)JsonSerializer.Create().Deserialize(new StreamReader(AbilityXml), typeof(SpellCard));
                         CardCollections.Add(ability.序列号, ability);
                     }
                     //随从
                     foreach (var MinionXml in Directory.GetFiles(CardXmlFolder + "\\Minion\\"))
                     {
-                        Engine.Card.MinionCard Minio = (MinionCard)JsonSerializer.Create().Deserialize(new StreamReader(MinionXml), typeof(Engine.Card.MinionCard));
+                        MinionCard Minio = (MinionCard)JsonSerializer.Create().Deserialize(new StreamReader(MinionXml), typeof(MinionCard));
                         CardCollections.Add(Minio.序列号, Minio);
                     }
                     //武器
                     foreach (var WeaponXml in Directory.GetFiles(CardXmlFolder + "\\Weapon\\"))
                     {
-                        Engine.Card.WeaponCard Weapon = (WeaponCard)JsonSerializer.Create().Deserialize(new StreamReader(WeaponXml), typeof(Engine.Card.WeaponCard));
+                        WeaponCard Weapon = (WeaponCard)JsonSerializer.Create().Deserialize(new StreamReader(WeaponXml), typeof(WeaponCard));
                         CardCollections.Add(Weapon.序列号, Weapon);
                     }
                     //奥秘
                     foreach (var SecretXml in Directory.GetFiles(CardXmlFolder + "\\Secret\\"))
                     {
-                        Engine.Card.SecretCard Secret = (SecretCard)JsonSerializer.Create().Deserialize(new StreamReader(SecretXml), typeof(Engine.Card.SecretCard));
+                        SecretCard Secret = (SecretCard)JsonSerializer.Create().Deserialize(new StreamReader(SecretXml), typeof(SecretCard));
                         CardCollections.Add(Secret.序列号, Secret);
                     }
                     break;
@@ -174,39 +170,43 @@ namespace Engine.Utility
         /// <summary>
         /// 原生法术
         /// </summary>
-        public const String 原生卡牌标识 = "0";
+        public const string 原生卡牌标识 = "0";
         /// <summary>
         /// 真
         /// </summary>
-        public const String strTrue = "1";
+        public const string strTrue = "1";
         /// <summary>
         /// 假
         /// </summary>
-        public const String strFalse = "0";
+        public const string strFalse = "0";
         /// <summary>
         /// 表示本方
         /// </summary>
-        public const String strMe = "ME";
+        public const string strMe = "ME";
         /// <summary>
         /// 表示对方
         /// </summary>
-        public const String strYou = "YOU";
+        public const string strYou = "YOU";
         /// <summary>
         /// 分隔符号
         /// </summary>
-        public const String strSplitMark = "#";
+        public const string strSplitMark = "#";
         /// <summary>
         /// 分隔符号（不同内容）
         /// </summary>
-        public const String strSplitDiffMark = "$";
+        public const string strSplitDiffMark = "$";
         /// <summary>
         /// 分隔符号(数组)
         /// </summary>
-        public const String strSplitArrayMark = "|";
+        public const string strSplitArrayMark = "|";
+        /// <summary>
+        /// 分隔符号(键值对)
+        /// </summary>
+        public const string strSplitKeyValueMark = ":";
         /// <summary>
         /// 忽略
         /// </summary>
-        public const String strIgnore = "X";
+        public const string strIgnore = "X";
         /// <summary>
         /// 最大值
         /// </summary>
@@ -214,7 +214,7 @@ namespace Engine.Utility
         /// <summary>
         /// OK
         /// </summary>
-        public const String strOK = "OK";
+        public const string strOK = "OK";
         #endregion
 
         #region"枚举值"
@@ -256,9 +256,13 @@ namespace Engine.Utility
             /// </summary>
             不用选择,
             /// <summary>
-            /// 继承第一效果的位置信息
+            /// 使用已经存在的选定位置
             /// </summary>
             继承,
+            /// <summary>
+            /// 除去已经存在的选定位置
+            /// </summary>
+            其他角色,
             /// <summary>
             /// 随机
             /// </summary>
@@ -307,19 +311,19 @@ namespace Engine.Utility
             /// <summary>
             /// 法术对象选择模式
             /// </summary>
-            public CardUtility.目标选择模式枚举 EffictTargetSelectMode;
+            public 目标选择模式枚举 EffictTargetSelectMode;
             /// <summary>
             /// 法术对象选择角色
             /// </summary>
-            public CardUtility.目标选择角色枚举 EffectTargetSelectRole;
+            public 目标选择角色枚举 EffectTargetSelectRole;
             /// <summary>
             /// 法术对象选择方向
             /// </summary>
-            public CardUtility.目标选择方向枚举 EffectTargetSelectDirect;
+            public 目标选择方向枚举 EffectTargetSelectDirect;
             /// <summary>
             /// 法术对象选择条件
             /// </summary>
-            public String EffectTargetSelectCondition;
+            public string EffectTargetSelectCondition;
             /// <summary>
             /// 选定位置
             /// </summary>
@@ -327,7 +331,16 @@ namespace Engine.Utility
             /// <summary>
             /// 嘲讽限制
             /// </summary>
-            public Boolean 嘲讽限制;
+            public bool 嘲讽限制;
+            /// <summary>
+            /// 是否需要位置选择
+            /// </summary>
+            public bool IsNeedTargetSelect()
+            {
+                return EffictTargetSelectMode == 目标选择模式枚举.指定 ||
+                       EffictTargetSelectMode == 目标选择模式枚举.横扫 ||
+                       EffictTargetSelectMode == 目标选择模式枚举.相邻;
+            }
         }
         /// <summary>
         /// 符合种族条件
@@ -335,9 +348,9 @@ namespace Engine.Utility
         /// <param name="minion"></param>
         /// <param name="SelectOpt"></param>
         /// <returns></returns>
-        public static Boolean 符合选择条件(Engine.Card.MinionCard minion, String strCondition)
+        public static bool 符合选择条件(MinionCard minion, string strCondition)
         {
-            if (String.IsNullOrEmpty(strCondition) || strCondition == strIgnore) return true;
+            if (string.IsNullOrEmpty(strCondition) || strCondition == strIgnore) return true;
             foreach (var 种族名称 in Enum.GetNames(typeof(种族枚举)))
             {
                 if (种族名称 == strCondition)
@@ -500,11 +513,11 @@ namespace Engine.Utility
             /// <summary>
             /// 效果编号
             /// </summary>
-            public String 效果编号;
+            public string 效果编号;
             /// <summary>
             /// 限制信息
             /// </summary>
-            public String 限制信息;
+            public string 限制信息;
         }
         /// <summary>
         /// 用户指定位置
@@ -516,7 +529,7 @@ namespace Engine.Utility
             /// 本方/对方
             /// HOST/GUEST
             /// </summary>
-            public Boolean 本方对方标识;
+            public bool 本方对方标识;
             /// <summary>
             /// 0 - 英雄，1-7 随从位置
             /// </summary>
@@ -534,7 +547,7 @@ namespace Engine.Utility
             /// </summary>
             /// <param name="Info"></param>
             /// <returns></returns>
-            public static 指定位置结构体 FromString(String Info)
+            public static 指定位置结构体 FromString(string Info)
             {
                 指定位置结构体 PosInfo = new 指定位置结构体();
                 PosInfo.本方对方标识 = Info.Split(strSplitMark.ToCharArray())[0] == strMe;
@@ -551,13 +564,13 @@ namespace Engine.Utility
         /// <param name="First">第一效果</param>
         /// <param name="Second">第二效果</param>
         /// <returns>是否为第一效果</returns>
-        public delegate 抉择枚举 delegatePickEffect(String First, String Second);
+        public delegate 抉择枚举 delegatePickEffect(string First, string Second);
         /// <summary>
         /// 抽牌委托
         /// </summary>
         /// <param name="IsFirst">先后手区分</param>
         /// <param name="Ability">法术定义</param>
-        public delegate List<String> delegateDrawCard(Boolean IsFirst, int DrawCount);
+        public delegate List<string> delegateDrawCard(bool IsFirst, int DrawCount);
         /// <summary>
         /// 获得位置
         /// </summary>

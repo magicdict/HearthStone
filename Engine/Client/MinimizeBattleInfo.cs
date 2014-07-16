@@ -104,10 +104,12 @@ namespace Engine.Client
         public Minion[] GuestBattle;
         public HandCardInfo[] HandCard;
         public PlayerInfo MyInfo = new PlayerInfo();
+        public PlayerInfo YourInfo = new PlayerInfo();
         public void Init(ActionStatus status)
         {
             //ActionStatus在获取的过程中，已经知道IsHost信息，所以这里的无需做Host到My的转换了
             MyInfo.Init(status.AllRole.MyPublicInfo);
+            YourInfo.Init(status.AllRole.YourPublicInfo);
             HandCard = new HandCardInfo[status.AllRole.MyPrivateInfo.handCards.Count];
             for (int i = 0; i < status.AllRole.MyPrivateInfo.handCards.Count; i++)
             {

@@ -22,7 +22,7 @@ namespace Engine.AI
             {
                 int newPos = PlayInfo.BattleField.MinionCount + 1;
                 var card = PlaySelfInfo.handCards[HandCardIndex];
-                gameStatus.Interrupt.SessionData = newPos.ToString();
+                //gameStatus.Interrupt.SessionData = newPos.ToString();
                 RunAction.StartAction(gameStatus, card.序列号);
                 PlayInfo.crystal.CurrentRemainPoint -= card.使用成本;
                 PlaySelfInfo.RemoveUsedCard(card.序列号);

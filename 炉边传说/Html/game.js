@@ -182,25 +182,22 @@ function UserHandCardResponse() {
             break;
         case "MINIONPOSITION":
             alert("随从位置的选择:" + Interrupt.ExternalInfo)
-            SessionData = "1";
-
+            SessionData = Interrupt.SessionData + "MINIONPOSITION:1|";
             Step = "2";
             var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + Step + ActiveCardSN + SessionData
             socket.send(message);
             break;
         case "BATTLECRYPOSITION":
-            SpellDecide = "1";
             alert("战吼施放对象的选择:" + Interrupt.ExternalInfo)
-            SessionData = SpellDecide + "ME#1";
+            SessionData = Interrupt.SessionData + "BATTLECRYPOSITION:ME#1|";
 
             Step = "4";
             var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + Step + ActiveCardSN + SessionData;
             socket.send(message);
             break;
         case "SPELLPOSITION":
-            SpellDecide = Interrupt.ExternalInfo.toString().substr(0, 1);
             alert("法术施放对象的选择:" + Interrupt.ExternalInfo)
-            SessionData = SpellDecide + "ME#1";
+            SessionData = Interrupt.SessionData + "SPELLPOSITION:YOU#1|";
 
             Step = "2";
             var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + Step + ActiveCardSN + SessionData;
@@ -208,10 +205,9 @@ function UserHandCardResponse() {
             break;
         case "SPELLDECIDE":
             alert("法术卡牌抉择:" + Interrupt.ExternalInfo)
-            SpellDecide = "1"
+            SessionData = Interrupt.SessionData + "SPELLDECIDE:1|";
 
             Step = "2";
-            SessionData = SpellDecide;
             var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + Step + ActiveCardSN + SessionData;
             socket.send(message);
             break;
@@ -245,6 +241,9 @@ function BattleInfoResponse() {
     for (var i = 0; i < BattleInfo.HostBattle.length; i++) {
         divHtml += "随从:" + BattleInfo.HostBattle[i].名称 + BattleInfo.HostBattle[i].攻击力 + "/" + BattleInfo.HostBattle[i].生命力 + "<br>";
     }
+
+    divHtml += "生命力：" + BattleInfo.YourInfo.生命力 + "护盾值：" + BattleInfo.YourInfo.护盾值;
+    divHtml += "可用水晶：" + BattleInfo.YourInfo.可用水晶 + "总体水晶：" + BattleInfo.YourInfo.总体水晶 + "<br>";
     divHtml += "对方随从<br>"
     for (var i = 0; i < BattleInfo.GuestBattle.length; i++) {
         divHtml += "随从:" + BattleInfo.GuestBattle[i].名称 + BattleInfo.GuestBattle[i].攻击力 + "/" + BattleInfo.GuestBattle[i].生命力 + "<br>";

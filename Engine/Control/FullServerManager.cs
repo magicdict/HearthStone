@@ -3,6 +3,7 @@ using Engine.Client;
 using Engine.Utility;
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Engine.Control
 {
@@ -73,9 +74,20 @@ namespace Engine.Control
             /// </summary>
             public String ExternalInfo;
             /// <summary>
-            /// 客户端数据
+            /// 客户端数据[通信用]
             /// </summary>
-            public String SessionData;
+            public string SessionData;
+            /// <summary>
+            /// 客户端数据[实际用]
+            /// </summary>
+            [JsonIgnore()]
+            public Dictionary<String, String> SessionDic
+            {
+                get
+                {
+                    return SessionData.ToStringDictionary();
+                }
+            }
         }
         /// <summary>
         /// 当前中断
@@ -184,6 +196,7 @@ namespace Engine.Control
             
             //TEST START
             HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M000059"));
+            HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("A000005"));
             //TEST END
 
             //初始化双方手牌

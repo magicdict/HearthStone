@@ -24,9 +24,9 @@ namespace Engine.Action
         /// <param name="ActionCodeLst"></param>
         /// <param name="PlayInfo"></param>
         public static void RunCS(ActionStatus game,
-                               String CardSn,
+                               string CardSn,
                                CardBasicInfo card,
-                               List<String> ActionCodeLst,
+                               List<string> ActionCodeLst,
                                PublicInfo PlayInfo)
         {
             int MinionPos = 1;
@@ -40,18 +40,18 @@ namespace Engine.Action
                 }
                 else
                 {
-                    MinionPos = int.Parse(game.Interrupt.SessionData);
+                    MinionPos = int.Parse(game.Interrupt.SessionDic[""]);
                 }
             }
             //Step2
             if (MinionPos != -1)
             {
                 ActionCodeLst.Add(ActionCode.strMinion + CardUtility.strSplitMark + CardSn + CardUtility.strSplitMark + MinionPos.ToString("D1"));
-                minion = (Engine.Card.MinionCard)card;
+                minion = (MinionCard)card;
                 //初始化
                 minion.初始化();
                 //必须在放入之前做得原因是，被放入的随从不能被触发这个事件
-                game.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                game.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
                 {
                     触发事件类型 = CardUtility.事件类型枚举.召唤,
                     触发位置 = new CardUtility.指定位置结构体()
@@ -107,10 +107,10 @@ namespace Engine.Action
         /// </summary>
         /// <param name="game"></param>
         /// <param name="CardSn"></param>
-        public static void RunBS(ActionStatus game, String CardSn)
+        public static void RunBS(ActionStatus game, string CardSn)
         {
             int MinionPos = -1;
-            MinionCard minion = minion = (Engine.Card.MinionCard)CardUtility.GetCardInfoBySN(CardSn);
+            MinionCard minion = minion = (MinionCard)CardUtility.GetCardInfoBySN(CardSn);
             //Step1
             if (game.Interrupt.Step == 1)
             {
@@ -126,13 +126,13 @@ namespace Engine.Action
             //Step2
             if (game.Interrupt.Step == 2)
             {
-                if (MinionPos == -1) MinionPos = int.Parse(game.Interrupt.SessionData);
+                if (MinionPos == -1) MinionPos = int.Parse(game.Interrupt.SessionDic["MINIONPOSITION"]);
                 //初始化
                 minion.初始化();
                 //随从入场
                 game.AllRole.MyPublicInfo.BattleField.PutToBattle(MinionPos, minion);
                 //必须在放入之前做得原因是，被放入的随从不能被触发这个事件
-                game.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                game.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
                 {
                     触发事件类型 = CardUtility.事件类型枚举.召唤,
                     触发位置 = new CardUtility.指定位置结构体()
@@ -144,7 +144,7 @@ namespace Engine.Action
                 game.Interrupt.Step = 3;
             }
             //Step3
-            if (game.Interrupt.Step == 3 && !String.IsNullOrEmpty(minion.战吼效果))
+            if (game.Interrupt.Step == 3 && !string.IsNullOrEmpty(minion.战吼效果))
             {
                 SpellCard spell = (SpellCard)CardUtility.GetCardInfoBySN(minion.战吼效果);
                 if (spell.FirstAbilityDefine.IsNeedTargetSelect())
