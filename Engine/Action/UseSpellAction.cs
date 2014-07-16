@@ -78,7 +78,7 @@ namespace Engine.Action
                     {
                         ability = spell.SecondAbilityDefine;
                     }
-                    if (ability.IsNeedTargetSelect)
+                    if (ability.IsNeedTargetSelect())
                     {
                         if (game.Interrupt.ActionName != "RUNBATTLECRY" && game.Interrupt.SessionData.Length == 1)
                         {

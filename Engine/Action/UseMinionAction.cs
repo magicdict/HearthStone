@@ -147,7 +147,7 @@ namespace Engine.Action
             if (game.Interrupt.Step == 3 && !String.IsNullOrEmpty(minion.战吼效果))
             {
                 SpellCard spell = (SpellCard)CardUtility.GetCardInfoBySN(minion.战吼效果);
-                if (spell.FirstAbilityDefine.IsNeedTargetSelect)
+                if (spell.FirstAbilityDefine.IsNeedTargetSelect())
                 {
                     SelectUtility.SetTargetSelectEnable(spell.FirstAbilityDefine.MainAbilityDefine.AbliltyPosPicker, game);
                     game.Interrupt.ExternalInfo = SelectUtility.GetTargetList(game);

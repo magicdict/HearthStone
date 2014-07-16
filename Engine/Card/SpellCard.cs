@@ -89,12 +89,9 @@ namespace Engine.Card
             /// <summary>
             /// 是否需要位置选择
             /// </summary>
-            public Boolean IsNeedTargetSelect
+            public Boolean IsNeedTargetSelect()
             {
-                get
-                {
-                    return MainAbilityDefine.IsNeedTargetSelect || (AppendAbilityDefine != null && AppendAbilityDefine.IsNeedTargetSelect);
-                }
+                return MainAbilityDefine.IsNeedTargetSelect || (AppendAbilityDefine != null && AppendAbilityDefine.IsNeedTargetSelect);
             }
         }
         /// <summary>

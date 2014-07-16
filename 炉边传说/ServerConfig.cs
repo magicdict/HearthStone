@@ -83,9 +83,5 @@ namespace 炉边传说
             IPAddress[] hostipspool = Dns.GetHostAddresses("");
             if (hostipspool.Length >3) lblIP.Text = "IP Address:" + hostipspool[3];
         }
-
-
-
-
     }
 }

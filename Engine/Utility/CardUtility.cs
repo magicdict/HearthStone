@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace Engine.Utility
 {
@@ -102,38 +103,70 @@ namespace Engine.Utility
         /// </summary>
         public static void GetCardInfoFromXml()
         {
-            //调用侧的NET版本3.5会引发错误。。。
             CardCollections.Clear();
-            //法术
-            foreach (var AbilityXml in Directory.GetFiles(CardXmlFolder + "\\Ability\\"))
+            switch (SystemManager.外部资料格式)
             {
-                XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.SpellCard));
-                Engine.Card.SpellCard ability = (SpellCard)xml.Deserialize(new StreamReader(AbilityXml));
-                CardCollections.Add(ability.序列号, ability);
-            }
-            //随从
-            foreach (var MinionXml in Directory.GetFiles(CardXmlFolder + "\\Minion\\"))
-            {
-                XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.MinionCard));
-                Engine.Card.MinionCard Minio = (MinionCard)xml.Deserialize(new StreamReader(MinionXml));
-                Minio.使用成本 = Minio.使用成本;
-                CardCollections.Add(Minio.序列号, Minio);
-            }
-            //武器
-            foreach (var WeaponXml in Directory.GetFiles(CardXmlFolder + "\\Weapon\\"))
-            {
-                XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.WeaponCard));
-                Engine.Card.WeaponCard Weapon = (WeaponCard)xml.Deserialize(new StreamReader(WeaponXml));
-                Weapon.使用成本 = Weapon.使用成本;
-                CardCollections.Add(Weapon.序列号, Weapon);
-            }
-            //奥秘
-            foreach (var SecretXml in Directory.GetFiles(CardXmlFolder + "\\Secret\\"))
-            {
-                XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.SecretCard));
-                Engine.Card.SecretCard Secret = (SecretCard)xml.Deserialize(new StreamReader(SecretXml));
-                Secret.使用成本 = Secret.使用成本;
-                CardCollections.Add(Secret.序列号, Secret);
+                case SystemManager.ExportType.XML:
+                    //法术
+                    foreach (var AbilityXml in Directory.GetFiles(CardXmlFolder + "\\Ability\\"))
+                    {
+                        XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.SpellCard));
+                        Engine.Card.SpellCard ability = (SpellCard)xml.Deserialize(new StreamReader(AbilityXml));
+                        CardCollections.Add(ability.序列号, ability);
+                    }
+                    //随从
+                    foreach (var MinionXml in Directory.GetFiles(CardXmlFolder + "\\Minion\\"))
+                    {
+                        XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.MinionCard));
+                        Engine.Card.MinionCard Minio = (MinionCard)xml.Deserialize(new StreamReader(MinionXml));
+                        Minio.使用成本 = Minio.使用成本;
+                        CardCollections.Add(Minio.序列号, Minio);
+                    }
+                    //武器
+                    foreach (var WeaponXml in Directory.GetFiles(CardXmlFolder + "\\Weapon\\"))
+                    {
+                        XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.WeaponCard));
+                        Engine.Card.WeaponCard Weapon = (WeaponCard)xml.Deserialize(new StreamReader(WeaponXml));
+                        Weapon.使用成本 = Weapon.使用成本;
+                        CardCollections.Add(Weapon.序列号, Weapon);
+                    }
+                    //奥秘
+                    foreach (var SecretXml in Directory.GetFiles(CardXmlFolder + "\\Secret\\"))
+                    {
+                        XmlSerializer xml = new XmlSerializer(typeof(Engine.Card.SecretCard));
+                        Engine.Card.SecretCard Secret = (SecretCard)xml.Deserialize(new StreamReader(SecretXml));
+                        Secret.使用成本 = Secret.使用成本;
+                        CardCollections.Add(Secret.序列号, Secret);
+                    }
+                    break;
+                case SystemManager.ExportType.JSON:
+                    //法术
+                    foreach (var AbilityXml in Directory.GetFiles(CardXmlFolder + "\\Ability\\"))
+                    {
+                        Engine.Card.SpellCard ability = (SpellCard)JsonSerializer.Create().Deserialize(new StreamReader(AbilityXml), typeof(Engine.Card.SpellCard));
+                        CardCollections.Add(ability.序列号, ability);
+                    }
+                    //随从
+                    foreach (var MinionXml in Directory.GetFiles(CardXmlFolder + "\\Minion\\"))
+                    {
+                        Engine.Card.MinionCard Minio = (MinionCard)JsonSerializer.Create().Deserialize(new StreamReader(MinionXml), typeof(Engine.Card.MinionCard));
+                        CardCollections.Add(Minio.序列号, Minio);
+                    }
+                    //武器
+                    foreach (var WeaponXml in Directory.GetFiles(CardXmlFolder + "\\Weapon\\"))
+                    {
+                        Engine.Card.WeaponCard Weapon = (WeaponCard)JsonSerializer.Create().Deserialize(new StreamReader(WeaponXml), typeof(Engine.Card.WeaponCard));
+                        CardCollections.Add(Weapon.序列号, Weapon);
+                    }
+                    //奥秘
+                    foreach (var SecretXml in Directory.GetFiles(CardXmlFolder + "\\Secret\\"))
+                    {
+                        Engine.Card.SecretCard Secret = (SecretCard)JsonSerializer.Create().Deserialize(new StreamReader(SecretXml), typeof(Engine.Card.SecretCard));
+                        CardCollections.Add(Secret.序列号, Secret);
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 
@@ -183,7 +216,7 @@ namespace Engine.Utility
         /// </summary>
         public const String strOK = "OK";
         #endregion
-        
+
         #region"枚举值"
         /// <summary>
         /// 职业
