@@ -52,6 +52,10 @@ namespace Engine.Action
         /// </summary>
         public Control.FullServerManager.Interrupt Interrupt;
         /// <summary>
+        /// 当前动作名称
+        /// </summary>
+        public String ActionName = String.Empty;
+        /// <summary>
         /// 倒置
         /// </summary>
         public void Reverse()

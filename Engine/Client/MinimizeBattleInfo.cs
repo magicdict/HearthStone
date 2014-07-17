@@ -1,7 +1,4 @@
-﻿using System;
-using Engine.Utility;
-using Engine.Card;
-using Engine.Control;
+﻿using Engine.Card;
 using Engine.Action;
 
 namespace Engine.Client
@@ -16,7 +13,7 @@ namespace Engine.Client
             /// <summary>
             /// 名称
             /// </summary>
-            public String 名称;
+            public string 名称;
             /// <summary>
             /// 攻击力
             /// </summary>
@@ -28,12 +25,12 @@ namespace Engine.Client
             /// <summary>
             /// 状态列表
             /// </summary>
-            public String 状态列表;
+            public string 状态列表;
             /// <summary>
             /// InitByMinion
             /// </summary>
             /// <param name="minion"></param>
-            public void Init(Card.MinionCard minion)
+            public void Init(MinionCard minion)
             {
                 名称 = minion.名称;
                 攻击力 = minion.实际攻击值;
@@ -80,11 +77,11 @@ namespace Engine.Client
             /// <summary>
             /// 序列号
             /// </summary>
-            public String 序列号;
+            public string 序列号;
             /// <summary>
             /// 名称
             /// </summary>
-            public String 名称;
+            public string 名称;
             /// <summary>
             /// 成本
             /// </summary>
@@ -100,8 +97,8 @@ namespace Engine.Client
                 使用成本 = card.使用成本;
             }
         }
-        public Minion[] HostBattle;
-        public Minion[] GuestBattle;
+        public Minion[] MyBattle;
+        public Minion[] YourBattle;
         public HandCardInfo[] HandCard;
         public PlayerInfo MyInfo = new PlayerInfo();
         public PlayerInfo YourInfo = new PlayerInfo();
@@ -117,19 +114,19 @@ namespace Engine.Client
                 t.Init(status.AllRole.MyPrivateInfo.handCards[i]);
                 HandCard[i] = t;
             }
-            HostBattle = new Minion[status.AllRole.MyPublicInfo.BattleField.MinionCount];
+            MyBattle = new Minion[status.AllRole.MyPublicInfo.BattleField.MinionCount];
             for (int i = 0; i < status.AllRole.MyPublicInfo.BattleField.MinionCount; i++)
             {
                 Minion t = new Minion();
                 t.Init(status.AllRole.MyPublicInfo.BattleField.BattleMinions[i]);
-                HostBattle[i] = t;
+                MyBattle[i] = t;
             }
-            GuestBattle = new Minion[status.AllRole.YourPublicInfo.BattleField.MinionCount];
+            YourBattle = new Minion[status.AllRole.YourPublicInfo.BattleField.MinionCount];
             for (int i = 0; i < status.AllRole.YourPublicInfo.BattleField.MinionCount; i++)
             {
                 Minion t = new Minion();
                 t.Init(status.AllRole.YourPublicInfo.BattleField.BattleMinions[i]);
-                GuestBattle[i] = t;
+                YourBattle[i] = t;
             }
         }
     }

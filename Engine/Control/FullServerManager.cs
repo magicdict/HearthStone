@@ -196,7 +196,7 @@ namespace Engine.Control
             
             //TEST START
             HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M000059"));
-            HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("A000005"));
+            HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M000148"));
             //TEST END
 
             //初始化双方手牌

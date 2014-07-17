@@ -182,7 +182,7 @@ function UserHandCardResponse() {
             break;
         case "MINIONPOSITION":
             alert("随从位置的选择:" + Interrupt.ExternalInfo)
-            SessionData = Interrupt.SessionData + "MINIONPOSITION:1|";
+            SessionData = Interrupt.SessionData + "MINIONPOSITION:2|";
             Step = "2";
             var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + Step + ActiveCardSN + SessionData
             socket.send(message);
@@ -238,15 +238,15 @@ function BattleInfoResponse() {
         divHtml += "手牌:" + BattleInfo.HandCard[i].名称 + "<input type=\"button\" onclick=\"UserHandCard(\'" + BattleInfo.HandCard[i].序列号 + "\')\" value=\"使用\" />" + "<br>";
     }
     divHtml += "本方随从<br>"
-    for (var i = 0; i < BattleInfo.HostBattle.length; i++) {
-        divHtml += "随从:" + BattleInfo.HostBattle[i].名称 + BattleInfo.HostBattle[i].攻击力 + "/" + BattleInfo.HostBattle[i].生命力 + "<br>";
+    for (var i = 0; i < BattleInfo.MyBattle.length; i++) {
+        divHtml += "随从:" + BattleInfo.MyBattle[i].状态列表 + "<br>";
     }
 
     divHtml += "生命力：" + BattleInfo.YourInfo.生命力 + "护盾值：" + BattleInfo.YourInfo.护盾值;
     divHtml += "可用水晶：" + BattleInfo.YourInfo.可用水晶 + "总体水晶：" + BattleInfo.YourInfo.总体水晶 + "<br>";
     divHtml += "对方随从<br>"
-    for (var i = 0; i < BattleInfo.GuestBattle.length; i++) {
-        divHtml += "随从:" + BattleInfo.GuestBattle[i].名称 + BattleInfo.GuestBattle[i].攻击力 + "/" + BattleInfo.GuestBattle[i].生命力 + "<br>";
+    for (var i = 0; i < BattleInfo.YourBattle.length; i++) {
+        divHtml += "随从:" + BattleInfo.YourBattle[i].状态列表 + "<br>";
     }
     document.getElementById("BattleInfo").innerHTML = divHtml;
 }

@@ -69,7 +69,7 @@ namespace Engine.Action
                     case MinionCard.战吼类型枚举.默认:
                     case MinionCard.战吼类型枚举.相邻:
                     case MinionCard.战吼类型枚举.自身:
-                        PlayInfo.BattleField.发动战吼(MinionPos, game);
+                        //PlayInfo.BattleField.发动战吼(MinionPos, game);
                         PlayInfo.BattleField.PutToBattle(MinionPos, minion);
                         ActionCodeLst.AddRange(minion.发动战吼(game));
                         break;
@@ -120,6 +120,11 @@ namespace Engine.Action
                     game.Interrupt.ActionName = "MINIONPOSITION";
                     return;
                 }
+                else
+                {
+                    game.Interrupt.SessionData = "MINIONPOSITION:1|";
+                    //game.Interrupt.SessionDic.Add("MINIONPOSITION", "1");
+                }
                 MinionPos = 1;
                 game.Interrupt.Step = 2;
             }
@@ -143,30 +148,18 @@ namespace Engine.Action
                 });
                 game.Interrupt.Step = 3;
             }
+
             //Step3
             if (game.Interrupt.Step == 3 && !string.IsNullOrEmpty(minion.战吼效果))
             {
                 SpellCard spell = (SpellCard)CardUtility.GetCardInfoBySN(minion.战吼效果);
+                game.Interrupt.Step = 4;
                 if (spell.FirstAbilityDefine.IsNeedTargetSelect())
                 {
                     SelectUtility.SetTargetSelectEnable(spell.FirstAbilityDefine.MainAbilityDefine.AbliltyPosPicker, game);
-                    game.Interrupt.ExternalInfo = SelectUtility.GetTargetList(game);
-                    game.Interrupt.Step = 4;
+                    game.Interrupt.ExternalInfo = SelectUtility.GetTargetListString(game);
                     game.Interrupt.ActionName = "BATTLECRYPOSITION";
                     return;
-                }
-                else
-                {
-                    //注意：发动战吼的方法自身或者相邻的类型，所以肯定不需要做目标选择
-                    if (spell.FirstAbilityDefine.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.相邻 ||
-                        spell.FirstAbilityDefine.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.继承)
-                    {
-                        game.AllRole.MyPublicInfo.BattleField.发动战吼(MinionPos, game);
-                    }
-                    else
-                    {
-                        game.Interrupt.Step = 4;
-                    }
                 }
             }
             if (game.Interrupt.Step == 4)

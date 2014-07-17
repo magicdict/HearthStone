@@ -78,17 +78,18 @@ namespace Engine.Action
                     {
                         ability = spell.SecondAbilityDefine;
                     }
+                    if (game.ActionName == "USEMINION")
+                    {
+                        ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.本方对方标识 = true;
+                        ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.位置 = int.Parse(game.Interrupt.SessionDic["MINIONPOSITION"]);
+                    }
                     if (ability.IsNeedTargetSelect())
                     {
-                        if (!(game.Interrupt.ActionName == "RUNBATTLECRY" || game.Interrupt.SessionDic.ContainsKey("SPELLPOSITION")))
-                        {
-                            //运行战吼的时候，前面已经获得了位置
-                            SelectUtility.SetTargetSelectEnable(ability.MainAbilityDefine.AbliltyPosPicker, game);
-                            game.Interrupt.ExternalInfo = SelectUtility.GetTargetList(game);
-                            game.Interrupt.Step = 2;
-                            game.Interrupt.ActionName = "SPELLPOSITION";
-                            return;
-                        }
+                        SelectUtility.SetTargetSelectEnable(ability.MainAbilityDefine.AbliltyPosPicker, game);
+                        game.Interrupt.ExternalInfo = SelectUtility.GetTargetListString(game);
+                        game.Interrupt.Step = 2;
+                        game.Interrupt.ActionName = "SPELLPOSITION";
+                        return;
                     }
                     SpellCard.RunAbility(game, ability);
                 }

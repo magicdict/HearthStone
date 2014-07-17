@@ -39,21 +39,15 @@ namespace Engine.Action
                 case CardBasicInfo.卡牌类型枚举.法术:
                     if (SystemManager.游戏类型 == SystemManager.GameType.HTML版)
                     {
+                        actionStatus.ActionName = "RUNSPELLCARD";
                         UseSpellAction.RunBS(actionStatus, CardSn);
-                    }
-                    else
-                    {
-                        //UseSpellAction.RunCS(actionStatus, CardSn);
                     }
                     break;
                 case CardBasicInfo.卡牌类型枚举.随从:
                     if (SystemManager.游戏类型 == SystemManager.GameType.HTML版)
                     {
+                        actionStatus.ActionName = "USEMINION";
                         UseMinionAction.RunBS(actionStatus, CardSn);
-                    }
-                    else
-                    {
-                        //UseMinionAction.RunCS(actionStatus, CardSn);
                     }
                     break;
                 case CardBasicInfo.卡牌类型枚举.武器:

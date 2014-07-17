@@ -256,33 +256,34 @@ namespace Engine.Utility
             /// </summary>
             不用选择,
             /// <summary>
-            /// 使用已经存在的选定位置
+            /// 自身位置
             /// </summary>
-            继承,
-            /// <summary>
-            /// 除去已经存在的选定位置
-            /// </summary>
-            其他角色,
+            自身,
             /// <summary>
             /// 随机
             /// </summary>
             随机,
             /// <summary>
-            /// 全体
-            /// </summary>
-            全体,
-            /// <summary>
             /// 指定
             /// </summary>
             指定,
+            /// <summary>
+            /// 全体
+            /// </summary>
+            全体,
             /// <summary>
             /// 单个目标 + 全体的模式
             /// </summary>
             横扫,
             /// <summary>
-            /// 单个目标 + 相邻的模式
+            /// 指定目标及其相邻的模式
             /// </summary>
-            相邻
+            相邻,
+            /// <summary>
+            /// 指定目标的相邻的模式
+            /// 通古斯防御者：相邻的单位获得嘲讽
+            /// </summary>
+            相邻排除自身
         }
         /// <summary>
         /// 目标选择方向

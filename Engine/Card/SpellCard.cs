@@ -180,6 +180,8 @@ namespace Engine.Card
                     case AtomicEffectDefine.AtomicEffectEnum.控制:
                         Result.AddRange(ControlEffect.RunEffect(game, Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
                         break;
+                    case AtomicEffectDefine.AtomicEffectEnum.未定义:
+                        break;
                     default:
                         Result.AddRange(Effecthandler.RunSingleEffect(Ability.MainAbilityDefine, game, ActionStatus.RandomSeed));
                         break;
@@ -210,6 +212,8 @@ namespace Engine.Card
                         break;
                     case AtomicEffectDefine.AtomicEffectEnum.控制:
                         Result.AddRange(ControlEffect.RunEffect(game, Ability.AppendAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
+                        break;
+                    case AtomicEffectDefine.AtomicEffectEnum.未定义:
                         break;
                     default:
                         Result.AddRange(Effecthandler.RunSingleEffect(Ability.AppendAbilityDefine, game, ActionStatus.RandomSeed));
