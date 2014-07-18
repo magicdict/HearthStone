@@ -99,30 +99,6 @@ namespace Engine.Card
             /// </summary>
             public String 来源;
         }
-
-        /// <summary>
-        /// 战吼类型枚举[Battlecry Type Enum]
-        /// </summary>
-        public enum 战吼类型枚举
-        {
-            /// <summary>
-            /// 默认
-            /// </summary>
-            默认,
-            /// <summary>
-            /// 入场之前进行结算
-            /// </summary>
-            抢先,
-            /// <summary>
-            /// 入场后相邻随从
-            /// </summary>
-            相邻,
-            /// <summary>
-            /// 自身
-            /// </summary>
-            自身,
-        }
-
         /// <summary>
         /// 特殊效果枚举[Special Effect Enum]
         /// </summary>
@@ -207,10 +183,6 @@ namespace Engine.Card
         /// 战吼(效果号码)[Battlecry Effect]
         /// </summary>
         public String 战吼效果 = String.Empty;
-        /// <summary>
-        /// 战吼类型[Battlecry Type]
-        /// </summary>
-        public 战吼类型枚举 战吼类型 = 战吼类型枚举.默认;
         /// <summary>
         /// 亡语(效果号码)[DeathRattle Effect]
         /// </summary>

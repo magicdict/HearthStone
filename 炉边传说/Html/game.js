@@ -16,7 +16,6 @@ function init() {
         log("WebSocket not supported by this browser");
         return;
     }
-
     var webSocket = new WebSocket("ws://localhost:13001/");
     webSocket.onopen = onopen;
     webSocket.onclose = onclose;
@@ -33,6 +32,13 @@ function onclose() {
     log("Close a web socket.");
 }
 
+//全局变量
+//游戏ID
+var GameId = "00000";
+//主机
+var IsHost = false;
+//先手
+var IsFirst = false;
 var data;
 var ResponseCode;
 var BattleInfo;
@@ -94,6 +100,41 @@ var RequestType = {
 };
 
 function CreateGame() {
+    //手牌区域
+    for (var i = 0; i < 10; i++) {
+        var card = document.getElementById("BasicCard").cloneNode(true);
+        card.setAttribute("id", "HandCard" + (i + 1));
+        card.setAttribute("display", "none");
+        if (i % 2 == 0) {
+            card.setAttribute("x", "1250");
+            card.setAttribute("y", (i / 2) * 150);
+        } else {
+            card.setAttribute("x", "1400");
+            card.setAttribute("y", ((i - 1) / 2) * 150);
+        }
+        document.getElementById("gamePanel").appendChild(card);
+    }
+    //本方对方随从区域
+
+    //手牌区域
+    for (var i = 0; i < 7; i++) {
+        var card = document.getElementById("BasicCard").cloneNode(true);
+        card.setAttribute("id", "MyMinion" + (i + 1));
+        card.setAttribute("display", "");
+        card.setAttribute("x", 50 + i * 160);
+        card.setAttribute("y", "400");
+        document.getElementById("gamePanel").appendChild(card);
+    }
+
+    for (var i = 0; i < 7; i++) {
+        var card = document.getElementById("BasicCard").cloneNode(true);
+        card.setAttribute("id", "YourMinion" + (i + 1));
+        card.setAttribute("display", "");
+        card.setAttribute("x", 50 + i * 160);
+        card.setAttribute("y", "200");
+        document.getElementById("gamePanel").appendChild(card);
+    }
+
     document.getElementById("btnCreateGame").disabled = "disabled";
     socket.send(RequestType.开始游戏);
 }
@@ -223,30 +264,49 @@ function ResumeResponse() {
 //暂时不考虑验证
 function BattleInfoResponse() {
     BattleInfo = JSON.parse(data);
-    var divHtml = "战场信息<br>";
-    if (IsMyTurn) {
-        divHtml += "本方回合<br>"
-        document.getElementById("btnEndTurn").disabled = "";
 
-    } else {
-        divHtml += "对方回合<br>"
-        document.getElementById("btnEndTurn").disabled = "disabled";
+    for (var i = 0; i < 10; i++) {
+        var HandCard = document.getElementById("HandCard" + (i + 1));
+        HandCard.setAttribute("display", "none");
     }
-    divHtml += "生命力：" + BattleInfo.MyInfo.生命力 + "护盾值：" + BattleInfo.MyInfo.护盾值;
-    divHtml += "可用水晶：" + BattleInfo.MyInfo.可用水晶 + "总体水晶：" + BattleInfo.MyInfo.总体水晶 + "<br>";
     for (var i = 0; i < BattleInfo.HandCard.length; i++) {
-        divHtml += "手牌:" + BattleInfo.HandCard[i].名称 + "<input type=\"button\" onclick=\"UserHandCard(\'" + BattleInfo.HandCard[i].序列号 + "\')\" value=\"使用\" />" + "<br>";
-    }
-    divHtml += "本方随从<br>"
-    for (var i = 0; i < BattleInfo.MyBattle.length; i++) {
-        divHtml += "随从:" + BattleInfo.MyBattle[i].状态列表 + "<br>";
+        var HandCard = document.getElementById("HandCard" + (i + 1));
+        HandCard.setAttribute("display", "");
+        HandCard.getElementById("txtName").innerHTML = BattleInfo.HandCard[i].名称;
+        HandCard.getElementById("txtCost").innerHTML = BattleInfo.HandCard[i].使用成本;
+        HandCard.getElementById("txtAttackPoint").innerHTML = BattleInfo.HandCard[i].攻击力;
+        HandCard.getElementById("txtLifePoint").innerHTML = BattleInfo.HandCard[i].生命值;
+        //必须使用闭包！和Lambda一样
+        (function (n) {
+            HandCard.onclick = function () {
+                UserHandCard(BattleInfo.HandCard[n].序列号);
+            }
+        })(i);
     }
 
-    divHtml += "生命力：" + BattleInfo.YourInfo.生命力 + "护盾值：" + BattleInfo.YourInfo.护盾值;
-    divHtml += "可用水晶：" + BattleInfo.YourInfo.可用水晶 + "总体水晶：" + BattleInfo.YourInfo.总体水晶 + "<br>";
-    divHtml += "对方随从<br>"
-    for (var i = 0; i < BattleInfo.YourBattle.length; i++) {
-        divHtml += "随从:" + BattleInfo.YourBattle[i].状态列表 + "<br>";
+    for (var i = 0; i < 7; i++) {
+        var HandCard = document.getElementById("MyMinion" + (i + 1));
+        HandCard.setAttribute("display", "none");
     }
-    document.getElementById("BattleInfo").innerHTML = divHtml;
+    for (var i = 0; i < BattleInfo.MyBattle.length; i++) {
+        var HandCard = document.getElementById("MyMinion" + (i + 1));
+        HandCard.setAttribute("display", "");
+        HandCard.getElementById("txtName").innerHTML = BattleInfo.MyBattle[i].名称;
+        HandCard.getElementById("txtCost").innerHTML = BattleInfo.MyBattle[i].使用成本;
+        HandCard.getElementById("txtAttackPoint").innerHTML = BattleInfo.MyBattle[i].攻击力;
+        HandCard.getElementById("txtLifePoint").innerHTML = BattleInfo.MyBattle[i].生命值;
+    }
+
+    for (var i = 0; i < 7; i++) {
+        var HandCard = document.getElementById("YourMinion" + (i + 1));
+        HandCard.setAttribute("display", "none");
+    }
+    for (var i = 0; i < BattleInfo.YourBattle.length; i++) {
+        var HandCard = document.getElementById("YourMinion" + (i + 1));
+        HandCard.setAttribute("display", "");
+        HandCard.getElementById("txtName").innerHTML = BattleInfo.YourBattle[i].名称;
+        HandCard.getElementById("txtCost").innerHTML = BattleInfo.YourBattle[i].使用成本;
+        HandCard.getElementById("txtAttackPoint").innerHTML = BattleInfo.YourBattle[i].攻击力;
+        HandCard.getElementById("txtLifePoint").innerHTML = BattleInfo.YourBattle[i].生命值;
+    }
 }

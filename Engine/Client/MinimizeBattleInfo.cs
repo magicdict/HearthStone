@@ -21,7 +21,11 @@ namespace Engine.Client
             /// <summary>
             /// 生命力
             /// </summary>
-            public int 生命力;
+            public int 生命值;
+            /// <summary>
+            /// 生命力
+            /// </summary>
+            public int 使用成本;
             /// <summary>
             /// 状态列表
             /// </summary>
@@ -34,7 +38,8 @@ namespace Engine.Client
             {
                 名称 = minion.名称;
                 攻击力 = minion.实际攻击值;
-                生命力 = minion.生命值;
+                生命值 = minion.生命值;
+                使用成本 = minion.使用成本;
                 状态列表 = minion.状态;
             }
         }
@@ -72,6 +77,9 @@ namespace Engine.Client
                 总体水晶 = pubInfo.crystal.CurrentFullPoint;
             }
         }
+        /// <summary>
+        /// 手牌
+        /// </summary>
         public struct HandCardInfo
         {
             /// <summary>
@@ -87,6 +95,14 @@ namespace Engine.Client
             /// </summary>
             public int 使用成本;
             /// <summary>
+            /// 攻击力
+            /// </summary>
+            public int 攻击力;
+            /// <summary>
+            /// 生命力
+            /// </summary>
+            public int 生命值;
+            /// <summary>
             /// 初始化
             /// </summary>
             /// <param name="card"></param>
@@ -95,6 +111,25 @@ namespace Engine.Client
                 序列号 = card.序列号;
                 名称 = card.名称;
                 使用成本 = card.使用成本;
+                switch (card.卡牌种类)
+                {
+                    case CardBasicInfo.卡牌类型枚举.随从:
+                        攻击力 = ((MinionCard)card).攻击力;
+                        生命值 = ((MinionCard)card).生命值;
+                        break;
+                    case CardBasicInfo.卡牌类型枚举.法术:
+                        break;
+                    case CardBasicInfo.卡牌类型枚举.武器:
+                        攻击力 = ((WeaponCard)card).攻击力;
+                        生命值 = ((WeaponCard)card).耐久度;
+                        break;
+                    case CardBasicInfo.卡牌类型枚举.奥秘:
+                        break;
+                    case CardBasicInfo.卡牌类型枚举.其他:
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         public Minion[] MyBattle;

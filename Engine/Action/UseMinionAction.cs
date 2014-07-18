@@ -2,7 +2,6 @@
 using Engine.Client;
 using Engine.Server;
 using Engine.Utility;
-using System;
 using System.Collections.Generic;
 
 namespace Engine.Action
@@ -64,38 +63,7 @@ namespace Engine.Action
             //Step3
             if (minion != null)
             {
-                switch (minion.战吼类型)
-                {
-                    case MinionCard.战吼类型枚举.默认:
-                    case MinionCard.战吼类型枚举.相邻:
-                    case MinionCard.战吼类型枚举.自身:
-                        //PlayInfo.BattleField.发动战吼(MinionPos, game);
-                        PlayInfo.BattleField.PutToBattle(MinionPos, minion);
-                        ActionCodeLst.AddRange(minion.发动战吼(game));
-                        break;
-                    case MinionCard.战吼类型枚举.抢先:
-                        //战吼中，其他系列的法术效果 例如其他鱼人获得XX效果
-                        //战吼中，友方系列的法术效果 例如友方随从获得XX效果
-                        foreach (var result in minion.发动战吼(game))
-                        {
-                            var resultArray = result.Split(CardUtility.strSplitMark.ToCharArray());
-                            if (resultArray.Length == 1 || int.Parse(resultArray[2]) < MinionPos)
-                            {
-                                //SETTLE的时候为1
-                                ActionCodeLst.Add(result);
-                            }
-                            else
-                            {
-                                //位置的调整，后面的随从的位置需要调整
-                                ActionCodeLst.Add(resultArray[0] + CardUtility.strSplitMark + resultArray[1] + CardUtility.strSplitMark +
-                                (int.Parse(resultArray[2]) + 1).ToString() + CardUtility.strSplitMark + resultArray[3]);
-                            }
-                        }
-                        PlayInfo.BattleField.PutToBattle(MinionPos, minion);
-                        break;
-                    default:
-                        break;
-                }
+                UseSpellAction.RunBS(game, CardSn);
                 PlayInfo.BattleField.ResetBuff();
             }
         }
