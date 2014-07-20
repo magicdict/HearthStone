@@ -83,9 +83,14 @@ namespace 炉边传说
             IPAddress[] hostipspool = Dns.GetHostAddresses("");
             if (hostipspool.Length >3) lblIP.Text = "IP Address:" + hostipspool[3];
         }
-
-
-
-
+        /// <summary>
+        /// 卡牌资料导出
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnCreateCard_Click(object sender, EventArgs e)
+        {
+            (new frmExport()).ShowDialog();
+        }
     }
 }

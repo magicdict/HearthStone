@@ -1,6 +1,4 @@
 ﻿using Engine.Action;
-using Engine.Client;
-using Engine.Control;
 using Engine.Effect;
 using Engine.Utility;
 using System;
@@ -86,13 +84,21 @@ namespace Engine.Card
                 MainAbilityDefine = new EffectDefine();
                 AppendAbilityDefine = new EffectDefine();
             }
+            /// <summary>
+            /// 是否需要位置选择
+            /// </summary>
+            public Boolean IsNeedTargetSelect()
+            {
+                return MainAbilityDefine.AbliltyPosPicker.IsNeedTargetSelect() || 
+                      (AppendAbilityDefine != null && AppendAbilityDefine.AbliltyPosPicker.IsNeedTargetSelect());
+            }
         }
         /// <summary>
         /// 使用法术
         /// </summary>
         /// <param name="game"></param>
         /// <param name="IsMyAction">对象方向转换</param>
-        public List<String> UseSpell(ActionStatus game, Boolean IsMyAction)
+        public List<String> UseSpell(ActionStatus game)
         {
             List<String> Result = new List<string>();
             Engine.Utility.CardUtility.抉择枚举 PickAbilityResult = CardUtility.抉择枚举.第一效果;
@@ -102,7 +108,10 @@ namespace Engine.Card
                     break;
                 case 效果选择类型枚举.主动选择:
                     PickAbilityResult = ActionStatus.PickEffect(FirstAbilityDefine.描述, SecondAbilityDefine.描述);
-                    if (PickAbilityResult == CardUtility.抉择枚举.取消) return new List<string>();
+                    if (PickAbilityResult == CardUtility.抉择枚举.取消)
+                    {
+                        return new List<string>(); 
+                    }
                     break;
                 case 效果选择类型枚举.自动判定:
                     if (!ExpressHandler.AbilityPickCondition(game, 效果选择条件)) PickAbilityResult = CardUtility.抉择枚举.第二效果;
@@ -120,7 +129,7 @@ namespace Engine.Card
             {
                 ability = SecondAbilityDefine;
             }
-            Result.AddRange(RunAbility(game, IsMyAction, ability));
+            Result.AddRange(RunAbility(game, ability));
             return Result;
         }
         /// <summary>
@@ -130,44 +139,27 @@ namespace Engine.Card
         /// <param name="IsMyAction"></param>
         /// <param name="Ability"></param>
         /// <returns></returns>
-        private List<String> RunAbility(ActionStatus game, Boolean IsMyAction, SpellCard.AbilityDefine Ability)
+        public static List<String> RunAbility(ActionStatus game, SpellCard.AbilityDefine Ability)
         {
             List<String> Result = new List<string>();
-
             //对象选择处理
-            if (Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.指定 ||
-                Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.横扫 ||
-                Ability.MainAbilityDefine.AbliltyPosPicker.EffictTargetSelectMode == CardUtility.目标选择模式枚举.相邻)
+            if (Ability.MainAbilityDefine.AbliltyPosPicker.IsNeedTargetSelect())
             {
-                Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = ActionStatus.GetSelectTarget(Ability.MainAbilityDefine.AbliltyPosPicker);
-            }
-            else
-            {
-                if (!IsMyAction)
+                //如果是BS的话，可以通过game的上下文数据获得位置信息
+                if (SystemManager.游戏类型 == SystemManager.GameType.HTML版)
                 {
-                    switch (Ability.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectDirect)
-                    {
-                        case CardUtility.目标选择方向枚举.本方:
-                            Ability.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectDirect = CardUtility.目标选择方向枚举.对方;
-                            break;
-                        case CardUtility.目标选择方向枚举.对方:
-                            Ability.MainAbilityDefine.AbliltyPosPicker.EffectTargetSelectDirect = CardUtility.目标选择方向枚举.本方;
-                            break;
-                        case CardUtility.目标选择方向枚举.双方:
-                            break;
-                        default:
-                            break;
-                    }
+                    Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = Engine.Utility.CardUtility.指定位置结构体.FromString(game.Interrupt.SessionDic["SPELLPOSITION"]);
+                }
+                else {
+                    Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = ActionStatus.GetSelectTarget(Ability.MainAbilityDefine.AbliltyPosPicker);
                 }
             }
-
             //取消处理
-            if (Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.Postion == -1)
+            if (Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.位置 == -1)
             {
                 Result.Clear();
                 return Result;
             }
-
             //法术伤害对于攻击型效果的加成
             if (Ability.MainAbilityDefine.效果条件 == CardUtility.strIgnore && Ability.MainAbilityDefine.EffectCount > 1)
             {
@@ -183,10 +175,12 @@ namespace Engine.Card
                     case AtomicEffectDefine.AtomicEffectEnum.水晶:
                     case AtomicEffectDefine.AtomicEffectEnum.召唤:
                     case AtomicEffectDefine.AtomicEffectEnum.武器:
-                        Result.AddRange(RunGameSystemEffect(game,Ability.MainAbilityDefine.TrueAtomicEffect, Ability.MainAbilityDefine.AbliltyPosPicker));
+                        Result.AddRange(RunGameSystemEffect(game, Ability.MainAbilityDefine.TrueAtomicEffect, Ability.MainAbilityDefine.AbliltyPosPicker));
                         break;
                     case AtomicEffectDefine.AtomicEffectEnum.控制:
                         Result.AddRange(ControlEffect.RunEffect(game, Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
+                        break;
+                    case AtomicEffectDefine.AtomicEffectEnum.未定义:
                         break;
                     default:
                         Result.AddRange(Effecthandler.RunSingleEffect(Ability.MainAbilityDefine, game, ActionStatus.RandomSeed));
@@ -219,6 +213,8 @@ namespace Engine.Card
                     case AtomicEffectDefine.AtomicEffectEnum.控制:
                         Result.AddRange(ControlEffect.RunEffect(game, Ability.AppendAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
                         break;
+                    case AtomicEffectDefine.AtomicEffectEnum.未定义:
+                        break;
                     default:
                         Result.AddRange(Effecthandler.RunSingleEffect(Ability.AppendAbilityDefine, game, ActionStatus.RandomSeed));
                         break;
@@ -235,7 +231,7 @@ namespace Engine.Card
         /// <param name="ConvertPosDirect"></param>
         /// <param name="Ability"></param>
         /// <returns></returns>
-        private List<string> RunGameSystemEffect(ActionStatus game, AtomicEffectDefine effect, CardUtility.位置选择用参数结构体 Option)
+        public static List<string> RunGameSystemEffect(ActionStatus game, AtomicEffectDefine effect, CardUtility.位置选择用参数结构体 Option)
         {
             List<string> Result = new List<string>();
             switch (effect.AtomicEffectType)

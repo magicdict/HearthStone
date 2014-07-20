@@ -17,13 +17,14 @@ namespace Engine.Server
         /// <param name="Request"></param>
         /// <param name="requestType"></param>
         /// <returns></returns>
-        public static string ProcessRequest(String Request, RequestType requestType)
+        public static string ProcessRequest(string Request, RequestType requestType)
         {
-            String Response = String.Empty;
+            string Response = string.Empty;
+            MinimizeBattleInfo info = new MinimizeBattleInfo();
             int GameId;
-            String IsHostStr;
-            String IsFirstStr;
-            Boolean IsHost;
+            string IsHostStr;
+            string IsFirstStr;
+            bool IsHost;
             switch (requestType)
             {
                 case RequestType.新建游戏:
@@ -43,7 +44,7 @@ namespace Engine.Server
                     }
                     else
                     {
-                        GameId = GameServer.JoinGame_BS(GameServer.GameWaitGuest_BS.Keys.ToList()[0], String.Empty);
+                        GameId = GameServer.JoinGame_BS(GameServer.GameWaitGuest_BS.Keys.ToList()[0], string.Empty);
                         IsHostStr = CardUtility.strFalse;
                         IsFirstStr = GameServer.GameRunning_BS[GameId].HostAsFirst ? CardUtility.strFalse : CardUtility.strTrue;
                     }
@@ -51,7 +52,8 @@ namespace Engine.Server
                     Response = GameId.ToString(GameServer.GameIdFormat) + IsHostStr + IsFirstStr;
                     break;
                 case RequestType.传送套牌:
-                    Stack<String> Deck = new Stack<string>();
+                    //[BS/CS]
+                    Stack<string> Deck = new Stack<string>();
                     foreach (var card in Request.Substring(9).Split(CardUtility.strSplitArrayMark.ToCharArray()))
                     {
                         Deck.Push(card);
@@ -76,9 +78,21 @@ namespace Engine.Server
                     break;
                 case RequestType.抽牌:
                     var Cardlist = GameServer.DrawCard(int.Parse(Request.Substring(3, 5)), Request.Substring(8, 1) == CardUtility.strTrue, int.Parse(Request.Substring(9, 1)));
-                    Response = String.Join(Engine.Utility.CardUtility.strSplitArrayMark, Cardlist.ToArray());
+                    Response = string.Join(CardUtility.strSplitArrayMark, Cardlist.ToArray());
                     break;
                 case RequestType.回合结束:
+                    if (SystemManager.游戏类型 == SystemManager.GameType.HTML版)
+                    {
+                        GameId = int.Parse(Request.Substring(3, 5));
+                        IsHost = Request.Substring(8, 1) == CardUtility.strTrue;
+                        GameServer.GameRunning_BS[GameId].TurnEnd(IsHost);
+                        Response = IsHost ? CardUtility.strTrue : CardUtility.strFalse;
+                    }
+                    else
+                    {
+                        GameServer.WriteAction(int.Parse(Request.Substring(3, 5)), Request.Substring(8));
+                    }
+                    break;
                 case RequestType.写入行动:
                     GameServer.WriteAction(int.Parse(Request.Substring(3, 5)), Request.Substring(8));
                     break;
@@ -89,18 +103,44 @@ namespace Engine.Server
                     Response = GameServer.SecretHit(int.Parse(Request.Substring(3, 5)), Request.Substring(8, 1) == CardUtility.strTrue, Request.Substring(9));
                     break;
                 case RequestType.使用手牌:
-                    Response = GameServer.UseHandCard(int.Parse(Request.Substring(3, 5)), Request.Substring(8, 1) == CardUtility.strTrue, Request.Substring(9));
+                    GameId = int.Parse(Request.Substring(3, 5));
+                    IsHost = Request.Substring(8, 1) == CardUtility.strTrue;
+                    //这里可能产生中断
+                    var interrput = GameServer.UseHandCard(GameId, IsHost, Request.Substring(9), 1, String.Empty);
+                    Response = interrput.ToJson();
+                    if (interrput.ActionName == CardUtility.strOK)
+                    {
+                        Response = CardUtility.strOK + Response;
+                    }
                     break;
                 case RequestType.战场状态:
-                    int gameId = int.Parse(Request.Substring(3, 5));
+                    GameId = int.Parse(Request.Substring(3, 5));
                     IsHost = Request.Substring(8, 1) == CardUtility.strTrue;
-                    MinimizeBattleInfo info = new MinimizeBattleInfo();
-                    //info.Init(GameServer.GameRunning_BS[gameId], IsHost);
+                    //WebSocket将会同时将信息发送给双方，所以这里发送以HOST为主视角的战场信息
+                    info.Init(GameServer.GameRunning_BS[GameId].gameStatus(IsHost));
                     Response = info.ToJson();
+                    break;
+                case RequestType.中断续行:
+                    GameId = int.Parse(Request.Substring(3, 5));
+                    IsHost = Request.Substring(8, 1) == CardUtility.strTrue;
+                    RequestType ResumeType = (RequestType)Enum.Parse(typeof(RequestType), Request.Substring(9, 3));
+                    int Step = int.Parse(Request.Substring(12, 1));
+                    string CardSN = Request.Substring(13, 7);
+                    if (ResumeType == RequestType.使用手牌)
+                    {
+                        var resume = GameServer.UseHandCard(GameId, IsHost, CardSN, Step, Request.Substring(20));
+                        Response = resume.ToJson();
+                        if (resume.ActionName == CardUtility.strOK)
+                        {
+                            Response = CardUtility.strOK + Response;
+                        }
+                    }
+                    requestType = ResumeType;
                     break;
                 default:
                     break;
             }
+            if (SystemManager.游戏类型 == SystemManager.GameType.HTML版) Response = requestType.GetHashCode().ToString("D3") + Response;
             return Response;
         }
         /// <summary>
@@ -173,7 +213,11 @@ namespace Engine.Server
             /// <summary>
             /// 初始化状态[BS]
             /// </summary>
-            初始化状态
+            初始化状态,
+            /// <summary>
+            /// 中断续行[BS]
+            /// </summary>
+            中断续行
         }
     }
 }

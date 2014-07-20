@@ -18,6 +18,14 @@ namespace Engine.Utility
             HTML版
         }
         /// <summary>
+        /// 外部资料格式枚举
+        /// </summary>
+        public enum ExportType
+        {
+            XML,
+            JSON
+        }
+        /// <summary>
         /// 游戏模式枚举
         /// </summary>
         public enum GameMode
@@ -49,6 +57,10 @@ namespace Engine.Utility
         /// 游戏模式
         /// </summary>
         public static SystemManager.GameMode 游戏模式 = SystemManager.GameMode.标准;
+        /// <summary>
+        /// 外部资料格式
+        /// </summary>
+        public static SystemManager.ExportType 外部资料格式 = SystemManager.ExportType.JSON;
         /// <summary>
         /// 日志
         /// </summary>

@@ -29,12 +29,13 @@
         private void InitializeComponent()
         {
             this.btnExportXml = new System.Windows.Forms.Button();
-            this.XmlFolderPicker = new 炉边传说.ctlFilePicker();
+            this.ExportFolderPicker = new 炉边传说.ctlFilePicker();
             this.ExcelPicker = new 炉边传说.ctlFilePicker();
             this.chkMinion = new System.Windows.Forms.CheckBox();
             this.chkAbility = new System.Windows.Forms.CheckBox();
             this.chkWeapon = new System.Windows.Forms.CheckBox();
             this.chkSecret = new System.Windows.Forms.CheckBox();
+            this.btnExportJSON = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnExportXml
@@ -49,16 +50,16 @@
             // 
             // XmlFolderPicker
             // 
-            this.XmlFolderPicker.BackColor = System.Drawing.Color.Transparent;
-            this.XmlFolderPicker.FileFilter = "";
-            this.XmlFolderPicker.FileName = "";
-            this.XmlFolderPicker.Location = new System.Drawing.Point(28, 49);
-            this.XmlFolderPicker.Name = "XmlFolderPicker";
-            this.XmlFolderPicker.PickerType = 炉边传说.ctlFilePicker.DialogType.Directory;
-            this.XmlFolderPicker.SelectedPathOrFileName = "";
-            this.XmlFolderPicker.Size = new System.Drawing.Size(629, 31);
-            this.XmlFolderPicker.TabIndex = 3;
-            this.XmlFolderPicker.Title = "XML文件夹";
+            this.ExportFolderPicker.BackColor = System.Drawing.Color.Transparent;
+            this.ExportFolderPicker.FileFilter = "";
+            this.ExportFolderPicker.FileName = "";
+            this.ExportFolderPicker.Location = new System.Drawing.Point(28, 49);
+            this.ExportFolderPicker.Name = "XmlFolderPicker";
+            this.ExportFolderPicker.PickerType = 炉边传说.ctlFilePicker.DialogType.Directory;
+            this.ExportFolderPicker.SelectedPathOrFileName = "";
+            this.ExportFolderPicker.Size = new System.Drawing.Size(629, 31);
+            this.ExportFolderPicker.TabIndex = 3;
+            this.ExportFolderPicker.Title = "XML文件夹";
             // 
             // ExcelPicker
             // 
@@ -121,17 +122,28 @@
             this.chkSecret.Text = "奥秘";
             this.chkSecret.UseVisualStyleBackColor = true;
             // 
+            // btnExportJSON
+            // 
+            this.btnExportJSON.Location = new System.Drawing.Point(488, 123);
+            this.btnExportJSON.Name = "btnExportJSON";
+            this.btnExportJSON.Size = new System.Drawing.Size(157, 23);
+            this.btnExportJSON.TabIndex = 8;
+            this.btnExportJSON.Text = "导出到JSON";
+            this.btnExportJSON.UseVisualStyleBackColor = true;
+            this.btnExportJSON.Click += new System.EventHandler(this.btnExportJSON_Click);
+            // 
             // frmExport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(669, 129);
+            this.ClientSize = new System.Drawing.Size(672, 160);
+            this.Controls.Add(this.btnExportJSON);
             this.Controls.Add(this.chkSecret);
             this.Controls.Add(this.chkWeapon);
             this.Controls.Add(this.chkAbility);
             this.Controls.Add(this.chkMinion);
-            this.Controls.Add(this.XmlFolderPicker);
+            this.Controls.Add(this.ExportFolderPicker);
             this.Controls.Add(this.btnExportXml);
             this.Controls.Add(this.ExcelPicker);
             this.Name = "frmExport";
@@ -147,11 +159,12 @@
 
         private ctlFilePicker ExcelPicker;
         private System.Windows.Forms.Button btnExportXml;
-        private ctlFilePicker XmlFolderPicker;
+        private ctlFilePicker ExportFolderPicker;
         private System.Windows.Forms.CheckBox chkMinion;
         private System.Windows.Forms.CheckBox chkAbility;
         private System.Windows.Forms.CheckBox chkWeapon;
         private System.Windows.Forms.CheckBox chkSecret;
+        private System.Windows.Forms.Button btnExportJSON;
     }
 }
 

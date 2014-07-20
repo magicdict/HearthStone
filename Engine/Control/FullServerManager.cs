@@ -1,11 +1,16 @@
-﻿using Engine.Client;
+﻿using Engine.Action;
+using Engine.Client;
 using Engine.Utility;
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Engine.Control
 {
-    public class FullServerManager 
+    /// <summary>
+    /// FullServerManager
+    /// </summary>
+    public class FullServerManager
     {
         /// <summary>
         /// 游戏编号
@@ -43,6 +48,83 @@ namespace Engine.Control
         /// </summary>
         public FullPlayInfo GuestStatus = new FullPlayInfo();
         /// <summary>
+        /// 中断信息
+        /// HTML页面和服务器端交互
+        /// </summary>
+        public struct Interrupt
+        {
+            /// <summary>
+            /// 游戏ID
+            /// </summary>
+            public String GameId;
+            /// <summary>
+            /// 是否为主机
+            /// </summary>
+            public Boolean IsHost;
+            /// <summary>
+            /// 中断步骤
+            /// </summary>
+            public int Step;
+            /// <summary>
+            /// 中断步骤名称
+            /// </summary>
+            public String ActionName;
+            /// <summary>
+            /// 附加情报
+            /// </summary>
+            public String ExternalInfo;
+            /// <summary>
+            /// 客户端数据[通信用]
+            /// </summary>
+            public string SessionData;
+            /// <summary>
+            /// 客户端数据[实际用]
+            /// </summary>
+            [JsonIgnore()]
+            public Dictionary<String, String> SessionDic
+            {
+                get
+                {
+                    return SessionData.ToStringDictionary();
+                }
+            }
+        }
+        /// <summary>
+        /// 当前中断
+        /// </summary>
+        public Interrupt CurrentInterrupt = new Interrupt();
+        /// <summary>
+        /// 获得动作数据包
+        /// </summary>
+        /// <param name="IsHost"></param>
+        /// <returns></returns>
+        public ActionStatus gameStatus(Boolean IsHost)
+        {
+            ActionStatus actionStatus = new ActionStatus()
+            {
+                GameId = GameId,
+                battleEvenetHandler = 事件处理组件,
+                IsHost = IsHost,
+                Interrupt = CurrentInterrupt,
+            };
+            if (IsHost)
+            {
+                actionStatus.AllRole.MyPublicInfo = HostStatus.BasicInfo;
+                actionStatus.AllRole.MyPrivateInfo = HostStatus.SelfInfo;
+                actionStatus.AllRole.YourPublicInfo = GuestStatus.BasicInfo;
+                actionStatus.AllRole.YourPrivateInfo = GuestStatus.SelfInfo;
+            }
+            else
+            {
+                actionStatus.AllRole.MyPublicInfo = GuestStatus.BasicInfo;
+                actionStatus.AllRole.MyPrivateInfo = GuestStatus.SelfInfo;
+                actionStatus.AllRole.YourPublicInfo = HostStatus.BasicInfo;
+                actionStatus.AllRole.YourPrivateInfo = HostStatus.SelfInfo;
+            }
+            return actionStatus;
+        }
+
+        /// <summary>
         /// 当前是否为主机回合
         /// </summary>
         /// <returns></returns>
@@ -52,6 +134,11 @@ namespace Engine.Control
             if (!HostAsFirst && !上下半局) return true;
             return false;
         }
+        /// <summary>
+        /// FullServerManager
+        /// </summary>
+        /// <param name="newGameId"></param>
+        /// <param name="hostNickName"></param>
         public FullServerManager(int newGameId, String hostNickName)
         {
             this.GameId = newGameId;
@@ -94,8 +181,8 @@ namespace Engine.Control
         public void InitPlayInfo()
         {
             //位置
-            HostStatus.BasicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = true, Postion = BattleFieldInfo.HeroPos };
-            GuestStatus.BasicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = false, Postion = BattleFieldInfo.HeroPos };
+            HostStatus.BasicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = true, 位置 = BattleFieldInfo.HeroPos };
+            GuestStatus.BasicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = false, 位置 = BattleFieldInfo.HeroPos };
             HostStatus.BasicInfo.BattleField.本方对方标识 = true;
             GuestStatus.BasicInfo.BattleField.本方对方标识 = false;
             //水晶
@@ -106,6 +193,12 @@ namespace Engine.Control
             //英雄技能：奥术飞弹
             HostStatus.BasicInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
             GuestStatus.BasicInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
+            
+            //TEST START
+            HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M000059"));
+            HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M000148"));
+            //TEST END
+
             //初始化双方手牌
             int DrawCardCnt = 0;
             if (HostAsFirst)
@@ -126,6 +219,7 @@ namespace Engine.Control
                 GuestStatus.BasicInfo.RemainCardDeckCount = CardDeck.MaxCards - 4;
                 HostStatus.BasicInfo.HandCardCount = PublicInfo.BasicHandCardCount;
                 GuestStatus.BasicInfo.HandCardCount = PublicInfo.BasicHandCardCount + 1 + 1;
+                TurnStart(true);
             }
             else
             {
@@ -145,7 +239,26 @@ namespace Engine.Control
                 GuestStatus.BasicInfo.RemainCardDeckCount = CardDeck.MaxCards - 3;
                 HostStatus.BasicInfo.HandCardCount = PublicInfo.BasicHandCardCount + 1 + 1;
                 GuestStatus.BasicInfo.HandCardCount = PublicInfo.BasicHandCardCount;
+                TurnStart(false);
             }
+        }
+        /// <summary>
+        /// 开始回合
+        /// </summary>
+        /// <param name="IsHost"></param>
+        public void TurnStart(Boolean IsHost)
+        {
+            gameStatus(IsHost).AllRole.MyPrivateInfo.handCards.Add(CardUtility.GetCardInfoBySN(DrawCard(IsHost, 1)[0]));
+            TurnAction.TurnStart(gameStatus(IsHost));
+        }
+        /// <summary>
+        /// 结束回合
+        /// </summary>
+        /// <param name="IsHost"></param>
+        public void TurnEnd(Boolean IsHost)
+        {
+            TurnAction.TurnEnd(gameStatus(IsHost));
+            TurnStart(!IsHost);
         }
     }
 }

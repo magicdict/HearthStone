@@ -26,7 +26,7 @@ namespace Engine.Client
                 CardUtility.全局事件 事件 = 事件池[j];
                 for (int i = 0; i <game.AllRole.MyPublicInfo.BattleField.MinionCount; i++)
                 {
-                    if (!(事件.触发事件类型 == CardUtility.事件类型枚举.召唤 && 事件.触发位置.Postion == (i + 1) && 事件.触发位置.本方对方标识))
+                    if (!(事件.触发事件类型 == CardUtility.事件类型枚举.召唤 && 事件.触发位置.位置 == (i + 1) && 事件.触发位置.本方对方标识))
                     {
                         Result.AddRange(game.AllRole.MyPublicInfo.BattleField.BattleMinions[i].事件处理方法(事件, game));
                     }

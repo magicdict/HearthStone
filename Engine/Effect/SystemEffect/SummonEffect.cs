@@ -39,7 +39,7 @@ namespace Engine.Effect
                         //SUMMON#YOU#M000001#POS
                         Result.Add(Engine.Server.ActionCode.strSummon + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe +
                                    Engine.Utility.CardUtility.strSplitMark + CardSN + Engine.Utility.CardUtility.strSplitMark + game.AllRole.MyPublicInfo.BattleField.MinionCount);
-                        game.eventhandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                        game.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                         {
                             触发事件类型 = CardUtility.事件类型枚举.召唤,
                             触发位置 = Minion.战场位置
@@ -52,7 +52,7 @@ namespace Engine.Effect
                         game.AllRole.YourPublicInfo.BattleField.AppendToBattle(Minion);
                         Result.Add(Engine.Server.ActionCode.strSummon + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strYou +
                             Engine.Utility.CardUtility.strSplitMark + CardSN + Engine.Utility.CardUtility.strSplitMark + game.AllRole.YourPublicInfo.BattleField.MinionCount);
-                        game.eventhandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                        game.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                         {
                             触发事件类型 = CardUtility.事件类型枚举.召唤,
                             触发位置 = Minion.战场位置
@@ -66,7 +66,7 @@ namespace Engine.Effect
                         //SUMMON#YOU#M000001#POS
                         Result.Add(Engine.Server.ActionCode.strSummon + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe +
                                    Engine.Utility.CardUtility.strSplitMark + CardSN + Engine.Utility.CardUtility.strSplitMark + game.AllRole.MyPublicInfo.BattleField.MinionCount);
-                        game.eventhandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                        game.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                         {
                             触发事件类型 = CardUtility.事件类型枚举.召唤,
                             触发位置 = Minion.战场位置
@@ -77,7 +77,7 @@ namespace Engine.Effect
                         game.AllRole.MyPublicInfo.BattleField.AppendToBattle(Minion);
                         Result.Add(Engine.Server.ActionCode.strSummon + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strYou +
                             Engine.Utility.CardUtility.strSplitMark + CardSN + Engine.Utility.CardUtility.strSplitMark + game.AllRole.MyPublicInfo.BattleField.MinionCount);
-                        game.eventhandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                        game.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                         {
                             触发事件类型 = CardUtility.事件类型枚举.召唤,
                             触发位置 = Minion.战场位置

@@ -31,44 +31,45 @@ namespace Engine.Control
         /// </summary>
         public Boolean IsMyTurn;
         /// <summary>
+        /// 
+        /// </summary>
+        public String PlayerNickName;
+        /// <summary>
         /// 事件处理组件
         /// </summary>
         public Engine.Client.BattleEventHandler 事件处理组件 = new Engine.Client.BattleEventHandler();
         /// <summary>
-        /// 游戏状态[本方]
+        /// 游戏状态
+        /// Client端已经原生将本方对方设定好了
         /// </summary>
-        public ActionStatus myStatus = new ActionStatus();
-        /// <summary>
-        /// 游戏状态[对方]
-        /// </summary>
-        public PublicInfo yourBasicStatus = new PublicInfo();
+        public ActionStatus actionStatus = new ActionStatus();
         /// <summary>
         /// 当前卡牌
         /// </summary>
-        public static CardBasicInfo CurrentActiveCard;
+        public CardBasicInfo CurrentActiveCard;
         /// <summary>
         /// 初始化
         /// </summary>
         public void InitPlayInfo()
         {
-            myStatus.AllRole.MyPublicInfo.crystal.CurrentFullPoint = 0;
-            myStatus.AllRole.MyPublicInfo.crystal.CurrentRemainPoint = 0;
-            yourBasicStatus.crystal.CurrentFullPoint = 0;
-            yourBasicStatus.crystal.CurrentRemainPoint = 0;
+            actionStatus.AllRole.MyPublicInfo.crystal.CurrentFullPoint = 0;
+            actionStatus.AllRole.MyPublicInfo.crystal.CurrentRemainPoint = 0;
+            actionStatus.AllRole.YourPublicInfo.crystal.CurrentFullPoint = 0;
+            actionStatus.AllRole.YourPublicInfo.crystal.CurrentRemainPoint = 0;
 
-            myStatus.AllRole.MyPublicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = true, Postion = BattleFieldInfo.HeroPos };
-            yourBasicStatus.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = false, Postion = BattleFieldInfo.HeroPos };
-            myStatus.AllRole.MyPublicInfo.BattleField.本方对方标识 = true;
-            yourBasicStatus.BattleField.本方对方标识 = false;
+            actionStatus.AllRole.MyPublicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = true,  位置 = BattleFieldInfo.HeroPos };
+            actionStatus.AllRole.YourPublicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = false, 位置 = BattleFieldInfo.HeroPos };
+            actionStatus.AllRole.MyPublicInfo.BattleField.本方对方标识 = true;
+            actionStatus.AllRole.YourPublicInfo.BattleField.本方对方标识 = false;
             //英雄技能：奥术飞弹
-            myStatus.AllRole.MyPublicInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
-            yourBasicStatus.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
+            actionStatus.AllRole.MyPublicInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
+            actionStatus.AllRole.YourPublicInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
 
             if (SystemManager.游戏模式 == SystemManager.GameMode.塔防)
             {
-                yourBasicStatus.LifePoint = CardUtility.Max;
-                myStatus.AllRole.MyPublicInfo.crystal.CurrentFullPoint = 10;
-                myStatus.AllRole.MyPublicInfo.crystal.CurrentRemainPoint = 10;
+                actionStatus.AllRole.YourPublicInfo.LifePoint = CardUtility.Max;
+                actionStatus.AllRole.MyPublicInfo.crystal.CurrentFullPoint = 10;
+                actionStatus.AllRole.MyPublicInfo.crystal.CurrentRemainPoint = 10;
             }
         }
         /// <summary>
@@ -80,22 +81,22 @@ namespace Engine.Control
             int DrawCardCnt = IsFirst ? PublicInfo.BasicHandCardCount : (PublicInfo.BasicHandCardCount + 1);
             foreach (var card in ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsHost, DrawCardCnt))
             {
-                myStatus.AllRole.MyPrivateInfo.handCards.Add(CardUtility.GetCardInfoBySN(card));
+                actionStatus.AllRole.MyPrivateInfo.handCards.Add(CardUtility.GetCardInfoBySN(card));
             }
             if (IsFirst)
             {
-                myStatus.AllRole.MyPublicInfo.RemainCardDeckCount = CardDeck.MaxCards - 3;
-                yourBasicStatus.RemainCardDeckCount = CardDeck.MaxCards - 4;
-                myStatus.AllRole.MyPublicInfo.HandCardCount = PublicInfo.BasicHandCardCount;
-                yourBasicStatus.HandCardCount = PublicInfo.BasicHandCardCount + 1 + 1;
+                actionStatus.AllRole.MyPublicInfo.RemainCardDeckCount = CardDeck.MaxCards - 3;
+                actionStatus.AllRole.YourPublicInfo.RemainCardDeckCount = CardDeck.MaxCards - 4;
+                actionStatus.AllRole.MyPublicInfo.HandCardCount = PublicInfo.BasicHandCardCount;
+                actionStatus.AllRole.YourPublicInfo.HandCardCount = PublicInfo.BasicHandCardCount + 1 + 1;
             }
             else
             {
-                myStatus.AllRole.MyPrivateInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.SpellCard.SN幸运币));
-                myStatus.AllRole.MyPublicInfo.RemainCardDeckCount = CardDeck.MaxCards - 4;
-                yourBasicStatus.RemainCardDeckCount = CardDeck.MaxCards - 3;
-                myStatus.AllRole.MyPublicInfo.HandCardCount = PublicInfo.BasicHandCardCount + 1 + 1;
-                yourBasicStatus.HandCardCount = PublicInfo.BasicHandCardCount;
+                actionStatus.AllRole.MyPrivateInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.SpellCard.SN幸运币));
+                actionStatus.AllRole.MyPublicInfo.RemainCardDeckCount = CardDeck.MaxCards - 4;
+                actionStatus.AllRole.YourPublicInfo.RemainCardDeckCount = CardDeck.MaxCards - 3;
+                actionStatus.AllRole.MyPublicInfo.HandCardCount = PublicInfo.BasicHandCardCount + 1 + 1;
+                actionStatus.AllRole.YourPublicInfo.HandCardCount = PublicInfo.BasicHandCardCount;
             }
         }
         /// <summary>
@@ -103,9 +104,10 @@ namespace Engine.Control
         /// </summary>
         public void TurnStart(Boolean IsMyTurn)
         {
-            PublicInfo PlayInfo = IsMyTurn ? myStatus.AllRole.MyPublicInfo : yourBasicStatus;
-            if (IsMyTurn) {
-                myStatus.AllRole.MyPrivateInfo.handCards.Add(CardUtility.GetCardInfoBySN(ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsHost, 1)[0]));
+            PublicInfo PlayInfo = IsMyTurn ? actionStatus.AllRole.MyPublicInfo : actionStatus.AllRole.YourPublicInfo;
+            if (IsMyTurn)
+            {
+                actionStatus.AllRole.MyPrivateInfo.handCards.Add(CardUtility.GetCardInfoBySN(ClientRequest.DrawCard(GameId.ToString(GameServer.GameIdFormat), IsHost, 1)[0]));
             }
             //过载的清算
             if (PlayInfo.OverloadPoint != 0)
@@ -132,7 +134,7 @@ namespace Engine.Control
         /// </summary>
         public List<String> TurnEnd(Boolean IsMyTurn)
         {
-            PublicInfo PlayInfo = IsMyTurn ? myStatus.AllRole.MyPublicInfo : yourBasicStatus;
+            PublicInfo PlayInfo = IsMyTurn ? actionStatus.AllRole.MyPublicInfo : actionStatus.AllRole.YourPublicInfo;
             List<String> ActionLst = new List<string>();
             //对手回合加成属性的去除
             int ExistMinionCount = PlayInfo.BattleField.MinionCount;
@@ -149,8 +151,8 @@ namespace Engine.Control
                 }
             }
             PlayInfo.BattleField.ClearDead(事件处理组件, false);
-            //ActionLst.AddRange(GameManager.Settle(gameStatus));
-            ActionLst.AddRange(事件处理组件.事件处理(myStatus));
+            ActionLst.AddRange(ActionStatus.Settle(actionStatus));
+            ActionLst.AddRange(事件处理组件.事件处理(actionStatus));
             return ActionLst;
         }
     }
