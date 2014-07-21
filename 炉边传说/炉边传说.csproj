@@ -234,7 +234,8 @@
     <Content Include="Html\Client.html">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Html\game.js" />
+    <Content Include="Html\Game.js" />
+    <Content Include="Html\GameUI.js" />
     <Content Include="Html\jquery-ui.min.css" />
     <Content Include="Html\jquery-ui.min.js" />
     <Content Include="Html\jquery-ui.theme.min.css" />
