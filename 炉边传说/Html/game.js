@@ -66,7 +66,7 @@ function onmessage(evt) {
             InitPlayInfoResponse();
             break;
         case RequestType.使用手牌:
-            UserHandCardResponse();
+            UseHandCardResponse();
             break;
         case RequestType.战场状态:
             BattleInfoResponse();
@@ -115,8 +115,6 @@ function CreateGame() {
         document.getElementById("gamePanel").appendChild(card);
     }
     //本方对方随从区域
-
-    //手牌区域
     for (var i = 0; i < 7; i++) {
         var card = document.getElementById("BasicCard").cloneNode(true);
         card.setAttribute("id", "MyMinion" + (i + 1));
@@ -125,7 +123,6 @@ function CreateGame() {
         card.setAttribute("y", "400");
         document.getElementById("gamePanel").appendChild(card);
     }
-
     for (var i = 0; i < 7; i++) {
         var card = document.getElementById("BasicCard").cloneNode(true);
         card.setAttribute("id", "YourMinion" + (i + 1));
@@ -133,6 +130,30 @@ function CreateGame() {
         card.setAttribute("x", 50 + i * 160);
         card.setAttribute("y", "200");
         document.getElementById("gamePanel").appendChild(card);
+    }
+    //随从入场对话框
+    //本方对方随从区域
+    for (var i = 0; i < 6; i++) {
+        var card = document.getElementById("BasicCard").cloneNode(true);
+        card.setAttribute("id", "MyExistMinion" + (i + 1));
+        card.setAttribute("display", "none");
+        card.setAttribute("x", 40 + i * 160);
+        card.setAttribute("y", "20");
+        document.getElementById("MiniosPanel").appendChild(card);
+    }
+    for (var i = 0; i < 7; i++) {
+        var button = document.getElementById("BasicButton").cloneNode(true);
+        button.setAttribute("id", "MinPos" + (i + 1));
+        button.setAttribute("display", "none");
+        button.setAttribute("x", i * 160);
+        button.setAttribute("y", "175");
+        (function (n) {
+            button.onclick = function () {
+                dialog.dialog("close");
+                AfterPutMinionPos(n + 1);
+            }
+        })(i);
+        document.getElementById("MiniosPanel").appendChild(button);
     }
 
     document.getElementById("btnCreateGame").disabled = "disabled";
@@ -206,27 +227,41 @@ function InitPlayInfoResponse() {
     if (IsFirst) IsMyTurn = true;
 }
 
-function UserHandCardResponse() {
+var SessionData;
+var Step;
+var MinionPos;
+function UseHandCardResponse() {
     if (IsHost) {
         strHost = strTrue;
     } else {
         strHost = strFalse;
     }
     Interrupt = JSON.parse(data);
-    var Step;
-    var SessionData;
-    var SpellDecide;
+
     switch (Interrupt.ActionName) {
         case "OK":
             var message = RequestType.战场状态 + GameId + strHost;
             socket.send(message);
             break;
         case "MINIONPOSITION":
-            alert("随从位置的选择:" + Interrupt.ExternalInfo)
-            SessionData = Interrupt.SessionData + "MINIONPOSITION:2|";
-            Step = "2";
-            var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + Step + ActiveCardSN + SessionData
-            socket.send(message);
+            //随从入场对话框的UI初始化
+            for (var i = 0; i < 6 ; i++) {
+                var HandCard = document.getElementById("MyExistMinion" + (i + 1));
+                HandCard.setAttribute("display", "none");
+            }
+            for (var i = 0; i < 7; i++) {
+                var HandCard = document.getElementById("MinPos" + (i + 1));
+                HandCard.setAttribute("display", "none");
+            }
+            for (var i = 0; i < BattleInfo.MyBattle.length; i++) {
+                var HandCard = document.getElementById("MyExistMinion" + (i + 1));
+                HandCard.setAttribute("display", "");
+            }
+            for (var i = 0; i < BattleInfo.MyBattle.length + 1; i++) {
+                var HandCard = document.getElementById("MinPos" + (i + 1));
+                HandCard.setAttribute("display", "");
+            }
+            dialog.dialog("open");
             break;
         case "BATTLECRYPOSITION":
             alert("战吼施放对象的选择:" + Interrupt.ExternalInfo)
@@ -254,6 +289,15 @@ function UserHandCardResponse() {
             break;
     }
 }
+
+//随从入场位置选择后
+function AfterPutMinionPos(MinionPos) {
+    SessionData = Interrupt.SessionData + "MINIONPOSITION:" + MinionPos + "|";
+    Step = "2";
+    var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + Step + ActiveCardSN + SessionData
+    socket.send(message);
+}
+
 function ResumeResponse() {
     Interrupt = JSON.parse(data);
     if (Interrupt.ActionName == "OK") {
@@ -295,6 +339,13 @@ function BattleInfoResponse() {
         HandCard.getElementById("txtCost").innerHTML = BattleInfo.MyBattle[i].使用成本;
         HandCard.getElementById("txtAttackPoint").innerHTML = BattleInfo.MyBattle[i].攻击力;
         HandCard.getElementById("txtLifePoint").innerHTML = BattleInfo.MyBattle[i].生命值;
+
+        HandCard = document.getElementById("MyExistMinion" + (i + 1));
+        HandCard.getElementById("txtName").innerHTML = BattleInfo.MyBattle[i].名称;
+        HandCard.getElementById("txtCost").innerHTML = BattleInfo.MyBattle[i].使用成本;
+        HandCard.getElementById("txtAttackPoint").innerHTML = BattleInfo.MyBattle[i].攻击力;
+        HandCard.getElementById("txtLifePoint").innerHTML = BattleInfo.MyBattle[i].生命值;
+
     }
 
     for (var i = 0; i < 7; i++) {

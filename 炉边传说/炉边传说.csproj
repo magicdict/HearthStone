@@ -235,6 +235,10 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Html\game.js" />
+    <Content Include="Html\jquery-ui.min.css" />
+    <Content Include="Html\jquery-ui.min.js" />
+    <Content Include="Html\jquery-ui.theme.min.css" />
+    <Content Include="Html\jquery.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
