@@ -169,7 +169,14 @@ namespace Engine.Server
         /// <returns></returns>
         public static List<string> DrawCard(int GameId, bool IsHost, int Count)
         {
-            return GameRunning_CS[GameId].DrawCard(IsHost, Count);
+            if (SystemManager.游戏类型 == SystemManager.GameType.客户端服务器版)
+            {
+                return GameRunning_CS[GameId].DrawCard(IsHost, Count);
+            }
+            else
+            {
+                return GameRunning_BS[GameId].DrawCard(IsHost, Count);
+            }
         }
         /// <summary>
         /// 写入动作

@@ -45,6 +45,8 @@
 
         var MinionPosDialog;
         var TargetPosDialog;
+        var SpellDecideDialog;
+
         $(function () {
 
             MinionPosDialog = $("#formMinionPos").dialog({
@@ -61,6 +63,12 @@
                 height: 400
             });
 
+            SpellDecideDialog = $("#formSpellDecide").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 600,
+                height: 250
+            });
         });
     </script>
 </head>
@@ -93,7 +101,7 @@
             <rect x="120" y="120" width="30" height="30" stroke="lightgreen" fill="red" stroke-width="2" />
             <text id="txtLifePoint" x="135" y="135" font-size="15" text-anchor="middle" fill="white">5</text>
         </svg>
-        <svg display="block" id="BasicButton" x="0" y="0" width="80" height="20" version="1.1" xmlns="http://www.w3.org/2000/svg">
+        <svg display="none" id="BasicButton" x="0" y="0" width="80" height="20" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <text id="txtButton" x="0" y="15" text-anchor="start" font-size="10" fill="red">位置</text>
             <rect x="0" y="0" width="80" height="20" stroke="lightgreen" fill="transparent" stroke-width="2" />
         </svg>
@@ -103,6 +111,17 @@
         </div>
         <div id="formTargetPos" title="选择目标位置">
             <svg id="TargetPanel" width="1000" height="350">
+            </svg>
+        </div>
+        <div id="formSpellDecide" title="抉择">
+            <svg id="SpellDecidePanel" width="500" height="150">
+                <text id="txtAblitiy1" x="20" y="30" text-anchor="start" font-size="10" fill="black">效果1</text>
+                <text x="400" y="30" text-anchor="start" font-size="10" fill="red">选择</text>
+                <rect id="btnAblitiy1" x="400" y="20" width="80" height="20" stroke="lightgreen" fill="transparent" stroke-width="2" />
+
+                <text id="txtAblitiy2" x="20" y="90" text-anchor="start" font-size="10" fill="black">效果2</text>
+                <text x="400" y="90" text-anchor="start" font-size="10" fill="red">选择</text>
+                <rect id="btnAblitiy2" x="400" y="80" width="80" height="20" stroke="lightgreen" fill="transparent" stroke-width="2" />
             </svg>
         </div>
     </form>

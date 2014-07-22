@@ -195,7 +195,7 @@ namespace Engine.Control
             GuestStatus.BasicInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
             
             //TEST START
-            HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M000054"));
+            HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("A000005"));
             HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M000148"));
             //TEST END
 

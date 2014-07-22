@@ -181,6 +181,21 @@ function InitPutMinionDialog() {
         HandCard.setAttribute("display", "");
     }
 }
+
+function InitSpellDecideDialog(DecideOpt) {
+    var Options = DecideOpt.split("|");
+    document.getElementById("txtAblitiy1").innerHTML = Options[0];
+    document.getElementById("btnAblitiy1").onclick = function () {
+        SpellDecideDialog.dialog("close");
+        AfterSpellDecide(1);
+    };
+    document.getElementById("txtAblitiy2").innerHTML = Options[1];
+    document.getElementById("btnAblitiy2").onclick = function () {
+        SpellDecideDialog.dialog("close");
+        AfterSpellDecide(2);
+    };
+}
+
 //目标对话框的UI初始化
 function InitTargetDialog(TargetList) {
     var targets = TargetList.split("|");

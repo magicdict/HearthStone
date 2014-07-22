@@ -173,9 +173,11 @@ function UseHandCardResponse() {
             TargetPosDialog.dialog("open");
             break;
         case "SPELLDECIDE":
+            InitSpellDecideDialog(Interrupt.ExternalInfo);
             Currentrequest = RequestType.使用手牌;
             Step = "2";
             SessionData = Interrupt.SessionData + "SPELLDECIDE:";
+            SpellDecideDialog.dialog("open");
             break;
     }
 }
@@ -194,6 +196,12 @@ function AfterTargetPos(IsMy, TargetPos) {
         strPos = "YOU#" + TargetPos;
     }
     SessionData = SessionData + strPos + "|";
+    var message = RequestType.中断续行 + GameId + strHost + Currentrequest + Step + ActiveCardSN + SessionData
+    socket.send(message);
+}
+//随从入场位置选择后
+function AfterSpellDecide(AblitiyNo) {
+    SessionData = SessionData + AblitiyNo + "|";
     var message = RequestType.中断续行 + GameId + strHost + Currentrequest + Step + ActiveCardSN + SessionData
     socket.send(message);
 }
