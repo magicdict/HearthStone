@@ -59,7 +59,7 @@
         button.setAttribute("id", "MyTargetPos" + (i + 1));
         button.setAttribute("display", "none");
         button.setAttribute("x", i * 160);
-        button.setAttribute("y", "0");
+        button.setAttribute("y", "175");
         (function (n) {
             button.onclick = function () {
                 TargetPosDialog.dialog("close");
@@ -72,7 +72,7 @@
         button.setAttribute("id", "YourTargetPos" + (i + 1));
         button.setAttribute("display", "none");
         button.setAttribute("x", i * 160);
-        button.setAttribute("y", "175");
+        button.setAttribute("y", "0");
         (function (n) {
             button.onclick = function () {
                 TargetPosDialog.dialog("close");
@@ -95,11 +95,8 @@ function BattleInfoResponse() {
     }
     for (var i = 0; i < BattleInfo.HandCard.length; i++) {
         var HandCard = document.getElementById("HandCard" + (i + 1));
-        HandCard.setAttribute("display", "");
-        HandCard.getElementById("txtName").innerHTML = BattleInfo.HandCard[i].名称;
-        HandCard.getElementById("txtCost").innerHTML = BattleInfo.HandCard[i].使用成本;
-        HandCard.getElementById("txtAttackPoint").innerHTML = BattleInfo.HandCard[i].攻击力;
-        HandCard.getElementById("txtLifePoint").innerHTML = BattleInfo.HandCard[i].生命值;
+        SetMinion(HandCard, BattleInfo.HandCard[i]);
+        HandCard.getElementById("txtStatus").innerHTML = "";
         //必须使用闭包！和Lambda一样
         (function (n) {
             HandCard.onclick = function () {
@@ -109,48 +106,29 @@ function BattleInfoResponse() {
     }
 
     for (var i = 0; i < 7; i++) {
-        var HandCard = document.getElementById("MyMinion" + (i + 1));
-        HandCard.setAttribute("display", "none");
+        var MinionCard = document.getElementById("MyMinion" + (i + 1));
+        MinionCard.setAttribute("display", "none");
     }
     for (var i = 0; i < BattleInfo.MyBattle.length; i++) {
-        var HandCard = document.getElementById("MyMinion" + (i + 1));
-        HandCard.setAttribute("display", "");
-        HandCard.getElementById("txtName").innerHTML = BattleInfo.MyBattle[i].名称;
-        HandCard.getElementById("txtCost").innerHTML = BattleInfo.MyBattle[i].使用成本;
-        HandCard.getElementById("txtAttackPoint").innerHTML = BattleInfo.MyBattle[i].攻击力;
-        HandCard.getElementById("txtLifePoint").innerHTML = BattleInfo.MyBattle[i].生命值;
+        var MinionCard = document.getElementById("MyMinion" + (i + 1));
+        SetMinion(MinionCard, BattleInfo.MyBattle[i]);
 
-        HandCard = document.getElementById("MyExistMinion" + (i + 1));
-        HandCard.getElementById("txtName").innerHTML = BattleInfo.MyBattle[i].名称;
-        HandCard.getElementById("txtCost").innerHTML = BattleInfo.MyBattle[i].使用成本;
-        HandCard.getElementById("txtAttackPoint").innerHTML = BattleInfo.MyBattle[i].攻击力;
-        HandCard.getElementById("txtLifePoint").innerHTML = BattleInfo.MyBattle[i].生命值;
+        MinionCard = document.getElementById("MyExistMinion" + (i + 1));
+        SetMinion(MinionCard, BattleInfo.MyBattle[i]);
 
-        HandCard = document.getElementById("MyTargetPos" + (i + 1));
-        HandCard.getElementById("txtName").innerHTML = BattleInfo.MyBattle[i].名称;
-        HandCard.getElementById("txtCost").innerHTML = BattleInfo.MyBattle[i].使用成本;
-        HandCard.getElementById("txtAttackPoint").innerHTML = BattleInfo.MyBattle[i].攻击力;
-        HandCard.getElementById("txtLifePoint").innerHTML = BattleInfo.MyBattle[i].生命值;
-
+        MinionCard = document.getElementById("MyTargetPos" + (i + 1));
+        SetMinion(MinionCard, BattleInfo.MyBattle[i]);
     }
 
     for (var i = 0; i < 7; i++) {
-        var HandCard = document.getElementById("YourMinion" + (i + 1));
-        HandCard.setAttribute("display", "none");
+        var MinionCard = document.getElementById("YourMinion" + (i + 1));
+        MinionCard.setAttribute("display", "none");
     }
     for (var i = 0; i < BattleInfo.YourBattle.length; i++) {
-        var HandCard = document.getElementById("YourMinion" + (i + 1));
-        HandCard.setAttribute("display", "");
-        HandCard.getElementById("txtName").innerHTML = BattleInfo.YourBattle[i].名称;
-        HandCard.getElementById("txtCost").innerHTML = BattleInfo.YourBattle[i].使用成本;
-        HandCard.getElementById("txtAttackPoint").innerHTML = BattleInfo.YourBattle[i].攻击力;
-        HandCard.getElementById("txtLifePoint").innerHTML = BattleInfo.YourBattle[i].生命值;
-
-        HandCard = document.getElementById("YourTargetPos" + (i + 1));
-        HandCard.getElementById("txtName").innerHTML = BattleInfo.YourBattle[i].名称;
-        HandCard.getElementById("txtCost").innerHTML = BattleInfo.YourBattle[i].使用成本;
-        HandCard.getElementById("txtAttackPoint").innerHTML = BattleInfo.YourBattle[i].攻击力;
-        HandCard.getElementById("txtLifePoint").innerHTML = BattleInfo.YourBattle[i].生命值;
+        var MinionCard = document.getElementById("YourMinion" + (i + 1));
+        SetMinion(MinionCard, BattleInfo.YourBattle[i]);
+        MinionCard = document.getElementById("YourTargetPos" + (i + 1));
+        SetMinion(MinionCard, BattleInfo.YourBattle[i]);
     }
     //如果这次的刷新是 战吼位置选择的前期准备，则接下来执行战吼的位置选择
     if (Interrupt.ActionName == "BATTLECRYPOSITION") {
@@ -161,6 +139,31 @@ function BattleInfoResponse() {
         TargetPosDialog.dialog("open");
     }
 }
+
+function SetMinion(MinionCard, Minion) {
+    MinionCard.setAttribute("display", "");
+    MinionCard.getElementById("txtName").innerHTML = Minion.名称;
+    MinionCard.getElementById("txtCost").innerHTML = Minion.使用成本;
+    MinionCard.getElementById("txtAttackPoint").innerHTML = Minion.攻击力;
+    MinionCard.getElementById("txtLifePoint").innerHTML = Minion.生命值;
+    MinionCard.getElementById("txtStatus").innerHTML = Minion.状态列表;
+    if (Minion.描述.length > 20) {
+        MinionCard.getElementById("txtDescirption1").innerHTML = Minion.描述.toString().substr(0, 10);
+        MinionCard.getElementById("txtDescirption2").innerHTML = Minion.描述.toString().substr(10, 10);
+        MinionCard.getElementById("txtDescirption3").innerHTML = Minion.描述.toString().substr(20);
+    } else {
+        if (Minion.描述.length > 10) {
+            MinionCard.getElementById("txtDescirption1").innerHTML = Minion.描述.toString().substr(0, 10);
+            MinionCard.getElementById("txtDescirption2").innerHTML = Minion.描述.toString().substr(10, 10);
+            MinionCard.getElementById("txtDescirption3").innerHTML = "";
+        } else {
+            MinionCard.getElementById("txtDescirption1").innerHTML = Minion.描述;
+            MinionCard.getElementById("txtDescirption2").innerHTML = "";
+            MinionCard.getElementById("txtDescirption3").innerHTML = "";
+        }
+    }
+}
+
 //随从入场对话框的UI初始化
 function InitPutMinionDialog() {
 

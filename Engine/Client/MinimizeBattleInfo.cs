@@ -31,6 +31,14 @@ namespace Engine.Client
             /// </summary>
             public string 状态列表;
             /// <summary>
+            /// 能否攻击
+            /// </summary>
+            public bool 能否攻击;
+            /// <summary>
+            /// 描述
+            /// </summary>
+            public string 描述;
+            /// <summary>
             /// InitByMinion
             /// </summary>
             /// <param name="minion"></param>
@@ -41,6 +49,8 @@ namespace Engine.Client
                 生命值 = minion.生命值;
                 使用成本 = minion.使用成本;
                 状态列表 = minion.状态;
+                能否攻击 = minion.能否攻击;
+                描述 = minion.描述;
             }
         }
         /// <summary>
@@ -103,6 +113,14 @@ namespace Engine.Client
             /// </summary>
             public int 生命值;
             /// <summary>
+            /// 状态列表
+            /// </summary>
+            public string 状态列表;
+            /// <summary>
+            /// 描述
+            /// </summary>
+            public string 描述;
+            /// <summary>
             /// 初始化
             /// </summary>
             /// <param name="card"></param>
@@ -111,6 +129,7 @@ namespace Engine.Client
                 序列号 = card.序列号;
                 名称 = card.名称;
                 使用成本 = card.使用成本;
+                描述 = card.描述;
                 switch (card.卡牌种类)
                 {
                     case CardBasicInfo.卡牌类型枚举.随从:
