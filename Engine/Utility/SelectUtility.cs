@@ -17,7 +17,7 @@ namespace Engine.Utility
         /// <returns></returns>
         public static string GetTargetListString(ActionStatus game)
         {
-            List<String> Target = new List<string>();
+            List<string> Target = new List<string>();
             if (game.AllRole.MyPublicInfo.能否成为动作对象) Target.Add(CardUtility.strMe + CardUtility.strSplitMark + BattleFieldInfo.HeroPos);
             for (int i = 0; i < game.AllRole.MyPublicInfo.BattleField.MinionCount; i++)
             {
@@ -55,7 +55,7 @@ namespace Engine.Utility
                                     SelectOpt.SelectedPos.本方对方标识 = true;
                                     break;
                                 case CardUtility.目标选择角色枚举.所有角色:
-                                    SelectOpt.SelectedPos.位置 = t.Next(Client.BattleFieldInfo.HeroPos, game.AllRole.MyPublicInfo.BattleField.MinionCount + 1);
+                                    SelectOpt.SelectedPos.位置 = t.Next(BattleFieldInfo.HeroPos, game.AllRole.MyPublicInfo.BattleField.MinionCount + 1);
                                     SelectOpt.SelectedPos.本方对方标识 = true;
                                     break;
                             }
@@ -70,7 +70,7 @@ namespace Engine.Utility
                                     SelectOpt.SelectedPos.本方对方标识 = false;
                                     break;
                                 case CardUtility.目标选择角色枚举.所有角色:
-                                    SelectOpt.SelectedPos.位置 = t.Next(Client.BattleFieldInfo.HeroPos, game.AllRole.YourPublicInfo.BattleField.MinionCount + 1);
+                                    SelectOpt.SelectedPos.位置 = t.Next(BattleFieldInfo.HeroPos, game.AllRole.YourPublicInfo.BattleField.MinionCount + 1);
                                     SelectOpt.SelectedPos.本方对方标识 = false;
                                     break;
                             }
@@ -96,7 +96,7 @@ namespace Engine.Utility
                                     SelectOpt.SelectedPos.位置 = t.Next(1, MinionCount + 1);
                                     break;
                                 case CardUtility.目标选择角色枚举.所有角色:
-                                    SelectOpt.SelectedPos.位置 = t.Next(Client.BattleFieldInfo.HeroPos, MinionCount + 1);
+                                    SelectOpt.SelectedPos.位置 = t.Next(BattleFieldInfo.HeroPos, MinionCount + 1);
                                     break;
                             }
                             //ME#POS
@@ -114,13 +114,13 @@ namespace Engine.Utility
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.目标选择角色枚举.随从:
-                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.AllMinionPos.ToString("D1"));
+                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + BattleFieldInfo.AllMinionPos.ToString("D1"));
                                     break;
                                 case CardUtility.目标选择角色枚举.英雄:
-                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
+                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + BattleFieldInfo.HeroPos.ToString("D1"));
                                     break;
                                 case CardUtility.目标选择角色枚举.所有角色:
-                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.AllRolePos.ToString("D1"));
+                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + BattleFieldInfo.AllRolePos.ToString("D1"));
                                     break;
                             }
                             break;
@@ -128,13 +128,13 @@ namespace Engine.Utility
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.目标选择角色枚举.随从:
-                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.AllMinionPos.ToString("D1"));
+                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + BattleFieldInfo.AllMinionPos.ToString("D1"));
                                     break;
                                 case CardUtility.目标选择角色枚举.英雄:
-                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
+                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + BattleFieldInfo.HeroPos.ToString("D1"));
                                     break;
                                 case CardUtility.目标选择角色枚举.所有角色:
-                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.AllRolePos.ToString("D1"));
+                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + BattleFieldInfo.AllRolePos.ToString("D1"));
                                     break;
                             }
                             break;
@@ -142,16 +142,16 @@ namespace Engine.Utility
                             switch (SelectOpt.EffectTargetSelectRole)
                             {
                                 case CardUtility.目标选择角色枚举.随从:
-                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.AllMinionPos.ToString("D1"));
-                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.AllMinionPos.ToString("D1"));
+                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + BattleFieldInfo.AllMinionPos.ToString("D1"));
+                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + BattleFieldInfo.AllMinionPos.ToString("D1"));
                                     break;
                                 case CardUtility.目标选择角色枚举.英雄:
-                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
-                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
+                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + BattleFieldInfo.HeroPos.ToString("D1"));
+                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + BattleFieldInfo.HeroPos.ToString("D1"));
                                     break;
                                 case CardUtility.目标选择角色枚举.所有角色:
-                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.AllRolePos.ToString("D1"));
-                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.AllRolePos.ToString("D1"));
+                                    Result.Add(CardUtility.strMe + CardUtility.strSplitMark + BattleFieldInfo.AllRolePos.ToString("D1"));
+                                    Result.Add(CardUtility.strYou + CardUtility.strSplitMark + BattleFieldInfo.AllRolePos.ToString("D1"));
                                     break;
                             }
                             break;
@@ -161,7 +161,7 @@ namespace Engine.Utility
                     Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + SelectOpt.SelectedPos.位置.ToString("D1"));
                     break;
                 case CardUtility.目标选择模式枚举.相邻:
-                case CardUtility.目标选择模式枚举.相邻排除自身:
+                case CardUtility.目标选择模式枚举.相邻排除指定位置:
                     if (SelectOpt.EffictTargetSelectMode == CardUtility.目标选择模式枚举.相邻)
                     {
                         Result.Add((SelectOpt.SelectedPos.本方对方标识 ? CardUtility.strMe : CardUtility.strYou) + CardUtility.strSplitMark + SelectOpt.SelectedPos.位置.ToString("D1"));
@@ -187,14 +187,14 @@ namespace Engine.Utility
                         switch (SelectOpt.EffectTargetSelectDirect)
                         {
                             case CardUtility.目标选择方向枚举.本方:
-                                Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
+                                Result.Add(CardUtility.strMe + CardUtility.strSplitMark + BattleFieldInfo.HeroPos.ToString("D1"));
                                 break;
                             case CardUtility.目标选择方向枚举.对方:
-                                Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
+                                Result.Add(CardUtility.strYou + CardUtility.strSplitMark + BattleFieldInfo.HeroPos.ToString("D1"));
                                 break;
                             case CardUtility.目标选择方向枚举.双方:
-                                Result.Add(CardUtility.strMe + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
-                                Result.Add(CardUtility.strYou + CardUtility.strSplitMark + Client.BattleFieldInfo.HeroPos.ToString("D1"));
+                                Result.Add(CardUtility.strMe + CardUtility.strSplitMark + BattleFieldInfo.HeroPos.ToString("D1"));
+                                Result.Add(CardUtility.strYou + CardUtility.strSplitMark + BattleFieldInfo.HeroPos.ToString("D1"));
                                 break;
                             default:
                                 break;
@@ -230,7 +230,7 @@ namespace Engine.Utility
                         case CardUtility.目标选择角色枚举.所有角色:
                             for (int i = 0; i < game.AllRole.MyPublicInfo.BattleField.MinionCount; i++)
                             {
-                                if (Engine.Utility.CardUtility.符合选择条件(game.AllRole.MyPublicInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
+                                if (CardUtility.符合选择条件(game.AllRole.MyPublicInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
                                 {
                                     game.AllRole.MyPublicInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.AllRole.MyPublicInfo.BattleField.BattleMinions[i].潜行特性;
                                 }
@@ -243,7 +243,7 @@ namespace Engine.Utility
                     }
                     break;
                 case CardUtility.目标选择方向枚举.对方:
-                    Boolean Has嘲讽 = false;
+                    bool Has嘲讽 = false;
                     for (int i = 0; i < game.AllRole.YourPublicInfo.BattleField.MinionCount; i++)
                     {
                         if (game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].嘲讽特性 &&
@@ -276,7 +276,7 @@ namespace Engine.Utility
                                 game.AllRole.YourPublicInfo.能否成为动作对象 = true;
                                 for (int i = 0; i < game.AllRole.YourPublicInfo.BattleField.MinionCount; i++)
                                 {
-                                    if (Engine.Utility.CardUtility.符合选择条件(game.AllRole.YourPublicInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
+                                    if (CardUtility.符合选择条件(game.AllRole.YourPublicInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
                                         game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].潜行特性;
                                 }
                             }
@@ -300,18 +300,45 @@ namespace Engine.Utility
                             }
                             for (int i = 0; i < game.AllRole.MyPublicInfo.BattleField.MinionCount; i++)
                             {
-                                if (Engine.Utility.CardUtility.符合选择条件(game.AllRole.MyPublicInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
+                                if (CardUtility.符合选择条件(game.AllRole.MyPublicInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
                                     game.AllRole.MyPublicInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.AllRole.MyPublicInfo.BattleField.BattleMinions[i].潜行特性;
                             }
                             for (int i = 0; i < game.AllRole.YourPublicInfo.BattleField.MinionCount; i++)
                             {
-                                if (Engine.Utility.CardUtility.符合选择条件(game.AllRole.YourPublicInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
+                                if (CardUtility.符合选择条件(game.AllRole.YourPublicInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
                                     game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].潜行特性;
                             }
                             break;
                     }
                     break;
             }
+            //战吼等时候，不能选择自己
+            if (SelectOption.CanNotSelectPos.位置 != -1)
+            {
+                if (SelectOption.CanNotSelectPos.本方对方标识)
+                {
+                    if (SelectOption.CanNotSelectPos.位置 == BattleFieldInfo.HeroPos)
+                    {
+                        game.AllRole.MyPublicInfo.能否成为动作对象 = false;
+                    }
+                    else
+                    {
+                        game.AllRole.MyPublicInfo.BattleField.BattleMinions[SelectOption.CanNotSelectPos.位置 - 1].能否成为动作对象 = false;
+                    }
+                }
+                else
+                {
+                    if (SelectOption.CanNotSelectPos.位置 == BattleFieldInfo.HeroPos)
+                    {
+                        game.AllRole.YourPublicInfo.能否成为动作对象 = false;
+                    }
+                    else
+                    {
+                        game.AllRole.YourPublicInfo.BattleField.BattleMinions[SelectOption.CanNotSelectPos.位置 - 1].能否成为动作对象 = false;
+                    }
+                }
+            }
         }
+
     }
 }

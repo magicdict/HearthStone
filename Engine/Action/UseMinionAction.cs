@@ -124,6 +124,9 @@ namespace Engine.Action
                 game.Interrupt.Step = 4;
                 if (spell.FirstAbilityDefine.IsNeedTargetSelect())
                 {
+                    //这里先简单假设所有战吼，如果需要指定位置，则自身不能成为指定位置
+                    spell.FirstAbilityDefine.MainAbilityDefine.AbliltyPosPicker.CanNotSelectPos.本方对方标识 = true;
+                    spell.FirstAbilityDefine.MainAbilityDefine.AbliltyPosPicker.CanNotSelectPos.位置 = int.Parse(game.Interrupt.SessionDic["MINIONPOSITION"]); 
                     SelectUtility.SetTargetSelectEnable(spell.FirstAbilityDefine.MainAbilityDefine.AbliltyPosPicker, game);
                     game.Interrupt.ExternalInfo = SelectUtility.GetTargetListString(game);
                     game.Interrupt.ActionName = "BATTLECRYPOSITION";

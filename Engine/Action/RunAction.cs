@@ -39,14 +39,14 @@ namespace Engine.Action
                 case CardBasicInfo.卡牌类型枚举.法术:
                     if (SystemManager.游戏类型 == SystemManager.GameType.HTML版)
                     {
-                        actionStatus.ActionName = "RUNSPELLCARD";
+                        actionStatus.ActionName = "USESPELLCARD";
                         UseSpellAction.RunBS(actionStatus, CardSn);
                     }
                     break;
                 case CardBasicInfo.卡牌类型枚举.随从:
                     if (SystemManager.游戏类型 == SystemManager.GameType.HTML版)
                     {
-                        actionStatus.ActionName = "USEMINION";
+                        actionStatus.ActionName = "USEMINIONCARD";
                         UseMinionAction.RunBS(actionStatus, CardSn);
                     }
                     break;

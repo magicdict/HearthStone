@@ -159,11 +159,11 @@ function UseHandCardResponse() {
             MinionPosDialog.dialog("open");
             break;
         case "BATTLECRYPOSITION":
-            InitTargetDialog(Interrupt.ExternalInfo);
-            Currentrequest = RequestType.使用手牌;
-            Step = "4";
-            SessionData = Interrupt.SessionData + "BATTLECRYPOSITION:";
-            TargetPosDialog.dialog("open");
+            //这个时候随从已经入场，需要刷新一下自己战场的信息，
+            //但是由于还没有完成整个动作，所以暂时不刷新对方战场
+            //位置选择在战场状态刷新后执行
+            message = RequestType.战场状态 + GameId + strHost;
+            socket.send(message);
             break;
         case "SPELLPOSITION":
             InitTargetDialog(Interrupt.ExternalInfo);

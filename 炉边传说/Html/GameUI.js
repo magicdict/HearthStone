@@ -152,10 +152,18 @@ function BattleInfoResponse() {
         HandCard.getElementById("txtAttackPoint").innerHTML = BattleInfo.YourBattle[i].攻击力;
         HandCard.getElementById("txtLifePoint").innerHTML = BattleInfo.YourBattle[i].生命值;
     }
+    //如果这次的刷新是 战吼位置选择的前期准备，则接下来执行战吼的位置选择
+    if (Interrupt.ActionName == "BATTLECRYPOSITION") {
+        InitTargetDialog(Interrupt.ExternalInfo);
+        Currentrequest = RequestType.使用手牌;
+        Step = "4";
+        SessionData = Interrupt.SessionData + "BATTLECRYPOSITION:";
+        TargetPosDialog.dialog("open");
+    }
 }
-
+//随从入场对话框的UI初始化
 function InitPutMinionDialog() {
-    //随从入场对话框的UI初始化
+
     for (var i = 0; i < 6 ; i++) {
         var HandCard = document.getElementById("MyExistMinion" + (i + 1));
         HandCard.setAttribute("display", "none");
@@ -173,17 +181,23 @@ function InitPutMinionDialog() {
         HandCard.setAttribute("display", "");
     }
 }
-//
+//目标对话框的UI初始化
 function InitTargetDialog(TargetList) {
     var targets = TargetList.split("|");
-    //随从入场对话框的UI初始化
+    var CurPos;
     for (var i = 0; i < 7; i++) {
         var HandCard = document.getElementById("MyTargetPos" + (i + 1));
         HandCard.setAttribute("display", "none");
     }
     for (var i = 0; i < BattleInfo.MyBattle.length; i++) {
         var HandCard = document.getElementById("MyTargetPos" + (i + 1));
-        HandCard.setAttribute("display", "");
+        CurPos = "ME#" + (i + 1);
+        for (var j = 0; j < targets.length; j++) {
+            if (targets[j] == CurPos) {
+                HandCard.setAttribute("display", "");
+                break;
+            }
+        }
     }
     for (var i = 0; i < 7; i++) {
         var HandCard = document.getElementById("YourTargetPos" + (i + 1));
@@ -191,6 +205,12 @@ function InitTargetDialog(TargetList) {
     }
     for (var i = 0; i < BattleInfo.YourBattle.length; i++) {
         var HandCard = document.getElementById("YourTargetPos" + (i + 1));
-        HandCard.setAttribute("display", "");
+        CurPos = "YOU#" + (i + 1);
+        for (var j = 0; j < targets.length; j++) {
+            if (targets[j] == CurPos) {
+                HandCard.setAttribute("display", "");
+                break;
+            }
+        }
     }
 }

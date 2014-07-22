@@ -78,18 +78,27 @@ namespace Engine.Action
                     {
                         ability = spell.SecondAbilityDefine;
                     }
-                    if (game.ActionName == "USEMINION")
+                    if (game.ActionName == "USEMINIONCARD")
                     {
+                        //如果整个大的动作时随从入场，并且如果这个战吼不需要指定位置，则现在的话，将入场随从设定为指定位置
                         ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.本方对方标识 = true;
                         ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.位置 = int.Parse(game.Interrupt.SessionDic["MINIONPOSITION"]);
                     }
                     if (ability.IsNeedTargetSelect())
                     {
-                        SelectUtility.SetTargetSelectEnable(ability.MainAbilityDefine.AbliltyPosPicker, game);
-                        game.Interrupt.ExternalInfo = SelectUtility.GetTargetListString(game);
-                        game.Interrupt.Step = 2;
-                        game.Interrupt.ActionName = "SPELLPOSITION";
-                        return;
+                        if (game.Interrupt.ActionName == "RUNBATTLECRY" && game.Interrupt.SessionDic.ContainsKey("BATTLECRYPOSITION"))
+                        {
+                            ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = CardUtility.指定位置结构体.FromString(game.Interrupt.SessionDic["BATTLECRYPOSITION"]);
+                        }
+                        else
+                        {
+                            ability.MainAbilityDefine.AbliltyPosPicker.CanNotSelectPos.位置 = BattleFieldInfo.UnknowPos;
+                            SelectUtility.SetTargetSelectEnable(ability.MainAbilityDefine.AbliltyPosPicker, game);
+                            game.Interrupt.ExternalInfo = SelectUtility.GetTargetListString(game);
+                            game.Interrupt.Step = 2;
+                            game.Interrupt.ActionName = "SPELLPOSITION";
+                            return;
+                        }
                     }
                     SpellCard.RunAbility(game, ability);
                 }
