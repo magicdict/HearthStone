@@ -313,7 +313,7 @@ namespace Engine.Utility
                     break;
             }
             //战吼等时候，不能选择自己
-            if (SelectOption.CanNotSelectPos.位置 != -1)
+            if (SelectOption.CanNotSelectPos.位置 != BattleFieldInfo.UnknowPos)
             {
                 if (SelectOption.CanNotSelectPos.本方对方标识)
                 {

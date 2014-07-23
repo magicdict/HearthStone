@@ -40,6 +40,13 @@ function onmessage(evt) {
         case RequestType.中断续行:
             ResumeResponse();
             break;
+        case RequestType.攻击行为:
+            var message = RequestType.战场状态 + GameId + strHost;
+            socket.send(message);
+            break;
+        case RequestType.可攻击对象:
+            FightTargetListResponse();
+            break;
     }
 }
 
@@ -62,10 +69,10 @@ var RequestType = {
     战场状态: "013",
     开始游戏: "014",
     初始化状态: "015",
-    中断续行: "016"
+    中断续行: "016",
+    攻击行为: "017",
+    可攻击对象:"018"
 };
-
-
 
 function CreateGameResponse() {
     GameId = data.toString().substr(0, 5);
@@ -115,6 +122,21 @@ function UserHandCard(CardSN) {
     ActiveCardSN = CardSN;
     var message = RequestType.使用手牌 + GameId + strHost + CardSN;
     socket.send(message);
+}
+
+//战斗
+function Fight(MyPos) {
+    //获取战斗目标
+    Interrupt.ActionName = "FIGHT";
+    SessionData = MyPos + "|";
+    var message = RequestType.可攻击对象 + GameId + strHost;
+    socket.send(message);
+}
+//获得攻击列表
+function FightTargetListResponse(){
+    InitTargetDialog(data);
+    TargetPosDialog.dialog("open");
+    //后续动作在AfterTargetPos
 }
 
 function SendDeckResponse() {
@@ -171,6 +193,7 @@ function UseHandCardResponse() {
             Step = "2";
             SessionData = Interrupt.SessionData + "SPELLPOSITION:";
             TargetPosDialog.dialog("open");
+            //后续动作在AfterTargetPos
             break;
         case "SPELLDECIDE":
             InitSpellDecideDialog(Interrupt.ExternalInfo);
@@ -184,7 +207,7 @@ function UseHandCardResponse() {
 //随从入场位置选择后
 function AfterPutMinionPos(MinionPos) {
     SessionData = SessionData + MinionPos + "|";
-    var message = RequestType.中断续行 + GameId + strHost + Currentrequest + Step + ActiveCardSN + SessionData
+    var message = RequestType.中断续行 + GameId + strHost + Currentrequest + Step + ActiveCardSN + SessionData;
     socket.send(message);
 }
 //位置选择后
@@ -196,7 +219,12 @@ function AfterTargetPos(IsMy, TargetPos) {
         strPos = "YOU#" + TargetPos;
     }
     SessionData = SessionData + strPos + "|";
-    var message = RequestType.中断续行 + GameId + strHost + Currentrequest + Step + ActiveCardSN + SessionData
+    var message; 
+    if (Interrupt.ActionName == "FIGHT") {
+        message = RequestType.攻击行为 + GameId + strHost + SessionData;
+    } else {
+        message = RequestType.中断续行 + GameId + strHost + Currentrequest + Step + ActiveCardSN + SessionData;
+    }
     socket.send(message);
 }
 //随从入场位置选择后

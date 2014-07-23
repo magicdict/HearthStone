@@ -1,4 +1,5 @@
-﻿function CreateGame() {
+﻿//新建游戏
+function CreateGame() {
     //手牌区域
     for (var i = 0; i < 10; i++) {
         var card = document.getElementById("BasicCard").cloneNode(true);
@@ -112,6 +113,12 @@ function BattleInfoResponse() {
     for (var i = 0; i < BattleInfo.MyBattle.length; i++) {
         var MinionCard = document.getElementById("MyMinion" + (i + 1));
         SetMinion(MinionCard, BattleInfo.MyBattle[i]);
+        //必须使用闭包！和Lambda一样
+        (function (n) {
+            MinionCard.onclick = function () {
+                Fight("ME#" + (n + 1));
+            }
+        })(i);
 
         MinionCard = document.getElementById("MyExistMinion" + (i + 1));
         SetMinion(MinionCard, BattleInfo.MyBattle[i]);
@@ -139,7 +146,7 @@ function BattleInfoResponse() {
         TargetPosDialog.dialog("open");
     }
 }
-
+//设定手牌外观
 function SetMinion(MinionCard, Minion) {
     MinionCard.setAttribute("display", "");
     MinionCard.getElementById("txtName").innerHTML = Minion.名称;

@@ -106,7 +106,7 @@ namespace Engine.Server
                     GameId = int.Parse(Request.Substring(3, 5));
                     IsHost = Request.Substring(8, 1) == CardUtility.strTrue;
                     //这里可能产生中断
-                    var interrput = GameServer.UseHandCard(GameId, IsHost, Request.Substring(9), 1, String.Empty);
+                    var interrput = GameServer.UseHandCard(GameId, IsHost, Request.Substring(9), 1, string.Empty);
                     Response = interrput.ToJson();
                     if (interrput.ActionName == CardUtility.strOK)
                     {
@@ -136,6 +136,20 @@ namespace Engine.Server
                         }
                     }
                     requestType = ResumeType;
+                    break;
+                case RequestType.攻击行为:
+                    GameId = int.Parse(Request.Substring(3, 5));
+                    IsHost = Request.Substring(8, 1) == CardUtility.strTrue;
+                    //017000010ME#1|YOU#2|
+                    int MyPos = int.Parse(Request.Substring(12, 1));
+                    int YourPos = int.Parse(Request.Substring(18, 1));
+                    GameServer.Fight(GameId, IsHost,MyPos,YourPos);
+                    Response = CardUtility.strOK;
+                    break;
+                case RequestType.可攻击对象:
+                    GameId = int.Parse(Request.Substring(3, 5));
+                    IsHost = Request.Substring(8, 1) == CardUtility.strTrue;
+                    Response = GameServer.GetFightTargetList(GameId, IsHost);
                     break;
                 default:
                     break;
@@ -217,7 +231,15 @@ namespace Engine.Server
             /// <summary>
             /// 中断续行[BS]
             /// </summary>
-            中断续行
+            中断续行,
+            /// <summary>
+            /// 攻击行为
+            /// </summary>
+            攻击行为,
+            /// <summary>
+            /// 
+            /// </summary>
+            可攻击对象
         }
     }
 }

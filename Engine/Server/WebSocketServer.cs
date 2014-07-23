@@ -59,6 +59,7 @@ namespace Engine.Utility
                                 break;
                             case ServerResponse.RequestType.初始化状态:
                             case ServerResponse.RequestType.回合结束:
+                            case ServerResponse.RequestType.攻击行为:
                                 //初始化状态是后手发起的，结果需要推送给双方
                                 GameId = Request.Substring(3, 5);
                                 SendToBoth(GameId, Response);

@@ -1,7 +1,6 @@
 ﻿using Engine.Action;
 using Engine.Control;
 using Engine.Utility;
-using System;
 using System.Collections.Generic;
 
 namespace Engine.Server
@@ -15,7 +14,7 @@ namespace Engine.Server
         /// <summary>
         /// GameId Format
         /// </summary>
-        public static String GameIdFormat = "D5";
+        public static string GameIdFormat = "D5";
         /// <summary>
         /// 等待玩家游戏[CS]
         /// </summary>
@@ -36,7 +35,7 @@ namespace Engine.Server
         /// 新建游戏[CS]
         /// </summary>
         /// <returns></returns>
-        public static int CreateNewGame_CS(String HostNickName)
+        public static int CreateNewGame_CS(string HostNickName)
         {
             GameId++;
             //新建游戏的同时决定游戏的先后手
@@ -48,7 +47,7 @@ namespace Engine.Server
         /// </summary>
         /// <param name="HostNickName"></param>
         /// <returns></returns>
-        public static int CreateNewGame_BS(String HostNickName)
+        public static int CreateNewGame_BS(string HostNickName)
         {
             GameId++;
             //新建游戏的同时决定游戏的先后手
@@ -62,7 +61,7 @@ namespace Engine.Server
         /// <param name="GameId"></param>
         /// <param name="GuestNickName"></param>
         /// <returns> -1 表示失败</returns>
-        public static int JoinGame_CS(int GameId, String GuestNickName)
+        public static int JoinGame_CS(int GameId, string GuestNickName)
         {
             if (GameWaitGuest_CS.ContainsKey(GameId))
             {
@@ -82,7 +81,7 @@ namespace Engine.Server
         /// <param name="GameId"></param>
         /// <param name="GuestNickName"></param>
         /// <returns> -1 表示失败</returns>
-        public static int JoinGame_BS(int GameId, String GuestNickName)
+        public static int JoinGame_BS(int GameId, string GuestNickName)
         {
             if (GameWaitGuest_BS.ContainsKey(GameId))
             {
@@ -102,19 +101,19 @@ namespace Engine.Server
         /// <returns></returns>
         public static string GetWaitGameList()
         {
-            String WaitGame = String.Empty;
+            string WaitGame = string.Empty;
             foreach (var item in GameWaitGuest_CS)
             {
                 WaitGame += item.Key + "(" + item.Value.HostStatus.NickName + ")|";
             }
-            WaitGame = WaitGame.TrimEnd(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
+            WaitGame = WaitGame.TrimEnd(CardUtility.strSplitArrayMark.ToCharArray());
             return WaitGame;
         }
         /// <summary>
         /// 游戏是否启动
         /// </summary>
         /// <returns></returns>
-        public static String IsGameStart(int GameId)
+        public static string IsGameStart(int GameId)
         {
             return GameRunning_CS.ContainsKey(GameId) ? CardUtility.strTrue : CardUtility.strFalse;
         }
@@ -124,7 +123,7 @@ namespace Engine.Server
         /// <param name="GameId"></param>
         /// <param name="IsHost"></param>
         /// <returns></returns>
-        public static Boolean IsFirst(int GameId, bool IsHost)
+        public static bool IsFirst(int GameId, bool IsHost)
         {
             return ((IsHost && GameRunning_CS[GameId].HostAsFirst) || (!IsHost && !GameRunning_CS[GameId].HostAsFirst));
         }
@@ -133,7 +132,7 @@ namespace Engine.Server
         /// </summary>
         /// <param name="GameId"></param>
         /// <param name="card"></param>
-        public static void SetCardStack(int GameId, Boolean IsHost, Stack<String> card)
+        public static void SetCardStack(int GameId, bool IsHost, Stack<string> card)
         {
             //IsHost == false 的时候，初始化已经完成，
             //网络版的时候，要向两个客户端发送开始游戏的下一步指令
@@ -183,7 +182,7 @@ namespace Engine.Server
         /// </summary>
         /// <param name="GameId"></param>
         /// <param name="Action"></param>
-        public static void WriteAction(int GameId, String Action)
+        public static void WriteAction(int GameId, string Action)
         {
             GameRunning_CS[GameId].WriteAction(Action);
         }
@@ -192,7 +191,7 @@ namespace Engine.Server
         /// </summary>
         /// <param name="GameId"></param>
         /// <param name="Action"></param>
-        public static String ReadAction(int GameId)
+        public static string ReadAction(int GameId)
         {
             return GameRunning_CS[GameId].ReadAction();
         }
@@ -201,9 +200,9 @@ namespace Engine.Server
         /// </summary>
         /// <param name="GameId"></param>
         /// <returns></returns>
-        public static String SecretHit(int GameId, bool IsFirst, String ActionList)
+        public static string SecretHit(int GameId, bool IsFirst, string ActionList)
         {
-            return String.Empty;
+            return string.Empty;
             //return GameRunning_CS[GameId].SecretHitCheck(ActionList, IsFirst);
         }
         /// <summary>
@@ -213,11 +212,11 @@ namespace Engine.Server
         /// <param name="IsHost"></param>
         /// <param name="CardSn"></param>
         /// <returns></returns>
-        public static FullServerManager.Interrupt UseHandCard(int GameId, bool IsHost, string CardSn, int Step,String SessionData)
+        public static FullServerManager.Interrupt UseHandCard(int GameId, bool IsHost, string CardSn, int Step, string SessionData)
         {
             var gamestatus = GameRunning_BS[GameId].gameStatus(IsHost);
             gamestatus.Interrupt.IsHost = IsHost;
-            gamestatus.Interrupt.GameId = GameId.ToString(GameServer.GameIdFormat);
+            gamestatus.Interrupt.GameId = GameId.ToString(GameIdFormat);
             gamestatus.GameId = GameId;
             gamestatus.Interrupt.Step = Step;
             gamestatus.Interrupt.SessionData = SessionData;
@@ -229,6 +228,27 @@ namespace Engine.Server
                 gamestatus.AllRole.MyPrivateInfo.RemoveUsedCard(CardSn);
             }
             return gamestatus.Interrupt;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="GameId"></param>
+        /// <param name="IsHost"></param>
+        /// <returns></returns>
+        public static string GetFightTargetList(int GameId, bool IsHost)
+        {
+            var gamestatus = GameRunning_BS[GameId].gameStatus(IsHost);
+            var SelectOpt = new CardUtility.位置选择用参数结构体();
+            SelectOpt.EffectTargetSelectDirect = CardUtility.目标选择方向枚举.对方;
+            SelectOpt.EffectTargetSelectRole = CardUtility.目标选择角色枚举.所有角色;
+            SelectOpt.嘲讽限制 = true;
+            SelectUtility.SetTargetSelectEnable(SelectOpt, gamestatus);
+            return SelectUtility.GetTargetListString(gamestatus);
+        }
+        public static void Fight(int GameId, bool IsHost,int MyPos,int YourPos)
+        {
+            var gamestatus = GameRunning_BS[GameId].gameStatus(IsHost);
+            RunAction.Fight(gamestatus, MyPos, YourPos, true);
         }
     }
 }
