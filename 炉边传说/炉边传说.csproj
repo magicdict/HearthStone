@@ -236,6 +236,7 @@
     </Content>
     <Content Include="Html\Game.js" />
     <Content Include="Html\GameUI.js" />
+    <Content Include="Html\Image\Hero.jpg" />
     <Content Include="Html\jquery-ui.min.css" />
     <Content Include="Html\jquery-ui.min.js" />
     <Content Include="Html\jquery-ui.theme.min.css" />

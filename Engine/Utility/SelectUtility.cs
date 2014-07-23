@@ -280,7 +280,10 @@ namespace Engine.Utility
                                         game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].潜行特性;
                                 }
                             }
-                            if (SelectOption.EffectTargetSelectRole == CardUtility.目标选择角色枚举.所有角色) game.AllRole.YourPublicInfo.能否成为动作对象 = true;
+                            if (SelectOption.EffectTargetSelectRole == CardUtility.目标选择角色枚举.所有角色)
+                            {
+                                if (!(SelectOption.嘲讽限制 && Has嘲讽)) game.AllRole.YourPublicInfo.能否成为动作对象 = true;
+                            }
                             break;
                     }
                     break;

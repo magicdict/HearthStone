@@ -59,7 +59,7 @@ function CreateGame() {
         var button = document.getElementById("BasicCard").cloneNode(true);
         button.setAttribute("id", "MyTargetPos" + (i + 1));
         button.setAttribute("display", "none");
-        button.setAttribute("x", i * 160);
+        button.setAttribute("x", (i + 1) * 160);
         button.setAttribute("y", "175");
         (function (n) {
             button.onclick = function () {
@@ -72,7 +72,7 @@ function CreateGame() {
         var button = document.getElementById("BasicCard").cloneNode(true);
         button.setAttribute("id", "YourTargetPos" + (i + 1));
         button.setAttribute("display", "none");
-        button.setAttribute("x", i * 160);
+        button.setAttribute("x", (i + 1) * 160);
         button.setAttribute("y", "0");
         (function (n) {
             button.onclick = function () {
@@ -82,6 +82,48 @@ function CreateGame() {
         })(i);
         document.getElementById("TargetPanel").appendChild(button);
     }
+
+
+    //英雄
+    var Hero = document.getElementById("BasicPlayerInfo").cloneNode(true);
+    Hero.setAttribute("id", "MyHero");
+    Hero.setAttribute("display", "");
+    Hero.setAttribute("x", "475");
+    Hero.setAttribute("y", "575");
+    document.getElementById("gamePanel").appendChild(Hero);
+
+    var Hero = document.getElementById("BasicPlayerInfo").cloneNode(true);
+    Hero.setAttribute("id", "YourHero");
+    Hero.setAttribute("display", "");
+    Hero.setAttribute("x", "475");
+    Hero.setAttribute("y", "25");
+    document.getElementById("gamePanel").appendChild(Hero);
+
+    //英雄 目标选择
+
+    var Hero = document.getElementById("BasicPlayerInfo").getElementById("imgHero").cloneNode(true);
+    Hero.setAttribute("id", "MyTargetPos0");
+    Hero.setAttribute("display", "none");
+    Hero.setAttribute("x", "0");
+    Hero.setAttribute("y", "175");
+    Hero.onclick = function () {
+        TargetPosDialog.dialog("close");
+        AfterTargetPos(true, 0);
+    }
+    document.getElementById("TargetPanel").appendChild(Hero);
+
+    var Hero = document.getElementById("BasicPlayerInfo").getElementById("imgHero").cloneNode(true);
+    Hero.setAttribute("id", "YourTargetPos0");
+    Hero.setAttribute("display", "none");
+    Hero.setAttribute("x", "0");
+    Hero.setAttribute("y", "0");
+    Hero.onclick = function () {
+        TargetPosDialog.dialog("close");
+        AfterTargetPos(true, 0);
+    }
+    document.getElementById("TargetPanel").appendChild(Hero);
+
+
 
     document.getElementById("btnCreateGame").disabled = "disabled";
     socket.send(RequestType.开始游戏);
@@ -110,6 +152,7 @@ function BattleInfoResponse() {
         var MinionCard = document.getElementById("MyMinion" + (i + 1));
         MinionCard.setAttribute("display", "none");
     }
+
     for (var i = 0; i < BattleInfo.MyBattle.length; i++) {
         var MinionCard = document.getElementById("MyMinion" + (i + 1));
         SetMinion(MinionCard, BattleInfo.MyBattle[i]);
@@ -210,6 +253,25 @@ function InitSpellDecideDialog(DecideOpt) {
 function InitTargetDialog(TargetList) {
     var targets = TargetList.split("|");
     var CurPos;
+
+    var Hero = document.getElementById("MyTargetPos0");
+    Hero.setAttribute("display", "none");
+    for (var j = 0; j < targets.length; j++) {
+        if (targets[j] == "ME#0") {
+            Hero.setAttribute("display", "");
+            break;
+        }
+    }
+
+    Hero = document.getElementById("YourTargetPos0");
+    Hero.setAttribute("display", "none");
+    for (var j = 0; j < targets.length; j++) {
+        if (targets[j] == "YOU#0") {
+            Hero.setAttribute("display", "");
+            break;
+        }
+    }
+
     for (var i = 0; i < 7; i++) {
         var HandCard = document.getElementById("MyTargetPos" + (i + 1));
         HandCard.setAttribute("display", "none");

@@ -40,6 +40,7 @@
             // 
             // btnExportXml
             // 
+            this.btnExportXml.Enabled = false;
             this.btnExportXml.Location = new System.Drawing.Point(488, 94);
             this.btnExportXml.Name = "btnExportXml";
             this.btnExportXml.Size = new System.Drawing.Size(157, 23);
@@ -48,13 +49,13 @@
             this.btnExportXml.UseVisualStyleBackColor = true;
             this.btnExportXml.Click += new System.EventHandler(this.btnExportXml_Click);
             // 
-            // XmlFolderPicker
+            // ExportFolderPicker
             // 
             this.ExportFolderPicker.BackColor = System.Drawing.Color.Transparent;
             this.ExportFolderPicker.FileFilter = "";
             this.ExportFolderPicker.FileName = "";
             this.ExportFolderPicker.Location = new System.Drawing.Point(28, 49);
-            this.ExportFolderPicker.Name = "XmlFolderPicker";
+            this.ExportFolderPicker.Name = "ExportFolderPicker";
             this.ExportFolderPicker.PickerType = 炉边传说.ctlFilePicker.DialogType.Directory;
             this.ExportFolderPicker.SelectedPathOrFileName = "";
             this.ExportFolderPicker.Size = new System.Drawing.Size(629, 31);

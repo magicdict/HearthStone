@@ -230,7 +230,7 @@ namespace Engine.Server
             return gamestatus.Interrupt;
         }
         /// <summary>
-        /// 
+        /// 可攻击目标列表的取得
         /// </summary>
         /// <param name="GameId"></param>
         /// <param name="IsHost"></param>
@@ -242,9 +242,17 @@ namespace Engine.Server
             SelectOpt.EffectTargetSelectDirect = CardUtility.目标选择方向枚举.对方;
             SelectOpt.EffectTargetSelectRole = CardUtility.目标选择角色枚举.所有角色;
             SelectOpt.嘲讽限制 = true;
+            SelectOpt.CanNotSelectPos.位置 = Client.BattleFieldInfo.UnknowPos;
             SelectUtility.SetTargetSelectEnable(SelectOpt, gamestatus);
             return SelectUtility.GetTargetListString(gamestatus);
         }
+        /// <summary>
+        /// 攻击
+        /// </summary>
+        /// <param name="GameId"></param>
+        /// <param name="IsHost"></param>
+        /// <param name="MyPos"></param>
+        /// <param name="YourPos"></param>
         public static void Fight(int GameId, bool IsHost,int MyPos,int YourPos)
         {
             var gamestatus = GameRunning_BS[GameId].gameStatus(IsHost);
