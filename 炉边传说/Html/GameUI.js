@@ -46,6 +46,7 @@ function CreateGame() {
         button.setAttribute("display", "none");
         button.setAttribute("x", i * 160);
         button.setAttribute("y", "175");
+        button.getElementById("txtButton").innerHTML = "放在这里";
         (function (n) {
             button.onclick = function () {
                 MinionPosDialog.dialog("close");
@@ -122,7 +123,7 @@ function CreateGame() {
     }
     document.getElementById("TargetPanel").appendChild(Hero);
 
-    document.getElementById("btnCreateGame").disabled = "disabled";
+    document.getElementById("btnCreateGame").style.display = "none";
     socket.send(RequestType.开始游戏);
 }
 //暂时不考虑验证

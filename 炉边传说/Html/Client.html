@@ -76,12 +76,15 @@
     <form>
         <svg id="gamePanel" width="1600" height="750" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <rect width="1600" height="750" stroke="lightgreen" fill="transparent" stroke-width="2" />
-            <text id="GameId" x="30" y="30" text-anchor="start"></text>
             <!--注意如果文字在上面，则文字图层会覆盖按钮图层，造成OnClick事件无法响应-->
-            <text x="200" y="40" text-anchor="start" font-size="10">开始游戏</text>
-            <rect id="btnCreateGame" x="200" y="30" width="50" height="20" stroke="lightgreen" fill="transparent" stroke-width="2" onclick="CreateGame()" />
-            <text x="300" y="40" text-anchor="start" font-size="10">结束回合</text>
-            <rect id="btnEndTurn" x="300" y="30" width="50" height="20" stroke="lightgreen" fill="transparent" stroke-width="2" onclick="EndTrun()" />
+            <svg id="btnCreateGame" x="200" y="30" height="40" width="80" onclick="CreateGame()" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <image xlink:href="Image/BackGround.jpg" x="0" y="0" width="80" height="40" />
+                <text x="40" y="25" text-anchor="middle" fill="white">开始游戏</text>
+            </svg>
+            <svg id="btnEndTurn" x="300" y="30" height="40" width="80" onclick="EndTrun()" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                <image xlink:href="Image/BackGround.jpg" x="0" y="0" width="80" height="40" />
+                <text x="40" y="25" text-anchor="middle" fill="white">结束回合</text>
+            </svg>
         </svg>
         <svg display="none" id="BasicPlayerInfo">
             <!-- Weapon-->
@@ -134,9 +137,9 @@
             <rect x="120" y="120" width="30" height="30" stroke="lightgreen" fill="red" stroke-width="2" />
             <text id="txtLifePoint" x="135" y="135" font-size="15" text-anchor="middle" fill="white">0</text>
         </svg>
-        <svg display="none" id="BasicButton" x="0" y="0" width="80" height="20" version="1.1" xmlns="http://www.w3.org/2000/svg">
-            <text id="txtButton" x="0" y="15" text-anchor="start" font-size="10" fill="red">位置</text>
-            <rect x="0" y="0" width="80" height="20" stroke="lightgreen" fill="transparent" stroke-width="2" />
+        <svg display="none" id="BasicButton" x="0" y="0" height="40" width="80" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <image xlink:href="Image/BackGround.jpg" x="0" y="0" width="80" height="40" />
+            <text id="txtButton" x="40" y="25" text-anchor="middle" fill="white">按钮文字</text>
         </svg>
         <div id="formMinionPos" title="选择随从位置">
             <svg id="MinionsPanel" width="1000" height="250">
@@ -149,12 +152,16 @@
         <div id="formSpellDecide" title="抉择">
             <svg id="SpellDecidePanel" width="500" height="150">
                 <text id="txtAblitiy1" x="20" y="30" text-anchor="start" font-size="10" fill="black">效果1</text>
-                <text x="400" y="30" text-anchor="start" font-size="10" fill="red">选择</text>
-                <rect id="btnAblitiy1" x="400" y="20" width="80" height="20" stroke="lightgreen" fill="transparent" stroke-width="2" />
+                <svg id="btnAblitiy1" x="400" y="30" height="40" width="80" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <image xlink:href="Image/BackGround.jpg" x="0" y="0" width="80" height="40" />
+                    <text x="40" y="25" text-anchor="middle" fill="white">选择</text>
+                </svg>
 
                 <text id="txtAblitiy2" x="20" y="90" text-anchor="start" font-size="10" fill="black">效果2</text>
-                <text x="400" y="90" text-anchor="start" font-size="10" fill="red">选择</text>
-                <rect id="btnAblitiy2" x="400" y="80" width="80" height="20" stroke="lightgreen" fill="transparent" stroke-width="2" />
+                <svg id="btnAblitiy2" x="400" y="90" height="40" width="80" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <image xlink:href="Image/BackGround.jpg" x="0" y="0" width="80" height="40" />
+                    <text x="40" y="25" text-anchor="middle" fill="white">选择</text>
+                </svg>
             </svg>
         </div>
     </form>

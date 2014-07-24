@@ -89,7 +89,6 @@ function CreateGameResponse() {
     } else {
         gameInfo = gameInfo + "Second";
     }
-    document.getElementById("GameId").innerHTML = gameInfo;
     SendDeck();
 }
 
@@ -97,6 +96,7 @@ function EndTrun() {
     IsMyTurn = false;
     var message = RequestType.回合结束 + GameId + strHost;
     socket.send(message);
+    document.getElementById("btnEndTurn").style.display = "none";
 }
 
 function EndTrunResponse() {
@@ -105,9 +105,10 @@ function EndTrunResponse() {
     socket.send(message);
     if (IsHostEnd != IsHost) {
         IsMyTurn = true;
+        document.getElementById("btnEndTurn").style.display = "";
     }
 }
-
+//设置套牌
 function SendDeck() {
     if (IsHost) {
         strHost = strTrue;
@@ -117,11 +118,13 @@ function SendDeck() {
     var message = RequestType.传送套牌 + GameId + strHost + "M000017|M000018|M000021|M000003|M000024|M000026|M000027|M000035|M000037|M000047|M000043|M000041|M000040|M000059|M000058|M000057|M000054|M000061|M000064|M000065|M000067|M000076|M000077|M000082|M000088|M000087|M000085|M000084|M000068|M000076";
     socket.send(message);
 }
-
+//使用手牌
 function UserHandCard(CardSN) {
-    ActiveCardSN = CardSN;
-    var message = RequestType.使用手牌 + GameId + strHost + CardSN;
-    socket.send(message);
+    if (IsMyTurn) {
+        ActiveCardSN = CardSN;
+        var message = RequestType.使用手牌 + GameId + strHost + CardSN;
+        socket.send(message);
+    }
 }
 
 //战斗
@@ -153,7 +156,11 @@ function InitPlayInfoResponse() {
     }
     var message = RequestType.战场状态 + GameId + strHost;
     socket.send(message);
-    if (IsFirst) IsMyTurn = true;
+    if (IsFirst) {
+        IsMyTurn = true;
+    } else {
+        document.getElementById("btnEndTurn").style.display = "none";
+    }
 }
 
 var SessionData;
