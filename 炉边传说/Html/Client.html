@@ -60,7 +60,10 @@
                 autoOpen: false,
                 modal: true,
                 width: 1100,
-                height: 400
+                height: 400,
+                close: function () {
+                    AfterTargetPos();
+                }
             });
 
             SpellDecideDialog = $("#formSpellDecide").dialog({
@@ -81,7 +84,8 @@
                 <image xlink:href="Image/BackGround.jpg" x="0" y="0" width="80" height="40" />
                 <text x="40" y="25" text-anchor="middle" fill="white">开始游戏</text>
             </svg>
-            <svg id="btnEndTurn" x="300" y="30" height="40" width="80" onclick="EndTrun()" version="1.1" xmlns="http://www.w3.org/2000/svg">
+            <!--style.display 好像不能使用，如果一开始是不可见的状态 -->
+            <svg id="btnEndTurn" display="none" x="300" y="30" height="40" width="80" onclick="EndTrun()" version="1.1" xmlns="http://www.w3.org/2000/svg">
                 <image xlink:href="Image/BackGround.jpg" x="0" y="0" width="80" height="40" />
                 <text x="40" y="25" text-anchor="middle" fill="white">结束回合</text>
             </svg>
@@ -89,18 +93,18 @@
         <svg display="none" id="BasicPlayerInfo">
             <!-- Weapon-->
             <image xlink:href="Image/Weapon.jpg" x="0" y="0" height="50" width="50" />
-            <svg id="HeroInfo">
+            <svg id="HeroInfo" x="50" y="0">
                 <!-- Hero -->
-                <image id="imgHero" xlink:href="Image/Hero.jpg" x="50" y="0" height="150" width="150" />
+                <image id="imgHero" xlink:href="Image/Hero.jpg" x="0" y="0" height="150" width="150" />
                 <!--左下角的攻击力 -->
-                <rect x="50" y="120" width="30" height="30" stroke="lightgreen" fill="purple" stroke-width="2" />
-                <text id="txtHeroAttackPoint" x="65" y="135" font-size="15" text-anchor="middle" fill="white">0</text>
+                <rect x="0" y="120" width="30" height="30" stroke="lightgreen" fill="purple" stroke-width="2" />
+                <text id="txtHeroAttackPoint" x="15" y="135" font-size="15" text-anchor="middle" fill="white">0</text>
                 <!--右下角的护盾值 -->
-                <rect x="170" y="90" width="30" height="30" stroke="lightgreen" fill="blue" stroke-width="2" />
-                <text id="txtHeroShieldPoint" x="185" y="105" font-size="15" text-anchor="middle" fill="white">0</text>
+                <rect x="120" y="90" width="30" height="30" stroke="lightgreen" fill="blue" stroke-width="2" />
+                <text id="txtHeroShieldPoint" x="135" y="105" font-size="15" text-anchor="middle" fill="white">0</text>
                 <!--右下角的生命值 -->
-                <rect x="170" y="120" width="30" height="30" stroke="lightgreen" fill="red" stroke-width="2" />
-                <text id="txtHeroLifePoint" x="185" y="135" font-size="15" text-anchor="middle" fill="white">0</text>
+                <rect x="120" y="120" width="30" height="30" stroke="lightgreen" fill="red" stroke-width="2" />
+                <text id="txtHeroLifePoint" x="135" y="135" font-size="15" text-anchor="middle" fill="white">0</text>
             </svg>
             <!-- Ablity-->
             <image xlink:href="Image/FireBall.jpg" x="200" y="0" height="50" width="50" />
@@ -128,10 +132,13 @@
             <text id="txtDescirption1" x="20" y="55" font-size="12" text-anchor="start" fill="black"></text>
             <text id="txtDescirption2" x="20" y="75" font-size="12" text-anchor="start" fill="black"></text>
             <text id="txtDescirption3" x="20" y="95" font-size="12" text-anchor="start" fill="black"></text>
+
+
             <!--左下角的攻击力 -->
             <rect x="0" y="120" width="30" height="30" stroke="lightgreen" fill="purple" stroke-width="2" />
             <text id="txtAttackPoint" x="15" y="135" font-size="15" text-anchor="middle" fill="white">0</text>
             <!--状态-->
+            <rect id="rctReadyToFight" x="30" y="120" width="150" height="30" stroke="lightgreen" fill="pink" stroke-width="2" />
             <text id="txtStatus" x="35" y="135" font-size="15" text-anchor="start" fill="blue"></text>
             <!--右下角的生命值 -->
             <rect x="120" y="120" width="30" height="30" stroke="lightgreen" fill="red" stroke-width="2" />

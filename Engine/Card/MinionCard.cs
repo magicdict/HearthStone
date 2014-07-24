@@ -344,7 +344,7 @@ namespace Engine.Card
                        (风怒特性 ? "|风" : string.Empty) +
                        (冲锋特性 ? "|冲" : string.Empty) +
                        (潜行特性 ? "|潜" : string.Empty) +
-                       (冰冻状态 != CardUtility.效果回合枚举.无效果 ? "冻" : string.Empty);
+                       (冰冻状态 != CardUtility.效果回合枚举.无效果 ? "冻" : string.Empty).TrimStart("|".ToCharArray());
             }
         }
         /// <summary>

@@ -140,12 +140,18 @@ namespace Engine.Action
                 //这里约定：战吼是无需抉择的
                 game.Interrupt.ActionName = "RUNBATTLECRY";
                 game.Interrupt.Step = 1;
-                UseSpellAction.RunBS(game, minion.战吼效果);
+                if (game.Interrupt.SessionDic.ContainsKey("BATTLECRYPOSITION") && game.Interrupt.SessionDic["BATTLECRYPOSITION"] == "-1")
+                {
+                    //放弃战吼，例如没有友方的时候的叫嚣的中士
+                    game.Interrupt.Step = 99;
+                }
+                else { 
+                    UseSpellAction.RunBS(game, minion.战吼效果);
+                }
             }
             game.Interrupt.Step = 99;
             game.Interrupt.ActionName = CardUtility.strOK;
         }
         #endregion
-
     }
 }

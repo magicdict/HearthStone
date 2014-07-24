@@ -71,7 +71,7 @@ var RequestType = {
     初始化状态: "015",
     中断续行: "016",
     攻击行为: "017",
-    可攻击对象:"018"
+    可攻击对象: "018"
 };
 
 function CreateGameResponse() {
@@ -96,7 +96,7 @@ function EndTrun() {
     IsMyTurn = false;
     var message = RequestType.回合结束 + GameId + strHost;
     socket.send(message);
-    document.getElementById("btnEndTurn").style.display = "none";
+    document.getElementById("btnEndTurn").setAttribute("display", "none");
 }
 
 function EndTrunResponse() {
@@ -105,7 +105,7 @@ function EndTrunResponse() {
     socket.send(message);
     if (IsHostEnd != IsHost) {
         IsMyTurn = true;
-        document.getElementById("btnEndTurn").style.display = "";
+        document.getElementById("btnEndTurn").setAttribute("display", "");
     }
 }
 //设置套牌
@@ -136,7 +136,7 @@ function Fight(MyPos) {
     socket.send(message);
 }
 //获得攻击列表
-function FightTargetListResponse(){
+function FightTargetListResponse() {
     InitTargetDialog(data);
     TargetPosDialog.dialog("open");
     //后续动作在AfterTargetPos
@@ -154,13 +154,16 @@ function InitPlayInfoResponse() {
     } else {
         strHost = strFalse;
     }
-    var message = RequestType.战场状态 + GameId + strHost;
-    socket.send(message);
     if (IsFirst) {
         IsMyTurn = true;
+        //style.display 好像不能使用，如果一开始是不可见的状态
+        document.getElementById("btnEndTurn").setAttribute("display", "");
     } else {
-        document.getElementById("btnEndTurn").style.display = "none";
+        //style.display 好像不能使用，如果一开始是不可见的状态
+        document.getElementById("btnEndTurn").setAttribute("display", "none");
     }
+    var message = RequestType.战场状态 + GameId + strHost;
+    socket.send(message);
 }
 
 var SessionData;
@@ -218,16 +221,18 @@ function AfterPutMinionPos(MinionPos) {
     socket.send(message);
 }
 //位置选择后
-function AfterTargetPos(IsMy, TargetPos) {
+var TargetDir, TargetPos;
+function AfterTargetPos() {
     var strPos;
-    if (IsMy) {
+    if (TargetDir) {
         strPos = "ME#" + TargetPos;
     } else {
         strPos = "YOU#" + TargetPos;
     }
     SessionData = SessionData + strPos + "|";
-    var message; 
+    var message;
     if (Interrupt.ActionName == "FIGHT") {
+        if (TargetPos == -1) return;
         message = RequestType.攻击行为 + GameId + strHost + SessionData;
     } else {
         message = RequestType.中断续行 + GameId + strHost + Currentrequest + Step + ActiveCardSN + SessionData;
