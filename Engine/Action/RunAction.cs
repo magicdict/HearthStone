@@ -25,12 +25,12 @@ namespace Engine.Action
         ///     HTML交互的时候，可以放置客户端的选项
         /// </param>
         /// <returns></returns>
-        public static List<String> StartAction(ActionStatus actionStatus, String CardSn)
+        public static List<string> StartAction(ActionStatus actionStatus, string CardSn)
         {
             //清除事件池，注意，事件将在动作结束后整体结算
             actionStatus.battleEvenetHandler.事件池.Clear();
-            Engine.Card.CardBasicInfo card = Engine.Utility.CardUtility.GetCardInfoBySN(CardSn);
-            List<String> ActionCodeLst = new List<string>();
+            CardBasicInfo card = CardUtility.GetCardInfoBySN(CardSn);
+            List<string> ActionCodeLst = new List<string>();
             //未知的异常，卡牌资料缺失
             if (card == null) return ActionCodeLst;
             PublicInfo PlayInfo = actionStatus.AllRole.MyPublicInfo;
@@ -52,11 +52,11 @@ namespace Engine.Action
                     break;
                 case CardBasicInfo.卡牌类型枚举.武器:
                     ActionCodeLst.Add(ActionCode.strWeapon + CardUtility.strSplitMark + CardSn);
-                    PlayInfo.Weapon = (Engine.Card.WeaponCard)card;
+                    PlayInfo.Weapon = (WeaponCard)card;
                     break;
                 case CardBasicInfo.卡牌类型枚举.奥秘:
                     ActionCodeLst.Add(ActionCode.strSecret + CardUtility.strSplitMark + CardSn);
-                    actionStatus.AllRole.MyPrivateInfo.奥秘列表.Add((Engine.Card.SecretCard)card);
+                    actionStatus.AllRole.MyPrivateInfo.奥秘列表.Add((SecretCard)card);
                     PlayInfo.SecretCount = actionStatus.AllRole.MyPrivateInfo.奥秘列表.Count;
                     break;
                 default:
@@ -64,10 +64,10 @@ namespace Engine.Action
             }
             //随从卡牌的连击效果启动
             if ((card.卡牌种类 != CardBasicInfo.卡牌类型枚举.法术) &&
-                PlayInfo.连击状态 && (!String.IsNullOrEmpty(card.连击效果)))
+                PlayInfo.连击状态 && (!string.IsNullOrEmpty(card.连击效果)))
             {
                 //初始化 Buff效果等等
-                Engine.Card.SpellCard ablity = (Engine.Card.SpellCard)CardUtility.GetCardInfoBySN(card.连击效果);
+                SpellCard ablity = (SpellCard)CardUtility.GetCardInfoBySN(card.连击效果);
                 if (ablity != null)
                 {
                     var ResultArg = ablity.UseSpell(actionStatus);
@@ -76,7 +76,7 @@ namespace Engine.Action
                         ActionCodeLst.AddRange(ResultArg);
                         //英雄技能等的时候，不算[本方施法] 
                         if (card.原生卡牌)
-                            actionStatus.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                            actionStatus.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
                             {
                                 触发事件类型 = CardUtility.事件类型枚举.施法,
                                 触发位置 = PlayInfo.战场位置
@@ -99,12 +99,12 @@ namespace Engine.Action
         /// <param name="YourPos">被攻击方</param>
         /// <param name="IsMyAction">动作发起方</param>
         /// <returns></returns>
-        public static List<String> Fight(ActionStatus game, int MyPos, int YourPos, Boolean IsMyAction)
+        public static List<string> Fight(ActionStatus game, int MyPos, int YourPos, bool IsMyAction)
         {
             game.battleEvenetHandler.事件池.Clear();
             //FIGHT#1#2
-            String actionCode = ActionCode.strFight + CardUtility.strSplitMark + MyPos + CardUtility.strSplitMark + YourPos;
-            List<String> ActionCodeLst = new List<string>();
+            string actionCode = ActionCode.strFight + CardUtility.strSplitMark + MyPos + CardUtility.strSplitMark + YourPos;
+            List<string> ActionCodeLst = new List<string>();
             ActionCodeLst.Add(actionCode);
             ActionCodeLst.AddRange(FightHandler.Fight(MyPos, YourPos, game, IsMyAction));
             ActionCodeLst.AddRange(game.battleEvenetHandler.事件处理(game));

@@ -342,6 +342,18 @@ namespace Engine.Utility
                 }
             }
         }
-
+        /// <summary>
+        /// 战斗的位置选择器
+        /// </summary>
+        /// <returns></returns>
+        public static CardUtility.位置选择用参数结构体 GetFightSelectOpt()
+        {
+            var SelectOpt = new CardUtility.位置选择用参数结构体();
+            SelectOpt.EffectTargetSelectDirect = CardUtility.目标选择方向枚举.对方;
+            SelectOpt.EffectTargetSelectRole = CardUtility.目标选择角色枚举.所有角色;
+            SelectOpt.CanNotSelectPos.位置 = BattleFieldInfo.UnknowPos;
+            SelectOpt.嘲讽限制 = true;
+            return SelectOpt;
+        }
     }
 }

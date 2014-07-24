@@ -100,8 +100,7 @@ function CreateGame() {
     document.getElementById("gamePanel").appendChild(Hero);
 
     //英雄 目标选择
-
-    var Hero = document.getElementById("BasicPlayerInfo").getElementById("imgHero").cloneNode(true);
+    var Hero = document.getElementById("BasicPlayerInfo").getElementById("HeroInfo").cloneNode(true);
     Hero.setAttribute("id", "MyTargetPos0");
     Hero.setAttribute("display", "none");
     Hero.setAttribute("x", "0");
@@ -112,18 +111,16 @@ function CreateGame() {
     }
     document.getElementById("TargetPanel").appendChild(Hero);
 
-    var Hero = document.getElementById("BasicPlayerInfo").getElementById("imgHero").cloneNode(true);
+    var Hero = document.getElementById("BasicPlayerInfo").getElementById("HeroInfo").cloneNode(true);
     Hero.setAttribute("id", "YourTargetPos0");
     Hero.setAttribute("display", "none");
     Hero.setAttribute("x", "0");
     Hero.setAttribute("y", "0");
     Hero.onclick = function () {
         TargetPosDialog.dialog("close");
-        AfterTargetPos(true, 0);
+        AfterTargetPos(false, 0);
     }
     document.getElementById("TargetPanel").appendChild(Hero);
-
-
 
     document.getElementById("btnCreateGame").disabled = "disabled";
     socket.send(RequestType.开始游戏);
@@ -180,8 +177,26 @@ function BattleInfoResponse() {
         MinionCard = document.getElementById("YourTargetPos" + (i + 1));
         SetMinion(MinionCard, BattleInfo.YourBattle[i]);
     }
+
+    var HeroCard = document.getElementById("MyHero");
+    SetHero(HeroCard, BattleInfo.MyInfo);
+    HeroCard = document.getElementById("MyTargetPos0");
+    SetHero(HeroCard, BattleInfo.MyInfo);
+
+    HeroCard = document.getElementById("YourHero");
+    SetHero(HeroCard,BattleInfo.YourInfo);
+    HeroCard = document.getElementById("YourTargetPos0");
+    SetHero(HeroCard, BattleInfo.YourInfo);
+
+    HeroCard = document.getElementById("MyHero");
+    SetCystal(HeroCard,BattleInfo.MyInfo);
+
+    HeroCard = document.getElementById("YourHero");
+    SetCystal(HeroCard, BattleInfo.YourInfo);
+
+
     //如果这次的刷新是 战吼位置选择的前期准备，则接下来执行战吼的位置选择
-    if (Interrupt.ActionName == "BATTLECRYPOSITION") {
+    if (Interrupt != undefined && Interrupt.ActionName == "BATTLECRYPOSITION") {
         InitTargetDialog(Interrupt.ExternalInfo);
         Currentrequest = RequestType.使用手牌;
         Step = "4";
@@ -189,6 +204,21 @@ function BattleInfoResponse() {
         TargetPosDialog.dialog("open");
     }
 }
+
+function SetCystal(HeroCard, Hero) {
+    for (var i = 1; i < 10 + 1; i++) {
+        HeroCard.getElementById("Cystal" + i).setAttribute("display", "none");
+    }
+    for (var i = 1; i < Hero.总体水晶 + 1; i++) {
+        HeroCard.getElementById("Cystal" + i).setAttribute("display", "");
+        HeroCard.getElementById("Cystal" + i).setAttribute("fill", "white");
+    }
+    for (var i = 1; i < Hero.可用水晶 + 1; i++) {
+        HeroCard.getElementById("Cystal" + i).setAttribute("fill", "lightblue");
+    }
+    HeroCard.getElementById("txtCystal").innerHTML = Hero.可用水晶 + "/" + Hero.总体水晶;
+}
+
 //设定手牌外观
 function SetMinion(MinionCard, Minion) {
     MinionCard.setAttribute("display", "");
@@ -213,7 +243,12 @@ function SetMinion(MinionCard, Minion) {
         }
     }
 }
-
+function SetHero(HeroCard, Hero) {
+    HeroCard.setAttribute("display", "");
+    HeroCard.getElementById("txtHeroShieldPoint").innerHTML = Hero.护盾值;
+    HeroCard.getElementById("txtHeroLifePoint").innerHTML = Hero.生命力;
+    HeroCard.getElementById("txtHeroAttackPoint").innerHTML = Hero.攻击力;
+}
 //随从入场对话框的UI初始化
 function InitPutMinionDialog() {
 

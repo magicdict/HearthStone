@@ -86,10 +86,33 @@
         <svg display="none" id="BasicPlayerInfo">
             <!-- Weapon-->
             <image xlink:href="Image/Weapon.jpg" x="0" y="0" height="50" width="50" />
-            <!-- Hero -->
-            <image id="imgHero" xlink:href="Image/Hero.jpg" x="50" y="0" height="150" width="150" />
+            <svg id="HeroInfo">
+                <!-- Hero -->
+                <image id="imgHero" xlink:href="Image/Hero.jpg" x="50" y="0" height="150" width="150" />
+                <!--左下角的攻击力 -->
+                <rect x="50" y="120" width="30" height="30" stroke="lightgreen" fill="purple" stroke-width="2" />
+                <text id="txtHeroAttackPoint" x="65" y="135" font-size="15" text-anchor="middle" fill="white">0</text>
+                <!--右下角的护盾值 -->
+                <rect x="170" y="90" width="30" height="30" stroke="lightgreen" fill="blue" stroke-width="2" />
+                <text id="txtHeroShieldPoint" x="185" y="105" font-size="15" text-anchor="middle" fill="white">0</text>
+                <!--右下角的生命值 -->
+                <rect x="170" y="120" width="30" height="30" stroke="lightgreen" fill="red" stroke-width="2" />
+                <text id="txtHeroLifePoint" x="185" y="135" font-size="15" text-anchor="middle" fill="white">0</text>
+            </svg>
             <!-- Ablity-->
             <image xlink:href="Image/FireBall.jpg" x="200" y="0" height="50" width="50" />
+            <!--水晶 -->
+            <text id="txtCystal" x="275" y="135" font-size="15" text-anchor="middle" fill="blue">0/0</text>
+            <rect id="Cystal1" x="300" y="135" width="20" height="20" stroke="lightgreen" fill="lightBlue" stroke-width="2" />
+            <rect id="Cystal2" x="320" y="135" width="20" height="20" stroke="lightgreen" fill="lightBlue" stroke-width="2" />
+            <rect id="Cystal3" x="340" y="135" width="20" height="20" stroke="lightgreen" fill="lightBlue" stroke-width="2" />
+            <rect id="Cystal4" x="360" y="135" width="20" height="20" stroke="lightgreen" fill="lightBlue" stroke-width="2" />
+            <rect id="Cystal5" x="380" y="135" width="20" height="20" stroke="lightgreen" fill="lightBlue" stroke-width="2" />
+            <rect id="Cystal6" x="400" y="135" width="20" height="20" stroke="lightgreen" fill="lightBlue" stroke-width="2" />
+            <rect id="Cystal7" x="420" y="135" width="20" height="20" stroke="lightgreen" fill="lightBlue" stroke-width="2" />
+            <rect id="Cystal8" x="440" y="135" width="20" height="20" stroke="lightgreen" fill="lightBlue" stroke-width="2" />
+            <rect id="Cystal9" x="460" y="135" width="20" height="20" stroke="lightgreen" fill="lightBlue" stroke-width="2" />
+            <rect id="Cystal10" x="480" y="135" width="20" height="20" stroke="lightgreen" fill="lightBlue" stroke-width="2" />
         </svg>
         <svg display="none" id="BasicCard" x="0" y="0" width="150" height="150" version="1.1" xmlns="http://www.w3.org/2000/svg">
             <rect width="150" height="150" stroke="lightgreen" fill="transparent" stroke-width="2" />
@@ -100,8 +123,8 @@
             <text id="txtName" x="40" y="15" font-size="15" text-anchor="start" fill="black"></text>
             <!--卡牌描述 -->
             <text id="txtDescirption1" x="20" y="55" font-size="12" text-anchor="start" fill="black"></text>
-            <text id="txtDescirption2"  x="20" y="75" font-size="12" text-anchor="start" fill="black"></text>
-            <text id="txtDescirption3"  x="20" y="95" font-size="12" text-anchor="start" fill="black"></text>
+            <text id="txtDescirption2" x="20" y="75" font-size="12" text-anchor="start" fill="black"></text>
+            <text id="txtDescirption3" x="20" y="95" font-size="12" text-anchor="start" fill="black"></text>
             <!--左下角的攻击力 -->
             <rect x="0" y="120" width="30" height="30" stroke="lightgreen" fill="purple" stroke-width="2" />
             <text id="txtAttackPoint" x="15" y="135" font-size="15" text-anchor="middle" fill="white">0</text>

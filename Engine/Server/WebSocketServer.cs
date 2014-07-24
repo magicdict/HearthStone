@@ -1,5 +1,4 @@
-﻿using Engine.Control;
-using Engine.Server;
+﻿using Engine.Server;
 using Fleck;
 using System;
 using System.Collections.Generic;
@@ -17,12 +16,12 @@ namespace Engine.Utility
         /// Socket List
         /// Key:Connection Value:Socket
         /// </summary>
-        public static Dictionary<String, IWebSocketConnection> allSockets = new Dictionary<String, IWebSocketConnection>();
+        public static Dictionary<string, IWebSocketConnection> allSockets = new Dictionary<string, IWebSocketConnection>();
         /// <summary>
         /// Game List
         /// Key:GameID + IsHost Value:Connection
         /// </summary>
-        public static Dictionary<String, String> allGames = new Dictionary<String, String>();
+        public static Dictionary<string, string> allGames = new Dictionary<string, string>();
          /// <summary>
         /// 开启服务器
         /// </summary>
@@ -33,7 +32,7 @@ namespace Engine.Utility
                 FleckLog.Level = LogLevel.Error;
                 server.Start(socket =>
                 {
-                    String MyConn = socket.ConnectionInfo.ClientIpAddress + ":" + socket.ConnectionInfo.ClientPort;
+                    string MyConn = socket.ConnectionInfo.ClientIpAddress + ":" + socket.ConnectionInfo.ClientPort;
                     socket.OnOpen = () =>
                     {
                         Console.WriteLine("Open!");
@@ -48,8 +47,8 @@ namespace Engine.Utility
                     {
                         Console.WriteLine(Request + " From " + MyConn);
                         ServerResponse.RequestType requestType = (ServerResponse.RequestType)Enum.Parse(typeof(ServerResponse.RequestType), Request.Substring(0, 3));
-                        String Response = ServerResponse.ProcessRequest(Request, requestType);
-                        String GameId = String.Empty;
+                        string Response = ServerResponse.ProcessRequest(Request, requestType);
+                        string GameId = string.Empty;
                         requestType = (ServerResponse.RequestType)Enum.Parse(typeof(ServerResponse.RequestType), Response.Substring(0, 3));
                         switch (requestType)
                         {
@@ -100,7 +99,7 @@ namespace Engine.Utility
         /// </summary>
         /// <param name="GameId"></param>
         /// <param name="Response"></param>
-        public static void SendToBoth(String GameId, String Response)
+        public static void SendToBoth(string GameId, string Response)
         {
             var MyConn = allGames[GameId + CardUtility.strTrue];
             var MySocket = allSockets[MyConn];

@@ -238,12 +238,7 @@ namespace Engine.Server
         public static string GetFightTargetList(int GameId, bool IsHost)
         {
             var gamestatus = GameRunning_BS[GameId].gameStatus(IsHost);
-            var SelectOpt = new CardUtility.位置选择用参数结构体();
-            SelectOpt.EffectTargetSelectDirect = CardUtility.目标选择方向枚举.对方;
-            SelectOpt.EffectTargetSelectRole = CardUtility.目标选择角色枚举.所有角色;
-            SelectOpt.嘲讽限制 = true;
-            SelectOpt.CanNotSelectPos.位置 = Client.BattleFieldInfo.UnknowPos;
-            SelectUtility.SetTargetSelectEnable(SelectOpt, gamestatus);
+            SelectUtility.SetTargetSelectEnable(SelectUtility.GetFightSelectOpt(), gamestatus);
             return SelectUtility.GetTargetListString(gamestatus);
         }
         /// <summary>

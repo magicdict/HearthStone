@@ -67,6 +67,10 @@ namespace Engine.Client
             /// </summary>
             public int 生命力;
             /// <summary>
+            /// 攻击力
+            /// </summary>
+            public int 攻击力;
+            /// <summary>
             /// 可用水晶
             /// </summary>
             public int 可用水晶;
@@ -78,9 +82,9 @@ namespace Engine.Client
             /// 
             /// </summary>
             /// <param name="pubInfo"></param>
-            /// <param name="priInfo"></param>
             public void Init(PublicInfo pubInfo)
             {
+                攻击力 = pubInfo.实际攻击值;
                 护盾值 = pubInfo.ShieldPoint;
                 生命力 = pubInfo.LifePoint;
                 可用水晶 = pubInfo.crystal.CurrentRemainPoint;
