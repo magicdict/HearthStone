@@ -193,10 +193,11 @@ namespace Engine.Control
             //英雄技能：奥术飞弹
             HostStatus.BasicInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
             GuestStatus.BasicInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
-            
+
             //TEST START
-            HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("A000005"));
-            HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M000148"));
+            //HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("A000005"));
+            //亡语测试:鬼灵爬行者
+            HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M9A0001"));
             //TEST END
 
             //初始化双方手牌

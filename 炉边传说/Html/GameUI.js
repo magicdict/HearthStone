@@ -205,16 +205,15 @@ function BattleInfoResponse() {
     SetHero(HeroCard, BattleInfo.MyInfo);
 
     HeroCard = document.getElementById("YourHero");
-    SetHero(HeroCard,BattleInfo.YourInfo);
+    SetHero(HeroCard, BattleInfo.YourInfo);
     HeroCard = document.getElementById("YourTargetPos0");
     SetHero(HeroCard, BattleInfo.YourInfo);
 
     HeroCard = document.getElementById("MyHero");
-    SetCystal(HeroCard,BattleInfo.MyInfo);
+    SetCystal(HeroCard, BattleInfo.MyInfo);
 
     HeroCard = document.getElementById("YourHero");
     SetCystal(HeroCard, BattleInfo.YourInfo);
-
 
     //如果这次的刷新是 战吼位置选择的前期准备，则接下来执行战吼的位置选择
     if (Interrupt != undefined && Interrupt.ActionName == "BATTLECRYPOSITION") {
@@ -223,6 +222,26 @@ function BattleInfoResponse() {
         Step = "4";
         SessionData = Interrupt.SessionData + "BATTLECRYPOSITION:";
         TargetPosDialog.dialog("open");
+    }
+
+    //胜负判定
+    if (BattleInfo.MyInfo.生命力 <= 0 && BattleInfo.YourInfo.生命力 <= 0) {
+        alert("Double Lose");
+        document.getElementById("btnCreateGame").setAttribute("display", "");
+        document.getElementById("btnEndTurn").setAttribute("display", "none");
+        return;
+    }
+    if (BattleInfo.MyInfo.生命力 <= 0) {
+        alert("You Lose");
+        document.getElementById("btnCreateGame").setAttribute("display", "");
+        document.getElementById("btnEndTurn").setAttribute("display", "none");
+        return;
+    }
+    if (BattleInfo.YourInfo.生命力 <= 0) {
+        alert("You Win");
+        document.getElementById("btnCreateGame").setAttribute("display", "");
+        document.getElementById("btnEndTurn").setAttribute("display", "none");
+        return;
     }
 }
 

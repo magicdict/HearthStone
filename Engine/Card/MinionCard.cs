@@ -339,12 +339,12 @@ namespace Engine.Card
         {
             get
             {
-                return (圣盾特性 ? "圣" : string.Empty) +
+                return ((圣盾特性 ? "圣" : string.Empty) +
                        (嘲讽特性 ? "|嘲" : string.Empty) +
                        (风怒特性 ? "|风" : string.Empty) +
                        (冲锋特性 ? "|冲" : string.Empty) +
                        (潜行特性 ? "|潜" : string.Empty) +
-                       (冰冻状态 != CardUtility.效果回合枚举.无效果 ? "冻" : string.Empty).TrimStart("|".ToCharArray());
+                       (冰冻状态 != CardUtility.效果回合枚举.无效果 ? "冻" : string.Empty)).TrimStart("|".ToCharArray());
             }
         }
         /// <summary>
@@ -409,7 +409,7 @@ namespace Engine.Card
             攻击状态 = 攻击状态枚举.可攻击;
         }
         /// <summary>
-        /// 发动战吼(默认)
+        /// 发动战吼(暂时没有使用的方法)
         /// </summary>
         /// <param name="game"></param>
         /// <returns></returns>
@@ -419,6 +419,7 @@ namespace Engine.Card
             //战吼效果
             if (战吼效果 != string.Empty && !沉默状态)
             {
+                game.Interrupt.Step = 1;
                 var 战吼Result = RunAction.StartAction(game, 战吼效果);
                 //第一条是使用了战吼卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
                 //如果战吼在召唤的时候无法成功，法术机能会误认为是取消
@@ -428,7 +429,7 @@ namespace Engine.Card
             return ActionCodeLst;
         }
         /// <summary>
-        /// 发动亡语
+        /// 发动亡语（CS/BS)
         /// </summary>
         /// <param name="game"></param>
         /// <param name="IsMyAction"></param>
@@ -439,6 +440,8 @@ namespace Engine.Card
             //亡语效果
             if (亡语效果 != string.Empty && !沉默状态)
             {
+                //BS模式下面，必须设置Step
+                game.Interrupt.Step = 1;
                 var 亡语Result = RunAction.StartAction(game, 亡语效果);
                 //第一条是使用了亡语卡牌的消息，如果不除去，对方客户端会认为使用了一张卡牌
                 if (亡语Result.Count > 0) 亡语Result.RemoveAt(0);
