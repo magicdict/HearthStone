@@ -1,38 +1,10 @@
-﻿
-var log = function (s) {
-    if (document.readyState !== "complete") {
-        log.buffer.push(s);
-    } else {
-        document.getElementById("output").innerHTML += (s + "\n");
-    }
-}
-
-log.buffer = [];
-
-var socket = null;
-function init() {
-    window.WebSocket = window.WebSocket || window.MozWebSocket;
-    if (!window.WebSocket) {
-        log("WebSocket not supported by this browser");
-        return;
-    }
-
-    var webSocket = new WebSocket("ws://localhost:13001/");
-    webSocket.onopen = onopen;
-    webSocket.onclose = onclose;
-    webSocket.onmessage = onmessage;
-
-    socket = webSocket;
-}
-
-function onopen() {
-    log("Open a web socket.");
-}
-
-function onclose() {
-    log("Close a web socket.");
-}
-
+﻿//全局变量
+//游戏ID
+var GameId = "00000";
+//主机
+var IsHost = false;
+//先手
+var IsFirst = false;
 var data;
 var ResponseCode;
 var BattleInfo;
@@ -60,13 +32,20 @@ function onmessage(evt) {
             InitPlayInfoResponse();
             break;
         case RequestType.使用手牌:
-            UserHandCardResponse();
+            UseHandCardResponse();
             break;
         case RequestType.战场状态:
             BattleInfoResponse();
             break;
         case RequestType.中断续行:
             ResumeResponse();
+            break;
+        case RequestType.攻击行为:
+            var message = RequestType.战场状态 + GameId + strHost;
+            socket.send(message);
+            break;
+        case RequestType.可攻击对象:
+            FightTargetListResponse();
             break;
     }
 }
@@ -90,13 +69,10 @@ var RequestType = {
     战场状态: "013",
     开始游戏: "014",
     初始化状态: "015",
-    中断续行: "016"
+    中断续行: "016",
+    攻击行为: "017",
+    可攻击对象: "018"
 };
-
-function CreateGame() {
-    document.getElementById("btnCreateGame").disabled = "disabled";
-    socket.send(RequestType.开始游戏);
-}
 
 function CreateGameResponse() {
     GameId = data.toString().substr(0, 5);
@@ -113,7 +89,6 @@ function CreateGameResponse() {
     } else {
         gameInfo = gameInfo + "Second";
     }
-    document.getElementById("GameId").innerHTML = gameInfo;
     SendDeck();
 }
 
@@ -121,6 +96,7 @@ function EndTrun() {
     IsMyTurn = false;
     var message = RequestType.回合结束 + GameId + strHost;
     socket.send(message);
+    document.getElementById("btnEndTurn").setAttribute("display", "none");
 }
 
 function EndTrunResponse() {
@@ -129,9 +105,10 @@ function EndTrunResponse() {
     socket.send(message);
     if (IsHostEnd != IsHost) {
         IsMyTurn = true;
+        document.getElementById("btnEndTurn").setAttribute("display", "");
     }
 }
-
+//设置套牌
 function SendDeck() {
     if (IsHost) {
         strHost = strTrue;
@@ -141,11 +118,28 @@ function SendDeck() {
     var message = RequestType.传送套牌 + GameId + strHost + "M000017|M000018|M000021|M000003|M000024|M000026|M000027|M000035|M000037|M000047|M000043|M000041|M000040|M000059|M000058|M000057|M000054|M000061|M000064|M000065|M000067|M000076|M000077|M000082|M000088|M000087|M000085|M000084|M000068|M000076";
     socket.send(message);
 }
-
+//使用手牌
 function UserHandCard(CardSN) {
-    ActiveCardSN = CardSN;
-    var message = RequestType.使用手牌 + GameId + strHost + CardSN;
+    if (IsMyTurn) {
+        ActiveCardSN = CardSN;
+        var message = RequestType.使用手牌 + GameId + strHost + CardSN;
+        socket.send(message);
+    }
+}
+
+//战斗
+function Fight(MyPos) {
+    //获取战斗目标
+    Interrupt.ActionName = "FIGHT";
+    SessionData = MyPos + "|";
+    var message = RequestType.可攻击对象 + GameId + strHost;
     socket.send(message);
+}
+//获得攻击列表
+function FightTargetListResponse() {
+    InitTargetDialog(data);
+    TargetPosDialog.dialog("open");
+    //后续动作在AfterTargetPos
 }
 
 function SendDeckResponse() {
@@ -160,93 +154,102 @@ function InitPlayInfoResponse() {
     } else {
         strHost = strFalse;
     }
+    if (IsFirst) {
+        IsMyTurn = true;
+        //style.display 好像不能使用，如果一开始是不可见的状态
+        document.getElementById("btnEndTurn").setAttribute("display", "");
+    } else {
+        //style.display 好像不能使用，如果一开始是不可见的状态
+        document.getElementById("btnEndTurn").setAttribute("display", "none");
+    }
     var message = RequestType.战场状态 + GameId + strHost;
     socket.send(message);
-    if (IsFirst) IsMyTurn = true;
 }
 
-function UserHandCardResponse() {
+var SessionData;
+var Step;
+var MinionPos;
+var Currentrequest;
+function UseHandCardResponse() {
     if (IsHost) {
         strHost = strTrue;
     } else {
         strHost = strFalse;
     }
     Interrupt = JSON.parse(data);
-    var Step;
-    var SessionData;
-    var SpellDecide;
+
     switch (Interrupt.ActionName) {
         case "OK":
             var message = RequestType.战场状态 + GameId + strHost;
             socket.send(message);
             break;
         case "MINIONPOSITION":
-            alert("随从位置的选择:" + Interrupt.ExternalInfo)
-            SessionData = Interrupt.SessionData + "MINIONPOSITION:2|";
+            InitPutMinionDialog();
+            Currentrequest = RequestType.使用手牌;
             Step = "2";
-            var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + Step + ActiveCardSN + SessionData
-            socket.send(message);
+            SessionData = Interrupt.SessionData + "MINIONPOSITION:";
+            MinionPosDialog.dialog("open");
             break;
         case "BATTLECRYPOSITION":
-            alert("战吼施放对象的选择:" + Interrupt.ExternalInfo)
-            SessionData = Interrupt.SessionData + "BATTLECRYPOSITION:ME#1|";
-
-            Step = "4";
-            var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + Step + ActiveCardSN + SessionData;
+            //这个时候随从已经入场，需要刷新一下自己战场的信息，
+            //但是由于还没有完成整个动作，所以暂时不刷新对方战场
+            //位置选择在战场状态刷新后执行
+            message = RequestType.战场状态 + GameId + strHost;
             socket.send(message);
             break;
         case "SPELLPOSITION":
-            alert("法术施放对象的选择:" + Interrupt.ExternalInfo)
-            SessionData = Interrupt.SessionData + "SPELLPOSITION:YOU#1|";
-
+            InitTargetDialog(Interrupt.ExternalInfo);
+            Currentrequest = RequestType.使用手牌;
             Step = "2";
-            var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + Step + ActiveCardSN + SessionData;
-            socket.send(message);
+            SessionData = Interrupt.SessionData + "SPELLPOSITION:";
+            TargetPosDialog.dialog("open");
+            //后续动作在AfterTargetPos
             break;
         case "SPELLDECIDE":
-            alert("法术卡牌抉择:" + Interrupt.ExternalInfo)
-            SessionData = Interrupt.SessionData + "SPELLDECIDE:1|";
-
+            InitSpellDecideDialog(Interrupt.ExternalInfo);
+            Currentrequest = RequestType.使用手牌;
             Step = "2";
-            var message = RequestType.中断续行 + GameId + strHost + RequestType.使用手牌 + Step + ActiveCardSN + SessionData;
-            socket.send(message);
+            SessionData = Interrupt.SessionData + "SPELLDECIDE:";
+            SpellDecideDialog.dialog("open");
             break;
     }
 }
+//随从入场位置选择后
+function AfterPutMinionPos(MinionPos) {
+    SessionData = SessionData + MinionPos + "|";
+    var message = RequestType.中断续行 + GameId + strHost + Currentrequest + Step + ActiveCardSN + SessionData;
+    socket.send(message);
+}
+//位置选择后
+var TargetDir, TargetPos;
+function AfterTargetPos() {
+    var strPos;
+    if (TargetDir) {
+        strPos = "ME#" + TargetPos;
+    } else {
+        strPos = "YOU#" + TargetPos;
+    }
+    SessionData = SessionData + strPos + "|";
+    var message;
+    if (Interrupt.ActionName == "FIGHT") {
+        if (TargetPos == -1) return;
+        message = RequestType.攻击行为 + GameId + strHost + SessionData;
+    } else {
+        message = RequestType.中断续行 + GameId + strHost + Currentrequest + Step + ActiveCardSN + SessionData;
+    }
+    socket.send(message);
+}
+//随从入场位置选择后
+function AfterSpellDecide(AblitiyNo) {
+    SessionData = SessionData + AblitiyNo + "|";
+    var message = RequestType.中断续行 + GameId + strHost + Currentrequest + Step + ActiveCardSN + SessionData
+    socket.send(message);
+}
+//中断续行
 function ResumeResponse() {
     Interrupt = JSON.parse(data);
     if (Interrupt.ActionName == "OK") {
         var message = RequestType.战场状态 + GameId + strHost;
         socket.send(message);
     }
-}
-//暂时不考虑验证
-function BattleInfoResponse() {
-    BattleInfo = JSON.parse(data);
-    var divHtml = "战场信息<br>";
-    if (IsMyTurn) {
-        divHtml += "本方回合<br>"
-        document.getElementById("btnEndTurn").disabled = "";
-
-    } else {
-        divHtml += "对方回合<br>"
-        document.getElementById("btnEndTurn").disabled = "disabled";
-    }
-    divHtml += "生命力：" + BattleInfo.MyInfo.生命力 + "护盾值：" + BattleInfo.MyInfo.护盾值;
-    divHtml += "可用水晶：" + BattleInfo.MyInfo.可用水晶 + "总体水晶：" + BattleInfo.MyInfo.总体水晶 + "<br>";
-    for (var i = 0; i < BattleInfo.HandCard.length; i++) {
-        divHtml += "手牌:" + BattleInfo.HandCard[i].名称 + "<input type=\"button\" onclick=\"UserHandCard(\'" + BattleInfo.HandCard[i].序列号 + "\')\" value=\"使用\" />" + "<br>";
-    }
-    divHtml += "本方随从<br>"
-    for (var i = 0; i < BattleInfo.MyBattle.length; i++) {
-        divHtml += "随从:" + BattleInfo.MyBattle[i].状态列表 + "<br>";
-    }
-
-    divHtml += "生命力：" + BattleInfo.YourInfo.生命力 + "护盾值：" + BattleInfo.YourInfo.护盾值;
-    divHtml += "可用水晶：" + BattleInfo.YourInfo.可用水晶 + "总体水晶：" + BattleInfo.YourInfo.总体水晶 + "<br>";
-    divHtml += "对方随从<br>"
-    for (var i = 0; i < BattleInfo.YourBattle.length; i++) {
-        divHtml += "随从:" + BattleInfo.YourBattle[i].状态列表 + "<br>";
-    }
-    document.getElementById("BattleInfo").innerHTML = divHtml;
 }

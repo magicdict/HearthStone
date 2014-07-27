@@ -16,11 +16,11 @@ namespace Engine.Client
         /// <summary>
         /// 战场位置
         /// </summary>
-        public Engine.Utility.CardUtility.指定位置结构体 战场位置;
+        public CardUtility.指定位置结构体 战场位置;
         /// <summary>
         /// 是否为冰冻状态
         /// </summary>
-        public Engine.Utility.CardUtility.效果回合枚举 冰冻状态 = CardUtility.效果回合枚举.无效果;
+        public CardUtility.效果回合枚举 冰冻状态 = CardUtility.效果回合枚举.无效果;
         /// <summary>
         /// 生命力
         /// </summary>
@@ -40,7 +40,7 @@ namespace Engine.Client
         /// <summary>
         /// 武器
         /// </summary>
-        public Engine.Card.WeaponCard Weapon;
+        public WeaponCard Weapon;
         /// <summary>
         /// 战场信息
         /// </summary>
@@ -68,7 +68,7 @@ namespace Engine.Client
         /// <summary>
         /// 英雄技能是否已经使用
         /// </summary>
-        public Boolean IsUsedHeroAbility = true;
+        public bool IsUsedHeroAbility = true;
         /// <summary>
         /// 当前奥秘数
         /// </summary>
@@ -76,11 +76,11 @@ namespace Engine.Client
         /// <summary>
         /// 是否连击
         /// </summary>
-        public Boolean 连击状态 = false;
+        public bool 连击状态 = false;
         /// <summary>
         /// 能否成为当前动作的对象
         /// </summary>
-        public Boolean 能否成为动作对象 = false;
+        public bool 能否成为动作对象 = false;
         /// <summary>
         /// 获得信息
         /// </summary>
@@ -95,10 +95,23 @@ namespace Engine.Client
             return Status.ToString();
         }
         /// <summary>
+        /// 实际输出效果
+        /// </summary>
+        /// <returns>包含了光环/激怒效果</returns>
+        public int 实际攻击值
+        {
+            get
+            {
+                int rtnAttack = 0;
+                if (Weapon != null && Weapon.耐久度 > 0) rtnAttack += Weapon.攻击力;
+                return rtnAttack;
+            }
+        }
+        /// <summary>
         /// 武器是否可用
         /// </summary>
         /// <returns></returns>
-        public Boolean IsWeaponEnable(Boolean IsMyTurn)
+        public bool IsWeaponEnable(bool IsMyTurn)
         {
             return RemainAttactTimes != 0 && Weapon != null && Weapon.耐久度 > 0 && IsMyTurn;
         }
@@ -106,7 +119,7 @@ namespace Engine.Client
         /// 英雄技能是否可用
         /// </summary>
         /// <returns></returns>
-        public Boolean IsHeroAblityEnable(Boolean IsMyTurn)
+        public bool IsHeroAblityEnable(bool IsMyTurn)
         {
             return (!IsUsedHeroAbility) && crystal.CurrentRemainPoint >= HeroAbility.使用成本 && IsMyTurn;
         }
@@ -114,7 +127,7 @@ namespace Engine.Client
         /// 攻击
         /// </summary>
         /// <param name="AttackPoint"></param>
-        public Boolean AfterBeAttack(int AttackPoint)
+        public bool AfterBeAttack(int AttackPoint)
         {
             if (ShieldPoint > 0)
             {
@@ -140,7 +153,7 @@ namespace Engine.Client
         /// 治疗
         /// </summary>
         /// <param name="HealthPoint"></param>
-        public Boolean AfterBeHealth(int HealthPoint)
+        public bool AfterBeHealth(int HealthPoint)
         {
             if (LifePoint == SystemManager.MaxHealthPoint) return false;
             LifePoint += HealthPoint;
@@ -151,7 +164,7 @@ namespace Engine.Client
         /// 护甲
         /// </summary>
         /// <param name="PlusShieldPoint"></param>
-        public Boolean AfterBeShield(int PlusShieldPoint)
+        public bool AfterBeShield(int PlusShieldPoint)
         {
             ShieldPoint += PlusShieldPoint;
             return true;
@@ -165,7 +178,7 @@ namespace Engine.Client
         /// <summary>
         /// 手牌
         /// </summary>
-        public List<Engine.Card.CardBasicInfo> handCards = new List<Engine.Card.CardBasicInfo>();
+        public List<CardBasicInfo> handCards = new List<CardBasicInfo>();
         /// <summary>
         /// 奥秘
         /// </summary>
@@ -188,9 +201,9 @@ namespace Engine.Client
         /// 去掉使用过的手牌
         /// </summary>
         /// <param name="CardSn"></param>
-        public void RemoveUsedCard(String CardSn)
+        public void RemoveUsedCard(string CardSn)
         {
-            Engine.Card.CardBasicInfo removeCard = new CardBasicInfo();
+            CardBasicInfo removeCard = new CardBasicInfo();
             foreach (var Seekcard in handCards)
             {
                 if (Seekcard.序列号 == CardSn)

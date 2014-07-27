@@ -162,8 +162,6 @@ namespace 炉边传说
                     Minion.光环效果.信息 = worksheet.Cells(rowCount, 24).Text;
                 }
                 Minion.战吼效果 = worksheet.Cells(rowCount, 25).Text;
-                Minion.战吼类型 = CSharpUtility.GetEnum<MinionCard.战吼类型枚举>(worksheet.Cells(rowCount, 26).Text, MinionCard.战吼类型枚举.默认);
-
                 Minion.亡语效果 = worksheet.Cells(rowCount, 27).Text;
                 Minion.激怒效果 = worksheet.Cells(rowCount, 28).Text;
                 Minion.连击效果 = worksheet.Cells(rowCount, 29).Text;

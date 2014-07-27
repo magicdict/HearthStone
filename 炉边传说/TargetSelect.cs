@@ -42,7 +42,7 @@ namespace 炉边传说
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Position.位置 = -1;
-            this.Close();
+            Close();
         }
         /// <summary>
         /// 
@@ -51,58 +51,58 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void TargetSelect_Load(object sender, EventArgs e)
         {
-            Engine.Utility.SelectUtility.SetTargetSelectEnable(SelectOption, actionStatus);
+            SelectUtility.SetTargetSelectEnable(SelectOption, actionStatus);
             int Megrate = 3;
             btnMyHero.Hero = actionStatus.AllRole.MyPublicInfo;
             btnYourHero.Hero = actionStatus.AllRole.YourPublicInfo;
-            int LeftPos = (this.Width - (actionStatus.AllRole.MyPublicInfo.BattleField.MinionCount * btnMe1.Width +
+            int LeftPos = (Width - (actionStatus.AllRole.MyPublicInfo.BattleField.MinionCount * btnMe1.Width +
             (actionStatus.AllRole.MyPublicInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
             for (int i = 0; i < actionStatus.AllRole.MyPublicInfo.BattleField.MinionCount; i++)
             {
-                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).Visible = actionStatus.AllRole.MyPublicInfo.BattleField.BattleMinions[i].能否成为动作对象;
+                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Visible = actionStatus.AllRole.MyPublicInfo.BattleField.BattleMinions[i].能否成为动作对象;
                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).CardInfo = actionStatus.AllRole.MyPublicInfo.BattleField.BattleMinions[i];
-                ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).Left = LeftPos;
+                Controls.Find("btnMe" + (i + 1).ToString(), true)[0].Left = LeftPos;
                 ((ctlCard)Controls.Find("btnMe" + (i + 1).ToString(), true)[0]).FightClick += (x, y) =>
                 {
                     Position.本方对方标识 = true;
                     //这里千万不能使用 i ,每次 i 都是固定值
                     Position.位置 = int.Parse(((Button)x).Parent.Name.Substring("btnMe".Length));
-                    this.Close();
+                    Close();
                 };
                 LeftPos += btnMe1.Width + Megrate;
             }
 
-            LeftPos = (this.Width - (actionStatus.AllRole.YourPublicInfo.BattleField.MinionCount * btnMe1.Width + (actionStatus.AllRole.YourPublicInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
+            LeftPos = (Width - (actionStatus.AllRole.YourPublicInfo.BattleField.MinionCount * btnMe1.Width + (actionStatus.AllRole.YourPublicInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
             for (int i = 0; i < actionStatus.AllRole.YourPublicInfo.BattleField.MinionCount; i++)
             {
-                ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).Visible = actionStatus.AllRole.YourPublicInfo.BattleField.BattleMinions[i].能否成为动作对象;
+                Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Visible = actionStatus.AllRole.YourPublicInfo.BattleField.BattleMinions[i].能否成为动作对象;
                 ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).CardInfo = actionStatus.AllRole.YourPublicInfo.BattleField.BattleMinions[i];
-                ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).Left = LeftPos;
+                Controls.Find("btnYou" + (i + 1).ToString(), true)[0].Left = LeftPos;
                 ((ctlCard)Controls.Find("btnYou" + (i + 1).ToString(), true)[0]).FightClick += (x, y) =>
                 {
                     Position.本方对方标识 = false;
                     //这里千万不能使用 i ,每次 i 都是固定值
                     //pos.Postion = i + 1;
                     Position.位置 = int.Parse(((Button)x).Parent.Name.Substring("btnYou".Length));
-                    this.Close();
+                    Close();
                 };
                 LeftPos += btnMe1.Width + Megrate;
             }
             btnMyHero.Enabled = actionStatus.AllRole.MyPublicInfo.能否成为动作对象;
-            btnMyHero.Left = (this.Width - btnMyHero.Width) / 2;
+            btnMyHero.Left = (Width - btnMyHero.Width) / 2;
             btnMyHero.Click += (x, y) =>
             {
                 Position.本方对方标识 = true;
                 Position.位置 = 0;
-                this.Close();
+                Close();
             };
             btnYourHero.Enabled = actionStatus.AllRole.YourPublicInfo.能否成为动作对象; ;
-            btnYourHero.Left = (this.Width - btnYourHero.Width) / 2;
+            btnYourHero.Left = (Width - btnYourHero.Width) / 2;
             btnYourHero.Click += (x, y) =>
             {
                 Position.本方对方标识 = false;
                 Position.位置 = 0;
-                this.Close();
+                Close();
             };
         }
     }

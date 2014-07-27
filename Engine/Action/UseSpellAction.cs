@@ -2,7 +2,6 @@
 using Engine.Client;
 using Engine.Effect;
 using Engine.Utility;
-using System;
 using System.Collections.Generic;
 
 namespace Engine.Action
@@ -23,6 +22,7 @@ namespace Engine.Action
             SpellCard spell = (SpellCard)CardUtility.GetCardInfoBySN(CardSn);
             //Step1
             CardUtility.抉择枚举 PickAbilityResult = CardUtility.抉择枚举.第一效果;
+            SpellCard.AbilityDefine ability = new SpellCard.AbilityDefine();
             if (game.Interrupt.Step == 1)
             {
                 switch (spell.效果选择类型)
@@ -33,7 +33,7 @@ namespace Engine.Action
                     case SpellCard.效果选择类型枚举.主动选择:
                         game.Interrupt.Step = 2;
                         game.Interrupt.ActionName = "SPELLDECIDE";
-                        game.Interrupt.ExternalInfo = spell.FirstAbilityDefine.描述 + CardUtility.strSplitMark + spell.SecondAbilityDefine.描述;
+                        game.Interrupt.ExternalInfo = spell.FirstAbilityDefine.描述 + CardUtility.strSplitArrayMark + spell.SecondAbilityDefine.描述;
                         return;
                     case SpellCard.效果选择类型枚举.自动判定:
                         game.Interrupt.ExternalInfo = "1";
@@ -69,7 +69,6 @@ namespace Engine.Action
                 if (PickAbilityResult != CardUtility.抉择枚举.取消)
                 {
                     List<EffectDefine> SingleEffectList = new List<EffectDefine>();
-                    SpellCard.AbilityDefine ability;
                     if (PickAbilityResult == CardUtility.抉择枚举.第一效果)
                     {
                         ability = spell.FirstAbilityDefine;
@@ -78,36 +77,57 @@ namespace Engine.Action
                     {
                         ability = spell.SecondAbilityDefine;
                     }
-                    if (game.ActionName == "USEMINION")
+                    if (game.ActionName == "USEMINIONCARD")
                     {
+                        //如果整个大的动作时随从入场，并且如果这个战吼不需要指定位置，则现在的话，将入场随从设定为指定位置
                         ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.本方对方标识 = true;
                         ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.位置 = int.Parse(game.Interrupt.SessionDic["MINIONPOSITION"]);
                     }
                     if (ability.IsNeedTargetSelect())
                     {
-                        SelectUtility.SetTargetSelectEnable(ability.MainAbilityDefine.AbliltyPosPicker, game);
-                        game.Interrupt.ExternalInfo = SelectUtility.GetTargetListString(game);
-                        game.Interrupt.Step = 2;
-                        game.Interrupt.ActionName = "SPELLPOSITION";
-                        return;
+                        if (game.ActionName == "USEMINIONCARD" && game.Interrupt.SessionDic.ContainsKey("BATTLECRYPOSITION"))
+                        {
+                            ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = CardUtility.指定位置结构体.FromString(game.Interrupt.SessionDic["BATTLECRYPOSITION"]);
+                        }
+                        else
+                        {
+                            if (game.ActionName == "USESPELLCARD" && game.Interrupt.SessionDic.ContainsKey("SPELLPOSITION"))
+                            {
+                                ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = CardUtility.指定位置结构体.FromString(game.Interrupt.SessionDic["SPELLPOSITION"]);
+                            }
+                            else
+                            {
+                                ability.MainAbilityDefine.AbliltyPosPicker.CanNotSelectPos.位置 = BattleFieldInfo.UnknowPos;
+                                SelectUtility.SetTargetSelectEnable(ability.MainAbilityDefine.AbliltyPosPicker, game);
+                                game.Interrupt.ExternalInfo = SelectUtility.GetTargetListString(game);
+                                game.Interrupt.ActionName = "SPELLPOSITION";
+                                return;
+                            }
+                        }
                     }
-                    SpellCard.RunAbility(game, ability);
+                    game.Interrupt.Step = 3;
                 }
                 else
                 {
                     game.Interrupt.Step = -1;
+                    return;
                 }
             }
-            if (spell.原生卡牌)
-                game.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
-                {
-                    触发事件类型 = CardUtility.事件类型枚举.施法,
-                    触发位置 = new CardUtility.指定位置结构体()
+
+            if (game.Interrupt.Step == 3)
+            {
+                SpellCard.RunAbility(game, ability);
+                if (spell.原生卡牌)
+                    game.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
                     {
-                        位置 = BattleFieldInfo.HeroPos,
-                        本方对方标识 = true
-                    }
-                });
+                        触发事件类型 = CardUtility.事件类型枚举.施法,
+                        触发位置 = new CardUtility.指定位置结构体()
+                        {
+                            位置 = BattleFieldInfo.HeroPos,
+                            本方对方标识 = true
+                        }
+                    });
+            }
             game.Interrupt.Step = 99;
             game.Interrupt.ActionName = CardUtility.strOK;
         }

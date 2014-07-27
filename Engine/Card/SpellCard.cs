@@ -89,7 +89,7 @@ namespace Engine.Card
             /// </summary>
             public Boolean IsNeedTargetSelect()
             {
-                return MainAbilityDefine.AbliltyPosPicker.IsNeedTargetSelect() || 
+                return MainAbilityDefine.AbliltyPosPicker.IsNeedTargetSelect() ||
                       (AppendAbilityDefine != null && AppendAbilityDefine.AbliltyPosPicker.IsNeedTargetSelect());
             }
         }
@@ -110,7 +110,7 @@ namespace Engine.Card
                     PickAbilityResult = ActionStatus.PickEffect(FirstAbilityDefine.描述, SecondAbilityDefine.描述);
                     if (PickAbilityResult == CardUtility.抉择枚举.取消)
                     {
-                        return new List<string>(); 
+                        return new List<string>();
                     }
                     break;
                 case 效果选择类型枚举.自动判定:
@@ -148,14 +148,19 @@ namespace Engine.Card
                 //如果是BS的话，可以通过game的上下文数据获得位置信息
                 if (SystemManager.游戏类型 == SystemManager.GameType.HTML版)
                 {
-                    Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = Engine.Utility.CardUtility.指定位置结构体.FromString(game.Interrupt.SessionDic["SPELLPOSITION"]);
+                    //如果是随从卡牌的时候，这里是战吼的动作，战吼的动作的话，前面已经对于指定位置的设置了
+                    if (game.ActionName == "USESPELLCARD")
+                    {
+                        Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = CardUtility.指定位置结构体.FromString(game.Interrupt.SessionDic["SPELLPOSITION"]);
+                    }
                 }
-                else {
+                else
+                {
                     Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos = ActionStatus.GetSelectTarget(Ability.MainAbilityDefine.AbliltyPosPicker);
                 }
             }
             //取消处理
-            if (Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.位置 == -1)
+            if (Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.位置 == Client.BattleFieldInfo.UnknowPos)
             {
                 Result.Clear();
                 return Result;

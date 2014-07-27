@@ -249,6 +249,12 @@ namespace Engine.Utility
         /// <summary>
         /// 目标选择模式
         /// </summary>
+        /// <remarks>
+        /// 虽然可以将排除指定位置的情况转化为：
+        /// TrueEffecct为未指定。
+        /// 但是考虑到让所有其他鱼人增加X/+2的情况
+        /// 这样的话变成复合条件了
+        /// </remarks>
         public enum 目标选择模式枚举
         {
             /// <summary>
@@ -283,7 +289,11 @@ namespace Engine.Utility
             /// 指定目标的相邻的模式
             /// 通古斯防御者：相邻的单位获得嘲讽
             /// </summary>
-            相邻排除自身
+            相邻排除指定位置,
+            /// <summary>
+            /// 全体排除指定位置
+            /// </summary>
+            全体排除指定位置
         }
         /// <summary>
         /// 目标选择方向
@@ -329,6 +339,10 @@ namespace Engine.Utility
             /// 选定位置
             /// </summary>
             public 指定位置结构体 SelectedPos;
+            /// <summary>
+            /// 不能选择的位置
+            /// </summary>
+            public 指定位置结构体 CanNotSelectPos;
             /// <summary>
             /// 嘲讽限制
             /// </summary>

@@ -15,7 +15,7 @@ namespace Engine.Client
         /// <param name="被攻击方Pos">对方</param>
         /// <param name="IsMyAction">被动攻击</param>
         /// <returns></returns>
-        public static List<String> Fight(int 攻击方Pos, int 被攻击方Pos, ActionStatus gameStatus, Boolean IsMyAction)
+        public static List<string> Fight(int 攻击方Pos, int 被攻击方Pos, ActionStatus gameStatus, bool IsMyAction)
         {
             PublicInfo AttackInfo;
             PublicInfo AttackedInfo;
@@ -29,7 +29,7 @@ namespace Engine.Client
                 AttackInfo = gameStatus.AllRole.YourPublicInfo;
                 AttackedInfo = gameStatus.AllRole.MyPublicInfo;
             }
-            List<String> Result = new List<string>();
+            List<string> Result = new List<string>();
             //主动攻击方的状态变化
             if (攻击方Pos == BattleFieldInfo.HeroPos)
             {
@@ -58,7 +58,7 @@ namespace Engine.Client
                 //圣盾不引发伤害事件
                 if (AttackInfo.BattleField.BattleMinions[攻击方Pos - 1].设置被攻击后状态(AttackedPoint))
                 {
-                    gameStatus.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    gameStatus.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型枚举.受伤,
                         触发位置 = AttackInfo.BattleField.BattleMinions[攻击方Pos - 1].战场位置
@@ -70,7 +70,7 @@ namespace Engine.Client
                 //护甲不引发伤害事件
                 if (AttackInfo.AfterBeAttack(AttackedPoint))
                 {
-                    gameStatus.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    gameStatus.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型枚举.受伤,
                         触发位置 = AttackInfo.战场位置
@@ -93,7 +93,7 @@ namespace Engine.Client
             {
                 if (AttackedInfo.BattleField.BattleMinions[被攻击方Pos - 1].设置被攻击后状态(AttackPoint))
                 {
-                    gameStatus.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    gameStatus.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型枚举.受伤,
                         触发位置 = AttackedInfo.BattleField.BattleMinions[被攻击方Pos - 1].战场位置
@@ -105,7 +105,7 @@ namespace Engine.Client
                 //护甲不引发伤害事件
                 if (AttackedInfo.AfterBeAttack(AttackPoint))
                 {
-                    gameStatus.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                    gameStatus.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型枚举.受伤,
                         触发位置 = AttackedInfo.战场位置

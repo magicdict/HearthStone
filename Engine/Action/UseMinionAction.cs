@@ -2,7 +2,6 @@
 using Engine.Client;
 using Engine.Server;
 using Engine.Utility;
-using System;
 using System.Collections.Generic;
 
 namespace Engine.Action
@@ -64,38 +63,7 @@ namespace Engine.Action
             //Step3
             if (minion != null)
             {
-                switch (minion.战吼类型)
-                {
-                    case MinionCard.战吼类型枚举.默认:
-                    case MinionCard.战吼类型枚举.相邻:
-                    case MinionCard.战吼类型枚举.自身:
-                        //PlayInfo.BattleField.发动战吼(MinionPos, game);
-                        PlayInfo.BattleField.PutToBattle(MinionPos, minion);
-                        ActionCodeLst.AddRange(minion.发动战吼(game));
-                        break;
-                    case MinionCard.战吼类型枚举.抢先:
-                        //战吼中，其他系列的法术效果 例如其他鱼人获得XX效果
-                        //战吼中，友方系列的法术效果 例如友方随从获得XX效果
-                        foreach (var result in minion.发动战吼(game))
-                        {
-                            var resultArray = result.Split(CardUtility.strSplitMark.ToCharArray());
-                            if (resultArray.Length == 1 || int.Parse(resultArray[2]) < MinionPos)
-                            {
-                                //SETTLE的时候为1
-                                ActionCodeLst.Add(result);
-                            }
-                            else
-                            {
-                                //位置的调整，后面的随从的位置需要调整
-                                ActionCodeLst.Add(resultArray[0] + CardUtility.strSplitMark + resultArray[1] + CardUtility.strSplitMark +
-                                (int.Parse(resultArray[2]) + 1).ToString() + CardUtility.strSplitMark + resultArray[3]);
-                            }
-                        }
-                        PlayInfo.BattleField.PutToBattle(MinionPos, minion);
-                        break;
-                    default:
-                        break;
-                }
+                UseSpellAction.RunBS(game, CardSn);
                 PlayInfo.BattleField.ResetBuff();
             }
         }
@@ -156,6 +124,9 @@ namespace Engine.Action
                 game.Interrupt.Step = 4;
                 if (spell.FirstAbilityDefine.IsNeedTargetSelect())
                 {
+                    //这里先简单假设所有战吼，如果需要指定位置，则自身不能成为指定位置
+                    spell.FirstAbilityDefine.MainAbilityDefine.AbliltyPosPicker.CanNotSelectPos.本方对方标识 = true;
+                    spell.FirstAbilityDefine.MainAbilityDefine.AbliltyPosPicker.CanNotSelectPos.位置 = int.Parse(game.Interrupt.SessionDic["MINIONPOSITION"]); 
                     SelectUtility.SetTargetSelectEnable(spell.FirstAbilityDefine.MainAbilityDefine.AbliltyPosPicker, game);
                     game.Interrupt.ExternalInfo = SelectUtility.GetTargetListString(game);
                     game.Interrupt.ActionName = "BATTLECRYPOSITION";
@@ -169,12 +140,18 @@ namespace Engine.Action
                 //这里约定：战吼是无需抉择的
                 game.Interrupt.ActionName = "RUNBATTLECRY";
                 game.Interrupt.Step = 1;
-                UseSpellAction.RunBS(game, minion.战吼效果);
+                if (game.Interrupt.SessionDic.ContainsKey("BATTLECRYPOSITION") && game.Interrupt.SessionDic["BATTLECRYPOSITION"] == "-1")
+                {
+                    //放弃战吼，例如没有友方的时候的叫嚣的中士
+                    game.Interrupt.Step = 99;
+                }
+                else { 
+                    UseSpellAction.RunBS(game, minion.战吼效果);
+                }
             }
             game.Interrupt.Step = 99;
             game.Interrupt.ActionName = CardUtility.strOK;
         }
         #endregion
-
     }
 }
