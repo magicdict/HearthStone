@@ -13,7 +13,6 @@ var Interrupt;
 var ActiveCardSN;
 var strHost;
 
-
 function onmessage(evt) {
     data = evt.data;
     if (!data) return;
@@ -111,6 +110,8 @@ function EndTrunResponse() {
         IsMyTurn = true;
         document.getElementById("btnEndTurn").setAttribute("display", "");
     }
+    var message = RequestType.战场状态 + GameId + strHost;
+    socket.send(message);
 }
 //设置套牌
 function SendDeck() {
@@ -119,7 +120,8 @@ function SendDeck() {
     } else {
         strHost = strFalse;
     }
-    var message = RequestType.传送套牌 + GameId + strHost + "M000017|M000018|M000021|M000003|M000024|M000026|M000027|M000035|M000037|M000047|M000043|M000041|M000040|M000059|M000058|M000057|M000054|M000061|M000064|M000065|M000067|M000076|M000077|M000082|M000088|M000087|M000085|M000084|M000068|M000076";
+    var message = RequestType.传送套牌 + GameId + strHost +
+    "M000017|M000018|M000021|M000003|M000024|M000026|M000027|M000035|M000037|M000047|M000043|M000041|M000040|M000059|M000058|M000057|M000054|M000061|M000064|M000065|M000067|M000076|M000077|M000082|M000088|M000087|M000085|M000084|M000068|M000076";
     socket.send(message);
 }
 //使用手牌
@@ -130,19 +132,12 @@ function UserHandCard(CardSN) {
         socket.send(message);
     }
 }
-var IsActionDialogShow;
-var TimeOutId;
+
 //战斗消息的处理
 function FightResponse() {
     var YourPos = data.toString().substr(0, 1); 
     var MyPos = data.toString().substr(1, 1);
     InitActionDialog(YourPos, MyPos,"Fight");
-    if (IsActionDialogShow) {
-        clearTimeout(TimeOutId);
-    }
-    IsActionDialogShow = true;
-    TimeOutId = setTimeout("HideActionDialog()", 3000);
-    ActionDialog.dialog("open");
 }
 function HideActionDialog() {
     ActionDialog.dialog('close');
@@ -201,6 +196,17 @@ function UseHandCardResponse() {
 
     switch (Interrupt.ActionName) {
         case "OK":
+            if (!IsMyTurn) {
+                //和Fight一样，展示一下手牌使用状态
+                switch (Interrupt.ExternalInfo) {
+                    case "MINION":
+                        InitActionDialog(0, 0, "MINION");
+                        break;
+                    case "SPELL":
+                        InitActionDialog(0, 0, "SPELL");
+                        break;
+                }
+            }
             var message = RequestType.战场状态 + GameId + strHost;
             socket.send(message);
             break;

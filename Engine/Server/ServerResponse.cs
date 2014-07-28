@@ -110,7 +110,11 @@ namespace Engine.Server
                     Response = interrput.ToJson();
                     if (interrput.ActionName == CardUtility.strOK)
                     {
-                        Response = CardUtility.strOK + Response;
+                        Response = GetOkResponse(Request.Substring(9), interrput);
+                    }
+                    else
+                    {
+                        Response = interrput.ToJson();
                     }
                     break;
                 case RequestType.战场状态:
@@ -129,10 +133,13 @@ namespace Engine.Server
                     if (ResumeType == RequestType.使用手牌)
                     {
                         var resume = GameServer.UseHandCard(GameId, IsHost, CardSN, Step, Request.Substring(20));
-                        Response = resume.ToJson();
                         if (resume.ActionName == CardUtility.strOK)
                         {
-                            Response = CardUtility.strOK + Response;
+                            Response = GetOkResponse(CardSN, resume);
+                        }
+                        else
+                        {
+                            Response = resume.ToJson();
                         }
                     }
                     requestType = ResumeType;
@@ -157,6 +164,34 @@ namespace Engine.Server
             if (SystemManager.游戏类型 == SystemManager.GameType.HTML版) Response = requestType.GetHashCode().ToString("D3") + Response;
             return Response;
         }
+
+        private static string GetOkResponse(string CardSN, Control.FullServerManager.Interrupt resume)
+        {
+            string Response;
+            switch (CardUtility.GetCardInfoBySN(CardSN).卡牌种类)
+            {
+                case Card.CardBasicInfo.卡牌类型枚举.随从:
+                    resume.ExternalInfo = "MINION";
+                    break;
+                case Card.CardBasicInfo.卡牌类型枚举.法术:
+                    resume.ExternalInfo = "SPELL";
+                    break;
+                case Card.CardBasicInfo.卡牌类型枚举.武器:
+                    resume.ExternalInfo = "WEAPON";
+                    break;
+                case Card.CardBasicInfo.卡牌类型枚举.奥秘:
+                    resume.ExternalInfo = "SECRET";
+                    break;
+                case Card.CardBasicInfo.卡牌类型枚举.其他:
+                    break;
+                default:
+                    break;
+            }
+            Response = resume.ToJson();
+            Response = CardUtility.strOK + Response;
+            return Response;
+        }
+
         /// <summary>
         /// 消息类型(3位)
         /// </summary>

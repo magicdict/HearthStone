@@ -45,6 +45,11 @@ function CreateGame() {
     card.setAttribute("y", "20");
     document.getElementById("ActionPanel").appendChild(card);
 
+    var card = document.getElementById("BasicCard").cloneNode(true);
+    card.setAttribute("id", "ActionMinion");
+    card.setAttribute("x", "20");
+    card.setAttribute("y", "20");
+    document.getElementById("ActionPanel").appendChild(card);
 
     card = document.getElementById("BasicPlayerInfo").getElementById("HeroInfo").cloneNode(true);
     card.setAttribute("id", "ActionHero");
@@ -199,7 +204,7 @@ function BattleInfoResponse() {
         //必须使用闭包！和Lambda一样
         (function (n) {
             MinionCard.onclick = function () {
-                if (BattleInfo.MyBattle[n].能否攻击) {
+                if (BattleInfo.MyBattle[n].能否攻击 && IsMyTurn) {
                     GetFightTargetList("ME#" + (n + 1));
                 } else {
                     document.getElementById("txtMessage").innerHTML = "该随从需要休息或者已经攻击过了";
@@ -207,7 +212,7 @@ function BattleInfoResponse() {
                 }
             }
         })(i);
-        if (BattleInfo.MyBattle[i].能否攻击) {
+        if (BattleInfo.MyBattle[i].能否攻击 && IsMyTurn) {
             MinionCard.getElementById("rctReadyToFight").setAttribute("fill", "lightgreen");
         } else {
             MinionCard.getElementById("rctReadyToFight").setAttribute("fill", "pink");
@@ -251,11 +256,14 @@ function BattleInfoResponse() {
 
     //如果这次的刷新是 战吼位置选择的前期准备，则接下来执行战吼的位置选择
     if (Interrupt != undefined && Interrupt.ActionName == "BATTLECRYPOSITION") {
-        InitTargetDialog(Interrupt.ExternalInfo);
+        var TargetCount = InitTargetDialog(Interrupt.ExternalInfo);
         Currentrequest = RequestType.使用手牌;
         Step = "4";
         SessionData = Interrupt.SessionData + "BATTLECRYPOSITION:";
         TargetPosDialog.dialog("open");
+        //自动关闭，不能不打开！
+        //需要触发AfterTargetPos方法
+        if (TargetCount == 0) TargetPosDialog.dialog("close");
     }
 
     //胜负判定
@@ -298,6 +306,9 @@ function SetCystal(HeroCard, Hero) {
 
 //设定手牌外观
 function SetMinion(MinionCard, Minion) {
+    if (Minion == null) {
+        alert("Break");
+    }
     MinionCard.setAttribute("display", "");
     MinionCard.getElementById("txtName").innerHTML = Minion.名称;
     MinionCard.getElementById("txtCost").innerHTML = Minion.使用成本;
@@ -351,44 +362,81 @@ function SetHero(HeroCard, Hero, IsMyHero) {
     }
 }
 //动作初始化
+var IsActionDialogShow;
+var TimeOutId;
 function InitActionDialog(YourPos, MyPos, ActionKbn) {
+    var Message;
+    var Card;
+
     if (ActionKbn == "Fight") {
         Message = "攻击方：";
-        var Card;
-        var Message;
         if (YourPos != 0) {
             card = document.getElementById("ActionHero");
             card.setAttribute("display", "none");
 
             card = document.getElementById("ActionMinion");
             SetMinion(card, BattleInfo.YourBattle[YourPos - 1]);
-            Message = BattleInfo.YourBattle[YourPos - 1].名称;
+            Message += BattleInfo.YourBattle[YourPos - 1].名称;
         } else {
             card = document.getElementById("ActionMinion");
             card.setAttribute("display", "none");
 
             card = document.getElementById("ActionHero");
             SetHero(card, BattleInfo.YourInfo);
-            Message = "[对方英雄]";
+            Message += "[对方英雄]";
         }
-        Message = "<br />被攻击方：";
+        Message += "<br />被攻击方：";
         if (MyPos != 0) {
             card = document.getElementById("BeActionHero");
             card.setAttribute("display", "none");
 
             card = document.getElementById("BeActionMinion");
             SetMinion(card, BattleInfo.MyBattle[MyPos - 1]);
-            Message = BattleInfo.MyBattle[MyPos - 1].名称;
+            Message += BattleInfo.MyBattle[MyPos - 1].名称;
         } else {
             card = document.getElementById("BeActionMinion");
             card.setAttribute("display", "none");
 
             card = document.getElementById("BeActionHero");
             SetHero(card, BattleInfo.MyInfo);
-            Message = "[本方英雄]";
+            Message += "[本方英雄]";
         }
         document.getElementById("txtActionMessage").innerHTML = Message;
     }
+
+    if (ActionKbn == "MINION") {
+        card = document.getElementById("ActionHero");
+        card.setAttribute("display", "none");
+        card = document.getElementById("BeActionHero");
+        card.setAttribute("display", "none");
+        card = document.getElementById("BeActionMinion");
+        card.setAttribute("display", "none");
+
+        card = document.getElementById("ActionMinion");
+        SetMinion(card, Interrupt.ActionCard);
+        document.getElementById("txtActionMessage").innerHTML = "对方随从入场：" + Interrupt.ActionCard.名称;
+    }
+
+    if (ActionKbn == "SPELL") {
+        card = document.getElementById("ActionHero");
+        card.setAttribute("display", "none");
+        card = document.getElementById("BeActionHero");
+        card.setAttribute("display", "none");
+        card = document.getElementById("BeActionMinion");
+        card.setAttribute("display", "none");
+
+        card = document.getElementById("ActionMinion");
+        SetMinion(card, Interrupt.ActionCard);
+        document.getElementById("txtActionMessage").innerHTML = "对方使用法术：" + Interrupt.ActionCard.名称;
+    }
+
+    //打开对话框
+    if (IsActionDialogShow) {
+        clearTimeout(TimeOutId);
+    }
+    IsActionDialogShow = true;
+    TimeOutId = setTimeout("HideActionDialog()", 3000);
+    ActionDialog.dialog("open");
 }
 //随从入场对话框的UI初始化
 function InitPutMinionDialog() {
@@ -429,7 +477,7 @@ function InitSpellDecideDialog(DecideOpt) {
 function InitTargetDialog(TargetList) {
 
     TargetPos = -1;
-
+    var TargetCount = 0;
     var targets = TargetList.split("|");
     var CurPos;
     var Hero = document.getElementById("MyTargetPos0");
@@ -437,6 +485,7 @@ function InitTargetDialog(TargetList) {
     for (var j = 0; j < targets.length; j++) {
         if (targets[j] == "ME#0") {
             Hero.setAttribute("display", "");
+            TargetCount++;
             break;
         }
     }
@@ -446,6 +495,7 @@ function InitTargetDialog(TargetList) {
     for (var j = 0; j < targets.length; j++) {
         if (targets[j] == "YOU#0") {
             Hero.setAttribute("display", "");
+            TargetCount++;
             break;
         }
     }
@@ -460,6 +510,7 @@ function InitTargetDialog(TargetList) {
         for (var j = 0; j < targets.length; j++) {
             if (targets[j] == CurPos) {
                 HandCard.setAttribute("display", "");
+                TargetCount++;
                 break;
             }
         }
@@ -474,8 +525,11 @@ function InitTargetDialog(TargetList) {
         for (var j = 0; j < targets.length; j++) {
             if (targets[j] == CurPos) {
                 HandCard.setAttribute("display", "");
+                TargetCount++;
                 break;
             }
         }
     }
+
+    return TargetCount;
 }

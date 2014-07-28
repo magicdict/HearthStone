@@ -74,6 +74,10 @@ namespace Engine.Control
             /// </summary>
             public string ExternalInfo;
             /// <summary>
+            /// 该操作的源头卡牌
+            /// </summary>
+            public MinimizeBattleInfo.HandCardInfo ActionCard;
+            /// <summary>
             /// 客户端数据[通信用]
             /// </summary>
             public string SessionData;
@@ -195,7 +199,8 @@ namespace Engine.Control
             GuestStatus.BasicInfo.HeroAbility = (Card.SpellCard)CardUtility.GetCardInfoBySN("A000056");
 
             //TEST START
-            //HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("A000005"));
+            //战吼测试:叫嚣的中士
+            HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M000054"));
             //亡语测试:鬼灵爬行者
             HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M9A0001"));
             //TEST END
