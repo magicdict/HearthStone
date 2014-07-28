@@ -13,6 +13,7 @@ var Interrupt;
 var ActiveCardSN;
 var strHost;
 
+
 function onmessage(evt) {
     data = evt.data;
     if (!data) return;
@@ -41,6 +42,9 @@ function onmessage(evt) {
             ResumeResponse();
             break;
         case RequestType.攻击行为:
+            if (!IsMyTurn) {
+                FightResponse();
+            }
             var message = RequestType.战场状态 + GameId + strHost;
             socket.send(message);
             break;
@@ -126,9 +130,26 @@ function UserHandCard(CardSN) {
         socket.send(message);
     }
 }
-
+var IsActionDialogShow;
+var TimeOutId;
+//战斗消息的处理
+function FightResponse() {
+    var YourPos = data.toString().substr(0, 1); 
+    var MyPos = data.toString().substr(1, 1);
+    InitActionDialog(YourPos, MyPos,"Fight");
+    if (IsActionDialogShow) {
+        clearTimeout(TimeOutId);
+    }
+    IsActionDialogShow = true;
+    TimeOutId = setTimeout("HideActionDialog()", 3000);
+    ActionDialog.dialog("open");
+}
+function HideActionDialog() {
+    ActionDialog.dialog('close');
+    IsActionDialogShow = false;
+}
 //战斗
-function Fight(MyPos) {
+function GetFightTargetList(MyPos) {
     //获取战斗目标
     Interrupt.ActionName = "FIGHT";
     SessionData = MyPos + "|";

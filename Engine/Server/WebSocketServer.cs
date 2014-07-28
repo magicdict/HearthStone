@@ -67,12 +67,12 @@ namespace Engine.Utility
                                 GameId = Request.Substring(3, 5);
                                 if (Response.Substring(3,2) == CardUtility.strOK)
                                 {
-                                    //使用动作完成
+                                    //使用动作完成后的战场状态
                                     SendToBoth(GameId, Response.Substring(0,3) + Response.Substring(5));
                                 }
                                 else
                                 {
-                                    //需要后续操作
+                                    //需要后续操作，中断续行
                                     Console.WriteLine(Response + " To " + MyConn);
                                     socket.Send(Response);
                                 }

@@ -144,7 +144,7 @@ namespace Engine.Server
                     int MyPos = int.Parse(Request.Substring(12, 1));
                     int YourPos = int.Parse(Request.Substring(18, 1));
                     GameServer.Fight(GameId, IsHost,MyPos,YourPos);
-                    Response = CardUtility.strOK;
+                    Response = Request.Substring(12, 1) + Request.Substring(18, 1);
                     break;
                 case RequestType.可攻击对象:
                     GameId = int.Parse(Request.Substring(3, 5));

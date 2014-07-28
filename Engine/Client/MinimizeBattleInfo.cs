@@ -79,7 +79,15 @@ namespace Engine.Client
             /// </summary>
             public int 总体水晶;
             /// <summary>
-            /// 
+            /// 英雄技能
+            /// </summary>
+            public string 英雄技能;
+            /// <summary>
+            /// 能否使用
+            /// </summary>
+            public bool 使用英雄技能;
+            /// <summary>
+            /// 初始化
             /// </summary>
             /// <param name="pubInfo"></param>
             public void Init(PublicInfo pubInfo)
@@ -89,6 +97,8 @@ namespace Engine.Client
                 生命力 = pubInfo.LifePoint;
                 可用水晶 = pubInfo.crystal.CurrentRemainPoint;
                 总体水晶 = pubInfo.crystal.CurrentFullPoint;
+                英雄技能 = pubInfo.HeroAbility.序列号;
+                使用英雄技能 = pubInfo.IsHeroAblityEnable(true);
             }
         }
         /// <summary>
