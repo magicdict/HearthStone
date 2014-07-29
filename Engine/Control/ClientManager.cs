@@ -119,7 +119,7 @@ namespace Engine.Control
             PlayInfo.连击状态 = false;
             //魔法水晶的增加
             PlayInfo.crystal.NewTurn();
-            PlayInfo.RemainAttactTimes = 1;
+            PlayInfo.RemainAttackTimes = 1;
             PlayInfo.IsUsedHeroAbility = false;
             PlayInfo.BattleField.FreezeStatus();
             //重置攻击次数,必须放在状态变化之后！

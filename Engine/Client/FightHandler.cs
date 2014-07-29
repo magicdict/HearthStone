@@ -37,7 +37,7 @@ namespace Engine.Client
                 if (AttackInfo.Weapon != null)
                 {
                     AttackInfo.Weapon.耐久度--;
-                    AttackInfo.RemainAttactTimes = 0;
+                    AttackInfo.RemainAttackTimes = 0;
                 }
             }
             else

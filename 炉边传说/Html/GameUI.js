@@ -360,6 +360,19 @@ function SetHero(HeroCard, Hero, IsMyHero) {
             }
         }
     }
+    if (IsMyTurn && IsMyHero && Hero.可以攻击) {
+        isEnbale = true;
+    }
+    if ((!IsMyTurn) && (!IsMyHero) && Hero.可以攻击) {
+        isEnbale = true;
+    }
+    if (HeroCard.getElementById("rctAttackable") != null) {
+        if (isEnbale) {
+            HeroCard.getElementById("rctAttackable").setAttribute("fill", "lightgreen");
+        } else {
+            HeroCard.getElementById("rctAttackable").setAttribute("fill", "pink");
+        }
+    }
 }
 //动作初始化
 var IsActionDialogShow;
@@ -385,7 +398,7 @@ function InitActionDialog(YourPos, MyPos, ActionKbn) {
             SetHero(card, BattleInfo.YourInfo);
             Message += "[对方英雄]";
         }
-        Message += "<br />被攻击方：";
+        Message += "\r\n被攻击方：";
         if (MyPos != 0) {
             card = document.getElementById("BeActionHero");
             card.setAttribute("display", "none");

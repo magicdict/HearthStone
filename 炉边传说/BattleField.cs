@@ -131,7 +131,7 @@ namespace 炉边传说
             }
             LeftPos += (btnMyWeapon.Width + Megrate);
             //没有使用过，有武器，武器耐久度不为零
-            if (GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.IsWeaponEnable(GameManager.MyClientManager.IsMyTurn))
+            if (GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.IsAttackEnable(GameManager.MyClientManager.IsMyTurn))
             {
                 btnMyWeapon.Visible = true;
             }

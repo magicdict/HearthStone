@@ -60,7 +60,11 @@ namespace Engine.Client
         /// <summary>
         /// 装备武器时候的剩余攻击次数
         /// </summary>
-        public int RemainAttactTimes = 0;
+        public int RemainAttackTimes = 0;
+        /// <summary>
+        /// 某些效果带来的临时攻击力提升
+        /// </summary>
+        public int TempAttackPoint = 0;
         /// <summary>
         /// 英雄技能
         /// </summary>
@@ -104,16 +108,17 @@ namespace Engine.Client
             {
                 int rtnAttack = 0;
                 if (Weapon != null && Weapon.耐久度 > 0) rtnAttack += Weapon.攻击力;
+                rtnAttack += TempAttackPoint;
                 return rtnAttack;
             }
         }
         /// <summary>
-        /// 武器是否可用
+        /// 是否可用攻击
         /// </summary>
         /// <returns></returns>
-        public bool IsWeaponEnable(bool IsMyTurn)
+        public bool IsAttackEnable(bool IsMyTurn)
         {
-            return RemainAttactTimes != 0 && Weapon != null && Weapon.耐久度 > 0 && IsMyTurn;
+            return RemainAttackTimes != 0 && 实际攻击值 > 0 && IsMyTurn;
         }
         /// <summary>
         /// 英雄技能是否可用

@@ -87,6 +87,10 @@ namespace Engine.Client
             /// </summary>
             public bool 使用英雄技能;
             /// <summary>
+            /// 是否可以攻击
+            /// </summary>
+            public bool 可以攻击;
+            /// <summary>
             /// 初始化
             /// </summary>
             /// <param name="pubInfo"></param>
@@ -99,6 +103,7 @@ namespace Engine.Client
                 总体水晶 = pubInfo.crystal.CurrentFullPoint;
                 英雄技能 = pubInfo.HeroAbility.序列号;
                 使用英雄技能 = pubInfo.IsHeroAblityEnable(true);
+                可以攻击 = pubInfo.IsAttackEnable(true);
             }
         }
         /// <summary>
