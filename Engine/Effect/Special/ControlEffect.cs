@@ -1,8 +1,5 @@
 ﻿using Engine.Action;
-using Engine.Client;
-using Engine.Control;
 using Engine.Utility;
-using System;
 using System.Collections.Generic;
 namespace Engine.Effect
 {
@@ -11,15 +8,15 @@ namespace Engine.Effect
     /// </summary>
     public class ControlEffect
     {
-        public static List<string> RunEffect(ActionStatus game, String PosField)
+        public static List<string> RunEffect(ActionStatus game, string PosField)
         {
-            List<String> Result = new List<string>();
+            List<string> Result = new List<string>();
             if (game.AllRole.MyPublicInfo.BattleField.MinionCount != SystemManager.MaxMinionCount)
             {
                 game.AllRole.MyPublicInfo.BattleField.AppendToBattle(game.AllRole.YourPublicInfo.BattleField.BattleMinions[int.Parse(PosField) - 1].DeepCopy());
                 game.AllRole.YourPublicInfo.BattleField.BattleMinions[int.Parse(PosField) - 1] = null;
                 //CONTROL#1
-                Result.Add(Engine.Server.ActionCode.strControl + Engine.Utility.CardUtility.strSplitMark + PosField[1]);
+                Result.Add(Server.ActionCode.strControl + CardUtility.strSplitMark + PosField[1]);
             }
             return Result;
         }
@@ -28,7 +25,7 @@ namespace Engine.Effect
         /// </summary>
         /// <param name="game"></param>
         /// <param name="actField"></param>
-        public static void ReRunEffect(ActionStatus game, String[] actField)
+        public static void ReRunEffect(ActionStatus game, string[] actField)
         {
             game.AllRole.YourPublicInfo.BattleField.AppendToBattle(game.AllRole.MyPublicInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1].DeepCopy());
             game.AllRole.MyPublicInfo.BattleField.BattleMinions[int.Parse(actField[1]) - 1] = null;

@@ -168,10 +168,6 @@ namespace Engine.Utility
 
         #region"常数"
         /// <summary>
-        /// 原生法术
-        /// </summary>
-        public const string 原生卡牌标识 = "0";
-        /// <summary>
         /// 真
         /// </summary>
         public const string strTrue = "1";

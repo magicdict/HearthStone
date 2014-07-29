@@ -1,166 +1,170 @@
 ﻿//新建游戏
 function CreateGame() {
-    //手牌区域
-    for (var i = 0; i < 10; i++) {
-        var card = document.getElementById("BasicCard").cloneNode(true);
-        card.setAttribute("id", "HandCard" + (i + 1));
-        card.setAttribute("display", "none");
-        if (i % 2 == 0) {
-            card.setAttribute("x", "1250");
-            card.setAttribute("y", (i / 2) * 150);
-        } else {
-            card.setAttribute("x", "1400");
-            card.setAttribute("y", ((i - 1) / 2) * 150);
+    if (!IsReStart) {
+        //手牌区域
+        for (var i = 0; i < 10; i++) {
+            var card = document.getElementById("BasicCard").cloneNode(true);
+            card.setAttribute("id", "HandCard" + (i + 1));
+            card.setAttribute("display", "none");
+            if (i % 2 == 0) {
+                card.setAttribute("x", "1250");
+                card.setAttribute("y", (i / 2) * 150);
+            } else {
+                card.setAttribute("x", "1400");
+                card.setAttribute("y", ((i - 1) / 2) * 150);
+            }
+            document.getElementById("gamePanel").appendChild(card);
         }
-        document.getElementById("gamePanel").appendChild(card);
-    }
-    //本方对方随从区域
-    for (var i = 0; i < 7; i++) {
+        //本方对方随从区域
+        for (var i = 0; i < 7; i++) {
+            var card = document.getElementById("BasicCard").cloneNode(true);
+            card.setAttribute("id", "MyMinion" + (i + 1));
+            card.setAttribute("display", "");
+            card.setAttribute("x", 50 + i * 160);
+            card.setAttribute("y", "400");
+            document.getElementById("gamePanel").appendChild(card);
+        }
+        for (var i = 0; i < 7; i++) {
+            var card = document.getElementById("BasicCard").cloneNode(true);
+            card.setAttribute("id", "YourMinion" + (i + 1));
+            card.setAttribute("display", "");
+            card.setAttribute("x", 50 + i * 160);
+            card.setAttribute("y", "200");
+            document.getElementById("gamePanel").appendChild(card);
+        }
+        //动作对话框
+        //被动作对象为随从
         var card = document.getElementById("BasicCard").cloneNode(true);
-        card.setAttribute("id", "MyMinion" + (i + 1));
-        card.setAttribute("display", "");
-        card.setAttribute("x", 50 + i * 160);
-        card.setAttribute("y", "400");
-        document.getElementById("gamePanel").appendChild(card);
-    }
-    for (var i = 0; i < 7; i++) {
-        var card = document.getElementById("BasicCard").cloneNode(true);
-        card.setAttribute("id", "YourMinion" + (i + 1));
-        card.setAttribute("display", "");
-        card.setAttribute("x", 50 + i * 160);
-        card.setAttribute("y", "200");
-        document.getElementById("gamePanel").appendChild(card);
-    }
-    //动作对话框
-    //被动作对象为随从
-    var card = document.getElementById("BasicCard").cloneNode(true);
-    card.setAttribute("id", "ActionMinion");
-    card.setAttribute("x", "20");
-    card.setAttribute("y", "20");
-    document.getElementById("ActionPanel").appendChild(card);
-
-    card = document.getElementById("BasicCard").cloneNode(true);
-    card.setAttribute("id", "BeActionMinion");
-    card.setAttribute("x", "200");
-    card.setAttribute("y", "20");
-    document.getElementById("ActionPanel").appendChild(card);
-
-    var card = document.getElementById("BasicCard").cloneNode(true);
-    card.setAttribute("id", "ActionMinion");
-    card.setAttribute("x", "20");
-    card.setAttribute("y", "20");
-    document.getElementById("ActionPanel").appendChild(card);
-
-    card = document.getElementById("BasicPlayerInfo").getElementById("HeroInfo").cloneNode(true);
-    card.setAttribute("id", "ActionHero");
-    card.setAttribute("x", "20");
-    card.setAttribute("y", "20");
-    document.getElementById("ActionPanel").appendChild(card);
-
-    card = document.getElementById("BasicPlayerInfo").getElementById("HeroInfo").cloneNode(true);
-    card.setAttribute("id", "BeActionHero");
-    card.setAttribute("x", "200");
-    card.setAttribute("y", "20");
-    document.getElementById("ActionPanel").appendChild(card);
-
-
-    //随从入场对话框
-    for (var i = 0; i < 6; i++) {
-        var card = document.getElementById("BasicCard").cloneNode(true);
-        card.setAttribute("id", "MyExistMinion" + (i + 1));
-        card.setAttribute("display", "none");
-        card.setAttribute("x", 40 + i * 160);
+        card.setAttribute("id", "ActionMinion");
+        card.setAttribute("x", "20");
         card.setAttribute("y", "20");
-        document.getElementById("MinionsPanel").appendChild(card);
+        document.getElementById("ActionPanel").appendChild(card);
+
+        card = document.getElementById("BasicCard").cloneNode(true);
+        card.setAttribute("id", "BeActionMinion");
+        card.setAttribute("x", "200");
+        card.setAttribute("y", "20");
+        document.getElementById("ActionPanel").appendChild(card);
+
+        var card = document.getElementById("BasicCard").cloneNode(true);
+        card.setAttribute("id", "ActionMinion");
+        card.setAttribute("x", "20");
+        card.setAttribute("y", "20");
+        document.getElementById("ActionPanel").appendChild(card);
+
+        card = document.getElementById("BasicPlayerInfo").getElementById("HeroInfo").cloneNode(true);
+        card.setAttribute("id", "ActionHero");
+        card.setAttribute("x", "20");
+        card.setAttribute("y", "20");
+        document.getElementById("ActionPanel").appendChild(card);
+
+        card = document.getElementById("BasicPlayerInfo").getElementById("HeroInfo").cloneNode(true);
+        card.setAttribute("id", "BeActionHero");
+        card.setAttribute("x", "200");
+        card.setAttribute("y", "20");
+        document.getElementById("ActionPanel").appendChild(card);
+
+
+        //随从入场对话框
+        for (var i = 0; i < 6; i++) {
+            var card = document.getElementById("BasicCard").cloneNode(true);
+            card.setAttribute("id", "MyExistMinion" + (i + 1));
+            card.setAttribute("display", "none");
+            card.setAttribute("x", 40 + i * 160);
+            card.setAttribute("y", "20");
+            document.getElementById("MinionsPanel").appendChild(card);
+        }
+        for (var i = 0; i < 7; i++) {
+            var button = document.getElementById("BasicButton").cloneNode(true);
+            button.setAttribute("id", "MinPos" + (i + 1));
+            button.setAttribute("display", "none");
+            button.setAttribute("x", i * 160);
+            button.setAttribute("y", "175");
+            button.getElementById("txtButton").textContent = "放在这里";
+            (function (n) {
+                button.onclick = function () {
+                    MinionPosDialog.dialog("close");
+                    AfterPutMinionPos(n + 1);
+                }
+            })(i);
+            document.getElementById("MinionsPanel").appendChild(button);
+        }
+        //目标选择
+        for (var i = 0; i < 7; i++) {
+            var button = document.getElementById("BasicCard").cloneNode(true);
+            button.setAttribute("id", "MyTargetPos" + (i + 1));
+            button.setAttribute("display", "none");
+            button.setAttribute("x", (i + 1) * 160);
+            button.setAttribute("y", "175");
+            (function (n) {
+                button.onclick = function () {
+                    TargetDir = true;
+                    TargetPos = n + 1;
+                    TargetPosDialog.dialog("close");
+                }
+            })(i);
+            document.getElementById("TargetPanel").appendChild(button);
+
+            var button = document.getElementById("BasicCard").cloneNode(true);
+            button.setAttribute("id", "YourTargetPos" + (i + 1));
+            button.setAttribute("display", "none");
+            button.setAttribute("x", (i + 1) * 160);
+            button.setAttribute("y", "0");
+            (function (n) {
+                button.onclick = function () {
+                    TargetDir = false;
+                    TargetPos = n + 1;
+                    TargetPosDialog.dialog("close");
+                }
+            })(i);
+            document.getElementById("TargetPanel").appendChild(button);
+        }
+
+        //英雄
+        var Hero = document.getElementById("BasicPlayerInfo").cloneNode(true);
+        Hero.setAttribute("id", "MyHero");
+        Hero.setAttribute("display", "");
+        Hero.setAttribute("x", "475");
+        Hero.setAttribute("y", "575");
+        document.getElementById("gamePanel").appendChild(Hero);
+
+        var Hero = document.getElementById("BasicPlayerInfo").cloneNode(true);
+        Hero.setAttribute("id", "YourHero");
+        Hero.setAttribute("display", "");
+        Hero.setAttribute("x", "475");
+        Hero.setAttribute("y", "25");
+        document.getElementById("gamePanel").appendChild(Hero);
+
+        //英雄 目标选择
+        var Hero = document.getElementById("BasicPlayerInfo").getElementById("HeroInfo").cloneNode(true);
+        Hero.setAttribute("id", "MyTargetPos0");
+        Hero.setAttribute("display", "none");
+        Hero.setAttribute("x", "0");
+        Hero.setAttribute("y", "175");
+        Hero.onclick = function () {
+            TargetDir = true;
+            TargetPos = 0;
+            TargetPosDialog.dialog("close");
+        }
+        document.getElementById("TargetPanel").appendChild(Hero);
+
+        var Hero = document.getElementById("BasicPlayerInfo").getElementById("HeroInfo").cloneNode(true);
+        Hero.setAttribute("id", "YourTargetPos0");
+        Hero.setAttribute("display", "none");
+        Hero.setAttribute("x", "0");
+        Hero.setAttribute("y", "0");
+        Hero.onclick = function () {
+            TargetDir = false;
+            TargetPos = 0;
+            TargetPosDialog.dialog("close");
+        }
+        document.getElementById("TargetPanel").appendChild(Hero);
     }
-    for (var i = 0; i < 7; i++) {
-        var button = document.getElementById("BasicButton").cloneNode(true);
-        button.setAttribute("id", "MinPos" + (i + 1));
-        button.setAttribute("display", "none");
-        button.setAttribute("x", i * 160);
-        button.setAttribute("y", "175");
-        button.getElementById("txtButton").textContent = "放在这里";
-        (function (n) {
-            button.onclick = function () {
-                MinionPosDialog.dialog("close");
-                AfterPutMinionPos(n + 1);
-            }
-        })(i);
-        document.getElementById("MinionsPanel").appendChild(button);
-    }
-    //目标选择
-    for (var i = 0; i < 7; i++) {
-        var button = document.getElementById("BasicCard").cloneNode(true);
-        button.setAttribute("id", "MyTargetPos" + (i + 1));
-        button.setAttribute("display", "none");
-        button.setAttribute("x", (i + 1) * 160);
-        button.setAttribute("y", "175");
-        (function (n) {
-            button.onclick = function () {
-                TargetDir = true;
-                TargetPos = n + 1;
-                TargetPosDialog.dialog("close");
-            }
-        })(i);
-        document.getElementById("TargetPanel").appendChild(button);
-
-        var button = document.getElementById("BasicCard").cloneNode(true);
-        button.setAttribute("id", "YourTargetPos" + (i + 1));
-        button.setAttribute("display", "none");
-        button.setAttribute("x", (i + 1) * 160);
-        button.setAttribute("y", "0");
-        (function (n) {
-            button.onclick = function () {
-                TargetDir = false;
-                TargetPos = n + 1;
-                TargetPosDialog.dialog("close");
-            }
-        })(i);
-        document.getElementById("TargetPanel").appendChild(button);
-    }
-
-    //英雄
-    var Hero = document.getElementById("BasicPlayerInfo").cloneNode(true);
-    Hero.setAttribute("id", "MyHero");
-    Hero.setAttribute("display", "");
-    Hero.setAttribute("x", "475");
-    Hero.setAttribute("y", "575");
-    document.getElementById("gamePanel").appendChild(Hero);
-
-    var Hero = document.getElementById("BasicPlayerInfo").cloneNode(true);
-    Hero.setAttribute("id", "YourHero");
-    Hero.setAttribute("display", "");
-    Hero.setAttribute("x", "475");
-    Hero.setAttribute("y", "25");
-    document.getElementById("gamePanel").appendChild(Hero);
-
-    //英雄 目标选择
-    var Hero = document.getElementById("BasicPlayerInfo").getElementById("HeroInfo").cloneNode(true);
-    Hero.setAttribute("id", "MyTargetPos0");
-    Hero.setAttribute("display", "none");
-    Hero.setAttribute("x", "0");
-    Hero.setAttribute("y", "175");
-    Hero.onclick = function () {
-        TargetDir = true;
-        TargetPos = 0;
-        TargetPosDialog.dialog("close");
-    }
-    document.getElementById("TargetPanel").appendChild(Hero);
-
-    var Hero = document.getElementById("BasicPlayerInfo").getElementById("HeroInfo").cloneNode(true);
-    Hero.setAttribute("id", "YourTargetPos0");
-    Hero.setAttribute("display", "none");
-    Hero.setAttribute("x", "0");
-    Hero.setAttribute("y", "0");
-    Hero.onclick = function () {
-        TargetDir = false;
-        TargetPos = 0;
-        TargetPosDialog.dialog("close");
-    }
-    document.getElementById("TargetPanel").appendChild(Hero);
-
-    document.getElementById("btnCreateGame").style.display = "none";
+    //记住，如果其他地方用setAttribute控制display，这里绝对不能使用style.display!
+    //style.display 和 display 可以共存的，在SVG
+    document.getElementById("btnCreateGame").setAttribute("display", "none");
     socket.send(RequestType.开始游戏);
+    IsReStart = true;
 }
 //暂时不考虑验证
 function BattleInfoResponse() {
@@ -272,6 +276,7 @@ function BattleInfoResponse() {
         MessageDialog.dialog("open");
         document.getElementById("btnCreateGame").setAttribute("display", "");
         document.getElementById("btnEndTurn").setAttribute("display", "none");
+        EndGame();
         return;
     }
     if (BattleInfo.MyInfo.生命力 <= 0) {
@@ -279,6 +284,7 @@ function BattleInfoResponse() {
         MessageDialog.dialog("open");
         document.getElementById("btnCreateGame").setAttribute("display", "");
         document.getElementById("btnEndTurn").setAttribute("display", "none");
+        EndGame();
         return;
     }
     if (BattleInfo.YourInfo.生命力 <= 0) {
@@ -286,6 +292,7 @@ function BattleInfoResponse() {
         MessageDialog.dialog("open");
         document.getElementById("btnCreateGame").setAttribute("display", "");
         document.getElementById("btnEndTurn").setAttribute("display", "none");
+        EndGame();
         return;
     }
 }

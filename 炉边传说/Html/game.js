@@ -12,6 +12,7 @@ var IsMyTurn;
 var Interrupt;
 var ActiveCardSN;
 var strHost;
+var IsReStart;
 
 function onmessage(evt) {
     data = evt.data;
@@ -74,7 +75,8 @@ var RequestType = {
     初始化状态: "015",
     中断续行: "016",
     攻击行为: "017",
-    可攻击对象: "018"
+    可攻击对象: "018",
+    结束游戏: "019"
 };
 
 function CreateGameResponse() {
@@ -100,6 +102,11 @@ function EndTrun() {
     var message = RequestType.回合结束 + GameId + strHost;
     socket.send(message);
     document.getElementById("btnEndTurn").setAttribute("display", "none");
+}
+
+function EndGame() {
+    var message = RequestType.结束游戏 + GameId + strHost;
+    socket.send(message);
 }
 
 function EndTrunResponse() {

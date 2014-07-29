@@ -87,10 +87,18 @@ namespace Engine.Card
         /// <summary>
         /// 原生卡牌
         /// </summary>
-        public Boolean 原生卡牌
+        public 法术卡牌类型枚举 法术卡牌类型
         {
             get {
-                return 序列号.Substring(1, 1) == CardUtility.原生卡牌标识; 
+                switch (序列号.Substring(1, 1))
+                {
+                    case "0":
+                        return 法术卡牌类型枚举.原生卡牌;
+                    case "1":
+                        return 法术卡牌类型枚举.英雄技能;
+                    default:
+                        return 法术卡牌类型枚举.战吼亡语;
+                }
             }
         }
         /// <summary>
@@ -100,6 +108,14 @@ namespace Engine.Card
         #endregion
 
         #region "炉石专用"
+        public enum 法术卡牌类型枚举
+        {
+            原生卡牌,
+
+            英雄技能,
+
+            战吼亡语
+        }
         /// <summary>
         /// 卡牌类型枚举[Card Type Enum]
         /// </summary>

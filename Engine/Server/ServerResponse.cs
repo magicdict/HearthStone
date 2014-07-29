@@ -159,11 +159,21 @@ namespace Engine.Server
                     Response = GameServer.GetFightTargetList(GameId, IsHost);
                     break;
                 default:
+                    //结束游戏
                     break;
             }
             if (SystemManager.游戏类型 == SystemManager.GameType.HTML版) Response = requestType.GetHashCode().ToString("D3") + Response;
             return Response;
         }
+        /// <summary>
+        /// 移除游戏
+        /// </summary>
+        /// <param name="gameId"></param>
+        internal static void RemoveGame(string gameId)
+        {
+            GameServer.GameRunning_BS.Remove(int.Parse(gameId));
+        }
+
         /// <summary>
         /// GetOkResponse
         /// </summary>
@@ -289,9 +299,13 @@ namespace Engine.Server
             /// </summary>
             攻击行为,
             /// <summary>
-            /// 
+            /// 可攻击对象
             /// </summary>
-            可攻击对象
+            可攻击对象,
+            /// <summary>
+            /// 结束游戏
+            /// </summary>
+            结束游戏
         }
     }
 }

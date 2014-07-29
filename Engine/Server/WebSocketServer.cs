@@ -77,6 +77,22 @@ namespace Engine.Utility
                                     socket.Send(Response);
                                 }
                                 break;
+                            case ServerResponse.RequestType.结束游戏:
+                                GameId = Request.Substring(3, 5);
+                                //游戏字典去除，但是链接没有结束
+                                // Key:GameID + IsHost Value:Connection
+                                allGames.Remove(Request.Substring(3, 6));
+                                bool CanRemove = true;
+                                foreach (var item in allGames.Keys)
+                                {
+                                    if (item.StartsWith(GameId))
+                                    {
+                                        CanRemove = false;
+                                        break;
+                                    }
+                                }
+                                if (CanRemove) ServerResponse.RemoveGame(GameId);
+                                break;
                             default:
                                 Console.WriteLine(Response + " To " + MyConn);
                                 socket.Send(Response);

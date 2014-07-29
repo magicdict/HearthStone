@@ -15,7 +15,7 @@ namespace Engine.Card
         /// <summary>
         /// 幸运币
         /// </summary>
-        public const String SN幸运币 = "A900001";
+        public const string SN幸运币 = "A900001";
         /// <summary>
         /// 效果选择类型枚举
         /// </summary>
@@ -41,11 +41,11 @@ namespace Engine.Card
         /// <summary>
         /// 效果选择条件
         /// </summary>
-        public String 效果选择条件 = String.Empty;
+        public string 效果选择条件 = string.Empty;
         /// <summary>
         /// 效果回数表达式
         /// </summary>
-        public String 效果回数表达式 = String.Empty;
+        public string 效果回数表达式 = string.Empty;
         /// <summary>
         /// 第一效果
         /// </summary>
@@ -63,7 +63,7 @@ namespace Engine.Card
             /// <summary>
             /// 描述
             /// </summary>
-            public String 描述;
+            public string 描述;
             /// <summary>
             /// 主效果定义
             /// </summary>
@@ -75,7 +75,7 @@ namespace Engine.Card
             /// <summary>
             /// 追加效果启动条件
             /// </summary>
-            public String AppendEffectCondition;
+            public string AppendEffectCondition;
             /// <summary>
             /// 初始化[未被使用]
             /// </summary>
@@ -87,7 +87,7 @@ namespace Engine.Card
             /// <summary>
             /// 是否需要位置选择
             /// </summary>
-            public Boolean IsNeedTargetSelect()
+            public bool IsNeedTargetSelect()
             {
                 return MainAbilityDefine.AbliltyPosPicker.IsNeedTargetSelect() ||
                       (AppendAbilityDefine != null && AppendAbilityDefine.AbliltyPosPicker.IsNeedTargetSelect());
@@ -98,10 +98,10 @@ namespace Engine.Card
         /// </summary>
         /// <param name="game"></param>
         /// <param name="IsMyAction">对象方向转换</param>
-        public List<String> UseSpell(ActionStatus game)
+        public List<string> UseSpell(ActionStatus game)
         {
-            List<String> Result = new List<string>();
-            Engine.Utility.CardUtility.抉择枚举 PickAbilityResult = CardUtility.抉择枚举.第一效果;
+            List<string> Result = new List<string>();
+            CardUtility.抉择枚举 PickAbilityResult = CardUtility.抉择枚举.第一效果;
             switch (效果选择类型)
             {
                 case 效果选择类型枚举.无需选择:
@@ -120,7 +120,7 @@ namespace Engine.Card
                     break;
             }
             List<EffectDefine> SingleEffectList = new List<EffectDefine>();
-            SpellCard.AbilityDefine ability;
+            AbilityDefine ability;
             if (PickAbilityResult == CardUtility.抉择枚举.第一效果)
             {
                 ability = FirstAbilityDefine;
@@ -139,9 +139,9 @@ namespace Engine.Card
         /// <param name="IsMyAction"></param>
         /// <param name="Ability"></param>
         /// <returns></returns>
-        public static List<String> RunAbility(ActionStatus game, SpellCard.AbilityDefine Ability)
+        public static List<string> RunAbility(ActionStatus game, AbilityDefine Ability)
         {
-            List<String> Result = new List<string>();
+            List<string> Result = new List<string>();
             //对象选择处理
             if (Ability.MainAbilityDefine.AbliltyPosPicker.IsNeedTargetSelect())
             {
@@ -185,6 +185,9 @@ namespace Engine.Card
                     case AtomicEffectDefine.AtomicEffectEnum.控制:
                         Result.AddRange(ControlEffect.RunEffect(game, Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
                         break;
+                    case AtomicEffectDefine.AtomicEffectEnum.召回:
+                        Result.AddRange(CallBackEffect.RunEffect(game, Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
+                        break;
                     case AtomicEffectDefine.AtomicEffectEnum.未定义:
                         break;
                     default:
@@ -217,6 +220,9 @@ namespace Engine.Card
                         break;
                     case AtomicEffectDefine.AtomicEffectEnum.控制:
                         Result.AddRange(ControlEffect.RunEffect(game, Ability.AppendAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
+                        break;
+                    case AtomicEffectDefine.AtomicEffectEnum.召回:
+                        Result.AddRange(CallBackEffect.RunEffect(game, Ability.AppendAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
                         break;
                     case AtomicEffectDefine.AtomicEffectEnum.未定义:
                         break;

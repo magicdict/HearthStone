@@ -41,6 +41,27 @@ namespace Engine.Utility
         public static List<string> GetTargetList(CardUtility.位置选择用参数结构体 SelectOpt, ActionStatus game, int RandSeed)
         {
             List<string> Result = new List<string>();
+
+            if (SelectOpt.EffictTargetSelectMode == CardUtility.目标选择模式枚举.随机)
+            {
+                //随机的对象时随从的时候，如果没有随从，直接退出
+                if (SelectOpt.EffectTargetSelectDirect == CardUtility.目标选择方向枚举.本方 &&
+                    SelectOpt.EffectTargetSelectRole == CardUtility.目标选择角色枚举.随从)
+                {
+                    if (game.AllRole.MyPublicInfo.BattleField.MinionCount == 0) return Result;
+                }
+                if (SelectOpt.EffectTargetSelectDirect == CardUtility.目标选择方向枚举.对方 &&
+                    SelectOpt.EffectTargetSelectRole == CardUtility.目标选择角色枚举.随从)
+                {
+                    if (game.AllRole.YourPublicInfo.BattleField.MinionCount == 0) return Result;
+                }
+                if (SelectOpt.EffectTargetSelectDirect == CardUtility.目标选择方向枚举.对方 &&
+                    SelectOpt.EffectTargetSelectRole == CardUtility.目标选择角色枚举.随从)
+                {
+                    if (game.AllRole.MyPublicInfo.BattleField.MinionCount + game.AllRole.YourPublicInfo.BattleField.MinionCount == 0) return Result;
+                }
+
+            }
             switch (SelectOpt.EffictTargetSelectMode)
             {
                 case CardUtility.目标选择模式枚举.随机:
@@ -247,9 +268,9 @@ namespace Engine.Utility
                     for (int i = 0; i < game.AllRole.YourPublicInfo.BattleField.MinionCount; i++)
                     {
                         if (game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].嘲讽特性 &&
-                            (!game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].潜行特性))
+                          (!game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].潜行特性))
                         {
-                            //嘲讽特性的时候，如果潜行特性，则潜行特性无效
+                            //潜行特性的时候，如果嘲讽特性，则嘲讽特性无效
                             Has嘲讽 = true;
                             break;
                         }
@@ -268,12 +289,13 @@ namespace Engine.Utility
                                 {
                                     //只能选择嘲讽对象
                                     if (game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].嘲讽特性)
+                                    {
                                         game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].潜行特性;
+                                    }
                                 }
                             }
                             else
                             {
-                                game.AllRole.YourPublicInfo.能否成为动作对象 = true;
                                 for (int i = 0; i < game.AllRole.YourPublicInfo.BattleField.MinionCount; i++)
                                 {
                                     if (CardUtility.符合选择条件(game.AllRole.YourPublicInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))

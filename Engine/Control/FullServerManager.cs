@@ -194,17 +194,18 @@ namespace Engine.Control
             HostStatus.BasicInfo.crystal.CurrentRemainPoint = 0;
             GuestStatus.BasicInfo.crystal.CurrentFullPoint = 0;
             GuestStatus.BasicInfo.crystal.CurrentRemainPoint = 0;
-            //英雄技能：奥术飞弹
-            HostStatus.BasicInfo.HeroAbility = (Card.SpellCard)CardUtility.GetCardInfoBySN("A000056");
-            GuestStatus.BasicInfo.HeroAbility = (Card.SpellCard)CardUtility.GetCardInfoBySN("A000056");
-
+            //英雄技能：召唤蜘蛛
+            HostStatus.BasicInfo.HeroAbility = (Card.SpellCard)CardUtility.GetCardInfoBySN("A110001");
+            //英雄技能：法术火球
+            GuestStatus.BasicInfo.HeroAbility = (Card.SpellCard)CardUtility.GetCardInfoBySN("A100002");
             //TEST START
+            //法术测试：闷棍
+            //HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("A000073"));
             //战吼测试:叫嚣的中士
-            HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M000054"));
+            //HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M000054"));
             //亡语测试:鬼灵爬行者
-            HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M9A0001"));
+            HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M9A0003"));
             //TEST END
-
             //初始化双方手牌
             int DrawCardCnt = 0;
             if (HostAsFirst)
