@@ -150,7 +150,7 @@ namespace Engine.Server
                     //017000010ME#1|YOU#2|
                     int MyPos = int.Parse(Request.Substring(12, 1));
                     int YourPos = int.Parse(Request.Substring(18, 1));
-                    GameServer.Fight(GameId, IsHost,MyPos,YourPos);
+                    GameServer.Fight(GameId, IsHost, MyPos, YourPos);
                     Response = Request.Substring(12, 1) + Request.Substring(18, 1);
                     break;
                 case RequestType.可攻击对象:
@@ -164,7 +164,12 @@ namespace Engine.Server
             if (SystemManager.游戏类型 == SystemManager.GameType.HTML版) Response = requestType.GetHashCode().ToString("D3") + Response;
             return Response;
         }
-
+        /// <summary>
+        /// GetOkResponse
+        /// </summary>
+        /// <param name="CardSN"></param>
+        /// <param name="resume"></param>
+        /// <returns></returns>
         private static string GetOkResponse(string CardSN, Control.FullServerManager.Interrupt resume)
         {
             string Response;
@@ -191,7 +196,19 @@ namespace Engine.Server
             Response = CardUtility.strOK + Response;
             return Response;
         }
-
+        /// <summary>
+        /// 获取运行中游戏列表
+        /// </summary>
+        /// <returns></returns>
+        public static List<string> GetRunningList()
+        {
+            List<String> running = new List<string>();
+            foreach (var game in GameServer.GameRunning_BS)
+            {
+                running.Add(game.Key.ToString("D5"));
+            }
+            return running;
+        }
         /// <summary>
         /// 消息类型(3位)
         /// </summary>

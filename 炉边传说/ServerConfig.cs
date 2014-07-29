@@ -1,4 +1,5 @@
-﻿using Engine.Utility;
+﻿using Engine.Server;
+using Engine.Utility;
 using System;
 using System.Net;
 using System.Threading;
@@ -11,7 +12,7 @@ namespace 炉边传说
         {
             InitializeComponent();
         }
-        Thread ServerThread; 
+        Thread ServerThread;
         /// <summary>
         /// 启动服务器
         /// </summary>
@@ -19,10 +20,10 @@ namespace 炉边传说
         /// <param name="e"></param>
         private void btnStart_Click(object sender, EventArgs e)
         {
-            Engine.Utility.CardUtility.Init(txtCardPath.Text);
+            CardUtility.Init(txtCardPath.Text);
             btnStartTcp.Enabled = false;
             btnStopTcp.Enabled = true;
-            Engine.Utility.SystemManager.Init();
+            SystemManager.Init();
             ServerThread = new Thread(TcpSocketServer.StartTcpServer);
             ServerThread.IsBackground = true;
             ServerThread.Start();
@@ -36,27 +37,20 @@ namespace 炉边传说
         {
             ServerThread.Abort();
             ServerThread = null;
-            Engine.Utility.SystemManager.Terminate();
+            SystemManager.Terminate();
             GC.Collect();
         }
         private void btnStartHttp_Click(object sender, EventArgs e)
         {
-            Engine.Utility.CardUtility.Init(txtCardPath.Text);
+            CardUtility.Init(txtCardPath.Text);
             btnStartHttp.Enabled = false;
             btnStopHttp.Enabled = true;
-            Engine.Utility.SystemManager.Init();
+            SystemManager.Init();
             WebSocketServer.Start();
-            //ServerThread = new Thread(WebSocketServer.Start);
-            //ServerThread.IsBackground = true;
-            //ServerThread.Start();
         }
         private void btnStopHttp_Click(object sender, EventArgs e)
         {
             WebSocketServer.Stop();
-            //ServerThread.Abort();
-            //ServerThread = null;
-            //Engine.Utility.SystemManager.Terminate();
-            //GC.Collect();
         }
         /// <summary>
         /// 选择卡牌目录
@@ -66,7 +60,7 @@ namespace 炉边传说
         private void btnPickCard_Click(object sender, EventArgs e)
         {
             FolderBrowserDialog cardPath = new FolderBrowserDialog();
-            if (cardPath.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (cardPath.ShowDialog() == DialogResult.OK)
             {
                 txtCardPath.Text = cardPath.SelectedPath;
             }
@@ -81,7 +75,7 @@ namespace 炉边传说
             //DEBUG
             txtCardPath.Text = @"C:\炉石Git\炉石设计\Card";
             IPAddress[] hostipspool = Dns.GetHostAddresses("");
-            if (hostipspool.Length >3) lblIP.Text = "IP Address:" + hostipspool[3];
+            if (hostipspool.Length > 3) lblIP.Text = "IP Address:" + hostipspool[3];
         }
         /// <summary>
         /// 卡牌资料导出
@@ -91,6 +85,19 @@ namespace 炉边传说
         private void btnCreateCard_Click(object sender, EventArgs e)
         {
             (new frmExport()).ShowDialog();
+        }
+        /// <summary>
+        /// 获得游戏列表
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnGetRunningList_Click(object sender, EventArgs e)
+        {
+            lstRunning.Items.Clear();
+            foreach (var runningGame in ServerResponse.GetRunningList())
+            {
+                lstRunning.Items.Add(runningGame);
+            }
         }
     }
 }

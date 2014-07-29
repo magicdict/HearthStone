@@ -41,6 +41,8 @@
             this.btnStartHttp = new System.Windows.Forms.Button();
             this.btnStopHttp = new System.Windows.Forms.Button();
             this.btnCreateCard = new System.Windows.Forms.Button();
+            this.lstRunning = new System.Windows.Forms.ListBox();
+            this.btnGetRunningList = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.SuspendLayout();
@@ -48,7 +50,7 @@
             // lbl套牌牌数上限
             // 
             this.lbl套牌牌数上限.AutoSize = true;
-            this.lbl套牌牌数上限.Location = new System.Drawing.Point(11, 183);
+            this.lbl套牌牌数上限.Location = new System.Drawing.Point(303, 104);
             this.lbl套牌牌数上限.Name = "lbl套牌牌数上限";
             this.lbl套牌牌数上限.Size = new System.Drawing.Size(79, 13);
             this.lbl套牌牌数上限.TabIndex = 0;
@@ -57,7 +59,7 @@
             // lbl英雄生命值上限
             // 
             this.lbl英雄生命值上限.AutoSize = true;
-            this.lbl英雄生命值上限.Location = new System.Drawing.Point(11, 209);
+            this.lbl英雄生命值上限.Location = new System.Drawing.Point(303, 130);
             this.lbl英雄生命值上限.Name = "lbl英雄生命值上限";
             this.lbl英雄生命值上限.Size = new System.Drawing.Size(91, 13);
             this.lbl英雄生命值上限.TabIndex = 1;
@@ -65,14 +67,14 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(128, 181);
+            this.numericUpDown1.Location = new System.Drawing.Point(420, 102);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(54, 20);
             this.numericUpDown1.TabIndex = 2;
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(128, 207);
+            this.numericUpDown2.Location = new System.Drawing.Point(420, 128);
             this.numericUpDown2.Name = "numericUpDown2";
             this.numericUpDown2.Size = new System.Drawing.Size(54, 20);
             this.numericUpDown2.TabIndex = 3;
@@ -102,7 +104,7 @@
             // 
             this.btnPickCard.Location = new System.Drawing.Point(333, 42);
             this.btnPickCard.Name = "btnPickCard";
-            this.btnPickCard.Size = new System.Drawing.Size(75, 23);
+            this.btnPickCard.Size = new System.Drawing.Size(113, 23);
             this.btnPickCard.TabIndex = 9;
             this.btnPickCard.Text = "选择..";
             this.btnPickCard.UseVisualStyleBackColor = true;
@@ -135,7 +137,7 @@
             // 
             // btnStartHttp
             // 
-            this.btnStartHttp.Location = new System.Drawing.Point(11, 145);
+            this.btnStartHttp.Location = new System.Drawing.Point(11, 128);
             this.btnStartHttp.Name = "btnStartHttp";
             this.btnStartHttp.Size = new System.Drawing.Size(135, 23);
             this.btnStartHttp.TabIndex = 11;
@@ -146,7 +148,7 @@
             // btnStopHttp
             // 
             this.btnStopHttp.Enabled = false;
-            this.btnStopHttp.Location = new System.Drawing.Point(162, 145);
+            this.btnStopHttp.Location = new System.Drawing.Point(162, 128);
             this.btnStopHttp.Name = "btnStopHttp";
             this.btnStopHttp.Size = new System.Drawing.Size(135, 23);
             this.btnStopHttp.TabIndex = 12;
@@ -156,7 +158,7 @@
             // 
             // btnCreateCard
             // 
-            this.btnCreateCard.Location = new System.Drawing.Point(97, 15);
+            this.btnCreateCard.Location = new System.Drawing.Point(333, 8);
             this.btnCreateCard.Name = "btnCreateCard";
             this.btnCreateCard.Size = new System.Drawing.Size(113, 23);
             this.btnCreateCard.TabIndex = 13;
@@ -164,12 +166,32 @@
             this.btnCreateCard.UseVisualStyleBackColor = true;
             this.btnCreateCard.Click += new System.EventHandler(this.btnCreateCard_Click);
             // 
+            // lstRunning
+            // 
+            this.lstRunning.FormattingEnabled = true;
+            this.lstRunning.Location = new System.Drawing.Point(14, 175);
+            this.lstRunning.Name = "lstRunning";
+            this.lstRunning.Size = new System.Drawing.Size(460, 121);
+            this.lstRunning.TabIndex = 14;
+            // 
+            // btnGetRunningList
+            // 
+            this.btnGetRunningList.Location = new System.Drawing.Point(350, 312);
+            this.btnGetRunningList.Name = "btnGetRunningList";
+            this.btnGetRunningList.Size = new System.Drawing.Size(124, 23);
+            this.btnGetRunningList.TabIndex = 15;
+            this.btnGetRunningList.Text = "获得运行游戏列表";
+            this.btnGetRunningList.UseVisualStyleBackColor = true;
+            this.btnGetRunningList.Click += new System.EventHandler(this.btnGetRunningList_Click);
+            // 
             // ServerConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(430, 179);
+            this.ClientSize = new System.Drawing.Size(494, 347);
+            this.Controls.Add(this.btnGetRunningList);
+            this.Controls.Add(this.lstRunning);
             this.Controls.Add(this.btnCreateCard);
             this.Controls.Add(this.btnStopHttp);
             this.Controls.Add(this.btnStartHttp);
@@ -209,5 +231,7 @@
         private System.Windows.Forms.Button btnStartHttp;
         private System.Windows.Forms.Button btnStopHttp;
         private System.Windows.Forms.Button btnCreateCard;
+        private System.Windows.Forms.ListBox lstRunning;
+        private System.Windows.Forms.Button btnGetRunningList;
     }
 }
