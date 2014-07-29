@@ -79,7 +79,7 @@ function CreateGame() {
         button.setAttribute("display", "none");
         button.setAttribute("x", i * 160);
         button.setAttribute("y", "175");
-        button.getElementById("txtButton").innerHTML = "放在这里";
+        button.getElementById("txtButton").textContent = "放在这里";
         (function (n) {
             button.onclick = function () {
                 MinionPosDialog.dialog("close");
@@ -173,7 +173,7 @@ function BattleInfoResponse() {
     for (var i = 0; i < BattleInfo.HandCard.length; i++) {
         var HandCard = document.getElementById("HandCard" + (i + 1));
         SetMinion(HandCard, BattleInfo.HandCard[i]);
-        HandCard.getElementById("txtStatus").innerHTML = "";
+        HandCard.getElementById("txtStatus").textContent = "";
         //必须使用闭包！和Lambda一样
         (function (n) {
             HandCard.onclick = function () {
@@ -181,7 +181,7 @@ function BattleInfoResponse() {
                     if (BattleInfo.MyInfo.可用水晶 >= BattleInfo.HandCard[n].使用成本) {
                         UserHandCard(BattleInfo.HandCard[n].序列号);
                     } else {
-                        document.getElementById("txtMessage").innerHTML = "水晶不够";
+                        document.getElementById("txtMessage").textContent = "水晶不够";
                         MessageDialog.dialog("open");
                     }
                 }
@@ -207,7 +207,7 @@ function BattleInfoResponse() {
                 if (BattleInfo.MyBattle[n].能否攻击 && IsMyTurn) {
                     GetFightTargetList("ME#" + (n + 1));
                 } else {
-                    document.getElementById("txtMessage").innerHTML = "该随从需要休息或者已经攻击过了";
+                    document.getElementById("txtMessage").textContent = "该随从需要休息或者已经攻击过了";
                     MessageDialog.dialog("open");
                 }
             }
@@ -268,21 +268,21 @@ function BattleInfoResponse() {
 
     //胜负判定
     if (BattleInfo.MyInfo.生命力 <= 0 && BattleInfo.YourInfo.生命力 <= 0) {
-        document.getElementById("txtMessage").innerHTML = "双败";
+        document.getElementById("txtMessage").textContent = "双败";
         MessageDialog.dialog("open");
         document.getElementById("btnCreateGame").setAttribute("display", "");
         document.getElementById("btnEndTurn").setAttribute("display", "none");
         return;
     }
     if (BattleInfo.MyInfo.生命力 <= 0) {
-        document.getElementById("txtMessage").innerHTML = "你输了";
+        document.getElementById("txtMessage").textContent = "你输了";
         MessageDialog.dialog("open");
         document.getElementById("btnCreateGame").setAttribute("display", "");
         document.getElementById("btnEndTurn").setAttribute("display", "none");
         return;
     }
     if (BattleInfo.YourInfo.生命力 <= 0) {
-        document.getElementById("txtMessage").innerHTML = "你赢了";
+        document.getElementById("txtMessage").textContent = "你赢了";
         MessageDialog.dialog("open");
         document.getElementById("btnCreateGame").setAttribute("display", "");
         document.getElementById("btnEndTurn").setAttribute("display", "none");
@@ -301,7 +301,7 @@ function SetCystal(HeroCard, Hero) {
     for (var i = 1; i < Hero.可用水晶 + 1; i++) {
         HeroCard.getElementById("Cystal" + i).setAttribute("fill", "lightblue");
     }
-    HeroCard.getElementById("txtCystal").innerHTML = Hero.可用水晶 + "/" + Hero.总体水晶;
+    HeroCard.getElementById("txtCystal").textContent = Hero.可用水晶 + "/" + Hero.总体水晶;
 }
 
 //设定手牌外观
@@ -310,34 +310,34 @@ function SetMinion(MinionCard, Minion) {
         alert("Break");
     }
     MinionCard.setAttribute("display", "");
-    MinionCard.getElementById("txtName").innerHTML = Minion.名称;
-    MinionCard.getElementById("txtCost").innerHTML = Minion.使用成本;
-    MinionCard.getElementById("txtAttackPoint").innerHTML = Minion.攻击力;
-    MinionCard.getElementById("txtLifePoint").innerHTML = Minion.生命值;
-    MinionCard.getElementById("txtStatus").innerHTML = Minion.状态列表;
+    MinionCard.getElementById("txtName").textContent = Minion.名称;
+    MinionCard.getElementById("txtCost").textContent = Minion.使用成本;
+    MinionCard.getElementById("txtAttackPoint").textContent = Minion.攻击力;
+    MinionCard.getElementById("txtLifePoint").textContent = Minion.生命值;
+    MinionCard.getElementById("txtStatus").textContent = Minion.状态列表;
 
     if (Minion.描述.length > 20) {
-        MinionCard.getElementById("txtDescirption1").innerHTML = Minion.描述.toString().substr(0, 10);
-        MinionCard.getElementById("txtDescirption2").innerHTML = Minion.描述.toString().substr(10, 10);
-        MinionCard.getElementById("txtDescirption3").innerHTML = Minion.描述.toString().substr(20);
+        MinionCard.getElementById("txtDescirption1").textContent = Minion.描述.toString().substr(0, 10);
+        MinionCard.getElementById("txtDescirption2").textContent = Minion.描述.toString().substr(10, 10);
+        MinionCard.getElementById("txtDescirption3").textContent = Minion.描述.toString().substr(20);
     } else {
         if (Minion.描述.length > 10) {
-            MinionCard.getElementById("txtDescirption1").innerHTML = Minion.描述.toString().substr(0, 10);
-            MinionCard.getElementById("txtDescirption2").innerHTML = Minion.描述.toString().substr(10, 10);
-            MinionCard.getElementById("txtDescirption3").innerHTML = "";
+            MinionCard.getElementById("txtDescirption1").textContent = Minion.描述.toString().substr(0, 10);
+            MinionCard.getElementById("txtDescirption2").textContent = Minion.描述.toString().substr(10, 10);
+            MinionCard.getElementById("txtDescirption3").textContent = "";
         } else {
-            MinionCard.getElementById("txtDescirption1").innerHTML = Minion.描述;
-            MinionCard.getElementById("txtDescirption2").innerHTML = "";
-            MinionCard.getElementById("txtDescirption3").innerHTML = "";
+            MinionCard.getElementById("txtDescirption1").textContent = Minion.描述;
+            MinionCard.getElementById("txtDescirption2").textContent = "";
+            MinionCard.getElementById("txtDescirption3").textContent = "";
         }
     }
 }
 //设置英雄外观
 function SetHero(HeroCard, Hero, IsMyHero) {
     HeroCard.setAttribute("display", "");
-    HeroCard.getElementById("txtHeroShieldPoint").innerHTML = Hero.护盾值;
-    HeroCard.getElementById("txtHeroLifePoint").innerHTML = Hero.生命力;
-    HeroCard.getElementById("txtHeroAttackPoint").innerHTML = Hero.攻击力;
+    HeroCard.getElementById("txtHeroShieldPoint").textContent = Hero.护盾值;
+    HeroCard.getElementById("txtHeroLifePoint").textContent = Hero.生命力;
+    HeroCard.getElementById("txtHeroAttackPoint").textContent = Hero.攻击力;
     var isEnbale;
     if (IsMyTurn && IsMyHero && Hero.使用英雄技能) {
         isEnbale = true;
@@ -355,7 +355,7 @@ function SetHero(HeroCard, Hero, IsMyHero) {
         } else {
             HeroCard.getElementById("rctAbilityEnable").setAttribute("fill", "pink");
             HeroCard.onclick = function () {
-                document.getElementById("txtMessage").innerHTML = "您不能使用英雄技能";
+                document.getElementById("txtMessage").textContent = "您不能使用英雄技能";
                 MessageDialog.dialog("open");
             }
         }
@@ -401,7 +401,7 @@ function InitActionDialog(YourPos, MyPos, ActionKbn) {
             SetHero(card, BattleInfo.MyInfo);
             Message += "[本方英雄]";
         }
-        document.getElementById("txtActionMessage").innerHTML = Message;
+        document.getElementById("txtActionMessage").textContent = Message;
     }
 
     if (ActionKbn == "MINION") {
@@ -414,7 +414,7 @@ function InitActionDialog(YourPos, MyPos, ActionKbn) {
 
         card = document.getElementById("ActionMinion");
         SetMinion(card, Interrupt.ActionCard);
-        document.getElementById("txtActionMessage").innerHTML = "对方随从入场：" + Interrupt.ActionCard.名称;
+        document.getElementById("txtActionMessage").textContent = "对方随从入场：" + Interrupt.ActionCard.名称;
     }
 
     if (ActionKbn == "SPELL") {
@@ -427,7 +427,7 @@ function InitActionDialog(YourPos, MyPos, ActionKbn) {
 
         card = document.getElementById("ActionMinion");
         SetMinion(card, Interrupt.ActionCard);
-        document.getElementById("txtActionMessage").innerHTML = "对方使用法术：" + Interrupt.ActionCard.名称;
+        document.getElementById("txtActionMessage").textContent = "对方使用法术：" + Interrupt.ActionCard.名称;
     }
 
     //打开对话框
@@ -461,12 +461,12 @@ function InitPutMinionDialog() {
 //抉择的初始化
 function InitSpellDecideDialog(DecideOpt) {
     var Options = DecideOpt.split("|");
-    document.getElementById("txtAblitiy1").innerHTML = Options[0];
+    document.getElementById("txtAblitiy1").textContent = Options[0];
     document.getElementById("btnAblitiy1").onclick = function () {
         SpellDecideDialog.dialog("close");
         AfterSpellDecide(1);
     };
-    document.getElementById("txtAblitiy2").innerHTML = Options[1];
+    document.getElementById("txtAblitiy2").textContent = Options[1];
     document.getElementById("btnAblitiy2").onclick = function () {
         SpellDecideDialog.dialog("close");
         AfterSpellDecide(2);

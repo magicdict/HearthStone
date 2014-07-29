@@ -26,7 +26,7 @@
                 log("WebSocket not supported by this browser");
                 return;
             }
-            var webSocket = new WebSocket("ws://localhost:13001/");
+            var webSocket = new WebSocket("ws://121.199.16.71:13001/");
             webSocket.onopen = onopen;
             webSocket.onclose = onclose;
             webSocket.onmessage = onmessage;
@@ -42,6 +42,7 @@
             log("Close a web socket.");
         }
 
+        //对话框的初始化操作
         var MinionPosDialog;
         var TargetPosDialog;
         var SpellDecideDialog;
