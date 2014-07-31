@@ -22,50 +22,33 @@ namespace Engine.Action
         /// <param name="card"></param>
         /// <param name="ActionCodeLst"></param>
         /// <param name="PlayInfo"></param>
-        public static void RunCS(ActionStatus game,
-                               string CardSn,
-                               CardBasicInfo card,
-                               List<string> ActionCodeLst,
-                               PublicInfo PlayInfo)
+        public static void RunCS(ActionStatus game, string MinionCardSN, int Position)
         {
-            int MinionPos = 1;
-            MinionCard minion = null;
-            //Step1
-            if (PlayInfo.BattleField.MinionCount != 0)
+            int MinionPos = Position;
+            var minion = (MinionCard)CardUtility.GetCardInfoBySN(MinionCardSN);
+            //初始化
+            minion.初始化();
+            //必须在放入之前做得原因是，被放入的随从不能被触发这个事件
+            game.AllRole.MyPublicInfo.BattleField.PutToBattle(MinionPos, minion);
+            if (!string.IsNullOrEmpty(minion.战吼效果))
             {
-                if (game.Interrupt.SessionData == null)
+                SpellCard spell = (SpellCard)CardUtility.GetCardInfoBySN(minion.战吼效果);
+                if (!spell.FirstAbilityDefine.IsNeedTargetSelect())
                 {
-                    MinionPos = GetMinionPos(game.AllRole.MyPublicInfo.BattleField);
+                    game.Interrupt.Step = 1;
+                    game.Interrupt.SessionData = "MINIONPOSITION:" + MinionPos + "|";
+                    UseSpellAction.RunBS(game, minion.战吼效果);
                 }
-                else
+            }
+            game.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
+            {
+                触发事件类型 = CardUtility.事件类型枚举.召唤,
+                触发位置 = new CardUtility.指定位置结构体()
                 {
-                    MinionPos = int.Parse(game.Interrupt.SessionDic[""]);
+                    位置 = MinionPos,
+                    本方对方标识 = true
                 }
-            }
-            //Step2
-            if (MinionPos != -1)
-            {
-                ActionCodeLst.Add(ActionCode.strMinion + CardUtility.strSplitMark + CardSn + CardUtility.strSplitMark + MinionPos.ToString("D1"));
-                minion = (MinionCard)card;
-                //初始化
-                minion.初始化();
-                //必须在放入之前做得原因是，被放入的随从不能被触发这个事件
-                game.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
-                {
-                    触发事件类型 = CardUtility.事件类型枚举.召唤,
-                    触发位置 = new CardUtility.指定位置结构体()
-                    {
-                        位置 = MinionPos,
-                        本方对方标识 = true
-                    }
-                });
-            }
-            //Step3
-            if (minion != null)
-            {
-                UseSpellAction.RunBS(game, CardSn);
-                PlayInfo.BattleField.ResetBuff();
-            }
+            });
         }
         #endregion
 
@@ -91,7 +74,6 @@ namespace Engine.Action
                 else
                 {
                     game.Interrupt.SessionData = "MINIONPOSITION:1|";
-                    //game.Interrupt.SessionDic.Add("MINIONPOSITION", "1");
                 }
                 MinionPos = 1;
                 game.Interrupt.Step = 2;
@@ -126,7 +108,7 @@ namespace Engine.Action
                 {
                     //这里先简单假设所有战吼，如果需要指定位置，则自身不能成为指定位置
                     spell.FirstAbilityDefine.MainAbilityDefine.AbliltyPosPicker.CanNotSelectPos.本方对方标识 = true;
-                    spell.FirstAbilityDefine.MainAbilityDefine.AbliltyPosPicker.CanNotSelectPos.位置 = int.Parse(game.Interrupt.SessionDic["MINIONPOSITION"]); 
+                    spell.FirstAbilityDefine.MainAbilityDefine.AbliltyPosPicker.CanNotSelectPos.位置 = int.Parse(game.Interrupt.SessionDic["MINIONPOSITION"]);
                     SelectUtility.SetTargetSelectEnable(spell.FirstAbilityDefine.MainAbilityDefine.AbliltyPosPicker, game);
                     game.Interrupt.ExternalInfo = SelectUtility.GetTargetListString(game);
                     game.Interrupt.ActionName = "BATTLECRYPOSITION";
@@ -145,7 +127,8 @@ namespace Engine.Action
                     //放弃战吼，例如没有友方的时候的叫嚣的中士
                     game.Interrupt.Step = 99;
                 }
-                else { 
+                else
+                {
                     UseSpellAction.RunBS(game, minion.战吼效果);
                 }
             }

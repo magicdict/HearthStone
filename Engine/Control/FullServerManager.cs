@@ -17,9 +17,9 @@ namespace Engine.Control
         /// </summary>
         public int GameId = 1;
         /// <summary>
-        /// 当前是否为先手回合
+        /// 当前是否为AI模式
         /// </summary>
-        public bool 上下半局 = true;
+        public bool IsAIMode = false;
         /// <summary>
         /// 主机作为先手
         /// </summary>
@@ -125,18 +125,18 @@ namespace Engine.Control
                 actionStatus.AllRole.YourPublicInfo = HostStatus.BasicInfo;
                 actionStatus.AllRole.YourPrivateInfo = HostStatus.SelfInfo;
             }
+            //关于方向的设置，还有战场位置
+            actionStatus.AllRole.MyPublicInfo.战场位置.本方对方标识 = true;
+            actionStatus.AllRole.YourPublicInfo.战场位置.本方对方标识 = false;
+            foreach (var minion in actionStatus.AllRole.MyPublicInfo.BattleField.BattleMinions)
+            {
+                if (minion != null) minion.战场位置.本方对方标识 = true;
+            }
+            foreach (var minion in actionStatus.AllRole.YourPublicInfo.BattleField.BattleMinions)
+            {
+                if (minion != null) minion.战场位置.本方对方标识 = false;
+            }
             return actionStatus;
-        }
-
-        /// <summary>
-        /// 当前是否为主机回合
-        /// </summary>
-        /// <returns></returns>
-        public bool IsHostNowTurn()
-        {
-            if (HostAsFirst && 上下半局) return true;
-            if (!HostAsFirst && !上下半局) return true;
-            return false;
         }
         /// <summary>
         /// FullServerManager
@@ -157,7 +157,7 @@ namespace Engine.Control
         /// <param name="cards">套牌</param>
         public CardUtility.返回值枚举 SetCardStack(bool IsHost, Stack<string> cards)
         {
-            if ((IsHost && HostAsFirst) || (!IsHost && !HostAsFirst))
+            if (IsHost)
             {
                 //防止单机模式的时候出现一样的卡牌，所以 + 1
                 HostStatus.CardDeck.Init(cards, DateTime.Now.Millisecond * 2);
@@ -194,17 +194,19 @@ namespace Engine.Control
             HostStatus.BasicInfo.crystal.CurrentRemainPoint = 0;
             GuestStatus.BasicInfo.crystal.CurrentFullPoint = 0;
             GuestStatus.BasicInfo.crystal.CurrentRemainPoint = 0;
-            //英雄技能：召唤蜘蛛
-            HostStatus.BasicInfo.HeroAbility = (Card.SpellCard)CardUtility.GetCardInfoBySN("A110001");
             //英雄技能：法术火球
-            GuestStatus.BasicInfo.HeroAbility = (Card.SpellCard)CardUtility.GetCardInfoBySN("A100002");
+            HostStatus.BasicInfo.HeroAbility = (Card.SpellCard)CardUtility.GetCardInfoBySN("A100002");
+            //英雄技能：召唤蜘蛛
+            GuestStatus.BasicInfo.HeroAbility = (Card.SpellCard)CardUtility.GetCardInfoBySN("A110002");
             //TEST START
             //法术测试：闷棍
             //HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("A000073"));
             //战吼测试:叫嚣的中士
             //HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M000054"));
             //亡语测试:鬼灵爬行者
-            HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M9A0003"));
+            //HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("M9A0003"));
+            //亡语测试:阿努巴尔伏击者[亡语]
+            //HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("A300003"));
             //TEST END
             //初始化双方手牌
             int DrawCardCnt = 0;

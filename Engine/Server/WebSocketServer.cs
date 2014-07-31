@@ -35,12 +35,14 @@ namespace Engine.Utility
                     string MyConn = socket.ConnectionInfo.ClientIpAddress + ":" + socket.ConnectionInfo.ClientPort;
                     socket.OnOpen = () =>
                     {
-                        Console.WriteLine("Open!");
+                        //Console.WriteLine("Open!");
+                        SystemManager.TextLog("Open Connect:" + MyConn);
                         allSockets.Add(MyConn, socket);
                     };
                     socket.OnClose = () =>
                     {
-                        Console.WriteLine("Close!");
+                        //Console.WriteLine("Close!");
+                        SystemManager.TextLog("Close Connect:" + MyConn);
                         allSockets.Remove(MyConn);
                     };
                     socket.OnMessage = Request =>
@@ -53,7 +55,9 @@ namespace Engine.Utility
                         switch (requestType)
                         {
                             case ServerResponse.RequestType.开始游戏:
+                            case ServerResponse.RequestType.开始单机游戏:
                                 socket.Send(Response);
+                                // Key:GameID + IsHost Value:Connection
                                 allGames.Add(Response.Substring(3, 6), MyConn);
                                 break;
                             case ServerResponse.RequestType.初始化状态:
@@ -121,10 +125,14 @@ namespace Engine.Utility
             var MySocket = allSockets[MyConn];
             MySocket.Send(Response);
             Console.WriteLine(Response + " To " + MyConn);
-            MyConn = allGames[GameId + CardUtility.strFalse];
-            MySocket = allSockets[MyConn];
-            MySocket.Send(Response);
-            Console.WriteLine(Response + " To " + MyConn);
+            if (allGames.ContainsKey(GameId + CardUtility.strFalse))
+            {
+                //如果不是冒险模式
+                MyConn = allGames[GameId + CardUtility.strFalse];
+                MySocket = allSockets[MyConn];
+                MySocket.Send(Response);
+                Console.WriteLine(Response + " To " + MyConn);
+            }
         }
         /// <summary>
         /// 关闭服务器

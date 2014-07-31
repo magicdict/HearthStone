@@ -85,23 +85,6 @@ namespace Engine.Card
             }
         }
         /// <summary>
-        /// 原生卡牌
-        /// </summary>
-        public 法术卡牌类型枚举 法术卡牌类型
-        {
-            get {
-                switch (序列号.Substring(1, 1))
-                {
-                    case "0":
-                        return 法术卡牌类型枚举.原生卡牌;
-                    case "1":
-                        return 法术卡牌类型枚举.英雄技能;
-                    default:
-                        return 法术卡牌类型枚举.战吼亡语;
-                }
-            }
-        }
-        /// <summary>
         /// 是否启用[Ready To Use]
         /// </summary>
         public Boolean 是否启用 = false;
@@ -110,11 +93,30 @@ namespace Engine.Card
         #region "炉石专用"
         public enum 法术卡牌类型枚举
         {
+            /// <summary>
+            /// 原生卡牌
+            /// </summary>
             原生卡牌,
-
+            /// <summary>
+            /// 英雄技能
+            /// </summary>
             英雄技能,
-
-            战吼亡语
+            /// <summary>
+            /// 战吼
+            /// </summary>
+            战吼,
+            /// <summary>
+            /// 亡语
+            /// </summary>
+            亡语,
+            /// <summary>
+            /// 事件
+            /// </summary>
+            事件,
+            /// <summary>
+            /// 其他
+            /// </summary>
+            其他
         }
         /// <summary>
         /// 卡牌类型枚举[Card Type Enum]

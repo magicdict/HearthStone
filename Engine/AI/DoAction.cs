@@ -1,6 +1,5 @@
 ﻿using Engine.Action;
 using Engine.Client;
-using Engine.Control;
 using Engine.Server;
 using Engine.Utility;
 using System;
@@ -10,35 +9,63 @@ namespace Engine.AI
 {
     public static class DoAction
     {
-        public static List<String> Run(ActionStatus gameStatus)
+        /// <summary>
+        /// 获得一个动作
+        /// </summary>
+        /// <param name="gameStatus"></param>
+        /// <returns></returns>
+        public static void GetAction(ActionStatus gameStatus)
         {
-            PublicInfo PlayInfo = gameStatus.AllRole.YourPublicInfo;
-            PrivateInfo PlaySelfInfo = gameStatus.AllRole.YourPrivateInfo;
-
+            String Action = String.Empty;
+            PublicInfo PlayInfo = gameStatus.AllRole.MyPublicInfo;
+            PrivateInfo PlaySelfInfo = gameStatus.AllRole.MyPrivateInfo;
             List<String> Result = new List<string>();
+            //优先使用技能
+            if (PlayInfo.IsHeroAblityEnable(true))
+            {
+                //召唤
+                if (PlayInfo.HeroAbility.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.AtomicEffectType ==
+                    Effect.AtomicEffectDefine.AtomicEffectEnum.召唤 && 
+                    PlayInfo.BattleField.MinionCount != SystemManager.MaxMinionCount)
+                {
+                    gameStatus.Interrupt.ActionCard = new MinimizeBattleInfo.HandCardInfo();
+                    gameStatus.Interrupt.ActionCard.Init(PlayInfo.HeroAbility);
+                    gameStatus.ActionName = "USEHEROSKILL";
+                    gameStatus.Interrupt.Step = 1;
+                    gameStatus.Interrupt.ActionName = "SPELL";
+                    PlayInfo.crystal.CurrentRemainPoint -= PlayInfo.HeroAbility.使用成本;
+                    PlayInfo.IsUsedHeroAbility = true;
+                    RunAction.StartActionCS(gameStatus, PlayInfo.HeroAbility.序列号, new string[] { });
+                    gameStatus.Interrupt.ActionName = "SPELL";
+                    return;
+                }
+            }
             //能上场的随从都上场
             int HandCardIndex = HasBattleMinion(gameStatus);
-            while (HandCardIndex != -1)
+            if (HandCardIndex != -1)
             {
                 int newPos = PlayInfo.BattleField.MinionCount + 1;
                 var card = PlaySelfInfo.handCards[HandCardIndex];
-                //gameStatus.Interrupt.SessionData = newPos.ToString();
-                RunAction.StartAction(gameStatus, card.序列号);
+                RunAction.StartActionCS(gameStatus, card.序列号, new string[] { newPos.ToString() });
                 PlayInfo.crystal.CurrentRemainPoint -= card.使用成本;
                 PlaySelfInfo.RemoveUsedCard(card.序列号);
                 PlayInfo.HandCardCount = PlaySelfInfo.handCards.Count;
-                HandCardIndex = HasBattleMinion(gameStatus);
+                gameStatus.Interrupt.ActionCard = new MinimizeBattleInfo.HandCardInfo();
+                gameStatus.Interrupt.ActionCard.Init(card);
+                gameStatus.Interrupt.ActionName = "MINION";
+                return;
             }
             //能攻击的随从都攻击，优先攻击英雄
             int AttackPos = HasAttackMinion(gameStatus);
-            while (AttackPos != -1)
+            if (AttackPos != -1)
             {
                 int BeAttackedPos = GetAttackTarget(gameStatus);
-                RunAction.Fight(gameStatus, AttackPos, BeAttackedPos, false);
-                AttackPos = HasAttackMinion(gameStatus);
+                RunAction.Fight(gameStatus, AttackPos, BeAttackedPos, true);
+                gameStatus.Interrupt.ActionName = "FIGHT";
+                gameStatus.Interrupt.ExternalInfo = AttackPos.ToString() + BeAttackedPos.ToString();
+                return;
             }
-            Result.Add(ActionCode.strEndTurn);
-            return Result;
+            gameStatus.Interrupt.ActionName = ActionCode.strEndTurn;
         }
         /// <summary>
         /// 能上场的随从
@@ -46,13 +73,13 @@ namespace Engine.AI
         /// <returns></returns>
         private static int HasBattleMinion(ActionStatus gameStatus)
         {
-            PrivateInfo PlaySelfInfo = gameStatus.AllRole.YourPrivateInfo;
-            PublicInfo PlayInfo = gameStatus.AllRole.YourPublicInfo;
+            PrivateInfo PlaySelfInfo = gameStatus.AllRole.MyPrivateInfo;
+            PublicInfo PlayInfo = gameStatus.AllRole.MyPublicInfo;
+            if (PlayInfo.BattleField.MinionCount == SystemManager.MaxMinionCount) return -1;
             for (int i = 0; i < PlaySelfInfo.handCards.Count; i++)
             {
                 var card = PlaySelfInfo.handCards[i];
-                if (card.卡牌种类 == Card.CardBasicInfo.卡牌类型枚举.随从 &&
-                    PlayInfo.BattleField.MinionCount != SystemManager.MaxMinionCount)
+                if (card.卡牌种类 == Card.CardBasicInfo.卡牌类型枚举.随从)
                 {
                     if (card.使用成本 <= PlayInfo.crystal.CurrentRemainPoint)
                     {
@@ -68,7 +95,7 @@ namespace Engine.AI
         /// <returns></returns>
         private static int HasAttackMinion(ActionStatus gameStatus)
         {
-            PublicInfo PlayInfo = gameStatus.AllRole.YourPublicInfo;
+            PublicInfo PlayInfo = gameStatus.AllRole.MyPublicInfo;
             //能攻击的随从都攻击，优先攻击英雄
             for (int i = 0; i < PlayInfo.BattleField.MinionCount; i++)
             {
@@ -85,7 +112,7 @@ namespace Engine.AI
         /// <returns></returns>
         private static int GetAttackTarget(ActionStatus gameStatus)
         {
-            PublicInfo PlayInfo = gameStatus.AllRole.MyPublicInfo;
+            PublicInfo PlayInfo = gameStatus.AllRole.YourPublicInfo;
             for (int i = 0; i < PlayInfo.BattleField.MinionCount; i++)
             {
                 if (PlayInfo.BattleField.BattleMinions[i].嘲讽特性) return i + 1;

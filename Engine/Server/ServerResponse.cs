@@ -51,6 +51,13 @@ namespace Engine.Server
                     // GameId + IsHost + IsFirst
                     Response = GameId.ToString(GameServer.GameIdFormat) + IsHostStr + IsFirstStr;
                     break;
+                case RequestType.开始单机游戏:
+                    GameId = GameServer.CreateNewGame_BS(Request.Substring(3));
+                    IsFirstStr = GameServer.GameWaitGuest_BS[GameId].HostAsFirst ? CardUtility.strTrue : CardUtility.strFalse;
+                    GameServer.GameWaitGuest_BS[GameId].IsAIMode = true;
+                    IsHostStr = CardUtility.strTrue;
+                    Response = GameId.ToString(GameServer.GameIdFormat) + IsHostStr + IsFirstStr;
+                    break;
                 case RequestType.传送套牌:
                     //[BS/CS]
                     Stack<string> Deck = new Stack<string>();
@@ -58,7 +65,31 @@ namespace Engine.Server
                     {
                         Deck.Push(card);
                     }
-                    GameServer.SetCardStack(int.Parse(Request.Substring(3, 5)), Request.Substring(8, 1) == CardUtility.strTrue, Deck);
+                    GameId = int.Parse(Request.Substring(3, 5));
+                    IsHost = Request.Substring(8, 1) == CardUtility.strTrue;
+                    //对战模式
+                    //1.Host建立游戏 [WaitingGame]
+                    //2.Host向Waiting SendDeck
+                    //3.Guset加入游戏[Running]
+                    //4.Guest向Runing SendDeck
+                    //冒险模式
+                    //1.Host建立游戏 [WaitingGame]
+                    //2.向Host，Guest SendDeck
+                    if (GameServer.GameWaitGuest_BS.ContainsKey(GameId) && GameServer.GameWaitGuest_BS[GameId].IsAIMode)
+                    {
+                        GameServer.SetCardStack(GameId, true, Deck);
+                        GameServer.JoinGame_BS(GameId, "AI");
+                        var AIDeck = new Stack<string>();
+                        AIDeck.Clear();
+                        //TEST START
+                        AIDeck = Deck;
+                        //TEST END
+                        GameServer.SetCardStack(GameId, false, AIDeck);
+                    }
+                    else
+                    {
+                        GameServer.SetCardStack(GameId, IsHost, Deck);
+                    }
                     Response = CardUtility.strTrue;
                     break;
                 case RequestType.初始化状态:
@@ -158,11 +189,23 @@ namespace Engine.Server
                     IsHost = Request.Substring(8, 1) == CardUtility.strTrue;
                     Response = GameServer.GetFightTargetList(GameId, IsHost);
                     break;
+                case RequestType.获得AI行动:
+                    GameId = int.Parse(Request.Substring(3, 5));
+                    interrput = GameServer.GetAIAction(GameId);
+                    Response = interrput.ToJson();
+                    if (interrput.ActionName == ActionCode.strEndTurn)
+                    {
+                        GameServer.GameRunning_BS[GameId].TurnEnd(false);
+                    }
+                    break;
                 default:
                     //结束游戏
                     break;
             }
-            if (SystemManager.游戏类型 == SystemManager.GameType.HTML版) Response = requestType.GetHashCode().ToString("D3") + Response;
+            if (SystemManager.游戏类型 == SystemManager.GameType.HTML版)
+            {
+                Response = requestType.GetHashCode().ToString("D3") + Response;
+            }
             return Response;
         }
         /// <summary>
@@ -171,7 +214,10 @@ namespace Engine.Server
         /// <param name="gameId"></param>
         internal static void RemoveGame(string gameId)
         {
-            GameServer.GameRunning_BS.Remove(int.Parse(gameId));
+            if (GameServer.GameRunning_BS.ContainsKey(int.Parse(gameId)))
+            {
+                GameServer.GameRunning_BS.Remove(int.Parse(gameId));
+            }
         }
 
         /// <summary>
@@ -212,7 +258,7 @@ namespace Engine.Server
         /// <returns></returns>
         public static List<string> GetRunningList()
         {
-            List<String> running = new List<string>();
+            List<string> running = new List<string>();
             foreach (var game in GameServer.GameRunning_BS)
             {
                 running.Add(game.Key.ToString("D5"));
@@ -305,7 +351,15 @@ namespace Engine.Server
             /// <summary>
             /// 结束游戏
             /// </summary>
-            结束游戏
+            结束游戏,
+            /// <summary>
+            /// 
+            /// </summary>
+            开始单机游戏,
+            /// <summary>
+            /// 
+            /// </summary>
+            获得AI行动
         }
     }
 }

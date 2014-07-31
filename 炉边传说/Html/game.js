@@ -13,6 +13,7 @@ var Interrupt;
 var ActiveCardSN;
 var strHost;
 var IsReStart;
+var IsSingleMode;
 
 function onmessage(evt) {
     data = evt.data;
@@ -21,6 +22,7 @@ function onmessage(evt) {
     data = data.toString().substr(3);
     switch (ResponseCode) {
         case RequestType.开始游戏:
+        case RequestType.开始单机游戏:
             CreateGameResponse();
             break;
         case RequestType.回合结束:
@@ -51,6 +53,9 @@ function onmessage(evt) {
         case RequestType.可攻击对象:
             FightTargetListResponse();
             break;
+        case RequestType.获得AI行动:
+            GetAIActionResponse();
+            break;
     }
 }
 
@@ -76,7 +81,9 @@ var RequestType = {
     中断续行: "016",
     攻击行为: "017",
     可攻击对象: "018",
-    结束游戏: "019"
+    结束游戏: "019",
+    开始单机游戏: "020",
+    获得AI行动: "021"
 };
 
 function CreateGameResponse() {
@@ -111,8 +118,6 @@ function EndGame() {
 
 function EndTrunResponse() {
     var IsHostEnd = data.toString().substr(0, 1) == strTrue;
-    var message = RequestType.战场状态 + GameId + strHost;
-    socket.send(message);
     if (IsHostEnd != IsHost) {
         IsMyTurn = true;
         document.getElementById("btnEndTurn").setAttribute("display", "");
@@ -144,7 +149,7 @@ function UserHandCard(CardSN) {
 function FightResponse() {
     var YourPos = data.toString().substr(0, 1); 
     var MyPos = data.toString().substr(1, 1);
-    InitActionDialog(YourPos, MyPos,"Fight");
+    InitActionDialog(YourPos, MyPos, "FIGHT");
 }
 function HideActionDialog() {
     ActionDialog.dialog('close');
@@ -164,13 +169,14 @@ function FightTargetListResponse() {
     TargetPosDialog.dialog("open");
     //后续动作在AfterTargetPos
 }
-
+//传送套牌成功后的操作
 function SendDeckResponse() {
-    if (!IsHost) {
+    if (!IsHost || IsSingleMode) {
         var message = RequestType.初始化状态 + GameId;
         socket.send(message);
     }
 }
+//初始化成功后的操作
 function InitPlayInfoResponse() {
     if (IsHost) {
         strHost = strTrue;
@@ -286,4 +292,37 @@ function ResumeResponse() {
         var message = RequestType.战场状态 + GameId + strHost;
         socket.send(message);
     }
+}
+//AI的回合，每次刷新战场后，请求AI的下一步行动
+function GetAIAction() {
+    console.log("GetAIAction");
+    var message = RequestType.获得AI行动 + GameId;
+    socket.send(message);
+}
+
+function GetAIActionResponse() {
+    console.log("GetAIActionResponse");
+    Interrupt = JSON.parse(data);
+    switch (Interrupt.ActionName) {
+        case "ENDTURN":
+            IsMyTurn = true;
+            document.getElementById("btnEndTurn").setAttribute("display", "");
+            break;
+        case "MINION":
+            InitActionDialog(0, 0, "MINION");
+            break;
+        case "SPELL":
+            InitActionDialog(0, 0, "SPELL");
+            break;
+        case "FIGHT":
+            var YourPos = Interrupt.ExternalInfo.substr(0, 1);
+            var MyPos = Interrupt.ExternalInfo.substr(1, 1);
+            InitActionDialog(YourPos, MyPos, "FIGHT");
+            break;
+        default:
+            break;
+    }
+    var message = RequestType.战场状态 + GameId + strHost;
+    console.log("RequestType.战场状态");
+    socket.send(message);
 }

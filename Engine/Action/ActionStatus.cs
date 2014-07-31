@@ -66,6 +66,17 @@ namespace Engine.Action
             AllRole.MyPrivateInfo = AllRole.YourPrivateInfo;
             AllRole.YourPublicInfo = TempPublic;
             AllRole.YourPrivateInfo = TempPrivate;
+            //关于方向的设置，还有战场位置
+            AllRole.MyPublicInfo.战场位置.本方对方标识 = true;
+            AllRole.YourPublicInfo.战场位置.本方对方标识 = false;
+            foreach (var minion in AllRole.MyPublicInfo.BattleField.BattleMinions)
+            {
+                if (minion != null) minion.战场位置.本方对方标识 = true;
+            }
+            foreach (var minion in AllRole.YourPublicInfo.BattleField.BattleMinions)
+            {
+                if (minion != null) minion.战场位置.本方对方标识 = false;
+            }
         }
         /// <summary>
         /// 清算(核心方法)

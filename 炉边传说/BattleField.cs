@@ -314,7 +314,7 @@ namespace 炉边传说
                 }
                 else
                 {
-                    List<string> ActionList = Engine.AI.DoAction.Run(GameManager.MyClientManager.actionStatus);
+                    //List<string> ActionList = Engine.AI.DoAction.Run(GameManager.MyClientManager.actionStatus,false);
                     btnEndTurn.Enabled = true;
                     GameManager.MyClientManager.TurnEnd(false);
                     GameManager.MyClientManager.IsMyTurn = true;

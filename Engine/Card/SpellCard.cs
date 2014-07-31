@@ -17,6 +17,30 @@ namespace Engine.Card
         /// </summary>
         public const string SN幸运币 = "A900001";
         /// <summary>
+        /// 原生卡牌
+        /// </summary>
+        public 法术卡牌类型枚举 法术卡牌类型
+        {
+            get
+            {
+                switch (序列号.Substring(1, 1))
+                {
+                    case "0":
+                        return 法术卡牌类型枚举.原生卡牌;
+                    case "1":
+                        return 法术卡牌类型枚举.英雄技能;
+                    case "2":
+                        return 法术卡牌类型枚举.战吼;
+                    case "3":
+                        return 法术卡牌类型枚举.亡语;
+                    case "4":
+                        return 法术卡牌类型枚举.事件;
+                    default:
+                        return 法术卡牌类型枚举.其他;
+                }
+            }
+        }
+        /// <summary>
         /// 效果选择类型枚举
         /// </summary>
         public enum 效果选择类型枚举
@@ -185,9 +209,6 @@ namespace Engine.Card
                     case AtomicEffectDefine.AtomicEffectEnum.控制:
                         Result.AddRange(ControlEffect.RunEffect(game, Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
                         break;
-                    case AtomicEffectDefine.AtomicEffectEnum.召回:
-                        Result.AddRange(CallBackEffect.RunEffect(game, Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
-                        break;
                     case AtomicEffectDefine.AtomicEffectEnum.未定义:
                         break;
                     default:
@@ -220,9 +241,6 @@ namespace Engine.Card
                         break;
                     case AtomicEffectDefine.AtomicEffectEnum.控制:
                         Result.AddRange(ControlEffect.RunEffect(game, Ability.AppendAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
-                        break;
-                    case AtomicEffectDefine.AtomicEffectEnum.召回:
-                        Result.AddRange(CallBackEffect.RunEffect(game, Ability.AppendAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
                         break;
                     case AtomicEffectDefine.AtomicEffectEnum.未定义:
                         break;

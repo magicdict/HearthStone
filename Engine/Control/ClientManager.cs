@@ -17,27 +17,27 @@ namespace Engine.Control
         /// <summary>
         /// 是否开始运行
         /// </summary>
-        public Boolean IsStart = false;
+        public bool IsStart = false;
         /// <summary>
         /// 游戏玩家名称
         /// </summary>
-        public Boolean IsHost;
+        public bool IsHost;
         /// <summary>
         /// 是否为先手
         /// </summary>
-        public Boolean IsFirst;
+        public bool IsFirst;
         /// <summary>
         /// 本方回合
         /// </summary>
-        public Boolean IsMyTurn;
+        public bool IsMyTurn;
         /// <summary>
         /// 
         /// </summary>
-        public String PlayerNickName;
+        public string PlayerNickName;
         /// <summary>
         /// 事件处理组件
         /// </summary>
-        public Engine.Client.BattleEventHandler 事件处理组件 = new Engine.Client.BattleEventHandler();
+        public BattleEventHandler 事件处理组件 = new BattleEventHandler();
         /// <summary>
         /// 游戏状态
         /// Client端已经原生将本方对方设定好了
@@ -57,13 +57,13 @@ namespace Engine.Control
             actionStatus.AllRole.YourPublicInfo.crystal.CurrentFullPoint = 0;
             actionStatus.AllRole.YourPublicInfo.crystal.CurrentRemainPoint = 0;
 
-            actionStatus.AllRole.MyPublicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = true,  位置 = BattleFieldInfo.HeroPos };
+            actionStatus.AllRole.MyPublicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = true, 位置 = BattleFieldInfo.HeroPos };
             actionStatus.AllRole.YourPublicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = false, 位置 = BattleFieldInfo.HeroPos };
             actionStatus.AllRole.MyPublicInfo.BattleField.本方对方标识 = true;
             actionStatus.AllRole.YourPublicInfo.BattleField.本方对方标识 = false;
             //英雄技能：奥术飞弹
-            actionStatus.AllRole.MyPublicInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
-            actionStatus.AllRole.YourPublicInfo.HeroAbility = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN("A000056");
+            actionStatus.AllRole.MyPublicInfo.HeroAbility = (SpellCard)CardUtility.GetCardInfoBySN("A000056");
+            actionStatus.AllRole.YourPublicInfo.HeroAbility = (SpellCard)CardUtility.GetCardInfoBySN("A000056");
 
             if (SystemManager.游戏模式 == SystemManager.GameMode.塔防)
             {
@@ -92,7 +92,7 @@ namespace Engine.Control
             }
             else
             {
-                actionStatus.AllRole.MyPrivateInfo.handCards.Add(CardUtility.GetCardInfoBySN(Engine.Card.SpellCard.SN幸运币));
+                actionStatus.AllRole.MyPrivateInfo.handCards.Add(CardUtility.GetCardInfoBySN(SpellCard.SN幸运币));
                 actionStatus.AllRole.MyPublicInfo.RemainCardDeckCount = CardDeck.MaxCards - 4;
                 actionStatus.AllRole.YourPublicInfo.RemainCardDeckCount = CardDeck.MaxCards - 3;
                 actionStatus.AllRole.MyPublicInfo.HandCardCount = PublicInfo.BasicHandCardCount + 1 + 1;
@@ -102,7 +102,7 @@ namespace Engine.Control
         /// <summary>
         /// 新的回合
         /// </summary>
-        public void TurnStart(Boolean IsMyTurn)
+        public void TurnStart(bool IsMyTurn)
         {
             PublicInfo PlayInfo = IsMyTurn ? actionStatus.AllRole.MyPublicInfo : actionStatus.AllRole.YourPublicInfo;
             if (IsMyTurn)
@@ -132,10 +132,10 @@ namespace Engine.Control
         /// <summary>
         /// 对手回合结束的清场
         /// </summary>
-        public List<String> TurnEnd(Boolean IsMyTurn)
+        public List<string> TurnEnd(bool IsMyTurn)
         {
             PublicInfo PlayInfo = IsMyTurn ? actionStatus.AllRole.MyPublicInfo : actionStatus.AllRole.YourPublicInfo;
-            List<String> ActionLst = new List<string>();
+            List<string> ActionLst = new List<string>();
             //对手回合加成属性的去除
             int ExistMinionCount = PlayInfo.BattleField.MinionCount;
             for (int i = 0; i < ExistMinionCount; i++)

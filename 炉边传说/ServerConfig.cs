@@ -51,6 +51,7 @@ namespace 炉边传说
         private void btnStopHttp_Click(object sender, EventArgs e)
         {
             WebSocketServer.Stop();
+            SystemManager.Terminate();
         }
         /// <summary>
         /// 选择卡牌目录

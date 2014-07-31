@@ -563,7 +563,20 @@ namespace Engine.Card
                     return ActionLst;
                 }
                 ActionLst.Add(Server.ActionCode.strHitEvent + CardUtility.strSplitMark);
-                ActionLst.AddRange(((SpellCard)CardUtility.GetCardInfoBySN(自身事件效果.效果编号)).UseSpell(game));
+                //这里有可能是一个增益表达式！！
+                if (自身事件效果.效果编号.StartsWith("A"))
+                {
+                    ActionLst.AddRange(((SpellCard)CardUtility.GetCardInfoBySN(自身事件效果.效果编号)).UseSpell(game));
+                }
+                else
+                {
+                    Effect.PointEffect t = new Effect.PointEffect();
+                    string[] opt = 自身事件效果.效果编号.Split("/".ToCharArray());
+                    t.持续回合 = CardUtility.Max.ToString();
+                    t.攻击力 = opt[0];
+                    t.生命值 = opt[1];
+                    ((Effect.IAtomicEffect)t).DealMinion(game, this);
+                }
                 潜行特性 = false;
             }
             return ActionLst;

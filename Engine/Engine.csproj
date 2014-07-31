@@ -55,7 +55,7 @@
     <Compile Include="Client\MinimizeBattleInfo.cs" />
     <Compile Include="Control\FullServerManager.cs" />
     <Compile Include="Action\ActionStatus.cs" />
-    <Compile Include="Effect\Special\CallBackEffect.cs" />
+    <Compile Include="Effect\RoleEffect\CallBackEffect.cs" />
     <Compile Include="Utility\CSharpUtility.cs" />
     <Compile Include="Utility\ExpressHandler.cs" />
     <Compile Include="Effect\AtomicEffectDefine.cs" />

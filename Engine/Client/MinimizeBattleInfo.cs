@@ -83,6 +83,10 @@ namespace Engine.Client
             /// </summary>
             public string 英雄技能;
             /// <summary>
+            /// 
+            /// </summary>
+            public string 英雄技能描述;
+            /// <summary>
             /// 能否使用
             /// </summary>
             public bool 使用英雄技能;
@@ -102,6 +106,7 @@ namespace Engine.Client
                 可用水晶 = pubInfo.crystal.CurrentRemainPoint;
                 总体水晶 = pubInfo.crystal.CurrentFullPoint;
                 英雄技能 = pubInfo.HeroAbility.序列号;
+                英雄技能描述 = pubInfo.HeroAbility.描述;
                 使用英雄技能 = pubInfo.IsHeroAblityEnable(true);
                 可以攻击 = pubInfo.IsAttackEnable(true);
             }

@@ -1,5 +1,5 @@
 ﻿//新建游戏
-function CreateGame() {
+function CreateGame(IsSingle) {
     if (!IsReStart) {
         //手牌区域
         for (var i = 0; i < 10; i++) {
@@ -163,13 +163,20 @@ function CreateGame() {
     //记住，如果其他地方用setAttribute控制display，这里绝对不能使用style.display!
     //style.display 和 display 可以共存的，在SVG
     document.getElementById("btnCreateGame").setAttribute("display", "none");
-    socket.send(RequestType.开始游戏);
+    document.getElementById("btnCreateSingleGame").setAttribute("display", "none");
+    if (IsSingle) {
+        socket.send(RequestType.开始单机游戏);
+    } else {
+        socket.send(RequestType.开始游戏);
+    }
     IsReStart = true;
+    IsSingleMode = IsSingle;
 }
+
 //暂时不考虑验证
 function BattleInfoResponse() {
+    console.log("BattleInfoResponse" + data);
     BattleInfo = JSON.parse(data);
-
     for (var i = 0; i < 10; i++) {
         var HandCard = document.getElementById("HandCard" + (i + 1));
         HandCard.setAttribute("display", "none");
@@ -216,6 +223,7 @@ function BattleInfoResponse() {
                 }
             }
         })(i);
+
         if (BattleInfo.MyBattle[i].能否攻击 && IsMyTurn) {
             MinionCard.getElementById("rctReadyToFight").setAttribute("fill", "lightgreen");
         } else {
@@ -233,12 +241,21 @@ function BattleInfoResponse() {
         var MinionCard = document.getElementById("YourMinion" + (i + 1));
         MinionCard.setAttribute("display", "none");
     }
+
     for (var i = 0; i < BattleInfo.YourBattle.length; i++) {
         var MinionCard = document.getElementById("YourMinion" + (i + 1));
         SetMinion(MinionCard, BattleInfo.YourBattle[i]);
+        if (IsSingleMode) {
+            if (BattleInfo.YourBattle[i].能否攻击) {
+                MinionCard.getElementById("rctReadyToFight").setAttribute("fill", "lightgreen");
+            } else {
+                MinionCard.getElementById("rctReadyToFight").setAttribute("fill", "pink");
+            }
+        } else {
+            MinionCard.getElementById("rctReadyToFight").setAttribute("fill", "pink");
+        }
         MinionCard = document.getElementById("YourTargetPos" + (i + 1));
         SetMinion(MinionCard, BattleInfo.YourBattle[i]);
-        MinionCard.getElementById("rctReadyToFight").setAttribute("fill", "pink");
     }
 
 
@@ -275,6 +292,7 @@ function BattleInfoResponse() {
         document.getElementById("txtMessage").textContent = "双败";
         MessageDialog.dialog("open");
         document.getElementById("btnCreateGame").setAttribute("display", "");
+        document.getElementById("btnCreateSingleGame").setAttribute("display", "");
         document.getElementById("btnEndTurn").setAttribute("display", "none");
         EndGame();
         return;
@@ -283,6 +301,7 @@ function BattleInfoResponse() {
         document.getElementById("txtMessage").textContent = "你输了";
         MessageDialog.dialog("open");
         document.getElementById("btnCreateGame").setAttribute("display", "");
+        document.getElementById("btnCreateSingleGame").setAttribute("display", "");
         document.getElementById("btnEndTurn").setAttribute("display", "none");
         EndGame();
         return;
@@ -291,13 +310,21 @@ function BattleInfoResponse() {
         document.getElementById("txtMessage").textContent = "你赢了";
         MessageDialog.dialog("open");
         document.getElementById("btnCreateGame").setAttribute("display", "");
+        document.getElementById("btnCreateSingleGame").setAttribute("display", "");
         document.getElementById("btnEndTurn").setAttribute("display", "none");
         EndGame();
         return;
     }
+    if (IsSingleMode && (!IsMyTurn)) {
+        //AI的回合，每次刷新战场后，请求AI的下一步行动
+        //每隔3秒查询一下，防止一下子获得太多行动
+        console.log("setTimeout" + data);
+        setTimeout("GetAIAction()", 3000)
+    }
 }
 //法力水晶
 function SetCystal(HeroCard, Hero) {
+    HeroCard.getElementById("txtAbilityDescription").textContent = Hero.英雄技能描述;
     for (var i = 1; i < 10 + 1; i++) {
         HeroCard.getElementById("Cystal" + i).setAttribute("display", "none");
     }
@@ -352,7 +379,6 @@ function SetHero(HeroCard, Hero, IsMyHero) {
     if ((!IsMyTurn) && (!IsMyHero) && Hero.使用英雄技能) {
         isEnbale = true;
     }
-
     if (HeroCard.getElementById("rctAbilityEnable") != null) {
         if (isEnbale) {
             HeroCard.getElementById("rctAbilityEnable").setAttribute("fill", "lightgreen");
@@ -388,7 +414,7 @@ function InitActionDialog(YourPos, MyPos, ActionKbn) {
     var Message;
     var Card;
 
-    if (ActionKbn == "Fight") {
+    if (ActionKbn == "FIGHT") {
         Message = "攻击方：";
         if (YourPos != 0) {
             card = document.getElementById("ActionHero");

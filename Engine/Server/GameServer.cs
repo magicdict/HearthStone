@@ -3,6 +3,7 @@ using Engine.Client;
 using Engine.Control;
 using Engine.Utility;
 using System.Collections.Generic;
+using System;
 
 namespace Engine.Server
 {
@@ -255,6 +256,17 @@ namespace Engine.Server
         {
             var gamestatus = GameRunning_BS[GameId].gameStatus(IsHost);
             RunAction.Fight(gamestatus, MyPos, YourPos, true);
+        }
+        /// <summary>
+        /// 获得AI的动作
+        /// </summary>
+        /// <param name="gameId"></param>
+        /// <returns></returns>
+        public static FullServerManager.Interrupt GetAIAction(int gameId)
+        {
+            var gamestatus = GameRunning_BS[GameId].gameStatus(false);
+            AI.DoAction.GetAction(gamestatus);
+            return gamestatus.Interrupt;
         }
     }
 }

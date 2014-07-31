@@ -113,6 +113,9 @@ namespace Engine.Effect
                 case AtomicEffectDefine.AtomicEffectEnum.变形:
                     IAtomic = new TransformEffect();
                     break;
+                case AtomicEffectDefine.AtomicEffectEnum.召回:
+                    IAtomic = new CallBackEffect();
+                    break;
             }
             IAtomic.GetField(atomic.InfoArray);
             return (IAtomicEffect)IAtomic;
