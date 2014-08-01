@@ -1,0 +1,9 @@
+﻿{
+    "dependencies": {
+        "Microsoft.AspNet.Server.IIS" : "1.0.0-alpha2"
+    },
+    "configurations" : {
+        "net451" : { },
+        "k10" : { }
+    }
+}

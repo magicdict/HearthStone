@@ -1,13 +1,14 @@
 ﻿using Engine.Client;
 using System.ComponentModel;
 using System.Windows.Forms;
+using Engine.Card;
 
 namespace 炉边传说
 {
     public partial class ctlHero : UserControl
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
-        public PublicInfo Hero
+        public HeroCard Hero
         {
             set
             {

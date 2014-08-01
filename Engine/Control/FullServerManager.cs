@@ -1,9 +1,10 @@
 ﻿using Engine.Action;
+using Engine.Card;
 using Engine.Client;
 using Engine.Utility;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace Engine.Control
 {
@@ -126,8 +127,8 @@ namespace Engine.Control
                 actionStatus.AllRole.YourPrivateInfo = HostStatus.SelfInfo;
             }
             //关于方向的设置，还有战场位置
-            actionStatus.AllRole.MyPublicInfo.战场位置.本方对方标识 = true;
-            actionStatus.AllRole.YourPublicInfo.战场位置.本方对方标识 = false;
+            actionStatus.AllRole.MyPublicInfo.Hero.战场位置.本方对方标识 = true;
+            actionStatus.AllRole.YourPublicInfo.Hero.战场位置.本方对方标识 = false;
             foreach (var minion in actionStatus.AllRole.MyPublicInfo.BattleField.BattleMinions)
             {
                 if (minion != null) minion.战场位置.本方对方标识 = true;
@@ -185,8 +186,8 @@ namespace Engine.Control
         public void InitPlayInfo()
         {
             //位置
-            HostStatus.BasicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = true, 位置 = BattleFieldInfo.HeroPos };
-            GuestStatus.BasicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = false, 位置 = BattleFieldInfo.HeroPos };
+            HostStatus.BasicInfo.Hero.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = true, 位置 = BattleFieldInfo.HeroPos };
+            GuestStatus.BasicInfo.Hero.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = false, 位置 = BattleFieldInfo.HeroPos };
             HostStatus.BasicInfo.BattleField.本方对方标识 = true;
             GuestStatus.BasicInfo.BattleField.本方对方标识 = false;
             //水晶
@@ -194,10 +195,14 @@ namespace Engine.Control
             HostStatus.BasicInfo.crystal.CurrentRemainPoint = 0;
             GuestStatus.BasicInfo.crystal.CurrentFullPoint = 0;
             GuestStatus.BasicInfo.crystal.CurrentRemainPoint = 0;
+            HeroCard HostHero = new HeroCard();
+            HeroCard GuestHero = new HeroCard();
+            HostStatus.BasicInfo.Hero = HostHero;
+            GuestStatus.BasicInfo.Hero = GuestHero;
             //英雄技能：法术火球
-            HostStatus.BasicInfo.HeroAbility = (Card.SpellCard)CardUtility.GetCardInfoBySN("A100002");
+            HostHero.HeroSkillCardSN = "A100002";
             //英雄技能：召唤蜘蛛
-            GuestStatus.BasicInfo.HeroAbility = (Card.SpellCard)CardUtility.GetCardInfoBySN("A110002");
+            GuestHero.HeroSkillCardSN = "A110002";
             //TEST START
             //法术测试：闷棍
             //HostStatus.SelfInfo.handCards.Add(CardUtility.GetCardInfoBySN("A000073"));

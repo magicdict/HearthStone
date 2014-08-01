@@ -53,8 +53,8 @@ namespace 炉边传说
         {
             SelectUtility.SetTargetSelectEnable(SelectOption, actionStatus);
             int Megrate = 3;
-            btnMyHero.Hero = actionStatus.AllRole.MyPublicInfo;
-            btnYourHero.Hero = actionStatus.AllRole.YourPublicInfo;
+            btnMyHero.Hero = actionStatus.AllRole.MyPublicInfo.Hero;
+            btnYourHero.Hero = actionStatus.AllRole.YourPublicInfo.Hero;
             int LeftPos = (Width - (actionStatus.AllRole.MyPublicInfo.BattleField.MinionCount * btnMe1.Width +
             (actionStatus.AllRole.MyPublicInfo.BattleField.MinionCount - 1) * Megrate)) / 2;
             for (int i = 0; i < actionStatus.AllRole.MyPublicInfo.BattleField.MinionCount; i++)
@@ -88,7 +88,7 @@ namespace 炉边传说
                 };
                 LeftPos += btnMe1.Width + Megrate;
             }
-            btnMyHero.Enabled = actionStatus.AllRole.MyPublicInfo.能否成为动作对象;
+            btnMyHero.Enabled = actionStatus.AllRole.MyPublicInfo.Hero.能否成为动作对象;
             btnMyHero.Left = (Width - btnMyHero.Width) / 2;
             btnMyHero.Click += (x, y) =>
             {
@@ -96,7 +96,7 @@ namespace 炉边传说
                 Position.位置 = 0;
                 Close();
             };
-            btnYourHero.Enabled = actionStatus.AllRole.YourPublicInfo.能否成为动作对象; ;
+            btnYourHero.Enabled = actionStatus.AllRole.YourPublicInfo.Hero.能否成为动作对象; ;
             btnYourHero.Left = (Width - btnYourHero.Width) / 2;
             btnYourHero.Click += (x, y) =>
             {

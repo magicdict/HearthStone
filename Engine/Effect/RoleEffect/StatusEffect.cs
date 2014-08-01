@@ -55,12 +55,12 @@ namespace Engine.Effect
             switch (施加状态)
             {
                 case strFreeze:
-                    PlayInfo.冰冻状态 = CardUtility.效果回合枚举.效果命中;
+                    PlayInfo.Hero.冰冻状态 = CardUtility.效果回合枚举.效果命中;
                     break;
                 default:
                     break;
             }
-            return Server.ActionCode.strStatus + CardUtility.strSplitMark + PlayInfo.战场位置.ToString() + CardUtility.strSplitMark + 施加状态;
+            return Server.ActionCode.strStatus + CardUtility.strSplitMark + PlayInfo.Hero.战场位置.ToString() + CardUtility.strSplitMark + 施加状态;
         }
         /// <summary>
         /// 对随从动作
@@ -121,7 +121,7 @@ namespace Engine.Effect
                 //MyInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.AllRole.MyPublicInfo.冰冻状态 = CardUtility.效果回合枚举.效果命中;                }
+                    game.AllRole.MyPublicInfo.Hero.冰冻状态 = CardUtility.效果回合枚举.效果命中;                }
                 else
                 {
                     ChangeStatus(game.AllRole.MyPublicInfo.BattleField.BattleMinions[int.Parse(actField[2]) - 1],新状态);
@@ -132,7 +132,7 @@ namespace Engine.Effect
                 //YourInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.AllRole.YourPublicInfo.冰冻状态 = CardUtility.效果回合枚举.效果作用;
+                    game.AllRole.YourPublicInfo.Hero.冰冻状态 = CardUtility.效果回合枚举.效果作用;
                 }
                 else
                 {

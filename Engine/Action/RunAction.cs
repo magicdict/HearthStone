@@ -41,12 +41,12 @@ namespace Engine.Action
                     break;
                 case CardBasicInfo.卡牌类型枚举.武器:
                     ActionCodeLst.Add(ActionCode.strWeapon + CardUtility.strSplitMark + CardSn);
-                    PlayInfo.Weapon = (WeaponCard)card;
+                    PlayInfo.Hero.Weapon = (WeaponCard)card;
                     break;
                 case CardBasicInfo.卡牌类型枚举.奥秘:
                     ActionCodeLst.Add(ActionCode.strSecret + CardUtility.strSplitMark + CardSn);
                     actionStatus.AllRole.MyPrivateInfo.奥秘列表.Add((SecretCard)card);
-                    PlayInfo.SecretCount = actionStatus.AllRole.MyPrivateInfo.奥秘列表.Count;
+                    PlayInfo.Hero.SecretCount = actionStatus.AllRole.MyPrivateInfo.奥秘列表.Count;
                     break;
                 default:
                     break;
@@ -79,7 +79,7 @@ namespace Engine.Action
                             actionStatus.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
                             {
                                 触发事件类型 = CardUtility.事件类型枚举.施法,
-                                触发位置 = PlayInfo.战场位置
+                                触发位置 = PlayInfo.Hero.战场位置
                             });
                     }
                 }
@@ -117,12 +117,12 @@ namespace Engine.Action
                     break;
                 case CardBasicInfo.卡牌类型枚举.武器:
                     ActionCodeLst.Add(ActionCode.strWeapon + CardUtility.strSplitMark + CardSn);
-                    PlayInfo.Weapon = (WeaponCard)card;
+                    PlayInfo.Hero.Weapon = (WeaponCard)card;
                     break;
                 case CardBasicInfo.卡牌类型枚举.奥秘:
                     ActionCodeLst.Add(ActionCode.strSecret + CardUtility.strSplitMark + CardSn);
                     actionStatus.AllRole.MyPrivateInfo.奥秘列表.Add((SecretCard)card);
-                    PlayInfo.SecretCount = actionStatus.AllRole.MyPrivateInfo.奥秘列表.Count;
+                    PlayInfo.Hero.SecretCount = actionStatus.AllRole.MyPrivateInfo.奥秘列表.Count;
                     break;
                 default:
                     break;

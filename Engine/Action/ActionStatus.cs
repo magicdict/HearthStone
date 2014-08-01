@@ -67,8 +67,8 @@ namespace Engine.Action
             AllRole.YourPublicInfo = TempPublic;
             AllRole.YourPrivateInfo = TempPrivate;
             //关于方向的设置，还有战场位置
-            AllRole.MyPublicInfo.战场位置.本方对方标识 = true;
-            AllRole.YourPublicInfo.战场位置.本方对方标识 = false;
+            AllRole.MyPublicInfo.Hero.战场位置.本方对方标识 = true;
+            AllRole.YourPublicInfo.Hero.战场位置.本方对方标识 = false;
             foreach (var minion in AllRole.MyPublicInfo.BattleField.BattleMinions)
             {
                 if (minion != null) minion.战场位置.本方对方标识 = true;
@@ -94,8 +94,8 @@ namespace Engine.Action
             game.AllRole.MyPublicInfo.BattleField.ResetBuff();
             game.AllRole.YourPublicInfo.BattleField.ResetBuff();
             //3.武器的移除
-            if (game.AllRole.MyPublicInfo.Weapon != null && game.AllRole.MyPublicInfo.Weapon.耐久度 == 0) game.AllRole.MyPublicInfo.Weapon = null;
-            if (game.AllRole.YourPublicInfo.Weapon != null && game.AllRole.YourPublicInfo.Weapon.耐久度 == 0) game.AllRole.YourPublicInfo.Weapon = null;
+            if (game.AllRole.MyPublicInfo.Hero.Weapon != null && game.AllRole.MyPublicInfo.Hero.Weapon.耐久度 == 0) game.AllRole.MyPublicInfo.Hero.Weapon = null;
+            if (game.AllRole.YourPublicInfo.Hero.Weapon != null && game.AllRole.YourPublicInfo.Hero.Weapon.耐久度 == 0) game.AllRole.YourPublicInfo.Hero.Weapon = null;
             //发送结算同步信息
             actionlst.Add(Server.ActionCode.strSettle);
             foreach (var minion in MyDeadMinion)

@@ -32,10 +32,10 @@ namespace Engine.Action
                     game.AllRole.YourPublicInfo.BattleField.ResetBuff();
                     break;
                 case ActionCode.ActionType.UseWeapon:
-                    game.AllRole.YourPublicInfo.Weapon = (WeaponCard)CardUtility.GetCardInfoBySN(actField[1]);
+                    game.AllRole.YourPublicInfo.Hero.Weapon = (WeaponCard)CardUtility.GetCardInfoBySN(actField[1]);
                     break;
                 case ActionCode.ActionType.UseSecret:
-                    game.AllRole.YourPublicInfo.SecretCount++; ;
+                    game.AllRole.YourPublicInfo.Hero.SecretCount++; ;
                     break;
                 case ActionCode.ActionType.UseAbility:
                     break;

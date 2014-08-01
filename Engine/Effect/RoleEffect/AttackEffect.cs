@@ -40,15 +40,15 @@ namespace Engine.Effect
             int AttackPoint = ExpressHandler.GetEffectPoint(game, 伤害效果表达式);
             //调整伤害值
             if (伤害加成) AttackPoint += game.AllRole.MyPublicInfo.BattleField.AbilityDamagePlus;
-            if (PlayInfo.AfterBeAttack(AttackPoint))
+            if (PlayInfo.Hero.AfterBeAttack(AttackPoint))
             {
                 game.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
                     触发事件类型 = CardUtility.事件类型枚举.受伤,
-                    触发位置 = PlayInfo.战场位置
+                    触发位置 = PlayInfo.Hero.战场位置
                 });
             }
-            return Server.ActionCode.strAttack + CardUtility.strSplitMark + PlayInfo.战场位置.ToString() + CardUtility.strSplitMark + AttackPoint.ToString();
+            return Server.ActionCode.strAttack + CardUtility.strSplitMark + PlayInfo.Hero.战场位置.ToString() + CardUtility.strSplitMark + AttackPoint.ToString();
         }
         /// <summary>
         /// 对随从动作
@@ -84,7 +84,7 @@ namespace Engine.Effect
                 //MyInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.AllRole.MyPublicInfo.AfterBeAttack(AttackPoint);
+                    game.AllRole.MyPublicInfo.Hero.AfterBeAttack(AttackPoint);
                 }
                 else
                 {
@@ -96,7 +96,7 @@ namespace Engine.Effect
                 //YourInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.AllRole.MyPublicInfo.AfterBeAttack(AttackPoint);
+                    game.AllRole.MyPublicInfo.Hero.AfterBeAttack(AttackPoint);
                 }
                 else
                 {

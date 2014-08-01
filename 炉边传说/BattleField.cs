@@ -34,14 +34,14 @@ namespace 炉边传说
             switch (SystemManager.游戏类型)
             {
                 case SystemManager.GameType.单机版:
-                    btnMyHeroAblity.Tag = GameManager.MyFullServerManager.gameStatus(true).AllRole.MyPublicInfo.HeroAbility;
+                    btnMyHeroAblity.Tag = GameManager.MyFullServerManager.gameStatus(true).AllRole.MyPublicInfo.Hero.HeroSkill;
                     //GameManager.MyFullServerManager.actionStatus.IsMyTurn = GameManager.MyClientManager.actionStatus.IsFirst;
                     //GameManager.MyFullServerManager.TurnStart(GameManager.MyClientManager.IsMyTurn);
                     break;
                 case SystemManager.GameType.客户端服务器版:
                     WaitTimer.Tick += WaitFor;
                     GameManager.MyClientManager.InitHandCard();
-                    btnMyHeroAblity.Tag = GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.HeroAbility;
+                    btnMyHeroAblity.Tag = GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.Hero.HeroSkill;
                     GameManager.MyClientManager.IsMyTurn = GameManager.MyClientManager.IsFirst;
                     GameManager.MyClientManager.TurnStart(GameManager.MyClientManager.IsMyTurn);
                     break;
@@ -112,18 +112,18 @@ namespace 炉边传说
             int LeftPos = (Width - (btnMyHero.Width + btnMyHeroAblity.Width + btnMyWeapon.Width + 2 * Megrate)) / 2;
             //武器
             btnMyWeapon.Left = LeftPos;
-            if (GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.Weapon != null)
+            if (GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.Hero.Weapon != null)
             {
-                btnMyWeapon.Weapon = GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.Weapon;
+                btnMyWeapon.Weapon = GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.Hero.Weapon;
             }
             else
             {
                 btnMyWeapon.Clear();
             }
             btnYourWeapon.Left = LeftPos;
-            if (GameManager.MyClientManager.actionStatus.AllRole.YourPublicInfo.Weapon != null)
+            if (GameManager.MyClientManager.actionStatus.AllRole.YourPublicInfo.Hero.Weapon != null)
             {
-                btnYourWeapon.Weapon = GameManager.MyClientManager.actionStatus.AllRole.YourPublicInfo.Weapon;
+                btnYourWeapon.Weapon = GameManager.MyClientManager.actionStatus.AllRole.YourPublicInfo.Hero.Weapon;
             }
             else
             {
@@ -131,7 +131,7 @@ namespace 炉边传说
             }
             LeftPos += (btnMyWeapon.Width + Megrate);
             //没有使用过，有武器，武器耐久度不为零
-            if (GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.IsAttackEnable(GameManager.MyClientManager.IsMyTurn))
+            if (GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.Hero.IsAttackEnable(GameManager.MyClientManager.IsMyTurn))
             {
                 btnMyWeapon.Visible = true;
             }
@@ -140,15 +140,15 @@ namespace 炉边传说
                 btnMyWeapon.Visible = false;
             }
 
-            btnMyHero.Hero = GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo;
+            btnMyHero.Hero = GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.Hero;
             btnMyHero.Left = LeftPos;
-            btnYourHero.Hero = GameManager.MyClientManager.actionStatus.AllRole.YourPublicInfo;
+            btnYourHero.Hero = GameManager.MyClientManager.actionStatus.AllRole.YourPublicInfo.Hero;
             btnYourHero.Left = LeftPos;
 
             LeftPos += btnMyHero.Width + Megrate;
 
             //没有使用过，能够使用
-            if (GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.IsHeroAblityEnable(GameManager.MyClientManager.IsMyTurn))
+            if (GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.IsHeroSkillEnable(GameManager.MyClientManager.IsMyTurn))
             {
                 btnMyHeroAblity.Enabled = true;
                 btnMyHeroAblity.IsEnable = true;
@@ -230,7 +230,7 @@ namespace 炉边传说
             }
             lblGameStatus.Text = "GameInfo";
             //胜负判定
-            if (GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.LifePoint <= 0 && GameManager.MyClientManager.actionStatus.AllRole.YourPublicInfo.LifePoint <= 0)
+            if (GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.Hero.LifePoint <= 0 && GameManager.MyClientManager.actionStatus.AllRole.YourPublicInfo.Hero.LifePoint <= 0)
             {
                 MessageBox.Show("Draw Game");
                 if (SystemManager.游戏类型 != SystemManager.GameType.单机版) WaitTimer.Stop();
@@ -238,13 +238,13 @@ namespace 炉边传说
             }
             else
             {
-                if (GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.LifePoint <= 0)
+                if (GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.Hero.LifePoint <= 0)
                 {
                     MessageBox.Show("You Lose");
                     if (SystemManager.游戏类型 != SystemManager.GameType.单机版) WaitTimer.Stop();
                     GameManager.MyClientManager.事件处理组件.事件特殊处理 = null;
                 }
-                if (GameManager.MyClientManager.actionStatus.AllRole.YourPublicInfo.LifePoint <= 0)
+                if (GameManager.MyClientManager.actionStatus.AllRole.YourPublicInfo.Hero.LifePoint <= 0)
                 {
                     MessageBox.Show("You Win");
                     if (SystemManager.游戏类型 != SystemManager.GameType.单机版) WaitTimer.Stop();
@@ -403,7 +403,7 @@ namespace 炉边传说
                 else
                 {
                     GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.crystal.CurrentRemainPoint -= UseHandCard.使用成本;
-                    GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.IsUsedHeroAbility = true;
+                    GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.Hero.IsUsedHeroAbility = true;
                 }
                 actionlst.Add(ActionCode.strCrystal + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +
                              GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.crystal.CurrentRemainPoint + CardUtility.strSplitMark + GameManager.MyClientManager.actionStatus.AllRole.MyPublicInfo.crystal.CurrentFullPoint);

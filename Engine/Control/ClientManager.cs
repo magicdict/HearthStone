@@ -57,17 +57,17 @@ namespace Engine.Control
             actionStatus.AllRole.YourPublicInfo.crystal.CurrentFullPoint = 0;
             actionStatus.AllRole.YourPublicInfo.crystal.CurrentRemainPoint = 0;
 
-            actionStatus.AllRole.MyPublicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = true, 位置 = BattleFieldInfo.HeroPos };
-            actionStatus.AllRole.YourPublicInfo.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = false, 位置 = BattleFieldInfo.HeroPos };
+            actionStatus.AllRole.MyPublicInfo.Hero.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = true, 位置 = BattleFieldInfo.HeroPos };
+            actionStatus.AllRole.YourPublicInfo.Hero.战场位置 = new CardUtility.指定位置结构体() { 本方对方标识 = false, 位置 = BattleFieldInfo.HeroPos };
             actionStatus.AllRole.MyPublicInfo.BattleField.本方对方标识 = true;
             actionStatus.AllRole.YourPublicInfo.BattleField.本方对方标识 = false;
             //英雄技能：奥术飞弹
-            actionStatus.AllRole.MyPublicInfo.HeroAbility = (SpellCard)CardUtility.GetCardInfoBySN("A000056");
-            actionStatus.AllRole.YourPublicInfo.HeroAbility = (SpellCard)CardUtility.GetCardInfoBySN("A000056");
+            actionStatus.AllRole.MyPublicInfo.Hero.HeroSkillCardSN = "A000056";
+            actionStatus.AllRole.YourPublicInfo.Hero.HeroSkillCardSN = "A000056";
 
             if (SystemManager.游戏模式 == SystemManager.GameMode.塔防)
             {
-                actionStatus.AllRole.YourPublicInfo.LifePoint = CardUtility.Max;
+                actionStatus.AllRole.YourPublicInfo.Hero.LifePoint = CardUtility.Max;
                 actionStatus.AllRole.MyPublicInfo.crystal.CurrentFullPoint = 10;
                 actionStatus.AllRole.MyPublicInfo.crystal.CurrentRemainPoint = 10;
             }
@@ -119,8 +119,8 @@ namespace Engine.Control
             PlayInfo.连击状态 = false;
             //魔法水晶的增加
             PlayInfo.crystal.NewTurn();
-            PlayInfo.RemainAttackTimes = 1;
-            PlayInfo.IsUsedHeroAbility = false;
+            PlayInfo.Hero.RemainAttackTimes = 1;
+            PlayInfo.Hero.IsUsedHeroAbility = false;
             PlayInfo.BattleField.FreezeStatus();
             //重置攻击次数,必须放在状态变化之后！
             //原因是剩余攻击回数和状态有关！

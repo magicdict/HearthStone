@@ -18,12 +18,12 @@ namespace Engine.Utility
         public static string GetTargetListString(ActionStatus game)
         {
             List<string> Target = new List<string>();
-            if (game.AllRole.MyPublicInfo.能否成为动作对象) Target.Add(CardUtility.strMe + CardUtility.strSplitMark + BattleFieldInfo.HeroPos);
+            if (game.AllRole.MyPublicInfo.Hero.能否成为动作对象) Target.Add(CardUtility.strMe + CardUtility.strSplitMark + BattleFieldInfo.HeroPos);
             for (int i = 0; i < game.AllRole.MyPublicInfo.BattleField.MinionCount; i++)
             {
                 if (game.AllRole.MyPublicInfo.BattleField.BattleMinions[i].能否成为动作对象) Target.Add(CardUtility.strMe + CardUtility.strSplitMark + (i + 1).ToString("D1"));
             }
-            if (game.AllRole.YourPublicInfo.能否成为动作对象) Target.Add(CardUtility.strYou + CardUtility.strSplitMark + BattleFieldInfo.HeroPos);
+            if (game.AllRole.YourPublicInfo.Hero.能否成为动作对象) Target.Add(CardUtility.strYou + CardUtility.strSplitMark + BattleFieldInfo.HeroPos);
             for (int i = 0; i < game.AllRole.YourPublicInfo.BattleField.MinionCount; i++)
             {
                 if (game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].能否成为动作对象) Target.Add(CardUtility.strYou + CardUtility.strSplitMark + (i + 1).ToString("D1"));
@@ -232,12 +232,12 @@ namespace Engine.Utility
         /// <param name="game"></param>
         public static void SetTargetSelectEnable(CardUtility.位置选择用参数结构体 SelectOption, ActionStatus game)
         {
-            game.AllRole.MyPublicInfo.能否成为动作对象 = false;
+            game.AllRole.MyPublicInfo.Hero.能否成为动作对象 = false;
             for (int i = 0; i < game.AllRole.MyPublicInfo.BattleField.MinionCount; i++)
             {
                 game.AllRole.MyPublicInfo.BattleField.BattleMinions[i].能否成为动作对象 = false;
             }
-            game.AllRole.YourPublicInfo.能否成为动作对象 = false;
+            game.AllRole.YourPublicInfo.Hero.能否成为动作对象 = false;
             for (int i = 0; i < game.AllRole.YourPublicInfo.BattleField.MinionCount; i++)
             {
                 game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].能否成为动作对象 = false;
@@ -256,10 +256,10 @@ namespace Engine.Utility
                                     game.AllRole.MyPublicInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.AllRole.MyPublicInfo.BattleField.BattleMinions[i].潜行特性;
                                 }
                             }
-                            if (SelectOption.EffectTargetSelectRole == CardUtility.目标选择角色枚举.所有角色) game.AllRole.MyPublicInfo.能否成为动作对象 = true;
+                            if (SelectOption.EffectTargetSelectRole == CardUtility.目标选择角色枚举.所有角色) game.AllRole.MyPublicInfo.Hero.能否成为动作对象 = true;
                             break;
                         case CardUtility.目标选择角色枚举.英雄:
-                            game.AllRole.MyPublicInfo.能否成为动作对象 = true;
+                            game.AllRole.MyPublicInfo.Hero.能否成为动作对象 = true;
                             break;
                     }
                     break;
@@ -278,13 +278,13 @@ namespace Engine.Utility
                     switch (SelectOption.EffectTargetSelectRole)
                     {
                         case CardUtility.目标选择角色枚举.英雄:
-                            game.AllRole.YourPublicInfo.能否成为动作对象 = true;
+                            game.AllRole.YourPublicInfo.Hero.能否成为动作对象 = true;
                             break;
                         case CardUtility.目标选择角色枚举.随从:
                         case CardUtility.目标选择角色枚举.所有角色:
                             if (SelectOption.嘲讽限制 && Has嘲讽)
                             {
-                                game.AllRole.YourPublicInfo.能否成为动作对象 = false;
+                                game.AllRole.YourPublicInfo.Hero.能否成为动作对象 = false;
                                 for (int i = 0; i < game.AllRole.YourPublicInfo.BattleField.MinionCount; i++)
                                 {
                                     //只能选择嘲讽对象
@@ -304,7 +304,7 @@ namespace Engine.Utility
                             }
                             if (SelectOption.EffectTargetSelectRole == CardUtility.目标选择角色枚举.所有角色)
                             {
-                                if (!(SelectOption.嘲讽限制 && Has嘲讽)) game.AllRole.YourPublicInfo.能否成为动作对象 = true;
+                                if (!(SelectOption.嘲讽限制 && Has嘲讽)) game.AllRole.YourPublicInfo.Hero.能否成为动作对象 = true;
                             }
                             break;
                     }
@@ -313,15 +313,15 @@ namespace Engine.Utility
                     switch (SelectOption.EffectTargetSelectRole)
                     {
                         case CardUtility.目标选择角色枚举.英雄:
-                            game.AllRole.MyPublicInfo.能否成为动作对象 = true;
-                            game.AllRole.YourPublicInfo.能否成为动作对象 = true;
+                            game.AllRole.MyPublicInfo.Hero.能否成为动作对象 = true;
+                            game.AllRole.YourPublicInfo.Hero.能否成为动作对象 = true;
                             break;
                         case CardUtility.目标选择角色枚举.所有角色:
                         case CardUtility.目标选择角色枚举.随从:
                             if (SelectOption.EffectTargetSelectRole == CardUtility.目标选择角色枚举.所有角色)
                             {
-                                game.AllRole.MyPublicInfo.能否成为动作对象 = true;
-                                game.AllRole.YourPublicInfo.能否成为动作对象 = true;
+                                game.AllRole.MyPublicInfo.Hero.能否成为动作对象 = true;
+                                game.AllRole.YourPublicInfo.Hero.能否成为动作对象 = true;
                             }
                             for (int i = 0; i < game.AllRole.MyPublicInfo.BattleField.MinionCount; i++)
                             {
@@ -344,7 +344,7 @@ namespace Engine.Utility
                 {
                     if (SelectOption.CanNotSelectPos.位置 == BattleFieldInfo.HeroPos)
                     {
-                        game.AllRole.MyPublicInfo.能否成为动作对象 = false;
+                        game.AllRole.MyPublicInfo.Hero.能否成为动作对象 = false;
                     }
                     else
                     {
@@ -355,7 +355,7 @@ namespace Engine.Utility
                 {
                     if (SelectOption.CanNotSelectPos.位置 == BattleFieldInfo.HeroPos)
                     {
-                        game.AllRole.YourPublicInfo.能否成为动作对象 = false;
+                        game.AllRole.YourPublicInfo.Hero.能否成为动作对象 = false;
                     }
                     else
                     {

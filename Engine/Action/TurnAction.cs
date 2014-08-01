@@ -21,8 +21,8 @@ namespace Engine.Action
             gameStatus.AllRole.MyPublicInfo.连击状态 = false;
             //魔法水晶的增加
             gameStatus.AllRole.MyPublicInfo.crystal.NewTurn();
-            gameStatus.AllRole.MyPublicInfo.RemainAttackTimes = 1;
-            gameStatus.AllRole.MyPublicInfo.IsUsedHeroAbility = false;
+            gameStatus.AllRole.MyPublicInfo.Hero.RemainAttackTimes = 1;
+            gameStatus.AllRole.MyPublicInfo.Hero.IsUsedHeroAbility = false;
             gameStatus.AllRole.MyPublicInfo.BattleField.FreezeStatus();
             //重置攻击次数,必须放在状态变化之后！
             //原因是剩余攻击回数和状态有关！

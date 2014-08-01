@@ -1,5 +1,4 @@
 ﻿using Engine.Control;
-using Engine.Utility;
 using System;
 using System.Collections.Generic;
 
@@ -16,7 +15,7 @@ namespace Engine.Utility
         /// </summary>
         public static FullServerManager MyFullServerManager;
         /// <summary>
-        /// 
+        /// CS单机版游戏
         /// </summary>
         public static void CreateSingleGame(List<string> CardList)
         {
@@ -38,7 +37,9 @@ namespace Engine.Utility
             }
             MyFullServerManager.SetCardStack(false, CardStackSecond);
         }
-
+        /// <summary>
+        /// CS单机版塔防游戏
+        /// </summary>
         public static void CreateSingleGameDefance()
         {
             SystemManager.游戏类型 = SystemManager.GameType.单机版;
@@ -50,7 +51,7 @@ namespace Engine.Utility
                 {
                     if (item.触发事件类型 == CardUtility.事件类型枚举.死亡 && item.触发位置.本方对方标识 == false)
                     {
-                        x.AllRole.MyPublicInfo.LifePoint++;
+                        x.AllRole.MyPublicInfo.Hero.LifePoint++;
                     }
                 }
             };

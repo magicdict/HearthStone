@@ -1,6 +1,4 @@
 ﻿using Engine.Action;
-using Engine.Client;
-using Engine.Control;
 using Engine.Server;
 using Engine.Utility;
 using System;
@@ -28,19 +26,19 @@ namespace Engine.Effect
             List<string> Result = new List<string>();
             if (Direct == CardUtility.目标选择方向枚举.本方)
             {
-                if (game.AllRole.MyPublicInfo.Weapon != null)
+                if (game.AllRole.MyPublicInfo.Hero.Weapon != null)
                 {
-                    game.AllRole.MyPublicInfo.Weapon.攻击力 += int.Parse(攻击力);
-                    game.AllRole.MyPublicInfo.Weapon.耐久度 += int.Parse(耐久度);
+                    game.AllRole.MyPublicInfo.Hero.Weapon.攻击力 += int.Parse(攻击力);
+                    game.AllRole.MyPublicInfo.Hero.Weapon.耐久度 += int.Parse(耐久度);
                     Result.Add(ActionCode.strWeaponPoint + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark);
                 }
             }
             else
             {
-                if (game.AllRole.YourPublicInfo.Weapon != null)
+                if (game.AllRole.YourPublicInfo.Hero.Weapon != null)
                 {
-                    game.AllRole.YourPublicInfo.Weapon.攻击力 += int.Parse(攻击力);
-                    game.AllRole.YourPublicInfo.Weapon.耐久度 += int.Parse(耐久度);
+                    game.AllRole.YourPublicInfo.Hero.Weapon.攻击力 += int.Parse(攻击力);
+                    game.AllRole.YourPublicInfo.Hero.Weapon.耐久度 += int.Parse(耐久度);
                     Result.Add(ActionCode.strWeaponPoint + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark);
                 }
             }
@@ -58,13 +56,13 @@ namespace Engine.Effect
             string[] Op = actField[2].Split("/".ToCharArray());
             if (actField[1] == CardUtility.strMe)
             {
-                game.AllRole.MyPublicInfo.Weapon.攻击力 += int.Parse(Op[0]);
-                game.AllRole.MyPublicInfo.Weapon.耐久度 += int.Parse(Op[1]);
+                game.AllRole.MyPublicInfo.Hero.Weapon.攻击力 += int.Parse(Op[0]);
+                game.AllRole.MyPublicInfo.Hero.Weapon.耐久度 += int.Parse(Op[1]);
             }
             else
             {
-                game.AllRole.YourPublicInfo.Weapon.攻击力 += int.Parse(Op[0]);
-                game.AllRole.YourPublicInfo.Weapon.耐久度 += int.Parse(Op[1]);
+                game.AllRole.YourPublicInfo.Hero.Weapon.攻击力 += int.Parse(Op[0]);
+                game.AllRole.YourPublicInfo.Hero.Weapon.耐久度 += int.Parse(Op[1]);
             }
         }
         /// <summary>

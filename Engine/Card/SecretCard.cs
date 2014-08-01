@@ -150,7 +150,7 @@ namespace Engine.Card
                 game.AllRole.MyPrivateInfo.清除命中奥秘();
             }
             //对方（Fight也需要）
-            if (game.AllRole.YourPublicInfo.SecretCount != 0)
+            if (game.AllRole.YourPublicInfo.Hero.SecretCount != 0)
             {
                 var HitCard = ClientRequest.IsSecretHit(GameId.ToString(GameServer.GameIdFormat), true, actionlst);
                 if (!string.IsNullOrEmpty(HitCard))
@@ -160,7 +160,7 @@ namespace Engine.Card
                     {
                         Result.AddRange(RunSecretHit(hitCard.Split(CardUtility.strSplitDiffMark.ToCharArray())[0],
                                                                      hitCard.Split(CardUtility.strSplitDiffMark.ToCharArray())[1], false, game));
-                        game.AllRole.YourPublicInfo.SecretCount--;
+                        game.AllRole.YourPublicInfo.Hero.SecretCount--;
                     }
                 }
             }
@@ -230,7 +230,7 @@ namespace Engine.Card
             }
             else
             {
-                game.AllRole.YourPublicInfo.SecretCount--;
+                game.AllRole.YourPublicInfo.Hero.SecretCount--;
             }
         }
 

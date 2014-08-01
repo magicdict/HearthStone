@@ -3,6 +3,9 @@ HearthStone
 
 HearthStone C#
 
+Q.HearthStone无法编译
+A.HearthStone是使用了vNext的ASP.NET项目，Package没有放入Git进行管理
+
 Q.如果我想修改一些资料，怎么办？
 A.打开【卡牌整理版本.xls】文件，然后按照需求进行修改，然后运行【卡牌资料生成】工具
 

@@ -1,6 +1,4 @@
 ﻿using Engine.Action;
-using Engine.Client;
-using Engine.Control;
 using Engine.Utility;
 using System;
 using System.Collections.Generic;
@@ -30,16 +28,16 @@ namespace Engine.Effect
         {
             int ShieldPoint = ExpressHandler.GetEffectPoint(game, 护甲回复表达式);
             int HealthPoint = ExpressHandler.GetEffectPoint(game, 生命值回复表达式);
-            PlayInfo.AfterBeShield(ShieldPoint);
-            if (PlayInfo.AfterBeHealth(HealthPoint))
+            PlayInfo.Hero.AfterBeShield(ShieldPoint);
+            if (PlayInfo.Hero.AfterBeHealth(HealthPoint))
             {
                 game.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
                 {
                     触发事件类型 = CardUtility.事件类型枚举.治疗,
-                    触发位置 = PlayInfo.战场位置
+                    触发位置 = PlayInfo.Hero.战场位置
                 });
             }
-            return Server.ActionCode.strHealth + CardUtility.strSplitMark + PlayInfo.战场位置.ToString() + CardUtility.strSplitMark +
+            return Server.ActionCode.strHealth + CardUtility.strSplitMark + PlayInfo.Hero.战场位置.ToString() + CardUtility.strSplitMark +
                         HealthPoint.ToString() + CardUtility.strSplitMark + ShieldPoint.ToString();
         }
         /// <summary>
@@ -75,10 +73,10 @@ namespace Engine.Effect
                 //MyInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.AllRole.MyPublicInfo.AfterBeHealth(HealthPoint);
+                    game.AllRole.MyPublicInfo.Hero.AfterBeHealth(HealthPoint);
                     if (actField.Length == 5)
                     {
-                        game.AllRole.MyPublicInfo.AfterBeShield(int.Parse(actField[4]));
+                        game.AllRole.MyPublicInfo.Hero.AfterBeShield(int.Parse(actField[4]));
                     }
                 }
                 else
@@ -91,10 +89,10 @@ namespace Engine.Effect
                 //YourInfo
                 if (actField[2] == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                 {
-                    game.AllRole.YourPublicInfo.AfterBeHealth(HealthPoint);
+                    game.AllRole.YourPublicInfo.Hero.AfterBeHealth(HealthPoint);
                     if (actField.Length == 5)
                     {
-                        game.AllRole.YourPublicInfo.AfterBeShield(int.Parse(actField[4]));
+                        game.AllRole.YourPublicInfo.Hero.AfterBeShield(int.Parse(actField[4]));
                     }
                 }
                 else

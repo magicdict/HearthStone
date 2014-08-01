@@ -66,7 +66,7 @@ namespace Engine.Utility
                     {
                         case "MYWEAPONAP":
                             //本方武器攻击力
-                            if (game.AllRole.MyPublicInfo.Weapon != null) point = game.AllRole.MyPublicInfo.Weapon.攻击力;
+                            if (game.AllRole.MyPublicInfo.Hero.Weapon != null) point = game.AllRole.MyPublicInfo.Hero.Weapon.攻击力;
                             break;
                         default:
                             break;
@@ -100,7 +100,7 @@ namespace Engine.Utility
                     {
                         if (Position == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                         {
-                            return game.AllRole.MyPublicInfo.冰冻状态 != CardUtility.效果回合枚举.无效果;
+                            return game.AllRole.MyPublicInfo.Hero.冰冻状态 != CardUtility.效果回合枚举.无效果;
                         }
                         else
                         {
@@ -111,7 +111,7 @@ namespace Engine.Utility
                     {
                         if (Position == Client.BattleFieldInfo.HeroPos.ToString("D1"))
                         {
-                            return game.AllRole.YourPublicInfo.冰冻状态 != CardUtility.效果回合枚举.无效果;
+                            return game.AllRole.YourPublicInfo.Hero.冰冻状态 != CardUtility.效果回合枚举.无效果;
                         }
                         else
                         {

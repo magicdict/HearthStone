@@ -100,15 +100,15 @@ namespace Engine.Client
             /// <param name="pubInfo"></param>
             public void Init(PublicInfo pubInfo)
             {
-                攻击力 = pubInfo.实际攻击值;
-                护盾值 = pubInfo.ShieldPoint;
-                生命力 = pubInfo.LifePoint;
+                攻击力 = pubInfo.Hero.实际攻击值;
+                护盾值 = pubInfo.Hero.ShieldPoint;
+                生命力 = pubInfo.Hero.LifePoint;
                 可用水晶 = pubInfo.crystal.CurrentRemainPoint;
                 总体水晶 = pubInfo.crystal.CurrentFullPoint;
-                英雄技能 = pubInfo.HeroAbility.序列号;
-                英雄技能描述 = pubInfo.HeroAbility.描述;
-                使用英雄技能 = pubInfo.IsHeroAblityEnable(true);
-                可以攻击 = pubInfo.IsAttackEnable(true);
+                英雄技能 = pubInfo.Hero.HeroSkill.序列号;
+                英雄技能描述 = pubInfo.Hero.HeroSkill.描述;
+                使用英雄技能 = pubInfo.IsHeroSkillEnable(true);
+                可以攻击 = pubInfo.Hero.IsAttackEnable(true);
             }
         }
         /// <summary>

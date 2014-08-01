@@ -34,10 +34,10 @@ namespace Engine.Client
             if (攻击方Pos == BattleFieldInfo.HeroPos)
             {
                 //武器状态
-                if (AttackInfo.Weapon != null)
+                if (AttackInfo.Hero.Weapon != null)
                 {
-                    AttackInfo.Weapon.耐久度--;
-                    AttackInfo.RemainAttackTimes = 0;
+                    AttackInfo.Hero.Weapon.耐久度--;
+                    AttackInfo.Hero.RemainAttackTimes = 0;
                 }
             }
             else
@@ -68,12 +68,12 @@ namespace Engine.Client
             else
             {
                 //护甲不引发伤害事件
-                if (AttackInfo.AfterBeAttack(AttackedPoint))
+                if (AttackInfo.Hero.AfterBeAttack(AttackedPoint))
                 {
                     gameStatus.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型枚举.受伤,
-                        触发位置 = AttackInfo.战场位置
+                        触发位置 = AttackInfo.Hero.战场位置
                     });
                 }
             }
@@ -87,7 +87,7 @@ namespace Engine.Client
             else
             {
                 //其实除了武器以外，其他方法也可使英雄有攻击力！
-                if (AttackInfo.Weapon != null) AttackPoint = AttackInfo.Weapon.攻击力;
+                if (AttackInfo.Hero.Weapon != null) AttackPoint = AttackInfo.Hero.Weapon.攻击力;
             }
             if (被攻击方Pos != BattleFieldInfo.HeroPos)
             {
@@ -103,12 +103,12 @@ namespace Engine.Client
             else
             {
                 //护甲不引发伤害事件
-                if (AttackedInfo.AfterBeAttack(AttackPoint))
+                if (AttackedInfo.Hero.AfterBeAttack(AttackPoint))
                 {
                     gameStatus.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
                     {
                         触发事件类型 = CardUtility.事件类型枚举.受伤,
-                        触发位置 = AttackedInfo.战场位置
+                        触发位置 = AttackedInfo.Hero.战场位置
                     });
                 }
             }

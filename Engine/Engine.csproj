@@ -49,6 +49,7 @@
     <Compile Include="Action\UseMinionAction.cs" />
     <Compile Include="Action\UseSpellAction.cs" />
     <Compile Include="AI\DoAction.cs" />
+    <Compile Include="Card\HeroCard.cs" />
     <Compile Include="Client\BattleEventHandler.cs" />
     <Compile Include="Client\FightHandler.cs" />
     <Compile Include="Control\ClientManager.cs" />

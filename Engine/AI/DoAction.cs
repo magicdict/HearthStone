@@ -21,21 +21,21 @@ namespace Engine.AI
             PrivateInfo PlaySelfInfo = gameStatus.AllRole.MyPrivateInfo;
             List<String> Result = new List<string>();
             //优先使用技能
-            if (PlayInfo.IsHeroAblityEnable(true))
+            if (PlayInfo.IsHeroSkillEnable(true))
             {
                 //召唤
-                if (PlayInfo.HeroAbility.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.AtomicEffectType ==
+                if (PlayInfo.Hero.HeroSkill.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.AtomicEffectType ==
                     Effect.AtomicEffectDefine.AtomicEffectEnum.召唤 && 
                     PlayInfo.BattleField.MinionCount != SystemManager.MaxMinionCount)
                 {
                     gameStatus.Interrupt.ActionCard = new MinimizeBattleInfo.HandCardInfo();
-                    gameStatus.Interrupt.ActionCard.Init(PlayInfo.HeroAbility);
+                    gameStatus.Interrupt.ActionCard.Init(PlayInfo.Hero.HeroSkill);
                     gameStatus.ActionName = "USEHEROSKILL";
                     gameStatus.Interrupt.Step = 1;
                     gameStatus.Interrupt.ActionName = "SPELL";
-                    PlayInfo.crystal.CurrentRemainPoint -= PlayInfo.HeroAbility.使用成本;
-                    PlayInfo.IsUsedHeroAbility = true;
-                    RunAction.StartActionCS(gameStatus, PlayInfo.HeroAbility.序列号, new string[] { });
+                    PlayInfo.crystal.CurrentRemainPoint -= PlayInfo.Hero.HeroSkill.使用成本;
+                    PlayInfo.Hero.IsUsedHeroAbility = true;
+                    RunAction.StartActionCS(gameStatus, PlayInfo.Hero.HeroSkill.序列号, new string[] { });
                     gameStatus.Interrupt.ActionName = "SPELL";
                     return;
                 }
