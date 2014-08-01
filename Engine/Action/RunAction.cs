@@ -75,7 +75,7 @@ namespace Engine.Action
                     {
                         ActionCodeLst.AddRange(ResultArg);
                         //英雄技能等的时候，不算[本方施法] 
-                        if (ablity.法术卡牌类型 == CardBasicInfo.法术卡牌类型枚举.原生卡牌)
+                        if (ablity.法术卡牌类型 == CardBasicInfo.法术卡牌类型枚举.普通卡牌)
                             actionStatus.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
                             {
                                 触发事件类型 = CardUtility.事件类型枚举.施法,

@@ -26,7 +26,7 @@ namespace Engine.Card
                 switch (序列号.Substring(1, 1))
                 {
                     case "0":
-                        return 法术卡牌类型枚举.原生卡牌;
+                        return 法术卡牌类型枚举.普通卡牌;
                     case "1":
                         return 法术卡牌类型枚举.英雄技能;
                     case "2":

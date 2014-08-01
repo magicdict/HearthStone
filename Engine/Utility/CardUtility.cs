@@ -219,9 +219,9 @@ namespace Engine.Utility
         /// </summary>
         public enum 职业枚举
         {
+            中立,
             猎人,
             盗贼,
-            中立,
             德鲁伊,
             术士,
             圣骑士,

@@ -1,6 +1,5 @@
 ﻿using Engine.Action;
 using Engine.Client;
-using Engine.Control;
 using Engine.Server;
 using Engine.Utility;
 using System;
@@ -25,11 +24,11 @@ namespace Engine.Card
         /// <summary>
         /// 附加信息
         /// </summary>
-        public String AdditionInfo = String.Empty;
+        public string AdditionInfo = string.Empty;
         /// <summary>
         /// 是否已经触发
         /// </summary>
-        public Boolean IsHitted = false;
+        public bool IsHitted = false;
         /// <summary>
         /// 奥秘是否命中
         /// </summary>
@@ -37,14 +36,14 @@ namespace Engine.Card
         /// <param name="ActionCode"></param>
         /// <param name="HitMySelf">是否检查自己是否触发自己的奥秘</param>
         /// <returns></returns>
-        public static Boolean IsSecretHit(String SecretCardSN, String ActionCode, Boolean HitMySelf)
+        public static bool IsSecretHit(string SecretCardSN, string ActionCode, bool HitMySelf)
         {
             //HitMySelf 
             //这里需要关注方向性问题
             SecretCard card = (SecretCard)CardUtility.GetCardInfoBySN(SecretCardSN);
-            var actiontype = Engine.Server.ActionCode.GetActionType(ActionCode);
-            var actionField = ActionCode.Split(Engine.Utility.CardUtility.strSplitMark.ToCharArray());
-            Boolean IsHit = false;
+            var actiontype = Server.ActionCode.GetActionType(ActionCode);
+            var actionField = ActionCode.Split(CardUtility.strSplitMark.ToCharArray());
+            bool IsHit = false;
             switch (card.Condition)
             {
                 case SecretCondition.对方召唤随从:
@@ -67,7 +66,7 @@ namespace Engine.Card
             }
             return IsHit;
         }
-        public  static Boolean IsSecretAction(String actionDetail)
+        public static bool IsSecretAction(string actionDetail)
         {
             if (actionDetail.StartsWith(ActionCode.strSecret + CardUtility.strSplitMark))
             {
@@ -127,9 +126,9 @@ namespace Engine.Card
         /// </summary>
         /// <param name="actionlst"></param>
         /// <returns></returns>
-        public static List<String> 奥秘计算(List<String> actionlst, ActionStatus game, int GameId)
+        public static List<string> 奥秘计算(List<string> actionlst, ActionStatus game, int GameId)
         {
-            List<String> Result = new List<string>();
+            List<string> Result = new List<string>();
             //奥秘计算 START
             //本方（Fight也需要）
             if (game.AllRole.MyPrivateInfo.奥秘列表.Count != 0)
@@ -139,10 +138,10 @@ namespace Engine.Card
                 {
                     foreach (var secret in game.AllRole.MyPrivateInfo.奥秘列表)
                     {
-                        if ((!secret.IsHitted) && Engine.Card.SecretCard.IsSecretHit(secret.序列号, actionlst[i], true))
+                        if ((!secret.IsHitted) && IsSecretHit(secret.序列号, actionlst[i], true))
                         {
                             //奥秘执行
-                            Result.AddRange(Engine.Card.SecretCard.RunSecretHit(secret.序列号, actionlst[i], true, game));
+                            Result.AddRange(RunSecretHit(secret.序列号, actionlst[i], true, game));
                             secret.IsHitted = true;
                         }
                     }
@@ -154,13 +153,13 @@ namespace Engine.Card
             if (game.AllRole.YourPublicInfo.SecretCount != 0)
             {
                 var HitCard = ClientRequest.IsSecretHit(GameId.ToString(GameServer.GameIdFormat), true, actionlst);
-                if (!String.IsNullOrEmpty(HitCard))
+                if (!string.IsNullOrEmpty(HitCard))
                 {
-                    var HitCardList = HitCard.Split(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray());
+                    var HitCardList = HitCard.Split(CardUtility.strSplitArrayMark.ToCharArray());
                     foreach (var hitCard in HitCardList)
                     {
-                        Result.AddRange(Engine.Card.SecretCard.RunSecretHit(hitCard.Split(Engine.Utility.CardUtility.strSplitDiffMark.ToCharArray())[0],
-                                                                     hitCard.Split(Engine.Utility.CardUtility.strSplitDiffMark.ToCharArray())[1], false, game));
+                        Result.AddRange(RunSecretHit(hitCard.Split(CardUtility.strSplitDiffMark.ToCharArray())[0],
+                                                                     hitCard.Split(CardUtility.strSplitDiffMark.ToCharArray())[1], false, game));
                         game.AllRole.YourPublicInfo.SecretCount--;
                     }
                 }
@@ -174,24 +173,24 @@ namespace Engine.Card
         /// </summary>
         /// <param name="IsFirst">是否为先手</param>
         /// <returns></returns>
-        public string SecretHitCheck(String Action, bool IsFirst, ActionStatus gameStatus)
+        public string SecretHitCheck(string Action, bool IsFirst, ActionStatus gameStatus)
         {
             //奥秘判断 注意：这个动作并不改变FirstSecret和SecondSecret
             //1.例如，发生战斗的时候，如果两个随从都死了，
             //同时两边都有随从死亡的奥秘，则整个动作序列可能触发两边的奥秘
             //<本方奥秘在客户端判断>注意方向
             //2.服务器端只做判断，并且返回命中奥秘的列表，不做任何其他操作！
-            List<String> HITCardList = new List<string>();
-            foreach (var actionDetail in Action.Split(Engine.Utility.CardUtility.strSplitArrayMark.ToCharArray()))
+            List<string> HITCardList = new List<string>();
+            foreach (var actionDetail in Action.Split(CardUtility.strSplitArrayMark.ToCharArray()))
             {
                 //检查Second
                 if (IsFirst && gameStatus.AllRole.YourPrivateInfo.奥秘列表.Count != 0)
                 {
                     for (int i = 0; i < gameStatus.AllRole.YourPrivateInfo.奥秘列表.Count; i++)
                     {
-                        if (SecretCard.IsSecretHit(gameStatus.AllRole.YourPrivateInfo.奥秘列表[i].序列号, actionDetail, false))
+                        if (IsSecretHit(gameStatus.AllRole.YourPrivateInfo.奥秘列表[i].序列号, actionDetail, false))
                         {
-                            HITCardList.Add(gameStatus.AllRole.YourPrivateInfo.奥秘列表[i] + Engine.Utility.CardUtility.strSplitDiffMark + actionDetail);
+                            HITCardList.Add(gameStatus.AllRole.YourPrivateInfo.奥秘列表[i] + CardUtility.strSplitDiffMark + actionDetail);
                         }
                     }
                 }
@@ -200,9 +199,9 @@ namespace Engine.Card
                 {
                     for (int i = 0; i < gameStatus.AllRole.MyPrivateInfo.奥秘列表.Count; i++)
                     {
-                        if (SecretCard.IsSecretHit(gameStatus.AllRole.MyPrivateInfo.奥秘列表[i].序列号, actionDetail, false))
+                        if (IsSecretHit(gameStatus.AllRole.MyPrivateInfo.奥秘列表[i].序列号, actionDetail, false))
                         {
-                            HITCardList.Add(gameStatus.AllRole.MyPrivateInfo.奥秘列表[i] + Engine.Utility.CardUtility.strSplitDiffMark + actionDetail);
+                            HITCardList.Add(gameStatus.AllRole.MyPrivateInfo.奥秘列表[i] + CardUtility.strSplitDiffMark + actionDetail);
                         }
                     }
                 }
@@ -214,11 +213,11 @@ namespace Engine.Card
         /// </summary>
         /// <param name="game"></param>
         /// <param name="actField"></param>
-        public static void ReRunSecret(ActionStatus game, String[] actField)
+        public static void ReRunSecret(ActionStatus game, string[] actField)
         {
             if (actField[1] == CardUtility.strYou)
             {
-                Engine.Card.SecretCard Hit = new SecretCard();
+                SecretCard Hit = new SecretCard();
                 foreach (var secret in game.AllRole.MyPrivateInfo.奥秘列表)
                 {
                     if (secret.序列号 == actField[2])
@@ -242,13 +241,13 @@ namespace Engine.Card
         /// <param name="ActionCode"></param>
         /// <param name="HitMySelf"></param>
         /// <returns></returns>
-        public static List<String> RunSecretHit(String SecretCardSN, String ActionCode, Boolean HitMySelf, ActionStatus game)
+        public static List<string> RunSecretHit(string SecretCardSN, string ActionCode, bool HitMySelf, ActionStatus game)
         {
-            List<String> ActionLst = new List<string>();
+            List<string> ActionLst = new List<string>();
             SecretCard card = (SecretCard)CardUtility.GetCardInfoBySN(SecretCardSN);
-            var actiontype = Engine.Server.ActionCode.GetActionType(ActionCode);
-            var actionField = ActionCode.Split(Engine.Utility.CardUtility.strSplitMark.ToCharArray());
-            ActionLst.Add(Engine.Server.ActionCode.strHitSecret + CardUtility.strSplitMark + (HitMySelf ? CardUtility.strMe : CardUtility.strYou) +
+            var actiontype = Server.ActionCode.GetActionType(ActionCode);
+            var actionField = ActionCode.Split(CardUtility.strSplitMark.ToCharArray());
+            ActionLst.Add(Server.ActionCode.strHitSecret + CardUtility.strSplitMark + (HitMySelf ? CardUtility.strMe : CardUtility.strYou) +
                                                                 CardUtility.strSplitMark + SecretCardSN);
             //HitMySelf 在自己的回合运行自己的奥秘
             switch (card.Condition)
@@ -261,8 +260,8 @@ namespace Engine.Card
                         //SUMMON#YOU#M000001#POS
                         //例如：亡语的时候可能召唤一个新的随从
                         //PointEffect.RunPointEffect(game.AllRole.YourBattleInfo.BattleMinions[int.Parse(actionField[3]) - 1],card.AdditionInfo);
-                        ActionLst.Add(Engine.Server.ActionCode.strPoint + Engine.Utility.CardUtility.strSplitMark + CardUtility.strYou + Engine.Utility.CardUtility.strSplitMark +
-                                    actionField[3] + Engine.Utility.CardUtility.strSplitMark + card.AdditionInfo);
+                        ActionLst.Add(Server.ActionCode.strPoint + CardUtility.strSplitMark + CardUtility.strYou + CardUtility.strSplitMark +
+                                    actionField[3] + CardUtility.strSplitMark + card.AdditionInfo);
                     }
                     else
                     {
@@ -271,15 +270,15 @@ namespace Engine.Card
                         {
                             //SUMMON#YOU#M000001#POS
                             //PointEffect.RunPointEffect(game.MyInfo.BattleField.BattleMinions[int.Parse(actionField[3]) - 1], card.AdditionInfo);
-                            ActionLst.Add(Engine.Server.ActionCode.strPoint + Engine.Utility.CardUtility.strSplitMark + CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
-                                    actionField[3] + Engine.Utility.CardUtility.strSplitMark + card.AdditionInfo);
+                            ActionLst.Add(Server.ActionCode.strPoint + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +
+                                    actionField[3] + CardUtility.strSplitMark + card.AdditionInfo);
                         }
                         else
                         {
                             //MINION#M000001#1
                             //PointEffect.RunPointEffect(game.MyInfo.BattleField.BattleMinions[int.Parse(actionField[2]) - 1], card.AdditionInfo);
-                            ActionLst.Add(Engine.Server.ActionCode.strPoint + Engine.Utility.CardUtility.strSplitMark + CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
-                                    actionField[2] + Engine.Utility.CardUtility.strSplitMark + card.AdditionInfo);
+                            ActionLst.Add(Server.ActionCode.strPoint + CardUtility.strSplitMark + CardUtility.strMe + CardUtility.strSplitMark +
+                                    actionField[2] + CardUtility.strSplitMark + card.AdditionInfo);
                         }
                     }
                     break;

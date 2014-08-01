@@ -68,6 +68,7 @@
     <Compile Include="Effect\RoleEffect\StatusEffect.cs" />
     <Compile Include="Effect\SystemEffect\SummonEffect.cs" />
     <Compile Include="Effect\SystemEffect\WeaponPointEffect.cs" />
+    <Compile Include="Utility\GameManager.cs" />
     <Compile Include="Utility\SelectUtility.cs" />
     <Compile Include="Utility\SystemManager.cs" />
     <Compile Include="Client\BattleFieldInfo.cs" />

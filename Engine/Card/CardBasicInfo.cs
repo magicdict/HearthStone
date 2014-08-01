@@ -94,9 +94,9 @@ namespace Engine.Card
         public enum 法术卡牌类型枚举
         {
             /// <summary>
-            /// 原生卡牌
+            /// 普通卡牌
             /// </summary>
-            原生卡牌,
+            普通卡牌,
             /// <summary>
             /// 英雄技能
             /// </summary>
