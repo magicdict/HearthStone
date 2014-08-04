@@ -4,6 +4,7 @@
 *.xlsx
 *.suo
 *.zip
+/vNextPublish
 /packages
 /炉石设计/Fleck-master
 /炉石设计/lhgdialog

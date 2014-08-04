@@ -11,5 +11,10 @@ namespace HearthStone.Controllers
         {
             return View();
         }
+        // GET: /<controller>/
+        public IActionResult Game()
+        {
+            return View();
+        }
     }
 }

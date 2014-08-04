@@ -31,12 +31,45 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DevelopmentServerPort>55064</DevelopmentServerPort>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DevelopmentServerPort>51524</DevelopmentServerPort>
+  </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CardEditorController.cs" />
     <Compile Include="HomeController.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CSS\images\animated-overlay.gif" />
+    <Content Include="CSS\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="CSS\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="CSS\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="CSS\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="CSS\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="CSS\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="CSS\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="CSS\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="CSS\images\ui-icons_222222_256x240.png" />
+    <Content Include="CSS\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="CSS\images\ui-icons_454545_256x240.png" />
+    <Content Include="CSS\images\ui-icons_888888_256x240.png" />
+    <Content Include="CSS\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="CSS\jquery-ui.min.css" />
+    <Content Include="CSS\jquery-ui.theme.min.css" />
+    <Content Include="images\BackGround.jpg" />
+    <Content Include="images\FireBall.jpg" />
+    <Content Include="images\Hero.jpg" />
+    <Content Include="images\Weapon.jpg" />
     <Content Include="project.json" />
+    <Content Include="Properties\PublishProfiles\HearthStone.pubxml" />
+    <Content Include="Properties\PublishProfiles\HearthStone.pubxml.user" />
+    <Content Include="Script\Game.js" />
+    <Content Include="Script\GameUI.js" />
+    <Content Include="Script\jquery-ui.min.js" />
+    <Content Include="Script\jquery.js" />
+    <Content Include="Views\CardEditor\Hero.cshtml" />
+    <Content Include="Views\CardEditor\Index.cshtml" />
+    <Content Include="Views\Home\Game.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\AspNet\Microsoft.Web.AspNet.targets" Condition="'$(VSToolsPath)' != ''" />

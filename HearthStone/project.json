@@ -2,13 +2,14 @@
     "dependencies": {
         "Microsoft.AspNet.Server.IIS": "1.0.0-alpha2",
         "Microsoft.AspNet.Mvc": "6.0.0-alpha2",
-        "Microsoft.AspNet.Server.WebListener": "1.0.0-alpha2"
+        "Microsoft.AspNet.Server.WebListener": "1.0.0-alpha2",
+        "Microsoft.AspNet.StaticFiles": "1.0.0-alpha2"
     },
     "configurations": {
         "net451": { },
         "k10": { }
     },
     "commands": {
-         "web": "Microsoft.AspNet.Hosting server=Microsoft.AspNet.Server.WebListener server.urls=http://localhost:5001" 
+         "web": "Microsoft.AspNet.Hosting server=Microsoft.AspNet.Server.WebListener server.urls=http://121.199.16.71/" 
     }
 }

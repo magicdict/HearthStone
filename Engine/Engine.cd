@@ -1,0 +1,383 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Engine.Action.ActionStatus" Collapsed="true">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABBAECAAAAAAAQABAAAAAGAACCQAA=</HashCode>
+      <FileName>Action\ActionStatus.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Action.ProcessAction" Collapsed="true">
+    <Position X="15.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Action\ProcessAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Action.RunAction" Collapsed="true">
+    <Position X="19" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAgCAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Action\RunAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Action.TurnAction" Collapsed="true">
+    <Position X="12" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Action\TurnAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Action.UseMinionAction" Collapsed="true">
+    <Position X="13.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAA=</HashCode>
+      <FileName>Action\UseMinionAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Action.UseSpellAction" Collapsed="true">
+    <Position X="15.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Action\UseSpellAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.AI.DoAction" Collapsed="true">
+    <Position X="17.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEAAAAAABAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AI\DoAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Card.CardBasicInfo" Collapsed="true">
+    <Position X="5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAgQIAAAAAAABBAAEiQAIAQAAAACAA=</HashCode>
+      <FileName>Card\CardBasicInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Card.HeroCard" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAACgAQQAAACIAABAAAAAAAAAAEgAAIAQAABUAIQ=</HashCode>
+      <FileName>Card\HeroCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Card.MinionCard" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BGCAhAAIgAoACiAAFAFgAMkEIAMAwBEhQBEQBARAgAE=</HashCode>
+      <FileName>Card\MinionCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Card.SecretCard" Collapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAABAAAAAAAAAAKoAAwAAAEAAAAAAAAA=</HashCode>
+      <FileName>Card\SecretCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Card.SpellCard" Collapsed="true">
+    <Position X="7.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAgIABBAAAAACAAAAABAAAAEAAAAAAABAAAAEAAA=</HashCode>
+      <FileName>Card\SpellCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Card.WeaponCard" Collapsed="true">
+    <Position X="9.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIQAAAAAAAAAAAAAAAAABAAAAAAAAAIAAA=</HashCode>
+      <FileName>Card\WeaponCard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Client.BattleEventHandler" Collapsed="true">
+    <Position X="19" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAACAAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Client\BattleEventHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Client.BattleFieldInfo" Collapsed="true">
+    <Position X="20.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAGIABAgBAAAAAAAAAFECAQAAAABACAAAAAgAIAAAA=</HashCode>
+      <FileName>Client\BattleFieldInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Client.CardDeck" Collapsed="true">
+    <Position X="12" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAgAAAAAAAAEAAAAAAACCACAAAAABA=</HashCode>
+      <FileName>Client\CardDeck.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Client.ClientRequest" Collapsed="true">
+    <Position X="20.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAACAABAAAAAAAhAAAACAQAAEAAAEAAAMEABAAAAAAA=</HashCode>
+      <FileName>Client\ClientRequest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Client.Crystal" Collapsed="true">
+    <Position X="12" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAQAAAAAAAAIAACAAAAAAAAAIAACAAAAAAAAAAQ=</HashCode>
+      <FileName>Client\Crystal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Client.FightHandler" Collapsed="true">
+    <Position X="12" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Client\FightHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Client.MinimizeBattleInfo" Collapsed="true">
+    <Position X="22.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAAAAAAAAAAAAAAAAAAEAACAAAABCBAAAAAA=</HashCode>
+      <FileName>Client\MinimizeBattleInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Client.PublicInfo" Collapsed="true">
+    <Position X="17.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAAAAAABAAEAAAAACBAAQAAAAAAAAAAgBAQA=</HashCode>
+      <FileName>Info\PlayerInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Client.PrivateInfo" Collapsed="true">
+    <Position X="13.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAACAAAAAAAAAAAAQAo=</HashCode>
+      <FileName>Info\PlayerInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Client.ClientPlayerInfo" Collapsed="true">
+    <Position X="19" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAIAAAQAAAAAAA=</HashCode>
+      <FileName>Info\StatusInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Client.ServerPlayerInfo" Collapsed="true">
+    <Position X="12" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAEAAAAQAAAAAAA=</HashCode>
+      <FileName>Info\StatusInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Client.FullPlayInfo" Collapsed="true">
+    <Position X="13.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAAAAAAAAEIAAAQAAAAAAA=</HashCode>
+      <FileName>Info\StatusInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Control.ClientManager" Collapsed="true">
+    <Position X="17.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EQgAAAAABAAAAAAAAAEAAAAkACAQAAAIIAAAiAAAAAA=</HashCode>
+      <FileName>Control\ClientManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Control.FullServerManager" Collapsed="true">
+    <Position X="15.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAgAAEAQAAAAAgQAAAEAAAAgEAAAAAAYIAAACAAAAEA=</HashCode>
+      <FileName>Control\FullServerManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Control.ServerManager" Collapsed="true">
+    <Position X="22.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAEBQAAAAAAQAAAEgAAAAEAAAQAAIIAAACAAAAEA=</HashCode>
+      <FileName>Control\ServerManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Effect.AtomicEffectDefine" Collapsed="true">
+    <Position X="15.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAQAQAACAA=</HashCode>
+      <FileName>Effect\AtomicEffectDefine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Effect.EffectDefine" Collapsed="true">
+    <Position X="19" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAFAIAAAAgAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effect\EffectDefine.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Effect.Effecthandler" Collapsed="true">
+    <Position X="20.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effect\Effecthandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Effect.AttackEffect" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Effect\RoleEffect\AttackEffect.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Engine.Effect.CallBackEffect" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAABAAAAAgAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effect\RoleEffect\CallBackEffect.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Engine.Effect.HealthEffect" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="20.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Effect\RoleEffect\HealthEffect.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Engine.Effect.PointEffect" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="12" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Effect\RoleEffect\PointEffect.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Engine.Effect.StatusEffect" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Effect\RoleEffect\StatusEffect.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Engine.Effect.TransformEffect" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <FileName>Effect\RoleEffect\TransformEffect.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Engine.Effect.ControlEffect" Collapsed="true">
+    <Position X="22.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effect\Special\ControlEffect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Effect.CardEffect" Collapsed="true">
+    <Position X="13.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAQAAgAgAAAABAAAAAAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effect\SystemEffect\CardEffect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Effect.CrystalEffect" Collapsed="true">
+    <Position X="13.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAgAAAAAAAAAAAAAAAAAIAIAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Effect\SystemEffect\CrystalEffect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Effect.SummonEffect" Collapsed="true">
+    <Position X="17.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAgAAAAAAAAAAAAAAAAIAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effect\SystemEffect\SummonEffect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Effect.WeaponPointEffect" Collapsed="true">
+    <Position X="17.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAgAAAAAAAAAAAAAAAAAAAIBAAAAAAAAAIAAA=</HashCode>
+      <FileName>Effect\SystemEffect\WeaponPointEffect.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Server.ActionCode" Collapsed="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAIAGEBQAKgAAJAAAAAABAAQgAACogAAAAAAAAIBAAA=</HashCode>
+      <FileName>Server\ActionCode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Server.GameServer" Collapsed="true">
+    <Position X="19" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAADAABMAAAICAhAAAEAAAAAEAEAAIQIIyAAAAAAAAA=</HashCode>
+      <FileName>Server\GameServer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Server.ServerResponse" Collapsed="true">
+    <Position X="13.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAAABAACABAAAAAAA=</HashCode>
+      <FileName>Server\ServerResponse.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Utility.TcpSocketServer" Collapsed="true">
+    <Position X="20.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAABAAAAAAAABAAAAABAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Server\TcpSocketServer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Utility.WebSocketServer" Collapsed="true">
+    <Position X="19" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAACAAAAAAAAAAAAAAAAAAAACAJAAAAAAAAAI=</HashCode>
+      <FileName>Server\WebSocketServer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Utility.CardUtility" Collapsed="true">
+    <Position X="15.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAACgAAFBIAAEEAQAAAAAABEQAABAAIgICAAAEABA=</HashCode>
+      <FileName>Utility\CardUtility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Utility.CSharpUtility" Collapsed="true">
+    <Position X="15.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAQAAAAAAAAAAAACAAAAIAAAAIACAAACAAgA=</HashCode>
+      <FileName>Utility\CSharpUtility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Utility.ExpressHandler" Collapsed="true">
+    <Position X="22.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAEBAgAAAAAAAIAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Utility\ExpressHandler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Utility.GameManager" Collapsed="true">
+    <Position X="17.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAEAAEBAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utility\GameManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Utility.SelectUtility" Collapsed="true">
+    <Position X="20.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAACAAAAAAAAAAAAAAACAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utility\SelectUtility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Engine.Utility.SystemManager" Collapsed="true">
+    <Position X="19" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAEAAAAUAAAAAAAAAAAAAEAAAAAAAAGGAIAAAAE=</HashCode>
+      <FileName>Utility\SystemManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="Engine.Effect.IAtomicEffect" Collapsed="true">
+    <Position X="12" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAABAAAAAgAAAAAAAIAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Effect\IAtomicEffect.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

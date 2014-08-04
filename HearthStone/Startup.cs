@@ -12,6 +12,8 @@ namespace HearthStone
             {
                 services.AddMvc();
             });
+            // Add static files to the request pipeline
+            app.UseStaticFiles();
             app.UseMvc();
         }
     }

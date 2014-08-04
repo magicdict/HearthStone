@@ -99,6 +99,7 @@
     <Compile Include="Server\TcpSocketServer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Engine.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
