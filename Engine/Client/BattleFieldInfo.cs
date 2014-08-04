@@ -1,9 +1,5 @@
-﻿using Engine.Action;
-using Engine.Card;
-using Engine.Control;
-using Engine.Effect;
+﻿using Engine.Card;
 using Engine.Utility;
-using System;
 using System.Collections.Generic;
 
 namespace Engine.Client
@@ -46,7 +42,7 @@ namespace Engine.Client
         /// <summary>
         /// 方向标志
         /// </summary>
-        public Boolean 本方对方标识;
+        public bool 本方对方标识;
         /// <summary>
         /// 当前随从数量
         /// </summary>
@@ -75,7 +71,7 @@ namespace Engine.Client
         /// 卡牌入战场
         /// </summary>
         /// <param name="CardSn"></param>
-        public void AppendToBattle(String CardSn)
+        public void AppendToBattle(string CardSn)
         {
             int Position = MinionCount + 1;
             PutToBattle(Position, CardSn);
@@ -94,9 +90,9 @@ namespace Engine.Client
         /// </summary>
         /// <param name="Position"></param>
         /// <param name="CardSn"></param>
-        public void PutToBattle(int Position, String CardSn)
+        public void PutToBattle(int Position, string CardSn)
         {
-            Engine.Card.CardBasicInfo card = Engine.Utility.CardUtility.GetCardInfoBySN(CardSn);
+            CardBasicInfo card = CardUtility.GetCardInfoBySN(CardSn);
             PutToBattle(Position, (MinionCard)card);
         }
         /// <summary>
@@ -133,74 +129,6 @@ namespace Engine.Client
             }
         }
         /// <summary>
-        /// 发动战吼[Run BattleCry Effect]
-        /// </summary>
-        /// <param name="MinionPos"></param>
-        ///<remarks>自身/相邻类型</remarks>
-        //public List<String> 发动战吼(int MinionPos, ActionStatus game)
-        //{
-        //    List<String> ActionCodeLst = new List<string>();
-        //    if (!String.IsNullOrEmpty(BattleMinions[MinionPos - 1].战吼效果))
-        //    {
-        //        List<int> PosList = new List<int>();
-        //        if (BattleMinions[MinionPos - 1].战吼类型 == MinionCard.战吼类型枚举.相邻)
-        //        {
-        //            //相邻左边随从存在？
-        //            if (MinionPos != 1) PosList.Add(MinionPos - 1);
-        //            //相邻右边随从存在？
-        //            if (MinionPos != MinionCount) PosList.Add(MinionPos + 1);
-        //        }
-        //        else
-        //        {
-        //            //Self
-        //            PosList.Add(MinionPos);
-        //        }
-        //        //处理状态和数值变化
-        //        var 战吼效果 = (Engine.Card.SpellCard)Engine.Utility.CardUtility.GetCardInfoBySN(BattleMinions[MinionPos - 1].战吼效果);
-        //        if (战吼效果 != null)
-        //        {
-        //            foreach (int PosInfo in PosList)
-        //            {
-        //                switch (战吼效果.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.AtomicEffectType)
-        //                {
-        //                    case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.增益:
-        //                        IAtomicEffect IAtomicPoint = new PointEffect();
-        //                        IAtomicPoint.GetField(战吼效果.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.InfoArray);
-        //                        IAtomicPoint.DealMinion(game, BattleMinions[PosInfo - 1]);
-        //                        ActionCodeLst.Add(Engine.Server.ActionCode.strPoint + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
-        //                        PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼效果.FirstAbilityDefine.MainAbilityDefine);
-        //                        break;
-        //                    case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.状态:
-        //                        IAtomicEffect IAtomicStatus = new StatusEffect();
-        //                        IAtomicStatus.GetField(战吼效果.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.InfoArray);
-        //                        IAtomicStatus.DealMinion(game, BattleMinions[PosInfo - 1]);
-        //                        ActionCodeLst.Add(Engine.Server.ActionCode.strStatus + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
-        //                        PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼效果.FirstAbilityDefine.MainAbilityDefine);
-        //                        break;
-        //                }
-        //                switch (战吼效果.SecondAbilityDefine.MainAbilityDefine.TrueAtomicEffect.AtomicEffectType)
-        //                {
-        //                    case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.增益:
-        //                        IAtomicEffect IAtomicPoint = new PointEffect();
-        //                        IAtomicPoint.GetField(战吼效果.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.InfoArray);
-        //                        IAtomicPoint.DealMinion(game, BattleMinions[PosInfo - 1]);
-        //                        ActionCodeLst.Add(Engine.Server.ActionCode.strPoint + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
-        //                        PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼效果.SecondAbilityDefine.MainAbilityDefine);
-        //                        break;
-        //                    case Engine.Effect.AtomicEffectDefine.AtomicEffectEnum.状态:
-        //                        IAtomicEffect IAtomicStatus = new StatusEffect();
-        //                        IAtomicStatus.GetField(战吼效果.FirstAbilityDefine.MainAbilityDefine.TrueAtomicEffect.InfoArray);
-        //                        IAtomicStatus.DealMinion(game, BattleMinions[PosInfo - 1]);
-        //                        ActionCodeLst.Add(Engine.Server.ActionCode.strStatus + Engine.Utility.CardUtility.strSplitMark + Engine.Utility.CardUtility.strMe + Engine.Utility.CardUtility.strSplitMark +
-        //                        PosInfo + Engine.Utility.CardUtility.strSplitMark + 战吼效果.SecondAbilityDefine.MainAbilityDefine);
-        //                        break;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    return ActionCodeLst;
-        //}
-        /// <summary>
         /// 从战场移除单位
         /// </summary>
         /// <param name="Position">从1开始的位置</param>
@@ -216,58 +144,6 @@ namespace Engine.Client
             {
                 BattleMinions[i].战场位置.位置 = i + 1;
                 BattleMinions[i].战场位置.本方对方标识 = 本方对方标识;
-            }
-        }
-        /// <summary>
-        /// Buff的设置
-        /// </summary>
-        public void ResetBuff()
-        {
-            //去除所有光环效果
-            for (int i = 0; i < BattleMinions.Length; i++)
-            {
-                if (BattleMinions[i] != null) BattleMinions[i].受战场效果.Clear();
-            }
-            AbilityCost = 0;
-            AbilityDamagePlus = 0;
-            MinionCost = 0;
-            //设置光环效果
-            for (int i = 0; i < BattleMinions.Length; i++)
-            {
-                var minion = BattleMinions[i];
-                if (minion != null)
-                {
-                    if (!String.IsNullOrEmpty(minion.光环效果.信息))
-                    {
-                        switch (minion.光环效果.类型)
-                        {
-                            case MinionCard.光环类型枚举.增加攻防:
-                                switch (minion.光环效果.范围)
-                                {
-                                    case MinionCard.光环范围枚举.随从全体:
-                                        for (int j = 0; j < BattleMinions.Length; j++)
-                                        {
-                                            if (BattleMinions[j] != null) BattleMinions[j].受战场效果.Add(minion.光环效果);
-                                        }
-                                        break;
-                                    case MinionCard.光环范围枚举.相邻随从:
-                                        break;
-                                }
-                                break;
-                            case MinionCard.光环类型枚举.施法成本:
-                                AbilityCost += int.Parse(minion.光环效果.信息);
-                                break;
-                            case MinionCard.光环类型枚举.法术效果:
-                                AbilityDamagePlus += int.Parse(minion.光环效果.信息);
-                                break;
-                            case MinionCard.光环类型枚举.随从成本:
-                                MinionCost += int.Parse(minion.光环效果.信息);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
             }
         }
         /// <summary>
@@ -300,7 +176,7 @@ namespace Engine.Client
         /// <param name="evt"></param>
         /// <param name="本方对方标识"></param>
         /// <returns></returns>
-        public List<MinionCard> ClearDead(BattleEventHandler evt, Boolean 本方对方标识)
+        public List<MinionCard> ClearDead(BattleEventHandler evt, bool 本方对方标识)
         {
             //必须是当前的随从，不能使编号
             //如果是沉默状态的随从，无亡语效果！
@@ -319,7 +195,7 @@ namespace Engine.Client
                     else
                     {
                         DeadList.Add(BattleMinions[i]);
-                        evt.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                        evt.事件池.Add(new CardUtility.全局事件()
                         {
                             触发事件类型 = CardUtility.事件类型枚举.死亡,
                             触发位置 = BattleMinions[i].战场位置,

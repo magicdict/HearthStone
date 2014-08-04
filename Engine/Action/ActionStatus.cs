@@ -1,4 +1,5 @@
-﻿using Engine.Client;
+﻿using Engine.Card;
+using Engine.Client;
 using System;
 using System.Collections.Generic;
 
@@ -91,8 +92,7 @@ namespace Engine.Action
             var MyDeadMinion = game.AllRole.MyPublicInfo.BattleField.ClearDead(game.battleEvenetHandler, true);
             var YourDeadMinion = game.AllRole.YourPublicInfo.BattleField.ClearDead(game.battleEvenetHandler, false);
             //2.重新计算Buff
-            game.AllRole.MyPublicInfo.BattleField.ResetBuff();
-            game.AllRole.YourPublicInfo.BattleField.ResetBuff();
+            Buff.ResetBuff(game);
             //3.武器的移除
             if (game.AllRole.MyPublicInfo.Hero.Weapon != null && game.AllRole.MyPublicInfo.Hero.Weapon.耐久度 == 0) game.AllRole.MyPublicInfo.Hero.Weapon = null;
             if (game.AllRole.YourPublicInfo.Hero.Weapon != null && game.AllRole.YourPublicInfo.Hero.Weapon.耐久度 == 0) game.AllRole.YourPublicInfo.Hero.Weapon = null;

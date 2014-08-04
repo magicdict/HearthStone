@@ -14,25 +14,6 @@ namespace Engine.Card
     {
         #region"结构枚举"
         /// <summary>
-        /// 光环范围[Buff Scope]
-        /// </summary>
-        public enum 光环范围枚举
-        {
-            /// <summary>
-            /// 随从全体[All Minions]
-            /// </summary>
-            随从全体,
-            /// <summary>
-            /// 相邻随从[]
-            /// </summary>
-            相邻随从,
-            /// <summary>
-            /// 全局[]
-            /// </summary>
-            全局
-        }
-
-        /// <summary>
         /// 攻击状态[Attack Status]
         /// </summary>
         public enum 攻击状态枚举
@@ -49,53 +30,6 @@ namespace Engine.Card
             /// 已经攻击完毕[Already Attacked]
             /// </summary>
             攻击完毕
-        }
-
-        /// <summary>
-        /// 光环类型[Buff Effect]
-        /// </summary>
-        public enum 光环类型枚举
-        {
-            /// <summary>
-            /// 增加攻防
-            /// </summary>
-            增加攻防,
-            /// <summary>
-            /// 施法成本
-            /// </summary>
-            施法成本,
-            /// <summary>
-            /// 随从成本
-            /// </summary>
-            随从成本,
-            /// <summary>
-            /// 增加法术效果
-            /// </summary>
-            法术效果
-        }
-
-        /// <summary>
-        /// 光环结构体[Buff struct]
-        /// </summary>
-        [Serializable]
-        public struct 光环结构体
-        {
-            /// <summary>
-            /// 范围[Scope]
-            /// </summary>
-            public 光环范围枚举 范围;
-            /// <summary>
-            /// 类型[Type]
-            /// </summary>
-            public 光环类型枚举 类型;
-            /// <summary>
-            /// 信息[Information]
-            /// </summary>
-            public string 信息;
-            /// <summary>
-            /// 来源[Buff Source]
-            /// </summary>
-            public string 来源;
         }
         /// <summary>
         /// 特殊效果枚举[Special Effect Enum]
@@ -200,7 +134,7 @@ namespace Engine.Card
         /// <summary>
         /// 光环效果 [Buff Effect]
         /// </summary>
-        public 光环结构体 光环效果;
+        public Buff.光环结构体 光环效果;
         /// <summary>
         /// 特殊效果 [Specical Effect]
         /// </summary>
@@ -245,7 +179,7 @@ namespace Engine.Card
         /// 该单位受到战地的效果[Get Buff Effect]
         /// </summary>
         [XmlIgnore]
-        public List<光环结构体> 受战场效果 = new List<光环结构体>();
+        public List<Buff.光环结构体> 受战场效果 = new List<Buff.光环结构体>();
         /// <summary>
         /// 能否成为当前动作的对象[Can be the target of action]
         /// </summary>

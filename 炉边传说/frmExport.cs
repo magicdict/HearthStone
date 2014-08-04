@@ -157,8 +157,8 @@ namespace 炉边传说
                 if (HasBuff)
                 {
                     Minion.光环效果.来源 = Minion.名称;
-                    Minion.光环效果.范围 = CSharpUtility.GetEnum<MinionCard.光环范围枚举>(worksheet.Cells(rowCount, 22).Text, MinionCard.光环范围枚举.随从全体);
-                    Minion.光环效果.类型 = CSharpUtility.GetEnum<MinionCard.光环类型枚举>(worksheet.Cells(rowCount, 23).Text, MinionCard.光环类型枚举.增加攻防);
+                    //Minion.光环效果.范围 = CSharpUtility.GetEnum<Buff.光环范围枚举>(worksheet.Cells(rowCount, 22).Text, Buff.光环范围枚举.随从全体);
+                    Minion.光环效果.类型 = CSharpUtility.GetEnum<Buff.光环类型枚举>(worksheet.Cells(rowCount, 23).Text, Buff.光环类型枚举.增加攻防);
                     Minion.光环效果.信息 = worksheet.Cells(rowCount, 24).Text;
                 }
                 Minion.战吼效果 = worksheet.Cells(rowCount, 25).Text;

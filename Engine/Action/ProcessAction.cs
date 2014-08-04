@@ -29,7 +29,7 @@ namespace Engine.Action
                     var minion = (MinionCard)CardUtility.GetCardInfoBySN(actField[1]);
                     minion.初始化();
                     game.AllRole.YourPublicInfo.BattleField.PutToBattle(Pos, minion);
-                    game.AllRole.YourPublicInfo.BattleField.ResetBuff();
+                    Buff.ResetBuff(game);
                     break;
                 case ActionCode.ActionType.UseWeapon:
                     game.AllRole.YourPublicInfo.Hero.Weapon = (WeaponCard)CardUtility.GetCardInfoBySN(actField[1]);
