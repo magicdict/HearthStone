@@ -1,5 +1,6 @@
 ﻿using Engine.Card;
 using Engine.Client;
+using Engine.Effect;
 using System;
 using System.Collections.Generic;
 
@@ -13,11 +14,11 @@ namespace Engine.Action
         /// <summary>
         /// 获得目标对象
         /// </summary>
-        public static Utility.CardUtility.deleteGetTargetPosition GetSelectTarget;
+        public static Utility.CSharpUtility.deleteGetTargetPosition GetSelectTarget;
         /// <summary>
         /// 抉择卡牌
         /// </summary>
-        public static Utility.CardUtility.delegatePickEffect PickEffect;
+        public static Utility.CSharpUtility.delegatePickEffect PickEffect;
         /// <summary>
         /// 全局随机种子
         /// </summary>

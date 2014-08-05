@@ -1,12 +1,12 @@
 ﻿using Engine.Card;
 using Engine.Client;
 using Engine.Control;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
 
 namespace Engine.Utility
 {
@@ -354,35 +354,6 @@ namespace Engine.Utility
             }
         }
         /// <summary>
-        /// 符合种族条件
-        /// </summary>
-        /// <param name="minion"></param>
-        /// <param name="SelectOpt"></param>
-        /// <returns></returns>
-        public static bool 符合选择条件(MinionCard minion, string strCondition)
-        {
-            if (string.IsNullOrEmpty(strCondition) || strCondition == strIgnore) return true;
-            foreach (var 种族名称 in Enum.GetNames(typeof(种族枚举)))
-            {
-                if (种族名称 == strCondition)
-                {
-                    return strCondition == minion.种族.ToString();
-                }
-                if (("非" + 种族名称) == strCondition)
-                {
-                    return strCondition != minion.种族.ToString();
-                }
-            }
-            switch (strCondition.Substring(1, 1))
-            {
-                case "+":
-                    return minion.攻击力 >= int.Parse(strCondition.Substring(0, 1));
-                case "-":
-                    return minion.攻击力 <= int.Parse(strCondition.Substring(0, 1));
-            }
-            return true;
-        }
-        /// <summary>
         /// 目标选择角色
         /// </summary>
         public enum 目标选择角色枚举
@@ -568,37 +539,7 @@ namespace Engine.Utility
         }
         #endregion
 
-        #region"委托"
-        /// <summary>
-        /// 抉择
-        /// </summary>
-        /// <param name="First">第一效果</param>
-        /// <param name="Second">第二效果</param>
-        /// <returns>是否为第一效果</returns>
-        public delegate 抉择枚举 delegatePickEffect(string First, string Second);
-        /// <summary>
-        /// 抽牌委托
-        /// </summary>
-        /// <param name="IsFirst">先后手区分</param>
-        /// <param name="Ability">法术定义</param>
-        public delegate List<string> delegateDrawCard(bool IsFirst, int DrawCount);
-        /// <summary>
-        /// 获得位置
-        /// </summary>
-        /// <returns></returns>
-        public delegate 指定位置结构体 deleteGetTargetPosition(位置选择用参数结构体 选择参数);
-        /// <summary>
-        /// 随从进场位置
-        /// </summary>
-        /// <param name="game"></param>
-        /// <returns></returns>
-        public delegate int delegateGetMinionPos(BattleFieldInfo battleInfo);
-        /// <summary>
-        /// 中断处理
-        /// </summary>
-        /// <param name="interrupt"></param>
-        public delegate void delegateInterrupt(FullServerManager.Interrupt interrupt);
-        #endregion
+
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Engine.Action;
+using Engine.Effect;
 using Engine.Utility;
 using System;
 using System.Collections.Generic;
@@ -492,7 +493,7 @@ namespace Engine.Card
                     if (自身事件效果.触发效果事件方向 == CardUtility.目标选择方向枚举.本方 && (!事件.触发位置.本方对方标识)) return ActionLst;
                     if (自身事件效果.触发效果事件方向 == CardUtility.目标选择方向枚举.对方 && (事件.触发位置.本方对方标识)) return ActionLst;
                 }
-                if (!string.IsNullOrEmpty(自身事件效果.限制信息) && !CardUtility.符合选择条件(this, 自身事件效果.限制信息))
+                if (!string.IsNullOrEmpty(自身事件效果.限制信息) && !SelectUtility.符合选择条件(this, 自身事件效果.限制信息))
                 {
                     return ActionLst;
                 }

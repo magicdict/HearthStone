@@ -12,7 +12,7 @@ namespace Engine.Action
         /// <summary>
         /// 获目标位置
         /// </summary>
-        public static CardUtility.delegateGetMinionPos GetMinionPos;
+        public static CSharpUtility.delegateGetMinionPos GetMinionPos;
         /// <summary>
         /// 随从卡牌
         /// </summary>

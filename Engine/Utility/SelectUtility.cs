@@ -1,4 +1,5 @@
 ﻿using Engine.Action;
+using Engine.Card;
 using Engine.Client;
 using System;
 using System.Collections.Generic;
@@ -251,7 +252,7 @@ namespace Engine.Utility
                         case CardUtility.目标选择角色枚举.所有角色:
                             for (int i = 0; i < game.AllRole.MyPublicInfo.BattleField.MinionCount; i++)
                             {
-                                if (CardUtility.符合选择条件(game.AllRole.MyPublicInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
+                                if (符合选择条件(game.AllRole.MyPublicInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
                                 {
                                     game.AllRole.MyPublicInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.AllRole.MyPublicInfo.BattleField.BattleMinions[i].潜行特性;
                                 }
@@ -298,7 +299,7 @@ namespace Engine.Utility
                             {
                                 for (int i = 0; i < game.AllRole.YourPublicInfo.BattleField.MinionCount; i++)
                                 {
-                                    if (CardUtility.符合选择条件(game.AllRole.YourPublicInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
+                                    if (符合选择条件(game.AllRole.YourPublicInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
                                         game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].潜行特性;
                                 }
                             }
@@ -325,12 +326,12 @@ namespace Engine.Utility
                             }
                             for (int i = 0; i < game.AllRole.MyPublicInfo.BattleField.MinionCount; i++)
                             {
-                                if (CardUtility.符合选择条件(game.AllRole.MyPublicInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
+                                if (符合选择条件(game.AllRole.MyPublicInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
                                     game.AllRole.MyPublicInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.AllRole.MyPublicInfo.BattleField.BattleMinions[i].潜行特性;
                             }
                             for (int i = 0; i < game.AllRole.YourPublicInfo.BattleField.MinionCount; i++)
                             {
-                                if (CardUtility.符合选择条件(game.AllRole.YourPublicInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
+                                if (符合选择条件(game.AllRole.YourPublicInfo.BattleField.BattleMinions[i], SelectOption.EffectTargetSelectCondition))
                                     game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].能否成为动作对象 = !game.AllRole.YourPublicInfo.BattleField.BattleMinions[i].潜行特性;
                             }
                             break;
@@ -376,6 +377,35 @@ namespace Engine.Utility
             SelectOpt.CanNotSelectPos.位置 = BattleFieldInfo.UnknowPos;
             SelectOpt.嘲讽限制 = true;
             return SelectOpt;
+        }
+        /// <summary>
+        /// 符合种族条件
+        /// </summary>
+        /// <param name="minion"></param>
+        /// <param name="SelectOpt"></param>
+        /// <returns></returns>
+        public static bool 符合选择条件(MinionCard minion, string strCondition)
+        {
+            if (string.IsNullOrEmpty(strCondition) || strCondition == CardUtility.strIgnore) return true;
+            foreach (var 种族名称 in Enum.GetNames(typeof(CardUtility.种族枚举)))
+            {
+                if (种族名称 == strCondition)
+                {
+                    return strCondition == minion.种族.ToString();
+                }
+                if (("非" + 种族名称) == strCondition)
+                {
+                    return strCondition != minion.种族.ToString();
+                }
+            }
+            switch (strCondition.Substring(1, 1))
+            {
+                case "+":
+                    return minion.攻击力 >= int.Parse(strCondition.Substring(0, 1));
+                case "-":
+                    return minion.攻击力 <= int.Parse(strCondition.Substring(0, 1));
+            }
+            return true;
         }
     }
 }

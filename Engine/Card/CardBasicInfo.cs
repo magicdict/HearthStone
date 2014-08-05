@@ -91,6 +91,9 @@ namespace Engine.Card
         #endregion
 
         #region "炉石专用"
+        /// <summary>
+        /// 法术卡牌类型枚举
+        /// </summary>
         public enum 法术卡牌类型枚举
         {
             /// <summary>
@@ -113,6 +116,14 @@ namespace Engine.Card
             /// 事件
             /// </summary>
             事件,
+            /// <summary>
+            /// 奥秘
+            /// </summary>
+            奥秘,
+            /// <summary>
+            /// 光环
+            /// </summary>
+            光环,
             /// <summary>
             /// 其他
             /// </summary>

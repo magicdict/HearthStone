@@ -17,7 +17,7 @@ namespace Engine.Card
         /// </summary>
         public const string SN幸运币 = "A900001";
         /// <summary>
-        /// 原生卡牌
+        /// 法术卡牌类型
         /// </summary>
         public 法术卡牌类型枚举 法术卡牌类型
         {
@@ -35,6 +35,10 @@ namespace Engine.Card
                         return 法术卡牌类型枚举.亡语;
                     case "4":
                         return 法术卡牌类型枚举.事件;
+                    case "5":
+                        return 法术卡牌类型枚举.奥秘;
+                    case "6":
+                        return 法术卡牌类型枚举.光环;
                     default:
                         return 法术卡牌类型枚举.其他;
                 }
@@ -197,24 +201,8 @@ namespace Engine.Card
             //按照回数执行效果
             for (int cnt = 0; cnt < Ability.MainAbilityDefine.EffectCount; cnt++)
             {
-                //系统法术
-                switch (Ability.MainAbilityDefine.TrueAtomicEffect.AtomicEffectType)
-                {
-                    case AtomicEffectDefine.AtomicEffectEnum.卡牌:
-                    case AtomicEffectDefine.AtomicEffectEnum.水晶:
-                    case AtomicEffectDefine.AtomicEffectEnum.召唤:
-                    case AtomicEffectDefine.AtomicEffectEnum.武器:
-                        Result.AddRange(RunGameSystemEffect(game, Ability.MainAbilityDefine.TrueAtomicEffect, Ability.MainAbilityDefine.AbliltyPosPicker));
-                        break;
-                    case AtomicEffectDefine.AtomicEffectEnum.控制:
-                        Result.AddRange(ControlEffect.RunEffect(game, Ability.MainAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
-                        break;
-                    case AtomicEffectDefine.AtomicEffectEnum.未定义:
-                        break;
-                    default:
-                        Result.AddRange(Effecthandler.RunSingleEffect(Ability.MainAbilityDefine, game, ActionStatus.RandomSeed));
-                        break;
-                }
+                //系统法术:有些法术的True和False是不同的类型
+                RunEffect(game, Ability.MainAbilityDefine, Result);
                 ActionStatus.RandomSeed++;
                 //是否每次结算？这里的逻辑需要确认！
                 Result.AddRange(ActionStatus.Settle(game));
@@ -230,29 +218,39 @@ namespace Engine.Card
             for (int cnt = 0; cnt < Ability.AppendAbilityDefine.EffectCount; cnt++)
             {
                 //系统法术
-                switch (Ability.AppendAbilityDefine.TrueAtomicEffect.AtomicEffectType)
-                {
-                    case AtomicEffectDefine.AtomicEffectEnum.卡牌:
-                    case AtomicEffectDefine.AtomicEffectEnum.水晶:
-                    case AtomicEffectDefine.AtomicEffectEnum.召唤:
-                    case AtomicEffectDefine.AtomicEffectEnum.武器:
-                        Result.AddRange(RunGameSystemEffect(game, Ability.AppendAbilityDefine.TrueAtomicEffect,
-                                                                                    Ability.AppendAbilityDefine.AbliltyPosPicker));
-                        break;
-                    case AtomicEffectDefine.AtomicEffectEnum.控制:
-                        Result.AddRange(ControlEffect.RunEffect(game, Ability.AppendAbilityDefine.AbliltyPosPicker.SelectedPos.ToString()));
-                        break;
-                    case AtomicEffectDefine.AtomicEffectEnum.未定义:
-                        break;
-                    default:
-                        Result.AddRange(Effecthandler.RunSingleEffect(Ability.AppendAbilityDefine, game, ActionStatus.RandomSeed));
-                        break;
-                }
+                RunEffect(game, Ability.AppendAbilityDefine, Result);
                 ActionStatus.RandomSeed++;
                 Result.AddRange(ActionStatus.Settle(game));
             }
             return Result;
         }
+        /// <summary>
+        /// 运行单一效果
+        /// </summary>
+        /// <param name="game"></param>
+        /// <param name="Ability"></param>
+        /// <param name="Result"></param>
+        private static void RunEffect(ActionStatus game, EffectDefine SingleEffect, List<string> Result)
+        {
+            switch (SingleEffect.TrueAtomicEffect.AtomicEffectType)
+            {
+                case AtomicEffectDefine.AtomicEffectEnum.卡牌:
+                case AtomicEffectDefine.AtomicEffectEnum.水晶:
+                case AtomicEffectDefine.AtomicEffectEnum.召唤:
+                case AtomicEffectDefine.AtomicEffectEnum.武器:
+                    Result.AddRange(RunGameSystemEffect(game, SingleEffect.TrueAtomicEffect, SingleEffect.AbliltyPosPicker));
+                    break;
+                case AtomicEffectDefine.AtomicEffectEnum.控制:
+                    Result.AddRange(ControlEffect.RunEffect(game, SingleEffect.AbliltyPosPicker.SelectedPos.ToString()));
+                    break;
+                case AtomicEffectDefine.AtomicEffectEnum.未定义:
+                    break;
+                default:
+                    Result.AddRange(Effecthandler.RunSingleEffect(SingleEffect, game, ActionStatus.RandomSeed));
+                    break;
+            }
+        }
+
         /// <summary>
         /// 针对系统的法术效果
         /// </summary>
