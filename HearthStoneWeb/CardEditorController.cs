@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNet.Mvc;
-
+using Engine.Card;
 // For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace HearthStone.Controllers
+namespace HearthStoneWeb.Controllers
 {
     public class CardEditorController : Controller
     {

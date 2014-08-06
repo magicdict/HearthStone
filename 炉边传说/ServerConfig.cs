@@ -40,14 +40,25 @@ namespace 炉边传说
             SystemManager.Terminate();
             GC.Collect();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnStartHttp_Click(object sender, EventArgs e)
         {
             CardUtility.Init(txtCardPath.Text);
             btnStartHttp.Enabled = false;
             btnStopHttp.Enabled = true;
             SystemManager.Init();
+            SystemManager.Logger += SystemManager.InnerLog;
             WebSocketServer.Start();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnStopHttp_Click(object sender, EventArgs e)
         {
             WebSocketServer.Stop();

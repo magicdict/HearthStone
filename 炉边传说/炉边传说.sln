@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine", "..\Engine\Engine.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "炉边传说", "炉边传说.csproj", "{822FDF6A-C684-4093-9F63-F0276CB175FB}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "HearthStone", "..\HearthStone\HearthStone.kproj", "{6E28D617-4722-4FAB-9549-26DCFC7F8138}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "HearthStoneWeb", "..\HearthStoneWeb\HearthStoneWeb.kproj", "{6E28D617-4722-4FAB-9549-26DCFC7F8138}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

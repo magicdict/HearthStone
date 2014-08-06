@@ -77,8 +77,8 @@ namespace Engine.Utility
             client.Close();
             if (!(requestType == ServerResponse.RequestType.读取行动 && String.IsNullOrEmpty(Response)))
             {
-                SystemManager.TextLog("Request :[" + requestType.ToString() + "]" + Request);
-                SystemManager.TextLog("Response:[" + Response.ToString() + "]");
+                //SystemManager.TextLog("Request :[" + requestType.ToString() + "]" + Request);
+                //SystemManager.TextLog("Response:[" + Response.ToString() + "]");
             }
         }
         /// <summary>

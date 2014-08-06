@@ -36,18 +36,18 @@ namespace Engine.Utility
                     socket.OnOpen = () =>
                     {
                         //Console.WriteLine("Open!");
-                        SystemManager.TextLog("Open Connect:" + MyConn);
+                        SystemManager.Logger("Open Connect:" + MyConn);
                         allSockets.Add(MyConn, socket);
                     };
                     socket.OnClose = () =>
                     {
                         //Console.WriteLine("Close!");
-                        SystemManager.TextLog("Close Connect:" + MyConn);
+                        SystemManager.Logger("Close Connect:" + MyConn);
                         allSockets.Remove(MyConn);
                     };
                     socket.OnMessage = Request =>
                     {
-                        Console.WriteLine(Request + " From " + MyConn);
+                        SystemManager.Logger(Request + " From " + MyConn);
                         ServerResponse.RequestType requestType = (ServerResponse.RequestType)Enum.Parse(typeof(ServerResponse.RequestType), Request.Substring(0, 3));
                         string Response = ServerResponse.ProcessRequest(Request, requestType);
                         string GameId = string.Empty;
@@ -77,7 +77,7 @@ namespace Engine.Utility
                                 else
                                 {
                                     //需要后续操作，中断续行
-                                    Console.WriteLine(Response + " To " + MyConn);
+                                    SystemManager.Logger(Response + " To " + MyConn);
                                     socket.Send(Response);
                                 }
                                 break;
@@ -98,7 +98,7 @@ namespace Engine.Utility
                                 if (CanRemove) ServerResponse.RemoveGame(GameId);
                                 break;
                             default:
-                                Console.WriteLine(Response + " To " + MyConn);
+                                SystemManager.Logger(Response + " To " + MyConn);
                                 socket.Send(Response);
                                 break;
                         }
@@ -124,14 +124,14 @@ namespace Engine.Utility
             var MyConn = allGames[GameId + CardUtility.strTrue];
             var MySocket = allSockets[MyConn];
             MySocket.Send(Response);
-            Console.WriteLine(Response + " To " + MyConn);
+            SystemManager.Logger(Response + " To " + MyConn);
             if (allGames.ContainsKey(GameId + CardUtility.strFalse))
             {
                 //如果不是冒险模式
                 MyConn = allGames[GameId + CardUtility.strFalse];
                 MySocket = allSockets[MyConn];
                 MySocket.Send(Response);
-                Console.WriteLine(Response + " To " + MyConn);
+                SystemManager.Logger(Response + " To " + MyConn);
             }
         }
         /// <summary>

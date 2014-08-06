@@ -9,6 +9,14 @@ namespace Engine.Utility
     public static class SystemManager
     {
         /// <summary>
+        /// Logger
+        /// </summary>
+        public static CSharpUtility.delegateLog Logger;
+        /// <summary>
+        /// LogDetail
+        /// </summary>
+        public static CSharpUtility.delegateLogDetail LogDetail;
+        /// <summary>
         /// 游戏类型枚举
         /// </summary>
         public enum GameType
@@ -52,15 +60,15 @@ namespace Engine.Utility
         /// <summary>
         /// 游戏类型
         /// </summary>
-        public static SystemManager.GameType 游戏类型 = SystemManager.GameType.HTML版;
+        public static GameType 游戏类型 = GameType.HTML版;
         /// <summary>
         /// 游戏模式
         /// </summary>
-        public static SystemManager.GameMode 游戏模式 = SystemManager.GameMode.标准;
+        public static GameMode 游戏模式 = GameMode.标准;
         /// <summary>
         /// 外部资料格式
         /// </summary>
-        public static SystemManager.ExportType 外部资料格式 = SystemManager.ExportType.JSON;
+        public static ExportType 外部资料格式 = ExportType.JSON;
         /// <summary>
         /// 日志
         /// </summary>
@@ -70,7 +78,7 @@ namespace Engine.Utility
         /// </summary>
         public static void Init()
         {
-            logfile = new StreamWriter("C:\\mlog.txt", true, System.Text.UnicodeEncoding.Unicode);
+            logfile = new StreamWriter("C:\\mlog.txt", true, System.Text.Encoding.Unicode);
         }
         /// <summary>
         /// 终结化
@@ -83,7 +91,7 @@ namespace Engine.Utility
         /// LOG的记录（长间隔）
         /// </summary>
         /// <param name="Info"></param>
-        public static void TextLog(String Info)
+        public static void InnerLog(string Info)
         {
             logfile.WriteLine(DateTime.Now.ToString() + ":" + Info);
             logfile.Flush();

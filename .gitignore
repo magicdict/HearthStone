@@ -4,6 +4,7 @@
 *.xlsx
 *.suo
 *.zip
+*.nupkg
 /vNextPublish
 /packages
 /炉石设计/Fleck-master
@@ -16,9 +17,9 @@
 /炉边传说/炉边传说.sln.ide
 /Engine/bin
 /Engine/obj
-/HearthStone/bin
-/HearthStone/obj
-/HearthStone/Scripts
+/HearthStoneWeb/bin
+/HearthStoneWeb/obj
+/HearthStoneWeb/Scripts
 Thumbs.db
 !/炉边传说/Html/Image/BackGround.jpg
 !/炉边传说/Html/Image/FireBall.jpg

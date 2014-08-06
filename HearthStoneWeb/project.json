@@ -3,7 +3,9 @@
         "Microsoft.AspNet.Server.IIS": "1.0.0-alpha2",
         "Microsoft.AspNet.Mvc": "6.0.0-alpha2",
         "Microsoft.AspNet.Server.WebListener": "1.0.0-alpha2",
-        "Microsoft.AspNet.StaticFiles": "1.0.0-alpha2"
+        "Microsoft.AspNet.StaticFiles": "1.0.0-alpha2",
+        "mongocsharpdriver": "1.9.2",
+        "HearthStone":"1.0.1"
     },
     "configurations": {
         "net451": { },

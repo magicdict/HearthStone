@@ -12,7 +12,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>6e28d617-4722-4fab-9549-26dcfc7f8138</ProjectGuid>
     <OutputType>Web</OutputType>
-    <RootNamespace>HearthStone</RootNamespace>
+    <RootNamespace>HearthStoneWeb</RootNamespace>
   </PropertyGroup>
   <PropertyGroup Condition="$(OutputType) == 'Console'">
     <DebuggerFlavor>ConsoleDebugger</DebuggerFlavor>
@@ -61,8 +61,7 @@
     <Content Include="images\Hero.jpg" />
     <Content Include="images\Weapon.jpg" />
     <Content Include="project.json" />
-    <Content Include="Properties\PublishProfiles\HearthStone.pubxml" />
-    <Content Include="Properties\PublishProfiles\HearthStone.pubxml.user" />
+    <Content Include="Properties\PublishProfiles\HearthStoneWeb.pubxml" />
     <Content Include="Script\Game.js" />
     <Content Include="Script\GameUI.js" />
     <Content Include="Script\jquery-ui.min.js" />

@@ -134,6 +134,18 @@ namespace Engine.Utility
         /// </summary>
         /// <param name="interrupt"></param>
         public delegate void delegateInterrupt(FullServerManager.Interrupt interrupt);
+        /// <summary>
+        /// 日志接口
+        /// </summary>
+        /// <param name="GameId"></param>
+        /// <param name="isHost"></param>
+        /// <param name="Info"></param>
+        public delegate void delegateLogDetail(int GameId, bool isHost, string Info);
+        /// <summary>
+        /// 日志接口
+        /// </summary>
+        /// <param name="Info"></param>
+        public delegate void delegateLog(string Info);
         #endregion
 
         #region"辅助方法"
