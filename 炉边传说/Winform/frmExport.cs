@@ -138,12 +138,9 @@ namespace 炉边传说
 
                 Minion.嘲讽特性 = !string.IsNullOrEmpty(worksheet.Cells(rowCount, 14).Text);
                 Minion.冲锋特性 = !string.IsNullOrEmpty(worksheet.Cells(rowCount, 15).Text);
-                Minion.无法攻击特性 = !string.IsNullOrEmpty(worksheet.Cells(rowCount, 16).Text);
                 Minion.风怒特性 = !string.IsNullOrEmpty(worksheet.Cells(rowCount, 17).Text);
                 Minion.潜行特性 = !string.IsNullOrEmpty(worksheet.Cells(rowCount, 18).Text);
                 Minion.圣盾特性 = !string.IsNullOrEmpty(worksheet.Cells(rowCount, 19).Text);
-                Minion.法术免疫特性 = !string.IsNullOrEmpty(worksheet.Cells(rowCount, 20).Text);
-                Minion.英雄技能免疫特性 = !string.IsNullOrEmpty(worksheet.Cells(rowCount, 21).Text);
 
                 bool HasBuff = false;
                 for (int i = 22; i < 25; i++)

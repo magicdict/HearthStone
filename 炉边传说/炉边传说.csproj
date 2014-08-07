@@ -39,6 +39,12 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="MongoDB.Bson">
+      <HintPath>packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Bson.dll</HintPath>
+    </Reference>
+    <Reference Include="MongoDB.Driver">
+      <HintPath>packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Driver.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>packages\Newtonsoft.Json.6.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
@@ -54,22 +60,34 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BattleField.cs">
+    <Compile Include="CardEditor\MinionCard.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="BattleField.Designer.cs">
+    <Compile Include="CardEditor\MinionCard.Designer.cs">
+      <DependentUpon>MinionCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Winform\BattleField.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Winform\BattleField.Designer.cs">
       <DependentUpon>BattleField.cs</DependentUpon>
     </Compile>
-    <Compile Include="CardDeck.cs">
+    <Compile Include="Winform\CardDeck.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CardDeck.Designer.cs">
+    <Compile Include="Winform\CardDeck.Designer.cs">
       <DependentUpon>CardDeck.cs</DependentUpon>
     </Compile>
-    <Compile Include="ServerConfig.cs">
+    <Compile Include="Winform\ManagerTool.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ServerConfig.Designer.cs">
+    <Compile Include="Winform\ManagerTool.Designer.cs">
+      <DependentUpon>ManagerTool.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Winform\ServerConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Winform\ServerConfig.Designer.cs">
       <DependentUpon>ServerConfig.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl\ctlCardList.cs">
@@ -120,45 +138,51 @@
     <Compile Include="UserControl\ctlWeapon.Designer.cs">
       <DependentUpon>ctlWeapon.cs</DependentUpon>
     </Compile>
-    <Compile Include="EffectSelect.cs">
+    <Compile Include="Winform\EffectSelect.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="EffectSelect.Designer.cs">
+    <Compile Include="Winform\EffectSelect.Designer.cs">
       <DependentUpon>EffectSelect.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmExport.cs">
+    <Compile Include="Winform\frmExport.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmExport.Designer.cs">
+    <Compile Include="Winform\frmExport.Designer.cs">
       <DependentUpon>frmExport.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmStartGame.cs">
+    <Compile Include="Winform\frmStartGame.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmStartGame.Designer.cs">
+    <Compile Include="Winform\frmStartGame.Designer.cs">
       <DependentUpon>frmStartGame.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PutMinion.cs">
+    <Compile Include="Winform\PutMinion.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="PutMinion.Designer.cs">
+    <Compile Include="Winform\PutMinion.Designer.cs">
       <DependentUpon>PutMinion.cs</DependentUpon>
     </Compile>
-    <Compile Include="TargetSelect.cs">
+    <Compile Include="Winform\TargetSelect.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TargetSelect.Designer.cs">
+    <Compile Include="Winform\TargetSelect.Designer.cs">
       <DependentUpon>TargetSelect.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="BattleField.resx">
+    <EmbeddedResource Include="CardEditor\MinionCard.resx">
+      <DependentUpon>MinionCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Winform\BattleField.resx">
       <DependentUpon>BattleField.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CardDeck.resx">
+    <EmbeddedResource Include="Winform\CardDeck.resx">
       <DependentUpon>CardDeck.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ServerConfig.resx">
+    <EmbeddedResource Include="Winform\ManagerTool.resx">
+      <DependentUpon>ManagerTool.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Winform\ServerConfig.resx">
       <DependentUpon>ServerConfig.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControl\ctlCardList.resx">
@@ -185,13 +209,13 @@
     <EmbeddedResource Include="UserControl\ctlWeapon.resx">
       <DependentUpon>ctlWeapon.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EffectSelect.resx">
+    <EmbeddedResource Include="Winform\EffectSelect.resx">
       <DependentUpon>EffectSelect.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmExport.resx">
+    <EmbeddedResource Include="Winform\frmExport.resx">
       <DependentUpon>frmExport.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmStartGame.resx">
+    <EmbeddedResource Include="Winform\frmStartGame.resx">
       <DependentUpon>frmStartGame.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -204,12 +228,13 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="PutMinion.resx">
+    <EmbeddedResource Include="Winform\PutMinion.resx">
       <DependentUpon>PutMinion.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TargetSelect.resx">
+    <EmbeddedResource Include="Winform\TargetSelect.resx">
       <DependentUpon>TargetSelect.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

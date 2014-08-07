@@ -142,10 +142,19 @@ namespace Engine.Utility
         /// <param name="Info"></param>
         public delegate void delegateLogDetail(int GameId, bool isHost, string Info);
         /// <summary>
+        /// 
+        /// </summary>
+        public struct LogRec
+        {
+            public DateTime logTime;
+            public string IP;
+            public string Info;
+        }
+        /// <summary>
         /// 日志接口
         /// </summary>
         /// <param name="Info"></param>
-        public delegate void delegateLog(string Info);
+        public delegate void delegateLog(LogRec Info);
         #endregion
 
         #region"辅助方法"

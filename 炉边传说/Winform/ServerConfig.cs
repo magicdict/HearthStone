@@ -4,6 +4,8 @@ using System;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
+using MongoDB.Driver;
+
 namespace 炉边传说
 {
     public partial class ServerConfig : Form
@@ -51,7 +53,17 @@ namespace 炉边传说
             btnStartHttp.Enabled = false;
             btnStopHttp.Enabled = true;
             SystemManager.Init();
-            SystemManager.Logger += SystemManager.InnerLog;
+            //MONGODB
+            MongoServer innerServer;
+            innerServer = MongoServer.Create(@"mongodb://localhost:28030");
+            innerServer.Connect();
+            MongoDatabase LogDB = innerServer.GetDatabase("HearthStone");
+            MongoCollection logCol = LogDB.GetCollection("log");
+            //SystemManager.Logger += SystemManager.InnerLog;
+            SystemManager.Logger += (x) =>
+            {
+                logCol.Insert<CSharpUtility.LogRec>(x);
+            };
             WebSocketServer.Start();
         }
         /// <summary>

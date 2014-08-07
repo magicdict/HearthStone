@@ -5,6 +5,7 @@
 *.suo
 *.zip
 *.nupkg
+*.pdf
 /vNextPublish
 /packages
 /炉石设计/Fleck-master

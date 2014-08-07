@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>HearthStone</id>
+        <version>1.0.1</version>
+        <authors>Hu Weimin</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>HearthStone Engine</description>
+    </metadata>
+    <files>
+        <file src="lib\Engine.dll" target="lib\Engine.dll" />
+        <file src="lib\Fleck.dll" target="lib\Fleck.dll" />
+        <file src="lib\Newtonsoft.Json.dll" target="lib\Newtonsoft.Json.dll" />
+    </files>
+</package>

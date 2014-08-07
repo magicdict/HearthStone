@@ -4,5 +4,6 @@
     <ActiveTargetFramework>.NETFramework,Version=v4.5.1</ActiveTargetFramework>
     <AutoRefresh>false</AutoRefresh>
     <NameOfLastUsedPublishProfile>HearthStone</NameOfLastUsedPublishProfile>
+    <ShowAllFiles>false</ShowAllFiles>
   </PropertyGroup>
 </Project>

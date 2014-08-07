@@ -54,7 +54,15 @@ namespace Engine.Card
             /// <summary>
             /// 回合结束时候死亡[Die at the end of turn]
             /// </summary>
-            回合结束死亡
+            回合结束死亡,
+            /// <summary>
+            /// 无法攻击
+            /// </summary>
+            无法攻击,
+            /// <summary>
+            /// 法术技能免疫
+            /// </summary>
+            法术技能免疫
         }
         #endregion
 
@@ -97,18 +105,6 @@ namespace Engine.Card
         /// 圣盾[Divine Shield]
         /// </summary>
         public bool 圣盾特性 = false;
-        /// <summary>
-        /// 法术免疫 [Ability Immune]
-        /// </summary>
-        public bool 法术免疫特性 = false;
-        /// <summary>
-        /// 英雄技能免疫[Hero Skill Immune]
-        /// </summary>
-        public bool 英雄技能免疫特性 = false;
-        /// <summary>
-        /// 不能攻击[Can't Attack]
-        /// </summary>
-        public bool 无法攻击特性 = false;
         #endregion
 
         #region"效果"
@@ -219,7 +215,7 @@ namespace Engine.Card
             get
             {
                 if (冰冻状态 != CardUtility.效果回合枚举.无效果) return false;
-                if (无法攻击特性) return false;
+                if (特殊效果 == 特殊效果枚举.无法攻击) return false;
                 if (实际攻击值 == 0) return false;
                 return 剩余攻击次数 > 0 && 攻击状态 == 攻击状态枚举.可攻击;
             }

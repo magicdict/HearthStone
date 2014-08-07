@@ -50,7 +50,7 @@
             // lbl套牌牌数上限
             // 
             this.lbl套牌牌数上限.AutoSize = true;
-            this.lbl套牌牌数上限.Location = new System.Drawing.Point(303, 104);
+            this.lbl套牌牌数上限.Location = new System.Drawing.Point(605, 73);
             this.lbl套牌牌数上限.Name = "lbl套牌牌数上限";
             this.lbl套牌牌数上限.Size = new System.Drawing.Size(79, 13);
             this.lbl套牌牌数上限.TabIndex = 0;
@@ -59,7 +59,7 @@
             // lbl英雄生命值上限
             // 
             this.lbl英雄生命值上限.AutoSize = true;
-            this.lbl英雄生命值上限.Location = new System.Drawing.Point(303, 130);
+            this.lbl英雄生命值上限.Location = new System.Drawing.Point(605, 99);
             this.lbl英雄生命值上限.Name = "lbl英雄生命值上限";
             this.lbl英雄生命值上限.Size = new System.Drawing.Size(91, 13);
             this.lbl英雄生命值上限.TabIndex = 1;
@@ -67,21 +67,21 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(420, 102);
+            this.numericUpDown1.Location = new System.Drawing.Point(722, 71);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(54, 20);
             this.numericUpDown1.TabIndex = 2;
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(420, 128);
+            this.numericUpDown2.Location = new System.Drawing.Point(722, 97);
             this.numericUpDown2.Name = "numericUpDown2";
             this.numericUpDown2.Size = new System.Drawing.Size(54, 20);
             this.numericUpDown2.TabIndex = 3;
             // 
             // btnStartTcp
             // 
-            this.btnStartTcp.Location = new System.Drawing.Point(11, 99);
+            this.btnStartTcp.Location = new System.Drawing.Point(608, 128);
             this.btnStartTcp.Name = "btnStartTcp";
             this.btnStartTcp.Size = new System.Drawing.Size(135, 23);
             this.btnStartTcp.TabIndex = 4;
@@ -92,7 +92,7 @@
             // btnStopTcp
             // 
             this.btnStopTcp.Enabled = false;
-            this.btnStopTcp.Location = new System.Drawing.Point(162, 99);
+            this.btnStopTcp.Location = new System.Drawing.Point(759, 128);
             this.btnStopTcp.Name = "btnStopTcp";
             this.btnStopTcp.Size = new System.Drawing.Size(135, 23);
             this.btnStopTcp.TabIndex = 5;
@@ -137,7 +137,7 @@
             // 
             // btnStartHttp
             // 
-            this.btnStartHttp.Location = new System.Drawing.Point(11, 128);
+            this.btnStartHttp.Location = new System.Drawing.Point(11, 100);
             this.btnStartHttp.Name = "btnStartHttp";
             this.btnStartHttp.Size = new System.Drawing.Size(135, 23);
             this.btnStartHttp.TabIndex = 11;
@@ -148,7 +148,7 @@
             // btnStopHttp
             // 
             this.btnStopHttp.Enabled = false;
-            this.btnStopHttp.Location = new System.Drawing.Point(162, 128);
+            this.btnStopHttp.Location = new System.Drawing.Point(162, 100);
             this.btnStopHttp.Name = "btnStopHttp";
             this.btnStopHttp.Size = new System.Drawing.Size(135, 23);
             this.btnStopHttp.TabIndex = 12;
@@ -169,14 +169,14 @@
             // lstRunning
             // 
             this.lstRunning.FormattingEnabled = true;
-            this.lstRunning.Location = new System.Drawing.Point(14, 175);
+            this.lstRunning.Location = new System.Drawing.Point(11, 129);
             this.lstRunning.Name = "lstRunning";
             this.lstRunning.Size = new System.Drawing.Size(460, 121);
             this.lstRunning.TabIndex = 14;
             // 
             // btnGetRunningList
             // 
-            this.btnGetRunningList.Location = new System.Drawing.Point(350, 312);
+            this.btnGetRunningList.Location = new System.Drawing.Point(347, 265);
             this.btnGetRunningList.Name = "btnGetRunningList";
             this.btnGetRunningList.Size = new System.Drawing.Size(124, 23);
             this.btnGetRunningList.TabIndex = 15;
@@ -189,7 +189,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(494, 347);
+            this.ClientSize = new System.Drawing.Size(493, 297);
             this.Controls.Add(this.btnGetRunningList);
             this.Controls.Add(this.lstRunning);
             this.Controls.Add(this.btnCreateCard);

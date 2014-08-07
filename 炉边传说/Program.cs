@@ -17,7 +17,7 @@ namespace 炉边传说
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new frmExport());
             //Application.Run(new BattleField());
-            Application.Run(new ServerConfig());
+            Application.Run(new ManagerTool());
         }
     }
 }
