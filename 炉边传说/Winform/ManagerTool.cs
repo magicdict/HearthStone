@@ -20,5 +20,15 @@ namespace 炉边传说
         {
             (new ServerConfig()).Show();
         }
+
+        private void ManagerTool_Load(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void 卡牌管理ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            (new CardEditor.CardManager()).Show();
+        }
     }
 }

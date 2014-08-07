@@ -1,4 +1,5 @@
 ﻿using Engine.Action;
+using Engine.Card;
 using Engine.Utility;
 using System;
 using System.Collections.Generic;
@@ -13,27 +14,27 @@ namespace Engine.Effect
         /// <summary>
         /// 生命值回复表达式
         /// </summary>
-        public String 生命值回复表达式 = String.Empty;
+        public string 生命值回复表达式 = string.Empty;
         /// <summary>
         /// 护甲回复表达式
         /// </summary>
-        public String 护甲回复表达式 = String.Empty;
+        public string 护甲回复表达式 = string.Empty;
         /// <summary>
         /// 对英雄动作
         /// </summary>
         /// <param name="game"></param>
         /// <param name="PlayInfo"></param>
         /// <returns></returns>
-        String IAtomicEffect.DealHero(ActionStatus game, Client.PublicInfo PlayInfo)
+        string IAtomicEffect.DealHero(ActionStatus game, Client.PublicInfo PlayInfo)
         {
             int ShieldPoint = ExpressHandler.GetEffectPoint(game, 护甲回复表达式);
             int HealthPoint = ExpressHandler.GetEffectPoint(game, 生命值回复表达式);
             PlayInfo.Hero.AfterBeShield(ShieldPoint);
             if (PlayInfo.Hero.AfterBeHealth(HealthPoint))
             {
-                game.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                game.battleEvenetHandler.事件池.Add(new EventCard.全局事件()
                 {
-                    触发事件类型 = CardUtility.事件类型枚举.治疗,
+                    触发事件类型 = EventCard.事件类型枚举.治疗,
                     触发位置 = PlayInfo.Hero.战场位置
                 });
             }
@@ -46,14 +47,14 @@ namespace Engine.Effect
         /// <param name="game"></param>
         /// <param name="Minion"></param>
         /// <returns></returns>
-        String IAtomicEffect.DealMinion(ActionStatus game, Card.MinionCard Minion)
+        string IAtomicEffect.DealMinion(ActionStatus game, MinionCard Minion)
         {
             int HealthPoint = ExpressHandler.GetEffectPoint(game, 生命值回复表达式);
             if (Minion.设置被治疗后状态(HealthPoint))
             {
-                game.battleEvenetHandler.事件池.Add(new Engine.Utility.CardUtility.全局事件()
+                game.battleEvenetHandler.事件池.Add(new EventCard.全局事件()
                 {
-                    触发事件类型 = CardUtility.事件类型枚举.治疗,
+                    触发事件类型 = EventCard.事件类型枚举.治疗,
                     触发位置 = Minion.战场位置
                 });
             }

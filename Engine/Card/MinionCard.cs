@@ -139,7 +139,7 @@ namespace Engine.Card
         /// <summary>
         /// 自身事件 [Event Effect]
         /// </summary>
-        public CardUtility.事件效果结构体 自身事件效果 = new CardUtility.事件效果结构体();
+        public EventCard.事件效果结构体 自身事件效果 = new EventCard.事件效果结构体();
         #endregion
 
         #region"运行时状态"
@@ -479,7 +479,7 @@ namespace Engine.Card
         /// <param name="事件"></param>
         /// <param name="game"></param>
         /// <returns></returns>
-        public List<string> 事件处理方法(CardUtility.全局事件 事件, ActionStatus game)
+        public List<string> 事件处理方法(EventCard.全局事件 事件, ActionStatus game)
         {
             List<string> ActionLst = new List<string>();
             if (!沉默状态 && 自身事件效果.触发效果事件类型 == 事件.触发事件类型)

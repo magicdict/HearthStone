@@ -60,11 +60,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CardEditor\MinionCard.cs">
+    <Compile Include="CardEditor\CardManager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CardEditor\MinionCard.Designer.cs">
-      <DependentUpon>MinionCard.cs</DependentUpon>
+    <Compile Include="CardEditor\CardManager.Designer.cs">
+      <DependentUpon>CardManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CardEditor\EffectEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CardEditor\EffectEditor.Designer.cs">
+      <DependentUpon>EffectEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CardEditor\EffectEditorCard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CardEditor\EffectEditorCard.Designer.cs">
+      <DependentUpon>EffectEditorCard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CardEditor\MinionCardEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CardEditor\MinionCardEditor.Designer.cs">
+      <DependentUpon>MinionCardEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControl\ctlCommonPropertyEditor.cs">
+      <SubType>usercontrol</SubType>
+    </Compile>
+    <Compile Include="UserControl\ctlCommonPropertyEditor.Designer.cs">
+      <DependentUpon>ctlCommonPropertyEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Winform\BattleField.cs">
       <SubType>Form</SubType>
@@ -91,49 +115,49 @@
       <DependentUpon>ServerConfig.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl\ctlCardList.cs">
-      <SubType>UserControl</SubType>
+      <SubType>usercontrol</SubType>
     </Compile>
     <Compile Include="UserControl\ctlCardList.Designer.cs">
       <DependentUpon>ctlCardList.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl\ctlCrystalBar.cs">
-      <SubType>UserControl</SubType>
+      <SubType>usercontrol</SubType>
     </Compile>
     <Compile Include="UserControl\ctlCrystalBar.Designer.cs">
       <DependentUpon>ctlCrystalBar.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl\ctlHandCard.cs">
-      <SubType>UserControl</SubType>
+      <SubType>usercontrol</SubType>
     </Compile>
     <Compile Include="UserControl\ctlHandCard.Designer.cs">
       <DependentUpon>ctlHandCard.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl\ctlHero.cs">
-      <SubType>UserControl</SubType>
+      <SubType>usercontrol</SubType>
     </Compile>
     <Compile Include="UserControl\ctlHero.Designer.cs">
       <DependentUpon>ctlHero.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl\ctlCard.cs">
-      <SubType>UserControl</SubType>
+      <SubType>usercontrol</SubType>
     </Compile>
     <Compile Include="UserControl\ctlCard.Designer.cs">
       <DependentUpon>ctlCard.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl\ctlFilePicker.cs">
-      <SubType>UserControl</SubType>
+      <SubType>usercontrol</SubType>
     </Compile>
     <Compile Include="UserControl\ctlFilePicker.Designer.cs">
       <DependentUpon>ctlFilePicker.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl\ctlHeroAbility.cs">
-      <SubType>UserControl</SubType>
+      <SubType>usercontrol</SubType>
     </Compile>
     <Compile Include="UserControl\ctlHeroAbility.Designer.cs">
       <DependentUpon>ctlHeroAbility.cs</DependentUpon>
     </Compile>
     <Compile Include="UserControl\ctlWeapon.cs">
-      <SubType>UserControl</SubType>
+      <SubType>usercontrol</SubType>
     </Compile>
     <Compile Include="UserControl\ctlWeapon.Designer.cs">
       <DependentUpon>ctlWeapon.cs</DependentUpon>
@@ -170,8 +194,20 @@
     <Compile Include="Winform\TargetSelect.Designer.cs">
       <DependentUpon>TargetSelect.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="CardEditor\MinionCard.resx">
-      <DependentUpon>MinionCard.cs</DependentUpon>
+    <EmbeddedResource Include="CardEditor\CardManager.resx">
+      <DependentUpon>CardManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CardEditor\EffectEditor.resx">
+      <DependentUpon>EffectEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CardEditor\EffectEditorCard.resx">
+      <DependentUpon>EffectEditorCard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CardEditor\MinionCardEditor.resx">
+      <DependentUpon>MinionCardEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControl\ctlCommonPropertyEditor.resx">
+      <DependentUpon>ctlCommonPropertyEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Winform\BattleField.resx">
       <DependentUpon>BattleField.cs</DependentUpon>

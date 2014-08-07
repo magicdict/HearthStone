@@ -67,20 +67,20 @@ namespace Engine.Card
         /// <summary>
         /// 卡牌种类
         /// </summary>
-        public 卡牌类型枚举 卡牌种类 {
+        public 资源类型枚举 卡牌种类 {
             get {
                 switch (序列号.Substring(0,1))
                 {
                     case "A":
-                        return 卡牌类型枚举.法术;
+                        return 资源类型枚举.法术;
                     case "W":
-                        return 卡牌类型枚举.武器;
+                        return 资源类型枚举.武器;
                     case "M":
-                        return 卡牌类型枚举.随从;
+                        return 资源类型枚举.随从;
                     case "S":
-                        return 卡牌类型枚举.奥秘;
+                        return 资源类型枚举.奥秘;
                     default:
-                        return 卡牌类型枚举.其他;
+                        return 资源类型枚举.其他;
                 }
             }
         }
@@ -130,9 +130,9 @@ namespace Engine.Card
             其他
         }
         /// <summary>
-        /// 卡牌类型枚举[Card Type Enum]
+        /// 资源类型枚举[Resource Type Enum]
         /// </summary>
-        public enum 卡牌类型枚举
+        public enum 资源类型枚举
         {
             /// <summary>
             /// 随从[Minion]
@@ -150,6 +150,14 @@ namespace Engine.Card
             /// 奥秘[Secret]
             /// </summary>
             奥秘,
+            /// <summary>
+            /// 
+            /// </summary>
+            效果,
+            /// <summary>
+            /// 事件[Event]
+            /// </summary>
+            事件,
             /// <summary>
             /// 其他[Other]
             /// </summary>
@@ -196,7 +204,7 @@ namespace Engine.Card
             //        return Message;
             //    }
             //}
-            if (card.卡牌种类 == CardBasicInfo.卡牌类型枚举.随从)
+            if (card.卡牌种类 == CardBasicInfo.资源类型枚举.随从)
             {
                 if (MyInfo.BattleField.MinionCount == SystemManager.MaxMinionCount)
                 {

@@ -31,19 +31,19 @@ namespace Engine.Action
             PublicInfo PlayInfo = actionStatus.AllRole.MyPublicInfo;
             switch (card.卡牌种类)
             {
-                case CardBasicInfo.卡牌类型枚举.法术:
+                case CardBasicInfo.资源类型枚举.法术:
                     actionStatus.ActionName = "USESPELLCARD";
                     UseSpellAction.RunBS(actionStatus, CardSn);
                     break;
-                case CardBasicInfo.卡牌类型枚举.随从:
+                case CardBasicInfo.资源类型枚举.随从:
                     actionStatus.ActionName = "USEMINIONCARD";
                     UseMinionAction.RunBS(actionStatus, CardSn);
                     break;
-                case CardBasicInfo.卡牌类型枚举.武器:
+                case CardBasicInfo.资源类型枚举.武器:
                     ActionCodeLst.Add(ActionCode.strWeapon + CardUtility.strSplitMark + CardSn);
                     PlayInfo.Hero.Weapon = (WeaponCard)card;
                     break;
-                case CardBasicInfo.卡牌类型枚举.奥秘:
+                case CardBasicInfo.资源类型枚举.奥秘:
                     ActionCodeLst.Add(ActionCode.strSecret + CardUtility.strSplitMark + CardSn);
                     actionStatus.AllRole.MyPrivateInfo.奥秘列表.Add((SecretCard)card);
                     PlayInfo.Hero.SecretCount = actionStatus.AllRole.MyPrivateInfo.奥秘列表.Count;
@@ -63,7 +63,7 @@ namespace Engine.Action
 
         private static void Combo(ActionStatus actionStatus, CardBasicInfo card, List<string> ActionCodeLst, PublicInfo PlayInfo)
         {
-            if ((card.卡牌种类 != CardBasicInfo.卡牌类型枚举.法术) &&
+            if ((card.卡牌种类 != CardBasicInfo.资源类型枚举.法术) &&
                 PlayInfo.连击状态 && (!string.IsNullOrEmpty(card.连击效果)))
             {
                 //初始化 Buff效果等等
@@ -76,9 +76,9 @@ namespace Engine.Action
                         ActionCodeLst.AddRange(ResultArg);
                         //英雄技能等的时候，不算[本方施法] 
                         if (ablity.法术卡牌类型 == CardBasicInfo.法术卡牌类型枚举.普通卡牌)
-                            actionStatus.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
+                            actionStatus.battleEvenetHandler.事件池.Add(new EventCard.全局事件()
                             {
-                                触发事件类型 = CardUtility.事件类型枚举.施法,
+                                触发事件类型 = EventCard.事件类型枚举.施法,
                                 触发位置 = PlayInfo.Hero.战场位置
                             });
                     }
@@ -107,19 +107,19 @@ namespace Engine.Action
             PublicInfo PlayInfo = actionStatus.AllRole.MyPublicInfo;
             switch (card.卡牌种类)
             {
-                case CardBasicInfo.卡牌类型枚举.法术:
+                case CardBasicInfo.资源类型枚举.法术:
                     actionStatus.ActionName = "USESPELLCARD";
                     UseSpellAction.RunBS(actionStatus, CardSn);
                     break;
-                case CardBasicInfo.卡牌类型枚举.随从:
+                case CardBasicInfo.资源类型枚举.随从:
                     actionStatus.ActionName = "USEMINIONCARD";
                     UseMinionAction.RunCS(actionStatus, CardSn, int.Parse(AIParm[0]));
                     break;
-                case CardBasicInfo.卡牌类型枚举.武器:
+                case CardBasicInfo.资源类型枚举.武器:
                     ActionCodeLst.Add(ActionCode.strWeapon + CardUtility.strSplitMark + CardSn);
                     PlayInfo.Hero.Weapon = (WeaponCard)card;
                     break;
-                case CardBasicInfo.卡牌类型枚举.奥秘:
+                case CardBasicInfo.资源类型枚举.奥秘:
                     ActionCodeLst.Add(ActionCode.strSecret + CardUtility.strSplitMark + CardSn);
                     actionStatus.AllRole.MyPrivateInfo.奥秘列表.Add((SecretCard)card);
                     PlayInfo.Hero.SecretCount = actionStatus.AllRole.MyPrivateInfo.奥秘列表.Count;

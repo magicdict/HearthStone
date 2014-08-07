@@ -40,9 +40,9 @@ namespace Engine.Action
                     UseSpellAction.RunBS(game, minion.战吼效果);
                 }
             }
-            game.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
+            game.battleEvenetHandler.事件池.Add(new EventCard.全局事件()
             {
-                触发事件类型 = CardUtility.事件类型枚举.召唤,
+                触发事件类型 = EventCard.事件类型枚举.召唤,
                 触发位置 = new CardUtility.指定位置结构体()
                 {
                     位置 = MinionPos,
@@ -87,9 +87,9 @@ namespace Engine.Action
                 //随从入场
                 game.AllRole.MyPublicInfo.BattleField.PutToBattle(MinionPos, minion);
                 //必须在放入之前做得原因是，被放入的随从不能被触发这个事件
-                game.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
+                game.battleEvenetHandler.事件池.Add(new EventCard.全局事件()
                 {
-                    触发事件类型 = CardUtility.事件类型枚举.召唤,
+                    触发事件类型 = EventCard.事件类型枚举.召唤,
                     触发位置 = new CardUtility.指定位置结构体()
                     {
                         位置 = MinionPos,

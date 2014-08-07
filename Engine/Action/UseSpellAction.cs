@@ -118,9 +118,9 @@ namespace Engine.Action
             {
                 SpellCard.RunAbility(game, ability);
                 if (spell.法术卡牌类型 == CardBasicInfo.法术卡牌类型枚举.普通卡牌)
-                    game.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
+                    game.battleEvenetHandler.事件池.Add(new EventCard.全局事件()
                     {
-                        触发事件类型 = CardUtility.事件类型枚举.施法,
+                        触发事件类型 = EventCard.事件类型枚举.施法,
                         触发位置 = new CardUtility.指定位置结构体()
                         {
                             位置 = BattleFieldInfo.HeroPos,

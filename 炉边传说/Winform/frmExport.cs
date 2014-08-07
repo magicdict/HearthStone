@@ -165,7 +165,7 @@ namespace 炉边传说
                 Minion.回合开始效果 = worksheet.Cells(rowCount, 30).Text;
                 Minion.回合结束效果 = worksheet.Cells(rowCount, 31).Text;
                 Minion.过载 = CSharpUtility.GetInt(worksheet.Cells(rowCount, 32).Text);
-                Minion.自身事件效果.触发效果事件类型 = CSharpUtility.GetEnum<CardUtility.事件类型枚举>(worksheet.Cells(rowCount, 33).Text, CardUtility.事件类型枚举.无);
+                //Minion.自身事件效果.触发效果事件类型 = CSharpUtility.GetEnum<CardUtility.事件类型枚举>(worksheet.Cells(rowCount, 33).Text, CardUtility.事件类型枚举.无);
                 Minion.自身事件效果.效果编号 = worksheet.Cells(rowCount, 34).Text;
                 Minion.自身事件效果.触发效果事件方向 = CSharpUtility.GetEnum<CardUtility.目标选择方向枚举>(worksheet.Cells(rowCount, 35).Text, CardUtility.目标选择方向枚举.本方);
                 Minion.自身事件效果.限制信息 = worksheet.Cells(rowCount, 36).Text;

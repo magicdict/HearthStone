@@ -70,7 +70,7 @@ namespace Engine.Client
         {
             foreach (var card in handCards)
             {
-                if (card.卡牌种类 == CardBasicInfo.卡牌类型枚举.法术)
+                if (card.卡牌种类 == CardBasicInfo.资源类型枚举.法术)
                 {
                     card.使用成本 = card.使用成本 + game.AllRole.YourPublicInfo.BattleField.AbilityCost;
                     if (card.使用成本 < 0) card.使用成本 = 0;

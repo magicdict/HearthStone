@@ -50,6 +50,7 @@
     <Compile Include="Action\UseMinionAction.cs" />
     <Compile Include="Action\UseSpellAction.cs" />
     <Compile Include="AI\DoAction.cs" />
+    <Compile Include="Card\EventCard.cs" />
     <Compile Include="Effect\Buff.cs" />
     <Compile Include="Card\HeroCard.cs" />
     <Compile Include="Client\BattleEventHandler.cs" />

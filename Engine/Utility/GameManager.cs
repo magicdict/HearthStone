@@ -1,4 +1,5 @@
-﻿using Engine.Control;
+﻿using Engine.Card;
+using Engine.Control;
 using System;
 using System.Collections.Generic;
 
@@ -49,7 +50,7 @@ namespace Engine.Utility
             {
                 foreach (var item in MyFullServerManager.事件处理组件.事件池)
                 {
-                    if (item.触发事件类型 == CardUtility.事件类型枚举.死亡 && item.触发位置.本方对方标识 == false)
+                    if (item.触发事件类型 == EventCard.事件类型枚举.死亡 && item.触发位置.本方对方标识 == false)
                     {
                         x.AllRole.MyPublicInfo.Hero.LifePoint++;
                     }

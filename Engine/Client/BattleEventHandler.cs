@@ -1,4 +1,5 @@
 ﻿using Engine.Action;
+using Engine.Card;
 using Engine.Control;
 using Engine.Utility;
 using System;
@@ -11,7 +12,7 @@ namespace Engine.Client
         /// <summary>
         /// 事件池
         /// </summary>
-        public List<CardUtility.全局事件> 事件池 = new List<CardUtility.全局事件>();
+        public List<EventCard.全局事件> 事件池 = new List<EventCard.全局事件>();
         /// <summary>
         /// 事件处理
         /// </summary>
@@ -23,10 +24,10 @@ namespace Engine.Client
             List<String> Result = new List<string>();
             for (int j = 0; j < 事件池.Count; j++)
             {
-                CardUtility.全局事件 事件 = 事件池[j];
+                EventCard.全局事件 事件 = 事件池[j];
                 for (int i = 0; i <game.AllRole.MyPublicInfo.BattleField.MinionCount; i++)
                 {
-                    if (!(事件.触发事件类型 == CardUtility.事件类型枚举.召唤 && 事件.触发位置.位置 == (i + 1) && 事件.触发位置.本方对方标识))
+                    if (!(事件.触发事件类型 == EventCard.事件类型枚举.召唤 && 事件.触发位置.位置 == (i + 1) && 事件.触发位置.本方对方标识))
                     {
                         Result.AddRange(game.AllRole.MyPublicInfo.BattleField.BattleMinions[i].事件处理方法(事件, game));
                     }

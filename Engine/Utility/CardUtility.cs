@@ -65,11 +65,11 @@ namespace Engine.Utility
                 Status.AppendLine("Type：" + info.卡牌种类.ToString());
                 switch (info.卡牌种类)
                 {
-                    case CardBasicInfo.卡牌类型枚举.随从:
+                    case CardBasicInfo.资源类型枚举.随从:
                         Status.AppendLine("攻击力：" + ((MinionCard)info).攻击力.ToString());
                         Status.AppendLine("生命值：" + ((MinionCard)info).生命值上限.ToString());
                         break;
-                    case CardBasicInfo.卡牌类型枚举.武器:
+                    case CardBasicInfo.资源类型枚举.武器:
                         Status.AppendLine("攻击力：" + ((WeaponCard)info).攻击力.ToString());
                         Status.AppendLine("耐久度：" + ((WeaponCard)info).耐久度.ToString());
                         break;
@@ -92,7 +92,7 @@ namespace Engine.Utility
             if (CardCollections.ContainsKey(SN))
             {
                 var c = CardCollections[SN].DeepCopy();
-                if (c.卡牌种类 == CardBasicInfo.卡牌类型枚举.随从) ((MinionCard)c).初始化();
+                if (c.卡牌种类 == CardBasicInfo.资源类型枚举.随从) ((MinionCard)c).初始化();
                 return c;
             }
             return null;
@@ -425,82 +425,8 @@ namespace Engine.Utility
             /// </summary>
             效果作用
         }
-        /// <summary>
-        /// 事件类型枚举[Event Enum]
-        /// </summary>
-        public enum 事件类型枚举
-        {
-            /// <summary>
-            /// None
-            /// </summary>
-            无,
-            /// <summary>
-            /// Run Ability
-            /// </summary>
-            施法,
-            /// <summary>
-            /// Recover
-            /// </summary>
-            治疗,
-            /// <summary>
-            /// Die
-            /// </summary>
-            死亡,
-            /// <summary>
-            /// Hit Secret
-            /// </summary>
-            奥秘命中,
-            /// <summary>
-            /// Damage
-            /// </summary>
-            受伤,
-            /// <summary>
-            /// Summon
-            /// </summary>
-            召唤,
-            /// <summary>
-            /// Draw Card
-            /// </summary>
-            卡牌,
-        }
-        /// <summary>
-        /// 全局事件[Event]
-        /// </summary>
-        [Serializable]
-        public struct 全局事件
-        {
-            /// <summary>
-            /// 触发事件类型[Event Type]
-            /// </summary>
-            public 事件类型枚举 触发事件类型;
-            /// <summary>
-            /// 触发位置[Evnet Position]
-            /// </summary>
-            public 指定位置结构体 触发位置;
-        }
-        /// <summary>
-        /// 事件效果结构体[Evnet Effect Struct]
-        /// </summary>
-        [Serializable]
-        public struct 事件效果结构体
-        {
-            /// <summary>
-            /// 事件名称
-            /// </summary>
-            public 事件类型枚举 触发效果事件类型;
-            /// <summary>
-            /// 触发位置
-            /// </summary>
-            public 目标选择方向枚举 触发效果事件方向;
-            /// <summary>
-            /// 效果编号
-            /// </summary>
-            public string 效果编号;
-            /// <summary>
-            /// 限制信息
-            /// </summary>
-            public string 限制信息;
-        }
+
+
         /// <summary>
         /// 用户指定位置
         /// </summary>

@@ -156,19 +156,19 @@ namespace Engine.Client
                 描述 = card.描述;
                 switch (card.卡牌种类)
                 {
-                    case CardBasicInfo.卡牌类型枚举.随从:
+                    case CardBasicInfo.资源类型枚举.随从:
                         攻击力 = ((MinionCard)card).攻击力;
                         生命值 = ((MinionCard)card).生命值;
                         break;
-                    case CardBasicInfo.卡牌类型枚举.法术:
+                    case CardBasicInfo.资源类型枚举.法术:
                         break;
-                    case CardBasicInfo.卡牌类型枚举.武器:
+                    case CardBasicInfo.资源类型枚举.武器:
                         攻击力 = ((WeaponCard)card).攻击力;
                         生命值 = ((WeaponCard)card).耐久度;
                         break;
-                    case CardBasicInfo.卡牌类型枚举.奥秘:
+                    case CardBasicInfo.资源类型枚举.奥秘:
                         break;
-                    case CardBasicInfo.卡牌类型枚举.其他:
+                    case CardBasicInfo.资源类型枚举.其他:
                         break;
                     default:
                         break;

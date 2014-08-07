@@ -1,4 +1,5 @@
 ﻿using Engine.Action;
+using Engine.Card;
 using Engine.Control;
 using Engine.Utility;
 using System;
@@ -58,9 +59,9 @@ namespace Engine.Client
                 //圣盾不引发伤害事件
                 if (AttackInfo.BattleField.BattleMinions[攻击方Pos - 1].设置被攻击后状态(AttackedPoint))
                 {
-                    gameStatus.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
+                    gameStatus.battleEvenetHandler.事件池.Add(new EventCard.全局事件()
                     {
-                        触发事件类型 = CardUtility.事件类型枚举.受伤,
+                        触发事件类型 = EventCard.事件类型枚举.受伤,
                         触发位置 = AttackInfo.BattleField.BattleMinions[攻击方Pos - 1].战场位置
                     });
                 }
@@ -70,9 +71,9 @@ namespace Engine.Client
                 //护甲不引发伤害事件
                 if (AttackInfo.Hero.AfterBeAttack(AttackedPoint))
                 {
-                    gameStatus.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
+                    gameStatus.battleEvenetHandler.事件池.Add(new EventCard.全局事件()
                     {
-                        触发事件类型 = CardUtility.事件类型枚举.受伤,
+                        触发事件类型 = EventCard.事件类型枚举.受伤,
                         触发位置 = AttackInfo.Hero.战场位置
                     });
                 }
@@ -93,9 +94,9 @@ namespace Engine.Client
             {
                 if (AttackedInfo.BattleField.BattleMinions[被攻击方Pos - 1].设置被攻击后状态(AttackPoint))
                 {
-                    gameStatus.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
+                    gameStatus.battleEvenetHandler.事件池.Add(new EventCard.全局事件()
                     {
-                        触发事件类型 = CardUtility.事件类型枚举.受伤,
+                        触发事件类型 = EventCard.事件类型枚举.受伤,
                         触发位置 = AttackedInfo.BattleField.BattleMinions[被攻击方Pos - 1].战场位置
                     });
                 }
@@ -105,9 +106,9 @@ namespace Engine.Client
                 //护甲不引发伤害事件
                 if (AttackedInfo.Hero.AfterBeAttack(AttackPoint))
                 {
-                    gameStatus.battleEvenetHandler.事件池.Add(new CardUtility.全局事件()
+                    gameStatus.battleEvenetHandler.事件池.Add(new EventCard.全局事件()
                     {
-                        触发事件类型 = CardUtility.事件类型枚举.受伤,
+                        触发事件类型 = EventCard.事件类型枚举.受伤,
                         触发位置 = AttackedInfo.Hero.战场位置
                     });
                 }

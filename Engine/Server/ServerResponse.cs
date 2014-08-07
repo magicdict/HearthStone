@@ -231,19 +231,19 @@ namespace Engine.Server
             string Response;
             switch (CardUtility.GetCardInfoBySN(CardSN).卡牌种类)
             {
-                case Card.CardBasicInfo.卡牌类型枚举.随从:
+                case Card.CardBasicInfo.资源类型枚举.随从:
                     resume.ExternalInfo = "MINION";
                     break;
-                case Card.CardBasicInfo.卡牌类型枚举.法术:
+                case Card.CardBasicInfo.资源类型枚举.法术:
                     resume.ExternalInfo = "SPELL";
                     break;
-                case Card.CardBasicInfo.卡牌类型枚举.武器:
+                case Card.CardBasicInfo.资源类型枚举.武器:
                     resume.ExternalInfo = "WEAPON";
                     break;
-                case Card.CardBasicInfo.卡牌类型枚举.奥秘:
+                case Card.CardBasicInfo.资源类型枚举.奥秘:
                     resume.ExternalInfo = "SECRET";
                     break;
-                case Card.CardBasicInfo.卡牌类型枚举.其他:
+                case Card.CardBasicInfo.资源类型枚举.其他:
                     break;
                 default:
                     break;

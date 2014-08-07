@@ -195,9 +195,9 @@ namespace Engine.Client
                     else
                     {
                         DeadList.Add(BattleMinions[i]);
-                        evt.事件池.Add(new CardUtility.全局事件()
+                        evt.事件池.Add(new EventCard.全局事件()
                         {
-                            触发事件类型 = CardUtility.事件类型枚举.死亡,
+                            触发事件类型 = EventCard.事件类型枚举.死亡,
                             触发位置 = BattleMinions[i].战场位置,
                         });
                     }
